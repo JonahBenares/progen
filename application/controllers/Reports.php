@@ -548,6 +548,8 @@ class Reports extends CI_Controller {
                     'date'=>$date
                 );
             }
+        }else {
+            $data['rec_itm']=array();
         }
 
         $counter_issue = $this->super_model->count_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
@@ -564,6 +566,8 @@ class Reports extends CI_Controller {
                     'date'=>$dateissue
                 );
             }
+        }else{
+            $data['rec_itm']=array();
         }
 
         $counter_restock2 = $this->super_model->count_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
@@ -580,6 +584,8 @@ class Reports extends CI_Controller {
                     'date'=>$datestock
                 );
             }
+        }else {
+            $data['rec_itm']=array();
         }
 
        /* $sumrec=array_sum($arr_rec);
