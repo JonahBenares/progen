@@ -837,6 +837,7 @@ class Reports extends CI_Controller {
       //   $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
          $resqty= $this->super_model->select_sum("restock_details", "quantity", "item_id", $itemid);
          $issueqty= $this->super_model->select_sum("issuance_details","quantity", "item_id",$itemid);
+          
          $balance=($recqty+$resqty)-$issueqty;
          return $balance;
     }
