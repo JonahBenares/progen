@@ -111,7 +111,6 @@
 										<td align="center"><?php echo $rec['restockqty'];?></td>
 										<td align="center"><?php echo $rec['date'];?></td>							
 									</tr>
-									<a href="<?php echo base_url(); ?>index.php/reports/stock_card_preview/<?php echo $id; ?>/<?php echo $sup; ?>/<?php echo $cat; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $brand; ?>" class="btn btn-link btn-sm ">Print Stock Card</a>
 									<?php } }else { ?>
 									<tr>
 										<td align="center" colspan='10'><center>No Data Available.</center></td>
@@ -119,7 +118,7 @@
 									<?php } ?>
 								</tbody>
 							</table>
-							
+							<a href="<?php echo base_url(); ?>index.php/reports/stock_card_preview/<?php echo $id; ?>/<?php echo $sup; ?>/<?php echo $cat; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $brand; ?>" class="btn btn-link btn-sm ">Print Stock Card</a>
 						</div>
 					</div>
 				</div>
