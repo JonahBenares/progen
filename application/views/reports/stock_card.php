@@ -45,6 +45,18 @@
 										</td>
 									</tr>
 									<tr>
+										<td width="15%"><p>NKK No.:</p></td>
+										<td width="40%">
+											<input type="text" class="form-control" name="nkk" id = "nkk" autocomplete="off">
+											<span id="suggestion-item"></span>
+										</td>
+										<td width="10%"><p class="pull-right">SEMT No.:</p></td>
+										<td width="30%"><input type="text" class="form-control" name="semt" id = "semt"></td>
+										<td width="10%" rowspan="2">
+											<!-- <a  href="" class="btn btn-warning ">Generate Report</a> -->
+										</td>
+									</tr>
+									<tr>
 										<td><p>Supplier:</p></td>
 										<td>
 											<input type="text" class="form-control" name="supplier" id = "supplier" autocomplete="off">
@@ -101,11 +113,12 @@
 									</tr>
 									<?php } }else { ?>
 									<tr>
-										<td align="center" colspan='9'><center>No Data Available.</center></td>
+										<td align="center" colspan='10'><center>No Data Available.</center></td>
 									</tr>
 									<?php } ?>
 								</tbody>
 							</table>
+							<a href="<?php echo base_url(); ?>index.php/reports/stock_card_preview/<?php echo $id; ?>/<?php echo $sup; ?>/<?php echo $cat; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $brand; ?>" class="btn btn-link btn-sm ">Print Stock Card</a>
 						</div>
 					</div>
 				</div>

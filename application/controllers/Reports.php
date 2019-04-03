@@ -503,7 +503,91 @@ class Reports extends CI_Controller {
 
      public function stock_card_preview(){
         $this->load->view('template/header');
-        $this->load->view('reports/stock_card_preview');
+        $id=$this->uri->segment(3);
+        $sup=$this->uri->segment(4);
+        $supit=0;
+        $cat=$this->uri->segment(5);
+        $nkk=$this->uri->segment(6);
+        $semt=$this->uri->segment(7);
+        $brand=$this->uri->segment(8);
+        $brandit=0;
+        if($cat=='begbal'){
+            $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","(supplier_id = '$supit' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brandit') AND item_id = '$id'");
+        } else {
+            $begbal=0;
+        }
+        $data['begbal'] = $begbal;
+        foreach($this->super_model->select_row_where('items', 'item_id', $id) AS $det){
+            $group = $this->super_model->select_column_where('group','group_name','group_id',$det->group_id);
+            $location = $this->super_model->select_column_where('location','location_name','location_id',$det->location_id);
+            $nkk = $this->super_model->select_column_where('supplier_items','nkk_no','item_id',$det->item_id);
+            $semt = $this->super_model->select_column_where('supplier_items','semt_no','item_id',$det->item_id);
+            $bin = $this->super_model->select_column_where('bin','bin_name','bin_id',$det->bin_id);
+            $data['item'][]=array(
+                'item'=>$det->item_name,
+                'group'=>$group,
+                'nkk'=>$nkk,
+                'semt'=>$semt,
+                'pn'=>$det->original_pn,
+                'location'=>$location,
+                'bin'=>$bin,
+            );
+        }
+
+        $counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        if($counter!=0){
+            foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
+                $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
+                $daterec[]=$receivedate;
+                $date = max($daterec);
+                $arr_rec[]=$rec->received_qty;
+                $data['rec_itm'][] = array(
+                    'receive_qty'=>$rec->received_qty,
+                    'issueqty'=>0,
+                    'restockqty'=>0,
+                    'date'=>$date
+                );
+            }
+        }
+
+        $counter_issue = $this->super_model->count_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        if($counter_issue!=0){
+            foreach($this->super_model->select_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $issue){
+                $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
+                $dateiss[]=$issuedate;
+                $dateissue = max($dateiss);
+                $arr_iss[]=$issue->quantity;
+                $data['rec_itm'][] = array(
+                    'receive_qty'=>0,
+                    'issueqty'=>$issue->quantity,
+                    'restockqty'=>0,
+                    'date'=>$dateissue
+                );
+            }
+        }
+
+        $counter_restock2 = $this->super_model->count_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        if($counter_restock2!=0){
+            foreach($this->super_model->select_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $restock2){
+                $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
+                $datest[]=$restockdate;
+                $datestock = max($datest);
+                $arr_rs[]=$restock2->quantity;
+                $data['rec_itm'][] = array(
+                    'receive_qty'=>0,
+                    'issueqty'=>0,
+                    'restockqty'=>$restock2->quantity,
+                    'date'=>$datestock
+                );
+            }
+        }
+
+       /* $sumrec=array_sum($arr_rec);
+        $sumiss=array_sum($arr_iss);
+        $sumst=array_sum($arr_rs);
+        $total=($begbal+$sumrec)-$sumiss;
+        $data['total']=$total;*/
+        $this->load->view('reports/stock_card_preview',$data);
     }
 
     public function sc_prev_blank(){
@@ -1021,11 +1105,17 @@ class Reports extends CI_Controller {
 
     public function stock_card(){
         $id=$this->uri->segment(3);
+        $data['id']=$this->uri->segment(3);
         $sup=$this->uri->segment(4);
+        $data['sup']=$this->uri->segment(4);
         $cat=$this->uri->segment(5);
+        $data['cat']=$this->uri->segment(5);
         $nkk=$this->uri->segment(6);
+        $data['nkk']=$this->uri->segment(6);
         $semt=$this->uri->segment(7);
+        $data['semt']=$this->uri->segment(7);
         $brand=$this->uri->segment(8);
+        $data['brand']=$this->uri->segment(8);
         $arr_rec=array();
         $arr_iss=array();
         $arr_rs=array();
@@ -1394,10 +1484,23 @@ class Reports extends CI_Controller {
         } else {
             $bid = "null";
         }
+
+        if(!empty($this->input->post('nkk'))){
+            $nkk = $this->input->post('nkk');
+        } else {
+            $nkk = "null";
+        }
+
+        if(!empty($this->input->post('semt'))){
+            $semt = $this->input->post('semt');
+        } else {
+            $semt = "null";
+        }
+
         ?>
 
         <script>
-            window.location.href ='<?php echo base_url(); ?>index.php/reports/stock_card/<?php echo $id; ?>/<?php echo $sid;?>/<?php echo $catno; ?>/<?php echo $bid; ?>'
+            window.location.href ='<?php echo base_url(); ?>index.php/reports/stock_card/<?php echo $id; ?>/<?php echo $sid;?>/<?php echo $catno; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $bid; ?>'
         </script> 
     <?php
     } 
