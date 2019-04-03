@@ -233,8 +233,13 @@ class Issue extends CI_Controller {
             $issued = $i->iqty;
        }
 
+      foreach($this->super_model->custom_query("SELECT SUM(rsd.quantity) AS rsqty FROM restock_head rsh INNER JOIN restock_details rsd ON rsh.rhead_id = rsd.rhead_id WHERE rsd.item_id = '$itemid' AND rsh.pr_no = '$prno'") AS $rs){
+            $restock = $rs->rsqty;
+       }
+
+       $wh_stocks = $this->super_model->select_sum_where("supplier_items", "quantity", "item_id ='$itemid' AND supplier_id = '270'");
        
-        $bal = $received - $issued;
+        $bal = ($received+$restock+$wh_stocks) - $issued;
         return $bal;
     }
     public function mif(){
