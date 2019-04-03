@@ -1,0 +1,567 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Issue extends CI_Controller {
+
+  function __construct(){
+        parent::__construct();
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('session');
+
+        date_default_timezone_set("Asia/Manila");
+        $this->load->model('super_model');
+        $this->dropdown['department'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
+        $this->dropdown['purpose'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
+        $this->dropdown['enduse'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
+        $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
+        $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
+        $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+       // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
+        //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
+
+        
+       foreach($this->super_model->select_custom_where_group("receive_details", "closed=0", "pr_no") AS $dtls){
+            foreach($this->super_model->select_custom_where("receive_head", "receive_id = '$dtls->receive_id'") AS $gt){
+               if($gt->saved=='1'){
+                    $this->dropdown['prno'][] = $dtls->pr_no;
+               }
+            }  
+        }
+
+        if(isset($_SESSION['user_id'])){
+            $sessionid= $_SESSION['user_id'];
+          
+            foreach($this->super_model->get_table_columns("access_rights") AS $col){
+                $this->access[$col]=$this->super_model->select_column_where("access_rights",$col, "user_id", $sessionid);
+                $this->dropdown[$col]=$this->super_model->select_column_where("access_rights",$col, "user_id", $sessionid);
+                
+            }
+          }
+        function arrayToObject($array){
+            if(!is_array($array)) { return $array; }
+            $object = new stdClass();
+            if (is_array($array) && count($array) > 0) {
+                foreach ($array as $name=>$value) {
+                    $name = strtolower(trim($name));
+                    if (!empty($name)) { $object->$name = arrayToObject($value); }
+                }
+                return $object;
+            } else {
+                return false;
+            }
+        }
+    }
+
+   
+    public function load_issue(){
+        $id=$this->uri->segment(3);
+        $data['id']=$id;
+        $saved = $this->super_model->select_column_where("issuance_head", "saved", "request_id", $id);
+
+        if($saved==0){
+      
+     // echo 'zero';
+            foreach($this->super_model->select_row_where("request_head", "request_id", $id) AS $hd){
+                $mif = $this->super_model->select_column_where("issuance_head", "mif_no", "request_id", $id);
+                $saved = $this->super_model->select_column_where("issuance_head", "saved", "request_id", $id);
+                $issueid = $this->super_model->select_column_where("issuance_head", "issuance_id", "request_id", $id);
+                $data['head'][] = array(
+                    "issueid"=>$issueid,
+                    "requestid"=>$id,
+                    "mif"=>$mif,
+                    "mreqf_no"=>$hd->mreqf_no,
+                    "request_date"=>$hd->request_date,
+                    "request_time"=>$hd->request_time,
+                    "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $hd->department_id),
+                    "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $hd->purpose_id),
+                    "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $hd->enduse_id),
+                    "prno"=>$hd->pr_no,
+                    "borrowfrom"=>$hd->borrowfrom_pr,
+                    "remarks"=>$hd->remarks,
+                    "saved"=>$saved
+
+                );
+            }
+            $x=0;
+            foreach($this->super_model->select_row_where("request_items", "request_id", $id) AS $it){
+                //echo $it->rq_id;
+                $issue_qty = $this->super_model->select_column_where("issuance_details", "quantity", "rq_id", $it->rq_id);
+                $remarks = $this->super_model->select_column_where("issuance_details", "remarks", "rq_id", $it->rq_id);
+                $issueid = $this->super_model->select_column_where("issuance_details", "issuance_id", "rq_id", $it->rq_id);
+                $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
+              
+                $data['items'][] = array(
+                    "rqid"=>$it->rq_id,
+                    "catalog_no"=>$it->catalog_no,
+                    "nkk_no"=>$it->nkk_no,
+                    "semt_no"=>$it->semt_no,
+                    "uom"=>$unit,
+                    "quantity"=>$it->quantity,
+                    "pn_no"=>$it->pn_no,
+                    "item"=>$this->super_model->select_column_where("items", "item_name", "item_id", $it->item_id),
+                    "supplier"=>$this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $it->supplier_id),
+                    "brand"=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $it->brand_id),
+                  
+                    "item_id"=>$it->item_id,
+                    "supplier_id"=>$it->supplier_id,
+                    "brand_id"=>$it->brand_id,
+                    "issue_qty"=>$issue_qty,
+                    "remarks"=>$remarks,
+                    "issueid"=>$issueid
+
+                );
+
+                 $siid=$this->super_model->select_column_custom_where("supplier_items", "si_id", "item_id = '$it->item_id' AND supplier_id = '$it->supplier_id' AND brand_id ='$it->brand_id' AND catalog_no = '$it->catalog_no'"); 
+                 $data['serial'][$x]=$this->super_model->select_row_where("serial_number", "si_id", $siid);
+                 $x++;
+             }
+            
+        }  else {
+        
+
+             foreach($this->super_model->select_row_where("issuance_head", "request_id", $id) AS $is){
+
+                $deptid = $this->super_model->select_column_where("request_head", "department_id", "request_id", $id);
+                $dept=$this->super_model->select_column_where("department", "department_name", "department_id", $deptid);
+                $purpid = $this->super_model->select_column_where("request_head", "purpose_id", "request_id", $id);
+                $purp=$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $purpid);
+                $endid = $this->super_model->select_column_where("request_head", "enduse_id", "request_id", $id);
+                $enduse=$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $endid);
+                $remarks = $this->super_model->select_column_where("request_head", "remarks", "request_id", $id);
+                 $data['head'][] = array(
+                        "issueid"=>$is->issuance_id,
+                        "requestid"=>$id,
+                        "mif"=>$is->mif_no,
+                        "mreqf_no"=>$is->mreqf_no,
+                        "request_date"=>$is->issue_date,
+                        "request_time"=>$is->issue_time,
+                        "department"=>$dept,
+                        "purpose"=>$purp,
+                        "enduse"=>$enduse,
+                        "prno"=>$is->pr_no,
+                        "remarks"=>$remarks,
+                        "saved"=>$is->saved
+
+                    );
+
+                foreach($this->super_model->select_row_where("issuance_details", "issuance_id", $is->issuance_id) AS $it){
+                    $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
+                    $data['items'][] = array(
+                        "rqid"=>$it->rq_id,
+                        "catalog_no"=>$it->catalog_no,
+                        "nkk_no"=>$it->nkk_no,
+                        "semt_no"=>$it->semt_no,
+                        "uom"=>$unit,
+                        "quantity"=>$it->quantity,
+                        "pn_no"=>$it->pn_no,
+                        "item"=>$this->super_model->select_column_where("items", "item_name", "item_id", $it->item_id),
+                        "supplier"=>$this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $it->supplier_id),
+                        "brand"=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $it->brand_id),
+                        "serial"=>$this->super_model->select_column_where("serial_number", "serial_no", "serial_id", $it->serial_id),
+                        "item_id"=>$it->item_id,
+                        "supplier_id"=>$it->supplier_id,
+                        "brand_id"=>$it->brand_id,
+                        "issue_qty"=>$it->quantity,
+                        "remarks"=>$it->remarks,
+                        "issueid"=>$it->issuance_id
+
+                    );
+
+                   $siid=$this->super_model->select_column_custom_where("supplier_items", "si_id", "item_id = '$it->item_id' AND supplier_id = '$it->supplier_id' AND brand_id ='$it->brand_id' AND catalog_no = '$it->catalog_no'"); 
+                   $data['serial']=$this->super_model->select_row_where("serial_number", "si_id", $siid);
+
+                }
+            }
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('issue/load_issue',$data);
+        $this->load->view('template/footer');
+    }
+
+    public function mreqflist(){
+        $mreqf=$this->input->post('mreqf');
+
+        $rows=$this->super_model->count_custom_where("request_head","mreqf_no LIKE '%$mreqf%' AND saved = '1'");
+        if($rows!=0){
+             echo "<ul id='name-item'>";
+            foreach($this->super_model->select_custom_where("request_head","mreqf_no LIKE '%$mreqf%' AND saved = '1'") AS $mr){ 
+                    ?>
+                   <li onClick="selectMreqF('<?php echo $mr->mreqf_no; ?>','<?php echo $mr->request_id; ?>')"><strong><?php echo $mr->mreqf_no;?> </strong></li>
+                <?php 
+            }
+             echo "<ul>";
+        }
+    }
+
+   
+
+    public function view_issue(){
+        $rows= $this->super_model->count_rows("issuance_head");
+        if($rows!=0){
+            foreach($this->super_model->select_all("issuance_head") AS $issue){
+                $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
+                $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
+                $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);
+                $data['issue_list'][] = array(
+                    'issuance_id'=>$issue->issuance_id,
+                    'mifno'=>$issue->mif_no,
+                    'mreqf'=>$issue->mreqf_no,
+                    'prno'=>$issue->pr_no,
+                    'date'=>$issue->issue_date,
+                    'time'=>$issue->issue_time,
+                    'department'=>$department,
+                    'purpose'=>$purpose,
+                    'enduse'=>$enduse
+                );
+            }
+        } else {
+            $data['issue_list'] = array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('issue/view_issue',$data);
+        $this->load->view('template/footer');
+    }
+
+    public function new_inv_balance($itemid, $prno){
+        foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS rqty FROM receive_details rd INNER JOIN receive_items ri ON rd.rd_id = ri.rd_id WHERE ri.item_id = '$itemid' AND rd.pr_no = '$prno'") AS $r){
+            $received = $r->rqty;
+        }
+
+       foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS iqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE id.item_id = '$itemid' AND ih.pr_no = '$prno'") AS $i){
+            $issued = $i->iqty;
+       }
+
+       
+        $bal = $received - $issued;
+        return $bal;
+    }
+    public function mif(){
+        $data['id']=$this->uri->segment(3);
+        $id=$this->uri->segment(3);
+        $this->load->model('super_model');        
+        $data['heads'] = $this->super_model->select_row_where('issuance_head', 'issuance_id', $id);
+
+        foreach($this->super_model->select_row_where('issuance_head', 'issuance_id', $id) AS $us){
+            $data['username'][] = array( 
+                'user'=>$this->super_model->select_column_where('users', 'fullname', 'user_id', $us->user_id),
+                'user_id'=>$us->user_id
+            );
+        }
+        foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
+            $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
+            $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
+            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);            
+            $data['issuance_details'][] = array(
+                'milf'=>$issue->mif_no,
+                'mreqf'=>$issue->mreqf_no,
+                'prno'=>$issue->pr_no,
+                'date'=>$issue->issue_date,
+                'time'=>$issue->issue_time,
+                'department'=>$department,
+                'purpose'=>$purpose,
+                'enduse'=>$enduse,
+                'remarks'=>$issue->remarks
+            );
+            foreach($this->super_model->select_row_where('issuance_details','issuance_id', $issue->issuance_id) AS $rt){
+                $balance = $this->new_inv_balance($rt->item_id, $issue->pr_no);
+                $item = $this->super_model->select_column_where("items", "item_name", "item_id", $rt->item_id);
+                $serial = $this->super_model->select_column_where("serial_number", "serial_no", "serial_id", $rt->serial_id);
+                $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
+                $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
+                $data['issue_itm'][] = array(
+                    'item'=>$item,
+                    'qty'=>$rt->quantity,
+                    'serial' => $serial,
+                    'uom'=>$uom,
+                    'pn'=>$rt->pn_no,
+                    'invqty'=>$rec_qty,
+                    'brand'=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $rt->brand_id),
+                    'remarks'=>$rt->remarks,
+                    'balance'=>$balance,
+                );
+            }
+
+        }
+        
+
+        foreach($this->super_model->select_row_where("signatories", "released", "1") AS $notes){
+            $data['released_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+        foreach($this->super_model->select_row_where("signatories", "received", "1") AS $notes){
+            $data['received_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+        foreach($this->super_model->select_row_where("signatories", "noted", "1") AS $notes){
+            $data['noted_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+        $this->load->view('template/header');
+        $this->load->view('issue/mif',$data);
+
+    }
+
+    public function gatepass(){
+        $data['id']=$this->uri->segment(3);
+        $id=$this->uri->segment(3);
+
+         $year=date('Y-m');
+       
+
+       $rows=$this->super_model->count_custom_where("issuance_head","issue_date LIKE '$year%' AND gp_no !=''");
+
+    
+        if($rows==0){
+             $gpno = "MGP-".$year."-0001";
+        } else {
+            $maxgpno=$this->super_model->get_max_where("issuance_head", "gp_no","create_date LIKE '$year%'");
+            $gateno = explode('-',$maxgpno);
+            $series = $gateno[3]+1;
+            if(strlen($series)==1){
+                $gpno = "MGP-".$year."-000".$series;
+            } else if(strlen($series)==2){
+                 $gpno = "MGP-".$year."-00".$series;
+            } else if(strlen($series)==3){
+                 $gpno = "MGP-".$year."-0".$series;
+            } else if(strlen($series)==4){
+                 $gpno = "MGP-".$year."-".$series;
+            }
+        }
+        $data['heads'] = $this->super_model->select_row_where('issuance_head', 'issuance_id', $id);
+        foreach($this->super_model->select_row_where('issuance_head', 'issuance_id', $id) AS $us){
+            $data['username'][] = array( 
+                'user'=>$this->super_model->select_column_where('users', 'fullname', 'user_id', $us->user_id),
+                'user_id'=>$us->user_id
+            );
+        }
+
+        foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
+            $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
+            $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
+            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);            
+            $data['issuance_details'][] = array(
+                'mif'=>$issue->mif_no,
+                'gpno'=>$gpno,
+                'prno'=>$issue->pr_no,
+                'date'=>$issue->issue_date,
+                'time'=>$issue->issue_time,
+                'department'=>$department,
+                'purpose'=>$purpose,
+                'enduse'=>$enduse,
+                'remarks'=>$issue->remarks
+            );
+            foreach($this->super_model->select_row_where('issuance_details','issuance_id', $issue->issuance_id) AS $rt){
+                $item = $this->super_model->select_column_where("items", "item_name", "item_id", $rt->item_id);
+                $serial = $this->super_model->select_column_where("serial_number", "serial_no", "serial_id", $rt->serial_id);
+                $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
+                $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
+                $data['issue_itm'][] = array(
+                    'item'=>$item,
+                    'qty'=>$rt->quantity,
+                    'serial' => $serial,
+                    'uom'=>$uom,
+                    'pn'=>$rt->pn_no,
+                    'invqty'=>$rec_qty,
+                    'brand'=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $rt->brand_id),
+                    'remarks'=>$rt->remarks
+                );
+            }
+
+        }
+        foreach($this->super_model->select_all_order_by("employees", "employee_name", "ASC") AS $emp){
+            $data['employees'][] = array( 
+                'empname'=>$emp->employee_name,
+                'empid'=>$emp->employee_id
+            );
+        }
+
+         foreach($this->super_model->select_row_where("signatories", "requested", "1") AS $notes){
+            $data['requested_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+
+     foreach($this->super_model->select_row_where("signatories", "noted", "1") AS $notes){
+            $data['noted_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+
+
+        foreach($this->super_model->select_row_where("signatories", "approved", "1") AS $notes){
+            $data['approved_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+     
+        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+        $this->load->view('template/header');
+        $this->load->view('issue/gatepass',$data);
+    }
+
+    public function saveIssuance(){
+      
+       //$requestid= $this->input->post('request_id');
+       $requestid=$this->input->post('request_id');
+
+       $rqid=$this->input->post('rqid');
+      
+       $quantity=$this->input->post('quantity');
+       $userid=$this->input->post('userid');
+        $serial=$this->input->post('serial');
+     //  $count=$this->input->post('count');
+       // $check=$this->input->post('check');
+       // echo $count;
+        $remarks = $this->input->post('remarks');
+       
+
+       $count = count($quantity);
+       
+       //echo $count;
+       $year=date('Y-m');
+       
+
+       $rows=$this->super_model->count_custom_where("issuance_head","create_date LIKE '$year%'");
+      
+    
+        if($rows==0){
+             $mifno = "MIF-".$year."-0001";
+        } else {
+            $maxrecno=$this->super_model->get_max_where("issuance_head", "mif_no","create_date LIKE '$year%'");
+            $recno = explode('-',$maxrecno);
+           
+            $series = $recno[3]+1;
+            if(strlen($series)==1){
+                $mifno = "MIF-".$year."-000".$series;
+            } else if(strlen($series)==2){
+                 $mifno = "MIF-".$year."-00".$series;
+            } else if(strlen($series)==3){
+                 $mifno = "MIF-".$year."-0".$series;
+            } else if(strlen($series)==4){
+                 $mifno = "MIF-".$year."-".$series;
+            }
+        }
+
+        $date=date('Y-m-d');
+        $time=date('H:i:s');
+        $create=date('Y-m-d H:i:s');
+
+        $head_rows = $this->super_model->count_rows("issuance_head");
+        if($head_rows==0){
+            $issueid=1;
+        } else {
+            $maxid=$this->super_model->get_max("issuance_head", "issuance_id");
+            $issueid=$maxid+1;
+        }
+
+       
+     // echo $requestid;
+        foreach($this->super_model->select_row_where("request_head", "request_id", $requestid) AS $req){
+         
+
+
+            $data = array(
+                'issuance_id'=>$issueid,
+                'mif_no'=>$mifno,
+                'request_id'=>$requestid,
+                'mreqf_no'=>$req->mreqf_no,
+                'issue_date'=>$this->input->post('issue_date'),
+                'issue_time'=>$this->input->post('issue_time'),
+                'create_date'=>$create,
+                'department_id'=>$req->department_id,
+                'purpose_id'=>$req->purpose_id,
+                'enduse_id'=>$req->enduse_id,
+                'pr_no'=> $pr=$req->pr_no,
+                'user_id'=>'1',
+                'saved'=>'1'
+                
+            );
+           
+           $this->super_model->insert_into("issuance_head", $data);
+        }
+
+
+
+       for($x=0; $x<$count; $x++){
+
+         $itemid=$this->super_model->select_column_where("request_items", "item_id", "rq_id", $rqid[$x]);
+         $supplierid=$this->super_model->select_column_where("request_items", "supplier_id", "rq_id", $rqid[$x]);
+         $catalogno=$this->super_model->select_column_where("request_items", "catalog_no", "rq_id", $rqid[$x]);
+         $nkkno=$this->super_model->select_column_where("request_items", "nkk_no", "rq_id", $rqid[$x]);
+         $semtno=$this->super_model->select_column_where("request_items", "semt_no", "rq_id", $rqid[$x]);
+         $brandid=$this->super_model->select_column_where("request_items", "brand_id", "rq_id", $rqid[$x]);
+        
+         $pn_no=$this->super_model->select_column_where("request_items", "pn_no", "rq_id", $rqid[$x]);
+         $uom=$this->super_model->select_column_where("request_items", "unit_id", "rq_id", $rqid[$x]);
+        
+         
+         if($quantity[$x]!='0' && $quantity[$x]!=""){
+          
+            $details= array(
+                'issuance_id'=>$issueid,
+                'rq_id'=>$rqid[$x],
+                'item_id'=>$itemid,
+                'supplier_id'=>$supplierid,
+                'catalog_no'=>$catalogno,
+                'nkk_no'=>$nkkno,
+                'semt_no'=>$semtno,
+                'brand_id'=>$brandid,
+                'serial_id'=>$serial[$x],
+                'quantity'=>$quantity[$x],
+                'pn_no'=>$pn_no,
+                'unit_id'=>$uom,
+                'remarks'=>$remarks[$x],
+            );
+        
+             $this->super_model->insert_into("issuance_details", $details);
+        }
+       }
+
+       echo $issueid;
+    }
+
+    public function printMIF(){
+        $id=$this->input->post('mifid');
+
+        $data = array(
+            "released_by"=>$this->input->post('released'),
+            "received_by"=>$this->input->post('received'),
+            "noted_by"=>$this->input->post('noted')
+        );
+
+        $this->super_model->update_where("issuance_head", $data, "issuance_id", $id);
+        echo "success";
+    }
+
+    public function printGP(){
+        $id=$this->input->post('issueid');
+
+        $data = array(
+            "gp_no"=>$this->input->post('gp_no'),
+            "gp_prepared"=>$this->input->post('gp_employee'),
+            "gp_employee"=>$this->input->post('gp_employee'),
+            "gp_requested"=>$this->input->post('gp_requested'),
+            "gp_recommending"=>$this->input->post('gp_recommend'),
+            "gp_noted"=>$this->input->post('gp_noted'),
+            "gp_approved"=>$this->input->post('gp_approved'),
+            "gp_inspected"=>$this->input->post('gp_inspected')
+        );
+
+        $this->super_model->update_where("issuance_head", $data, "issuance_id", $id);
+        echo "success";
+    }
+   
+}
+?>
