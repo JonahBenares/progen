@@ -161,10 +161,8 @@
 								<input type="text" name="rdid" id='rdid' value='<?php echo $rdid; ?>'>
 							<?php 
 								}
-							} ?>
-							
-						</div>
-					
+							} ?>							
+						</div>					
 						<div style="background-color: #fbecd0; padding: 15px;border-radius: 10px; box-shadow: inset 0px 0px 5px 1px #c7c4c4;">
 							<div class="row" >
 								<div class="col-lg-6">
@@ -180,14 +178,15 @@
 									<input type='hidden' name='brand_id' id='brand_id'>
 								</div>	
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Catalog No.:</p>
-									<input type="text" name="catalog_no" id="catalog_no" class="form-control">
+									<p style="margin:0px" for="">Serial No. :</p>
+									<input type="text" name="serial" id="serial" class="form-control">
+									<span id="suggestion-serial"></span>
+									<input type='hidden' name='serial_id' id='serial_id'>
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">NKK No.:</p>
-									<input type="text" name="nkk_no" id="nkk_no" class="form-control">
-								</div>
-																					
+									<p style="margin:0px" for="">Unit Cost:</p>
+									<input type="text" name="unit_cost" id="unit_cost" class="form-control">
+								</div>																						
 							</div>
 							<div class="row" >
 								<div class="col-lg-6">
@@ -199,20 +198,17 @@
 									 <input type='hidden' name='unit' id='unit'>
 								</div>
 								<div class="col-lg-2">
+									<p style="margin:0px" for="">Catalog No.:</p>
+									<input type="text" name="catalog_no" id="catalog_no" class="form-control">
+								</div>
+								<div class="col-lg-2">
 									<p style="margin:0px" for="">SEMT No.:</p>
 									<input type="text" name="semt_no" id="semt_no" class="form-control">
-								</div>
+								</div>								
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Serial No. :</p>
-									<input type="text" name="serial" id="serial" class="form-control">
-									<span id="suggestion-serial"></span>
-									<input type='hidden' name='serial_id' id='serial_id'>
-								</div>
-								<div class="col-lg-2">
-									<p style="margin:0px" for="">Unit Cost:</p>
-									<input type="text" name="unit_cost" id="unit_cost" class="form-control">
-								</div>		
-																							
+									<p style="margin:0px" for="">NKK No.:</p>
+									<input type="text" name="nkk_no" id="nkk_no" class="form-control">
+								</div>											
 							</div>
 							<div class="row">
 								<div class="col-lg-6">

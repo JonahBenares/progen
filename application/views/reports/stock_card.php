@@ -77,6 +77,7 @@
 							<br>
 							<p class="pname"><?php echo $itemdesc; ?>
 								<a href="" class="btn btn-info pull-right">Overall Quantity: <span style="font-size: 25px" class="badge animated rubberBand "><?php echo $total; ?></span></a>
+								<a href="<?php echo base_url(); ?>index.php/reports/stock_card_preview/<?php echo $id; ?>/<?php echo $sup; ?>/<?php echo $cat; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $brand; ?>" class="btn btn-primary btn-sm pull-right" style="margin-top: 7px;margin-right: 5px">Print Stock Card</a>
 							</p>
 							<table class="table table-hover table-bordered">
 								<thead>
@@ -117,8 +118,7 @@
 									</tr>
 									<?php } ?>
 								</tbody>
-							</table>
-							<a href="<?php echo base_url(); ?>index.php/reports/stock_card_preview/<?php echo $id; ?>/<?php echo $sup; ?>/<?php echo $cat; ?>/<?php echo $nkk; ?>/<?php echo $semt; ?>/<?php echo $brand; ?>" class="btn btn-link btn-sm ">Print Stock Card</a>
+							</table>							
 						</div>
 					</div>
 				</div>
