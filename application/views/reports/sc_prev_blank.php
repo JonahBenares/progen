@@ -85,29 +85,32 @@
                         </tr>
                         <tr>                            
                             <td width="5%" colspan="3" align="center"><h2 class="nomarg " style="color: blue"><b>PROGEN</b></h2></td>
-                            <td width="5%" colspan="8"><h3 class="nomarg">STOCK CARD (BIN CARD)</h3></td>
+                            <td width="5%" colspan="5"><h4 class="nomarg">STOCK CARD (BIN CARD)</h4></td>
+                            <td  colspan="3" align="center"><small id="prntd"></small></td>
                         </tr>
                         <tr>
-                            <td colspan="2" align="right"><p class="nomarg" style="height: 70px">Item:</p></td>
-                            <td colspan="5" class="text-red"><p class="nomarg"><br><br><br><br></p></td>
-                            <td width="5%"><p class="nomarg" style="height: 70px">Part No.:</p></td>
-                            <td colspan="3" class="text-red"></td>
+                            <td colspan="2" align="right"><p class="nomarg" style="height: 50px">Item:</p></td>
+                            <!-- <td colspan="9" class="text-red"><p class="nomarg" style="">Sorbent Boom, Economical SPC, 8" x 10" ENV810 (Economy Boom w/Blue Sleeve, Lint Free, 4/Bale, Absorbency Capacity: 65ga)<br><br></p></td> -->
+                            <td colspan="9" class="text-red"><p class="nomarg"><br><br><br></p></td>
+                            
                         </tr>
                         <tr>
                             <td colspan="2" align="right">Group:</td>
-                            <td colspan="5" class="text-red"></td>
-                            <td width="5%">Location:</td>
-                            <td colspan="3" class="text-red"></td>
+                            <td colspan="4" class="text-red"></td>
+                            <td width="5%">Part No.:</td>
+                            <td colspan="4" class="text-red"></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="right">NKK PN:</td>
-                            <td colspan="5" class="text-red"></td>
-                            <td width="5%">Bin No:</td>
-                            <td colspan="3" class="text-red"></td>
+                            <td colspan="4" class="text-red"></td>
+                            <td width="5%">Location:</td>
+                            <td colspan="4" class="text-red"></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="right">SEMT PN:</td>
-                            <td colspan="9" class="text-red"></td>
+                            <td colspan="4" class="text-red"></td>
+                            <td width="5%">Bin No:</td>
+                            <td colspan="4" class="text-red"></td>                            
                         </tr>
                         <tr>
                             <td align="center" colspan="3">Received</td>
@@ -123,6 +126,16 @@
                             <td align="center">Qty</td>
                             <td align="center" colspan="2">Date</td>
                             <td align="center">Qty</td>
+                        </tr> 
+                        <tr>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center"><br></td>
+                            <td align="center"><br></td>
+                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
