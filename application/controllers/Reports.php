@@ -576,7 +576,7 @@ class Reports extends CI_Controller {
                 'bin'=>$bin,
             );
         }
-<<<<<<< HEAD
+
         $count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         echo $count;
         /*
