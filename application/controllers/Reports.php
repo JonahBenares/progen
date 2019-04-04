@@ -536,22 +536,12 @@ class Reports extends CI_Controller {
         }
 
 
-        $count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
-        echo $count;
-        /*
-        foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
-
-        /*$count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
-        echo $count;*/
-        
-        /*foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){*/
         $sql="";
         if($id!='null'){
             $sql.= " item_id = '$id' AND";
         }else {
             $sql.= "";
         }
-
 
         if($sup!='null'){
             $sql.= " supplier_id = '$sup' OR";
@@ -625,7 +615,7 @@ class Reports extends CI_Controller {
                 'date_iss'=>$dateissue,
                 'date_res'=>$datestock,
             );
-        } 
+        }  
 
         /*$counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter!=0){
