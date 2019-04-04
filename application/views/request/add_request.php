@@ -36,6 +36,7 @@
 							$remarks=$h['remarks'];
 							$saved=$h['saved'];
 							$type=$h['type'];
+							$test = '';
 						} ?>
 						<table width="100%" >
 							<tr>
