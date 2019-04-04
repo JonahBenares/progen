@@ -534,7 +534,50 @@ class Reports extends CI_Controller {
             );
         }
 
-        $counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
+            $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
+            $daterec[]=$receivedate;
+            $date = max($daterec);
+
+            $count_iss= $this->super_model->count_custom_where('issuance_details', "(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            if($count_iss!=0){
+                foreach($this->super_model->select_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $issue){
+                    $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
+                    $dateiss[]=$issuedate;
+                    $dateissue = max($dateiss);
+                }
+            }else {
+                $dateissue = '';
+            }
+
+            $issueqty= $this->super_model->select_sum_where('issuance_details', 'quantity', "(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+
+            
+
+            $count_res = $this->super_model->count_custom_where('restock_details', "(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            if($count_res!=0){
+                foreach($this->super_model->select_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $restock2){
+                    $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
+                    $datest[]=$restockdate;
+                    $datestock = max($datest);
+                }
+            }else {
+                $datestock = '';
+            }
+
+            $restockqty= $this->super_model->select_sum_where('restock_details', 'quantity', "(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+
+            $data['rec_itm'][] = array(
+                'receive_qty'=>$rec->received_qty,
+                'issueqty'=>$issueqty,
+                'restockqty'=>$restockqty,
+                'date'=>$date,
+                'date_iss'=>$dateissue,
+                'date_res'=>$datestock,
+            );
+        }
+
+        /*$counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter!=0){
             foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
                 $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
@@ -548,9 +591,7 @@ class Reports extends CI_Controller {
                     'date'=>$date
                 );
             }
-        }/*else {
-            $data['rec_itm']=array();
-        }*/
+        }
 
         $counter_issue = $this->super_model->count_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter_issue!=0){
@@ -566,9 +607,7 @@ class Reports extends CI_Controller {
                     'date'=>$dateissue
                 );
             }
-        }/*else {
-            $data['rec_itm']=array();
-        }*/
+        }
 
         $counter_restock2 = $this->super_model->count_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter_restock2!=0){
@@ -584,8 +623,6 @@ class Reports extends CI_Controller {
                     'date'=>$datestock
                 );
             }
-        }/*else {
-            $data['rec_itm']=array();
         }*/
 
        /* $sumrec=array_sum($arr_rec);
