@@ -533,7 +533,9 @@ class Reports extends CI_Controller {
                 'bin'=>$bin,
             );
         }
-
+        $count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        echo $count;
+        /*
         foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
             $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
             $daterec[]=$receivedate;
@@ -575,7 +577,7 @@ class Reports extends CI_Controller {
                 'date_iss'=>$dateissue,
                 'date_res'=>$datestock,
             );
-        }
+        } */
 
         /*$counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter!=0){
@@ -630,8 +632,8 @@ class Reports extends CI_Controller {
         $sumst=array_sum($arr_rs);
         $total=($begbal+$sumrec)-$sumiss;
         $data['total']=$total;*/
-        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
-        $this->load->view('reports/stock_card_preview',$data);
+       // $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+       // $this->load->view('reports/stock_card_preview',$data);
     }
 
     public function sc_prev_blank(){
