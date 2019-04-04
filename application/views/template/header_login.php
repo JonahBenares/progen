@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Inventory System - PROGEN</title>
+	<title>PROGEN - Inventory System </title>
 	<link href="<?php echo base_url(); ?>assets/default/wislogo.png" rel="icon">
 	<link href="<?php echo base_url(); ?>assets/Styles/bootstrap.min.css" rel="stylesheet">	
 	<link href="<?php echo base_url(); ?>assets/Styles/dataTables.bootstrap.min.css" rel="stylesheet">

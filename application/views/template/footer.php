@@ -1,5 +1,5 @@
 		<div class="col-sm-12" id="footer">
-				<p class="back-link">Warehouse Inventory System || <a href="http://www.cenpripower.com">CENPRI</a></p>
+				<p class="back-link">Warehouse Inventory System || <a href="http://www.cenpripower.com">PROGEN</a></p>
 			</div>
 		</div><!--/.row-->
 	</div>	<!--/.main-->
