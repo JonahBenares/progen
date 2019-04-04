@@ -512,48 +512,6 @@ class Reports extends CI_Controller {
         $brand=$this->uri->segment(8);
         $brandit=0;
 
-        if($id=='null'){
-            $id='';
-        } else {
-            $id=$id;
-        }
-
-         if($sup=='null'){
-            $sup='';
-            $supit=0;
-        } else {
-            $sup=$sup;
-        }
-
-         if($cat=='null'){
-            $cat1='';
-         
-        } else {
-            $cat1=$cat;
-        }
-
-        if($nkk=='null'){
-            $nkk='';
-         
-        } else {
-            $nkk=$nkk;
-        }
-
-        if($semt=='null'){
-            $semt='';
-         
-        } else {
-            $semt=$semt;
-        }
-
-         if($brand=='null'){
-            $brand='';
-            $brandit=0;
-        } else {
-            $brand=$brand;
-        }
-
-
         if($cat=='begbal'){
             $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","(supplier_id = '$supit' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brandit') AND item_id = '$id'");
         } else {
@@ -577,21 +535,63 @@ class Reports extends CI_Controller {
             );
         }
 
+
         $count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         echo $count;
         /*
         foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
-=======
 
-        foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
->>>>>>> 86d9fcb47b3b7885aa24ecf24134b7fe6bd68623
+        /*$count = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+        echo $count;*/
+        
+        /*foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){*/
+        $sql="";
+        if($id!='null'){
+            $sql.= " item_id = '$id' AND";
+        }else {
+            $sql.= "";
+        }
+
+
+        if($sup!='null'){
+            $sql.= " supplier_id = '$sup' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($cat!='null'){
+            $sql.= " catalog_no = '$cat' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($nkk!='null'){
+            $sql.= " nkk_no = '$nkk' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($semt!='null'){
+            $sql.= " semt_no = '$semt' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($brand!='null'){
+            $sql.= " brand_id = '$brand' OR";
+        }else {
+            $sql.= "";
+        }
+
+        $query=substr($sql,0,-3);
+        foreach($this->super_model->select_custom_where("receive_items", $query) AS $rec){
             $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
             $daterec[]=$receivedate;
             $date = max($daterec);
 
-            $count_iss= $this->super_model->count_custom_where('issuance_details', "(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            $count_iss= $this->super_model->count_custom_where('issuance_details', $query);
             if($count_iss!=0){
-                foreach($this->super_model->select_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $issue){
+                foreach($this->super_model->select_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $issue){
                     $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
                     $dateiss[]=$issuedate;
                     $dateissue = max($dateiss);
@@ -600,13 +600,13 @@ class Reports extends CI_Controller {
                 $dateissue = '';
             }
 
-            $issueqty= $this->super_model->select_sum_where('issuance_details', 'quantity', "(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            $issueqty= $this->super_model->select_sum_where('issuance_details', 'quantity', $query);
 
             
 
-            $count_res = $this->super_model->count_custom_where('restock_details', "(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            $count_res = $this->super_model->count_custom_where('restock_details', $query);
             if($count_res!=0){
-                foreach($this->super_model->select_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $restock2){
+                foreach($this->super_model->select_custom_where("restock_details",$query) AS $restock2){
                     $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
                     $datest[]=$restockdate;
                     $datestock = max($datest);
@@ -615,7 +615,7 @@ class Reports extends CI_Controller {
                 $datestock = '';
             }
 
-            $restockqty= $this->super_model->select_sum_where('restock_details', 'quantity', "(supplier_id = '$sup' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
+            $restockqty= $this->super_model->select_sum_where('restock_details', 'quantity', $query);
 
             $data['rec_itm'][] = array(
                 'receive_qty'=>$rec->received_qty,
@@ -625,7 +625,7 @@ class Reports extends CI_Controller {
                 'date_iss'=>$dateissue,
                 'date_res'=>$datestock,
             );
-        } */
+        } 
 
         /*$counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
         if($counter!=0){
@@ -680,8 +680,8 @@ class Reports extends CI_Controller {
         $sumst=array_sum($arr_rs);
         $total=($begbal+$sumrec)-$sumiss;
         $data['total']=$total;*/
-       // $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
-       // $this->load->view('reports/stock_card_preview',$data);
+       $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+       $this->load->view('reports/stock_card_preview',$data);
     }
 
     public function sc_prev_blank(){
