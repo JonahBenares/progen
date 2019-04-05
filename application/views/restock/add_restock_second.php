@@ -80,17 +80,9 @@
 									<input type='hidden' name='brand_id' id='brand_id'>
 								</div>	
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Catalog No.:</p>
-									<input type="text" name="catalog_no" id="catalog_no" class="form-control">
-								</div>
-								<div class="col-lg-2">
-									<p style="margin:0px" for="">NKK No.:</p>
-									<input type="text" name="nkk_no" id="nkk_no" class="form-control">
-								</div>
-								<div class="col-lg-2">
-									<p style="margin:0px" for="">SEMT No.:</p>
-									<input type="text" name="semt_no" id="semt_no" class="form-control">
-								</div>
+									<p style="margin:0px" for="">Quantity:</p>
+									<input type="text" name="quantity" id="quantity" class="form-control" onkeypress="return isNumberKey(event)">
+								</div>									
 								<div class="col-lg-2">
 									<p style="margin:0px" for="">Serial No. :</p>
 									<input type="text" name="serial" id="serial" class="form-control">
@@ -108,19 +100,28 @@
 									 <input type='hidden' name='unit' id='unit'>
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Quantity:</p>
-									<input type="text" name="quantity" id="quantity" class="form-control" onkeypress="return isNumberKey(event)">
-								</div>	
-								<div class="col-lg-4">
-									<p  style="margin:0px" for="">Reason:</p>
-									<textarea class="form-control" rows="1" name='reason' id='reason'></textarea>
-									<span id="suggestion-reason"></span></td>
-								</div>														
+									<p style="margin:0px" for="">Catalog No.:</p>
+									<input type="text" name="catalog_no" id="catalog_no" class="form-control">
+								</div>
+								<div class="col-lg-2">
+									<p style="margin:0px" for="">NKK No.:</p>
+									<input type="text" name="nkk_no" id="nkk_no" class="form-control">
+								</div>
+								<div class="col-lg-2">
+									<p style="margin:0px" for="">SEMT No.:</p>
+									<input type="text" name="semt_no" id="semt_no" class="form-control">
+								</div>								
+																						
 							</div>
 							<div class="row">
 								<div class="col-lg-6">
 									<p  style="margin:0px" for="">Remarks:</p>
 									<textarea class="form-control" rows="1" name='remarks' id='remarks'></textarea>
+								</div>
+								<div class="col-lg-4">
+									<p  style="margin:0px" for="">Reason:</p>
+									<textarea class="form-control" rows="1" name='reason' id='reason'></textarea>
+									<span id="suggestion-reason"></span></td>
 								</div>
 								<div class="col-lg-1">
 									<br>
