@@ -42,7 +42,7 @@
             border: 1px solid #fff!important;
         }
         .ptext-white{
-            color: #fff!important;
+            color: #fff0!important;
         }
     }
     p{
@@ -134,20 +134,13 @@
                         </tr>
                         <?php } ?>
                         <tr>
-                            <td align="center" colspan="3" class="ptext-white">Received</td>
-                            <td align="center" colspan="3" class="ptext-white">Issued</td>
-                            <td align="center" colspan="3" class="ptext-white">Restock</td>
-                            <td align="center" rowspan="2" class="ptext-white">Total</td>
-                            <td align="center" colspan="1" rowspan="2" class="ptext-white"> Remarks</td>
-                        </tr>
-                        <tr>
                             <td align="center" colspan="2" class="ptext-white">Date</td>
-                            <td align="center" class="ptext-white">Qty</td>
-                            <td align="center" colspan="2" class="ptext-white">Date</td>
-                            <td align="center" class="ptext-white">Qty</td>
-                            <td align="center" colspan="2" class="ptext-white">Date</td>
-                            <td align="center" class="ptext-white">Qty</td>
-                        </tr>   
+                            <td align="center" colspan="2" class="ptext-white">Received</td>
+                            <td align="center" colspan="2" class="ptext-white">Issued</td>
+                            <td align="center" colspan="2" class="ptext-white">Restock</td>
+                            <td align="center" class="ptext-white">Total</td>
+                            <td align="center" colspan="2" class="ptext-white">Remarks</td>
+                        </tr>  
                         <?php 
                             foreach($rec_itm AS $r){
                             $rec_qty = $r['receive_qty'];
@@ -157,13 +150,11 @@
                         ?>                     
                         <tr>
                             <td align="center" colspan="2"><?php echo $r['date'];?></td>
-                            <td align="center"><?php echo $r['receive_qty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['date_iss']?></td>
-                            <td align="center"><?php echo $r['issueqty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['date_res']?></td>
-                            <td align="center"><?php echo $r['restockqty'];?></td>
+                            <td align="center" colspan="2"><?php echo $r['receive_qty'];?></td>
+                            <td align="center" colspan="2"><?php echo $r['issueqty'];?></td>
+                            <td align="center" colspan="2"><?php echo $r['restockqty'];?></td>
                             <td align="center"><?php echo $total;?></td>
-                            <td align="center"></td> 
+                            <td align="center" colspan="2"></td> 
                         </tr>               
                         <?php } ?>                                              
                     </table>

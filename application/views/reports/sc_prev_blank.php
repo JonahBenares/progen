@@ -113,360 +113,293 @@
                             <td colspan="4" class="text-red"></td>                            
                         </tr>
                         <tr>
-                            <td align="center" colspan="3">Received</td>
-                            <td align="center" colspan="3">Issued</td>
-                            <td align="center" colspan="3">Restock</td>
-                            <td align="center" rowspan="2">Total</td>
-                            <td align="center" colspan="1" rowspan="2">Remarks</td>
+                            <td align="center" colspan="2">Date</td>
+                            <td align="center" colspan="2">Received</td>
+                            <td align="center" colspan="2">Issued</td>
+                            <td align="center" colspan="2">Restock</td>
+                            <td align="center" >Total</td>
+                            <td align="center" colspan="2">Remarks</td>
                         </tr>
                         <tr>
-                            <td align="center" colspan="2">Date</td>
-                            <td align="center">Qty</td>
-                            <td align="center" colspan="2">Date</td>
-                            <td align="center">Qty</td>
-                            <td align="center" colspan="2">Date</td>
-                            <td align="center">Qty</td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
                         </tr> 
                         <tr>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
+                            <td align="center" colspan="2"><br></td>
+                            <td align="center" colspan="2"><br></td>
                             <td align="center" colspan="2"><br></td>
                             <td align="center"><br></td>
                             <td align="center" colspan="2"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td>
-                            <td align="center"><br></td> 
-                        </tr>                                   
+                        </tr>                                                          
                     </table>
                 </td>
                 <td colspan="10" align="center">
