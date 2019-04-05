@@ -1,3 +1,4 @@
+<?php $CI =& get_instance(); ?>
     <!DOCTYPE html>
 <head>
     <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
@@ -133,30 +134,36 @@
                             <td colspan="4" class="text-red">&nbsp;<?php echo $i['bin'];?></td>
                         </tr>
                         <?php } ?>
+
+                     
                         <tr>
-                            <td align="center" colspan="2" class="ptext-white">Date</td>
+                            <td align="center" colspan="2" class="ptext-white"></td>
                             <td align="center" colspan="2" class="ptext-white">Received</td>
                             <td align="center" colspan="2" class="ptext-white">Issued</td>
                             <td align="center" colspan="2" class="ptext-white">Restock</td>
                             <td align="center" class="ptext-white">Total</td>
                             <td align="center" colspan="2" class="ptext-white">Remarks</td>
                         </tr>  
-                        <?php 
-                            foreach($rec_itm AS $r){
-                            $rec_qty = $r['receive_qty'];
-                            $iss_qty = $r['issueqty'];
-                            $res_qty = $r['restockqty'];
-                            $total = ($begbal+$rec_qty+$res_qty)-$iss_qty;
-                        ?>                     
+                        <?php
+                        $x=1;
+                         foreach(array_unique($date) AS $dt){ 
+                            if($x==1){
+                                $line_total = ($CI->stockcard_qty($query, 'receive', $dt) + $CI->stockcard_qty($query, 'restock', $dt)) - $CI->stockcard_qty($query, 'issue', $dt);
+                            } else {
+                                $line_total = ($line_total + $CI->stockcard_qty($query, 'receive', $dt) + $CI->stockcard_qty($query, 'restock', $dt)) - $CI->stockcard_qty($query, 'issue', $dt);
+                            }
+
+                            ?>
                         <tr>
-                            <td align="center" colspan="2"><?php echo $r['date'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['receive_qty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['issueqty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['restockqty'];?></td>
-                            <td align="center"><?php echo $total;?></td>
+                            <td align="center" colspan="2"><?php echo $dt; ?></td>
+                            <td align="center" colspan="2"><?php echo $CI->stockcard_qty($query, 'receive', $dt); ?></td>
+                            <td align="center" colspan="2"><?php echo $CI->stockcard_qty($query, 'issue', $dt); ?></td>
+                            <td align="center" colspan="2"><?php echo $CI->stockcard_qty($query, 'restock', $dt); ?></td>
+                            <td align="center"><?php echo $line_total; ?></td>
                             <td align="center" colspan="2"></td> 
                         </tr>               
-                        <?php } ?>                                              
+                        <?php 
+                        $x++; } ?>                            
                     </table>
                 </td>
                 <td colspan="10" align="center">

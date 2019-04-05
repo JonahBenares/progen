@@ -577,53 +577,46 @@ class Reports extends CI_Controller {
 
         $query=substr($sql,0,-3);
 
-     //   echo $query;
         foreach($this->super_model->select_custom_where("receive_items", $query) AS $rec){
             $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
-            $daterec[]=$receivedate;
-            $date = max($daterec);
-                
-            $count_iss= $this->super_model->count_custom_where('issuance_details', $query);
-            if($count_iss!=0){
-                foreach($this->super_model->select_custom_where("issuance_details",$query) AS $issue){
-                    $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
-                    $dateiss[]=$issuedate;
-                    $dateissue = max($dateiss);
-                }
-            }else {
-                $dateissue = '';
-            }
-
-            $issueqty= $this->super_model->select_sum_where('issuance_details', 'quantity', $query);
-
-            
-
-            $count_res = $this->super_model->count_custom_where('restock_details', $query);
-            if($count_res!=0){
-                foreach($this->super_model->select_custom_where("restock_details",$query) AS $restock2){
-                    $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
-                    $datest[]=$restockdate;
-                    $datestock = max($datest);
-                }
-            }else {
-                $datestock = '';
-            }
-
-            $restockqty= $this->super_model->select_sum_where('restock_details', 'quantity', $query);
-
-            $data['rec_itm'][] = array(
-                'receive_qty'=>$rec->received_qty,
-                'issueqty'=>$issueqty,
-                'restockqty'=>$restockqty,
-                'date'=>$date,
-                'date_iss'=>$dateissue,
-                'date_res'=>$datestock,
-            );
-        }  
-
-     
+            $data['date'][]=$receivedate;
+        }
+          
+        foreach($this->super_model->select_custom_where("issuance_details",$query) AS $issue){
+                $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
+                $data['date'][]=$issuedate;
+        }
+               
+ 
+        foreach($this->super_model->select_custom_where("restock_details",$query) AS $restock2){
+            $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
+            $data['date'][]=$restockdate;
+        }
+                 
+        $data['query']=$query;
        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
        $this->load->view('reports/stock_card_preview',$data);
+    }
+
+    public function stockcard_qty($query, $type, $date){
+        if($type=='receive'){
+            $query .= " AND receive_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT receive_items.received_qty FROM receive_head INNER JOIN receive_items ON receive_head.receive_id = receive_items.receive_id WHERE ".$query) AS $rec){
+                return $rec->received_qty;
+             }
+        } 
+        if($type=='issue'){
+             $query .= " AND issue_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT issuance_details.quantity FROM issuance_head INNER JOIN issuance_details ON issuance_head.issuance_id = issuance_details.issuance_id WHERE ".$query) AS $iss){
+                return $iss->quantity;
+             }
+        }
+         if($type=='restock'){
+             $query .= " AND restock_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT restock_details.quantity FROM restock_head INNER JOIN restock_details ON restock_head.rhead_id = restock_details.rhead_id WHERE ".$query) AS $res){
+                return $res->quantity;
+             }
+        }
     }
 
     public function sc_prev_blank(){
