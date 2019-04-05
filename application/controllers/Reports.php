@@ -504,6 +504,7 @@ class Reports extends CI_Controller {
      public function stock_card_preview(){
         $this->load->view('template/header');
         $id=$this->uri->segment(3);
+      //  echo $id;
         $sup=$this->uri->segment(4);
         $supit=0;
         $cat=$this->uri->segment(5);
@@ -511,8 +512,9 @@ class Reports extends CI_Controller {
         $semt=$this->uri->segment(7);
         $brand=$this->uri->segment(8);
         $brandit=0;
+
         if($cat=='begbal'){
-            $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","(supplier_id = '$supit' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brandit') AND item_id = '$id'");
+            $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","(supplier_id = '$supit' OR catalog_no = '$cat1' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brandit') AND item_id = '$id'");
         } else {
             $begbal=0;
         }
@@ -520,81 +522,108 @@ class Reports extends CI_Controller {
         foreach($this->super_model->select_row_where('items', 'item_id', $id) AS $det){
             $group = $this->super_model->select_column_where('group','group_name','group_id',$det->group_id);
             $location = $this->super_model->select_column_where('location','location_name','location_id',$det->location_id);
-            $nkk = $this->super_model->select_column_where('supplier_items','nkk_no','item_id',$det->item_id);
-            $semt = $this->super_model->select_column_where('supplier_items','semt_no','item_id',$det->item_id);
+            $nkk_no = $this->super_model->select_column_where('supplier_items','nkk_no','item_id',$det->item_id);
+            $semt_no = $this->super_model->select_column_where('supplier_items','semt_no','item_id',$det->item_id);
             $bin = $this->super_model->select_column_where('bin','bin_name','bin_id',$det->bin_id);
             $data['item'][]=array(
                 'item'=>$det->item_name,
                 'group'=>$group,
-                'nkk'=>$nkk,
-                'semt'=>$semt,
+                'nkk'=>$nkk_no,
+                'semt'=>$semt_no,
                 'pn'=>$det->original_pn,
                 'location'=>$location,
                 'bin'=>$bin,
             );
         }
 
-        $counter = $this->super_model->count_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
-        if($counter!=0){
-            foreach($this->super_model->select_custom_where("receive_items","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $rec){
-                $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
-                $daterec[]=$receivedate;
-                $date = max($daterec);
-                $arr_rec[]=$rec->received_qty;
-                $data['rec_itm'][] = array(
-                    'receive_qty'=>$rec->received_qty,
-                    'issueqty'=>0,
-                    'restockqty'=>0,
-                    'date'=>$date
-                );
-            }
-        }/*else {
-            $data['rec_itm']=array();
-        }*/
 
-        $counter_issue = $this->super_model->count_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
-        if($counter_issue!=0){
-            foreach($this->super_model->select_custom_where("issuance_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $issue){
-                $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
-                $dateiss[]=$issuedate;
-                $dateissue = max($dateiss);
-                $arr_iss[]=$issue->quantity;
-                $data['rec_itm'][] = array(
-                    'receive_qty'=>0,
-                    'issueqty'=>$issue->quantity,
-                    'restockqty'=>0,
-                    'date'=>$dateissue
-                );
-            }
-        }/*else {
-            $data['rec_itm']=array();
-        }*/
+        $sql="";
+        if($id!='null'){
+            $sql.= " item_id = '$id' AND";
+        }else {
+            $sql.= "";
+        }
 
-        $counter_restock2 = $this->super_model->count_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'");
-        if($counter_restock2!=0){
-            foreach($this->super_model->select_custom_where("restock_details","(supplier_id = '$sup' OR catalog_no = '$cat' OR nkk_no = '$nkk' OR semt_no = '$semt' OR brand_id = '$brand') AND item_id = '$id'") AS $restock2){
-                $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
-                $datest[]=$restockdate;
-                $datestock = max($datest);
-                $arr_rs[]=$restock2->quantity;
-                $data['rec_itm'][] = array(
-                    'receive_qty'=>0,
-                    'issueqty'=>0,
-                    'restockqty'=>$restock2->quantity,
-                    'date'=>$datestock
-                );
-            }
-        }/*else {
-            $data['rec_itm']=array();
-        }*/
+        if($sup!='null'){
+            $sql.= " supplier_id = '$sup' OR";
+        }else {
+            $sql.= "";
+        }
 
-       /* $sumrec=array_sum($arr_rec);
-        $sumiss=array_sum($arr_iss);
-        $sumst=array_sum($arr_rs);
-        $total=($begbal+$sumrec)-$sumiss;
-        $data['total']=$total;*/
-        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
-        $this->load->view('reports/stock_card_preview',$data);
+        if($cat!='null'){
+            $sql.= " catalog_no = '$cat' OR";
+        }else {
+            $sql.= "";
+        }
+
+        
+        if($nkk!='null'){
+            $sql.= " nkk_no = '$nkk' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($semt!='null'){
+            $sql.= " semt_no = '$semt' OR";
+        }else {
+            $sql.= "";
+        }
+
+        if($brand!='null'){
+            $sql.= " brand_id = '$brand' OR";
+        }else {
+            $sql.= "";
+        }
+
+        $query=substr($sql,0,-3);
+
+     //   echo $query;
+        foreach($this->super_model->select_custom_where("receive_items", $query) AS $rec){
+            $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
+            $daterec[]=$receivedate;
+            $date = max($daterec);
+                
+            $count_iss= $this->super_model->count_custom_where('issuance_details', $query);
+            if($count_iss!=0){
+                foreach($this->super_model->select_custom_where("issuance_details",$query) AS $issue){
+                    $issuedate=$this->super_model->select_column_where("issuance_head", "issue_date", "issuance_id", $issue->issuance_id);
+                    $dateiss[]=$issuedate;
+                    $dateissue = max($dateiss);
+                }
+            }else {
+                $dateissue = '';
+            }
+
+            $issueqty= $this->super_model->select_sum_where('issuance_details', 'quantity', $query);
+
+            
+
+            $count_res = $this->super_model->count_custom_where('restock_details', $query);
+            if($count_res!=0){
+                foreach($this->super_model->select_custom_where("restock_details",$query) AS $restock2){
+                    $restockdate=$this->super_model->select_column_where("restock_head", "restock_date", "rhead_id", $restock2->rhead_id);
+                    $datest[]=$restockdate;
+                    $datestock = max($datest);
+                }
+            }else {
+                $datestock = '';
+            }
+
+            $restockqty= $this->super_model->select_sum_where('restock_details', 'quantity', $query);
+
+            $data['rec_itm'][] = array(
+                'receive_qty'=>$rec->received_qty,
+                'issueqty'=>$issueqty,
+                'restockqty'=>$restockqty,
+                'date'=>$date,
+                'date_iss'=>$dateissue,
+                'date_res'=>$datestock,
+            );
+        }  
+
+     
+       $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+       $this->load->view('reports/stock_card_preview',$data);
     }
 
     public function sc_prev_blank(){

@@ -158,9 +158,9 @@
                         <tr>
                             <td align="center" colspan="2"><?php echo $r['date'];?></td>
                             <td align="center"><?php echo $r['receive_qty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['date']?></td>
+                            <td align="center" colspan="2"><?php echo $r['date_iss']?></td>
                             <td align="center"><?php echo $r['issueqty'];?></td>
-                            <td align="center" colspan="2"><?php echo $r['date']?></td>
+                            <td align="center" colspan="2"><?php echo $r['date_res']?></td>
                             <td align="center"><?php echo $r['restockqty'];?></td>
                             <td align="center"><?php echo $total;?></td>
                             <td align="center"></td> 

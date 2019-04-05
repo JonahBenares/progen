@@ -285,7 +285,7 @@ class Request extends CI_Controller {
                 "prno"=>$req->pr_no,
                 "remarks"=>$req->remarks,
                 "saved"=>$req->saved,
-                'type'=>$req->type
+                'type'=>$req->type,
             );
         }
         $row1=$this->super_model->count_rows_where("request_items","request_id",$id);
