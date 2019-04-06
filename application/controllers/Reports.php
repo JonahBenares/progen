@@ -1152,7 +1152,7 @@ class Reports extends CI_Controller {
         $arr_iss=array();
         $arr_rs=array();
         $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $sup);
-                $brandname = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $brand);
+        $brandname = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $brand);
         $data['itemdesc'] = $this->super_model->select_column_where("items", "item_name", "item_id", $id);
         //foreach($this->super_model->select_row_where('receive_items', 'item_id', $id) AS $it){
 
