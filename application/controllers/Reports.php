@@ -598,6 +598,27 @@ class Reports extends CI_Controller {
        $this->load->view('reports/stock_card_preview',$data);
     }
 
+    public function stockcard_qty($query, $type, $date){
+        if($type=='receive'){
+            $query .= " AND receive_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT receive_items.received_qty FROM receive_head INNER JOIN receive_items ON receive_head.receive_id = receive_items.receive_id WHERE ".$query) AS $rec){
+                return $rec->received_qty;
+             }
+        } 
+        if($type=='issue'){
+             $query .= " AND issue_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT issuance_details.quantity FROM issuance_head INNER JOIN issuance_details ON issuance_head.issuance_id = issuance_details.issuance_id WHERE ".$query) AS $iss){
+                return $iss->quantity;
+             }
+        }
+         if($type=='restock'){
+             $query .= " AND restock_date = '$date'";
+             foreach($this->super_model->custom_query("SELECT restock_details.quantity FROM restock_head INNER JOIN restock_details ON restock_head.rhead_id = restock_details.rhead_id WHERE ".$query) AS $res){
+                return $res->quantity;
+             }
+        }
+    }
+
     public function sc_prev_blank(){
         $this->load->view('template/header');
         $this->load->view('reports/sc_prev_blank');
