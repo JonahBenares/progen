@@ -148,10 +148,10 @@ function check_supplier_item(){
          var brand = document.getElementById('brand').value;
          var cost = document.getElementById('ucost').value;
 
-         if(supplierid==""){
+        /* if(supplierid==""){
             $("#supplier-check").show();
             $("#supplier-check").html("Warning: Supplier must not be empty!");
-         } else if(catalog==""){
+         } else*/ if(catalog==""){
             $("#catalog-check").show();
             $("#supplier-check").hide();
             $("#catalog").focus();

@@ -1,12 +1,12 @@
 <?php
 //include 'functions/functions.php';
-backup_tables('localhost','root','','db_inventory');
+backup_tables('localhost','root','','db_progen');
 
 
 $host='localhost';
 $user='root';
 $pass='';
-$name='db_inventory';
+$name='db_progen';
 function backup_tables($host,$user,$pass,$name,$tables = '*')
 {
 
@@ -45,8 +45,8 @@ $return.= 'INSERT INTO `'.$table.'` VALUES(';
 for($j=0; $j<$num_fields; $j++)
 {
 $row[$j] = addslashes($row[$j]);
-if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
-if ($j<($num_fields-1)) { $return.= ','; }
+if (isset($row[$j])) { $return.= "'".$row[$j]."'" ; } else { $return.= "''"; }
+if ($j<($num_fields-1)) { $return.= ","; }
 }
 $return.= ");\n";
 }
@@ -132,7 +132,7 @@ $zip->close();
 //rcopy($fname , 'Back-up/uploads/'.$fname );
 $zipname=date('m_d_Y').'.zip';
 /*rcopy($fname , "C:\Backup\uploads\/".$zipname);*/
-rcopy($fname , "C:\Users\/User\/Dropbox\/xampp\htdocs\/inventory\/uploads\/".$zipname);
+//rcopy($fname , "C:\Users\/User\/Dropbox\/xampp\htdocs\/inventory\/uploads\/".$zipname);
 //rrmdir($fname);
 /*
 header("location:backup_data.php");*/
