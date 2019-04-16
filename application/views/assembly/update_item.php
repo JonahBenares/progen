@@ -43,18 +43,19 @@
                                     </tr>
                                    
                                 </table>
-                            <?php } ?>
+                           
                             </div>
                         </div>
                         <div class="card-footer">
                             <center>
                             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>">
-                            <input type="hidden" name="uom_id" id="uom_id" >
-                            <input type="hidden" name="item_id" id="item_id" >
+                            <input type="hidden" name="uom_id" id="uom_id" value="<?php echo $i['uom_id']; ?>">
+                            <input type="hidden" name="item_id" id="item_id"  value="<?php echo $i['item_id']; ?>">
                             <input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
                                 <input type = "submit" class="btn btn-info btn-sm  btn-block" placeholder="Save" value="Save"> 
                             </center>
                         </div>
+                         <?php } ?>
                     </form>
                 </div>
             </div>

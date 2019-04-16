@@ -190,7 +190,9 @@ class Assembly extends CI_Controller {
                 "item"=>$item,
                 "pn"=>$det->pn_no,
                 "uom"=>$unit,
-                "qty"=>$det->qty
+                "qty"=>$det->qty,
+                "item_id"=>$det->item_id,
+                "uom_id"=>$det->uom
             );
         }
         $this->load->view('template/header');
