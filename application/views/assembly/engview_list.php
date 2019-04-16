@@ -36,7 +36,7 @@ $CI=&get_instance();
 	}
 </style>
 <div id="printableArea">
-	<table class="table table-bordered" >
+	<table class="table table-bordered" style="margin-bottom: 70px" >
 		
 		<?php 
 		$a=1;
@@ -187,7 +187,7 @@ $CI=&get_instance();
 
 	</table>
 </div>
-<div style="position:fixed;width:100%;margin-left: 25%">
+<div style="position:fixed;width:100%;margin-left: 25%;bottom: 0;margin-bottom: 5px">
 	<div style="width:50%">
 		<button class="btn btn-lg btn-info btn-block" onclick="printDiv('printableArea')">Print</button>
 	</div>

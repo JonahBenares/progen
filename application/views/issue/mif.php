@@ -261,7 +261,7 @@
                     <td width="5%"></td>                    
                     <td width="30%"></td>
                     <td width="5%"></td>
-                    <td width="30%">Relea by:</td>
+                    <td width="30%">Released by:</td>
                 </tr>
                 <tr>
                     <td style="border-bottom:1px solid #000">

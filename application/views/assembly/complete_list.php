@@ -44,15 +44,9 @@ if(empty($inventory)){
  ?>
 
 <form method='POST' action="<?php echo $loc; ?>">
-<div style="position:fixed;width:100%;margin-left: 25%">
-	<div style="width:50%">
-		<button type='submit' class="btn btn-lg btn-info btn-block">Save</button>
-		<!-- <button class="btn btn-lg btn-info btn-block" onclick="printDiv('printableArea')">Save & Print</button> -->
-	</div>
-</div>
-<div id="printableArea">
-	
-	<table class="table table-bordered" >
+
+<div id="printableArea">	
+	<table class="table table-bordered" style="margin-bottom: 70px">
 		<tr>
 			<td colspan="3" rowspan="2">
 				<h2 style="width:500px"><?php echo $engine; ?></h2>
@@ -205,9 +199,13 @@ if(empty($inventory)){
 		<input type='hidden' name='assembly' value="<?php echo $assembly_id; ?>">
 		<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
 	</table>
-
 </div>
-
+<div style="position:fixed;width:100%;margin-left: 25%;bottom: 0;margin-bottom: 5px">
+	<div style="width:50%">
+		<button type='submit' class="btn btn-lg btn-info btn-block">Save</button>
+		<!-- <button class="btn btn-lg btn-info btn-block" onclick="printDiv('printableArea')">Save & Print</button> -->
+	</div>
+</div>
 </form>
 
 <script type="text/javascript">
