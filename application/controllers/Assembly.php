@@ -444,6 +444,8 @@ class Assembly extends CI_Controller {
                 
             }
         }
+
+          echo "<script>alert('Beginning balance has been updated.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
     }
 
     public function insert_issue(){
