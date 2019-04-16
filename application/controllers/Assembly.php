@@ -180,8 +180,21 @@ class Assembly extends CI_Controller {
     }
 
     public function update_item(){
+        $id=$this->uri->segment(3);
+        $data['id'] = $id;
+         foreach($this->super_model->select_row_where('assembly_details', 'ad_id', $id) AS $det){
+            $item = $this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
+            $unit = $this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
+            $data['items'][]= array(
+                "id"=>$det->ad_id,
+                "item"=>$item,
+                "pn"=>$det->pn_no,
+                "uom"=>$unit,
+                "qty"=>$det->qty
+            );
+        }
         $this->load->view('template/header');
-        $this->load->view('assembly/update_item');
+        $this->load->view('assembly/update_item', $data);
         $this->load->view('template/footer');
     }
 
@@ -259,6 +272,20 @@ class Assembly extends CI_Controller {
         if($this->super_model->insert_into("assembly_details", $data)){
            echo "<script>alert('Assembly item successfully added!'); 
                 window.location ='".base_url()."index.php/assembly/parts_list'; </script>";
+         }
+    }
+
+      public function update_assem_item(){
+        $id = $this->input->post('id');
+        $data = array(
+            'item_id'=>$this->input->post('item_id'),
+            'pn_no'=>$this->input->post('pn_no'),
+            'qty'=>$this->input->post('qty'),
+            'uom'=>$this->input->post('uom_id'),
+        );
+        if($this->super_model->update_where("assembly_details", $data, 'ad_id', $id)){
+           echo "<script>alert('Assembly item successfully updated!'); 
+                window.close(); window.opener.location.reload(); </script>";
          }
     }
 

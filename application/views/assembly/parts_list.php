@@ -149,7 +149,7 @@
 												      				<td><?php echo $i['uom']; ?></td>
 												      				<td><?php echo $i['qty']; ?></td>
 												      				<td align="center">
-												      					<a title="Update item" href="" class="btn btn-xs btn-info" onclick="updateItemAssem()"><span class="fa fa-pencil"></span></a>
+												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
 												      					<a title="Remove Item" href="" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
 												      				</td>
 												      			</tr>

@@ -181,3 +181,6 @@ function chooseCategory(){
         }
     }
 
+function updateItemAssem(baseurl, id){
+     window.open(baseurl+'index.php/assembly/update_item/'+id,'_blank', 'top=100px,left=400px,width=600,height=450');
+}

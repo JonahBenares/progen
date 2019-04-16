@@ -121,11 +121,6 @@
 	    });
 	</script>
 	<script type="text/javascript">
-		function updateItemAssem(et_id){
-            window.open('<?php echo base_url(); ?>index.php/assembly/update_item/','_blank', 'top=100px,left=400px,width=600,height=450');
-        }
-	</script>
-	<script type="text/javascript">
 		// Get the modal
 		var modal = document.getElementById('myModal1');
 
