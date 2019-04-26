@@ -200,6 +200,13 @@ class Assembly extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function deleteitem(){
+        $id=$this->uri->segment(3);
+        if($this->super_model->delete_where("assembly_details", "ad_id", $id)){
+             echo "<script>alert('Item successfully removed!'); window.location ='".base_url()."index.php/assembly/parts_list'; </script>";
+         }
+    }
+
     public function insert_engine(){
        
         $data = array(

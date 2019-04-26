@@ -150,7 +150,7 @@
 												      				<td><?php echo $i['qty']; ?></td>
 												      				<td align="center">
 												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
-												      					<a title="Remove Item" href="" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
+												      					<a onclick="return confirm('Are you sure you want to delete it?')" title="Remove Item" href="<?php echo base_url(); ?>index.php/assembly/deleteitem/<?php echo $i['id']; ?>" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
 												      				</td>
 												      			</tr>
 
