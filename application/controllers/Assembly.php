@@ -481,7 +481,7 @@ class Assembly extends CI_Controller {
             }
         }
 
-          echo "<script>alert('Beginning balance has been updated.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
+       //   echo "<script>alert('Beginning balance has been updated.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
     }
 
     public function insert_issue(){
@@ -697,6 +697,7 @@ class Assembly extends CI_Controller {
                             );
 
                             $this->super_model->update_custom_where("assembly_inventory", $new_qty, "engine_id = '$engineto' AND assembly_id = '$assemto' AND item_id = '$itemfrom' AND bank_id ='$bankto'");
+                           // echo "update assembly_inventory set qty = '$new_qty' WHERE engine_id = '$engineto' AND assembly_id = '$assemto' AND item_id = '$itemfrom' AND bank_id ='$bankto'";
                         }
                     }
                 }
