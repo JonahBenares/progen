@@ -441,8 +441,10 @@ class Assembly extends CI_Controller {
 
                $count= $this->super_model->count_custom_where("assembly_inventory","engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bank_id = '$bank[$x]'");
 
-              // echo "engine_id = ".$engine. " AND assembly_id = ". $assembly ." AND item_id = ". $item . " AND bank_id = ". $bank[$x] . "<br>";
-                   if($count==0){
+               echo "engine_id = ".$engine. " AND assembly_id = ". $assembly ." AND item_id = ". $item . " AND bank_id = ". $bank[$x] . "<br>";
+
+               echo "count: ". $count. "<br>";
+                /*   if($count==0){
                         if(!empty($qty[$x])){
                             $data=array(
                                 "engine_id"=>$engine,
@@ -477,7 +479,7 @@ class Assembly extends CI_Controller {
                             $this->super_model->update_custom_where("assembly_inventory", $data,"engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bank_id = '$bank[$x]'");
                         }
                     }
-                
+                */
             }
         }
 
