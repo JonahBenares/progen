@@ -441,11 +441,11 @@ class Assembly extends CI_Controller {
 
                $count= $this->super_model->count_custom_where("assembly_inventory","engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bank_id = '$bank[$x]'");
 
-               echo "engine_id = ".$engine. " AND assembly_id = ". $assembly ." AND item_id = ". $item . " AND bank_id = ". $bank[$x] . "<br>";
+             //  echo "engine_id = ".$engine. " AND assembly_id = ". $assembly ." AND item_id = ". $item . " AND bank_id = ". $bank[$x] . "<br>";
 
-               echo "count: ". $count. "<br>";
-                /*   if($count==0){
-                        if(!empty($qty[$x])){
+              // echo "count: ". $count. "<br>";
+                   if($count==0){
+                       // if(!empty($qty[$x])){
                             $data=array(
                                 "engine_id"=>$engine,
                                 "assembly_id"=>$assembly,
@@ -462,9 +462,9 @@ class Assembly extends CI_Controller {
                                 "user_id"=>$this->input->post('userid')
                             );
                             $this->super_model->insert_into("assembly_inventory", $data);
-                        }
+                       // }
                     } else {
-                        if(!empty($qty[$x])){
+                       // if(!empty($qty[$x])){
                             $data=array(
                                 "plate_no"=>$plate,
                                 "qty"=>$qty[$x],
@@ -477,9 +477,9 @@ class Assembly extends CI_Controller {
                                 "user_id"=>$this->input->post('userid')
                             );
                             $this->super_model->update_custom_where("assembly_inventory", $data,"engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bank_id = '$bank[$x]'");
-                        }
+                       // }
                     }
-                */
+                
             }
         }
 
