@@ -60,6 +60,13 @@ class Assembly extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function bank_list_new(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('assembly/bank_list_new');
+        $this->load->view('template/footer');
+    }
+
     public function assloc_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
@@ -319,6 +326,19 @@ class Assembly extends CI_Controller {
         return $col; 
     }
 
+    public function engview_list_nolr(){
+        $this->load->view('template/header');
+        $this->load->view('assembly/engview_list_nolr');
+        $this->load->view('template/footer');
+    }
+
+    public function engview_list_wlr(){
+        $this->load->view('template/header');
+        $this->load->view('assembly/engview_list_wlr');
+        $this->load->view('template/footer');
+    }
+
+
     public function engview_list(){
         $engine=$this->uri->segment(3);
         $data['engine_id'] = $engine;
@@ -383,6 +403,18 @@ class Assembly extends CI_Controller {
         }
         $this->load->view('template/header');
         $this->load->view('assembly/complete_list', $data);
+        $this->load->view('template/footer');
+    }
+
+    public function complete_list_nolr(){
+        $this->load->view('template/header');
+        $this->load->view('assembly/complete_list_nolr');
+        $this->load->view('template/footer');
+    }
+
+    public function complete_list_wlr(){
+        $this->load->view('template/header');
+        $this->load->view('assembly/complete_list_wlr');
         $this->load->view('template/footer');
     }
 
