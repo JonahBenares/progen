@@ -189,5 +189,24 @@
 		}
 
 	</script>
+	<script type="text/javascript">
+		function showDiv(select){
+			if(select.value=='No Left/Right'){
+				document.getElementById('a').style.display = "block";
+				document.getElementById('b').style.display = "none";
+				document.getElementById('c').style.display = "none";
+			}
+			else if(select.value=='With Left/Right'){
+				document.getElementById('a').style.display = "none";
+				document.getElementById('b').style.display = "block";
+				document.getElementById('c').style.display = "block";
+			}
+			else{
+				document.getElementById('a').style.display = "none";
+				document.getElementById('b').style.display = "none";
+				document.getElementById('c').style.display = "none";
+			}
+		} 
+	</script>
 </body>
 </html>
