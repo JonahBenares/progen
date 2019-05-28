@@ -1378,7 +1378,7 @@ class Masterfile extends CI_Controller {
             else {
                 $filename1='item_inventory.'.$ext1;
                 if(move_uploaded_file($_FILES["excelfile"]['tmp_name'], $dest.'/'.$filename1)){
-                    $this->readExcel_inv();
+                     $this->readExcel_inv();
                 }        
             }
         }
@@ -1396,6 +1396,7 @@ class Masterfile extends CI_Controller {
         catch(Exception $e) {
             die('Error loading file"'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
         }
+        $objPHPExcel->setActiveSheetIndex(0);
         $highestRow = $objPHPExcel->getActiveSheet()->getHighestRow(); 
         for($x=2;$x<=$highestRow;$x++){
             $desc = $objPHPExcel->getActiveSheet()->getCell('A'.$x)->getValue();
@@ -1404,6 +1405,7 @@ class Masterfile extends CI_Controller {
             $prefix = trim($objPHPExcel->getActiveSheet()->getCell('D'.$x)->getValue());
             $unit = trim($objPHPExcel->getActiveSheet()->getCell('E'.$x)->getValue());
             $pn = trim($objPHPExcel->getActiveSheet()->getCell('F'.$x)->getValue());
+            //echo $desc . "<br>";
             if(empty($pn)){
                 $count=$this->super_model->count_rows_where("pn_series","subcat_prefix",$prefix);
                 if($count==0){
@@ -1418,6 +1420,7 @@ class Masterfile extends CI_Controller {
                     'subcat_prefix'=>$prefix,
                     'series'=>$newpn
                 );
+                //print_r($data_pn);//
                 $this->super_model->insert_into("pn_series", $data_pn);
                 $data_items = array(
                     'item_name'=>$desc,
@@ -1426,6 +1429,7 @@ class Masterfile extends CI_Controller {
                     'unit_id'=>$unit,
                     'original_pn'=>$orig_pn
                 );
+                //print_r($data_items);//
                 $this->super_model->insert_into("items", $data_items);
             } 
             else {
@@ -1436,6 +1440,7 @@ class Masterfile extends CI_Controller {
                     'unit_id'=>$unit,
                     'original_pn'=>$pn
                 );
+              //  print_r($data_items);//
                 $this->super_model->insert_into("items", $data_items);
             }
         }
