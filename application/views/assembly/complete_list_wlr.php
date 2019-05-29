@@ -42,7 +42,9 @@ if(empty($inventory)){
 	$loc = base_url()."index.php/assembly/update_inventory";
 }
  ?>
-
+<select class="form-control" style="width: 30%">
+	<option>---Select--</option>
+</select>
 <form method='POST' action="<?php echo $loc; ?>">
 
 <div id="printableArea">	
