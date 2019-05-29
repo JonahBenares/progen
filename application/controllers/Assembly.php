@@ -63,8 +63,31 @@ class Assembly extends CI_Controller {
     public function bank_list_new(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('assembly/bank_list_new');
+         $data['banks'] = $this->super_model->select_all_order_by('bank_header','bank_type','ASC');
+        $this->load->view('assembly/bank_list_new',$data);
         $this->load->view('template/footer');
+    }
+
+    public function insert_bank_head(){
+        $data = array(
+            'bank_category'=>$this->input->post('category'),
+            'bank_type'=>$this->input->post('type'),
+            'left_column'=>$this->input->post('leftcol'),
+            'right_column'=>$this->input->post('rightcol'),
+            'no_column'=>$this->input->post('nocol'),
+        );
+        if($this->super_model->insert_into("bank_header", $data)){
+            echo "<script>alert('Bank Successfully Added!'); 
+                window.location ='".base_url()."index.php/assembly/bank_list_new'; </script>";
+        }
+    }
+
+    public function delete_bank_head(){
+        $id=$this->uri->segment(3);
+        if($this->super_model->delete_where('bank_header', 'bh_id', $id)){
+            echo "<script>alert('Succesfully Deleted!'); 
+                window.location ='".base_url()."index.php/assembly/bank_list_new'; </script>";
+        }
     }
 
     public function assloc_list(){
