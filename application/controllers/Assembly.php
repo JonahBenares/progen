@@ -1024,23 +1024,28 @@ class Assembly extends CI_Controller {
 
     public function issue_report(){
 
-        foreach($this->super_model->custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id ORDER BY ih.transfer_date DESC") AS $det){
-            $data['info'][] = array(
-                "issuance_id"=>$det->issuance_id,
-                "transfer_date"=>$det->transfer_date,
-                "transfer_to"=>$this->super_model->select_column_where("assembly_location", "location_name", "al_id", $det->transfer_to),
-                "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $det->department_id),
-                 "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $det->purpose_id),
-                "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $det->enduse_id),
-                "engine_to"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_to),
-                "assembly_to"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_to),
-                "engine_from"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_from),
-                "assembly_from"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_from),
-                 "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $det->item_id),
-                "bank_from"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_from),
-                "transfer_qty"=>$det->transfer_qty,
-                "bank_to"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_to),
-            );
+        $row = $this->super_model->count_custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id");
+        if($row!=0){
+            foreach($this->super_model->custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id ORDER BY ih.transfer_date DESC") AS $det){
+                $data['info'][] = array(
+                    "issuance_id"=>$det->issuance_id,
+                    "transfer_date"=>$det->transfer_date,
+                    "transfer_to"=>$this->super_model->select_column_where("assembly_location", "location_name", "al_id", $det->transfer_to),
+                    "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $det->department_id),
+                     "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $det->purpose_id),
+                    "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $det->enduse_id),
+                    "engine_to"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_to),
+                    "assembly_to"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_to),
+                    "engine_from"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_from),
+                    "assembly_from"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_from),
+                     "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $det->item_id),
+                    "bank_from"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_from),
+                    "transfer_qty"=>$det->transfer_qty,
+                    "bank_to"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_to),
+                );
+            }
+        }else{
+            $data['info']=array();
         }
         $data['location']=$this->super_model->select_all_order_by("assembly_location", "location_name", "ASC");
         $data['engine']=$this->super_model->select_all_order_by("assembly_engine", "engine_name", "ASC");
@@ -1052,24 +1057,28 @@ class Assembly extends CI_Controller {
     }
 
     public function receive_report(){
-
-        foreach($this->super_model->custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id ORDER BY ih.transfer_date DESC") AS $det){
-            $data['info'][] = array(
-                "issuance_id"=>$det->issuance_id,
-                "transfer_date"=>$det->transfer_date,
-                "transfer_to"=>$this->super_model->select_column_where("assembly_location", "location_name", "al_id", $det->transfer_to),
-                "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $det->department_id),
-                 "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $det->purpose_id),
-                "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $det->enduse_id),
-                "engine_to"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_to),
-                "assembly_to"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_to),
-                "engine_from"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_from),
-                "assembly_from"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_from),
-                 "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $det->item_id),
-                "bank_from"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_from),
-                "transfer_qty"=>$det->transfer_qty,
-                "bank_to"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_to),
-            );
+        $row = $this->super_model->count_custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id");
+        if($row!=0){
+            foreach($this->super_model->custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id ORDER BY ih.transfer_date DESC") AS $det){
+                $data['info'][] = array(
+                    "issuance_id"=>$det->issuance_id,
+                    "transfer_date"=>$det->transfer_date,
+                    "transfer_to"=>$this->super_model->select_column_where("assembly_location", "location_name", "al_id", $det->transfer_to),
+                    "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $det->department_id),
+                     "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $det->purpose_id),
+                    "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $det->enduse_id),
+                    "engine_to"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_to),
+                    "assembly_to"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_to),
+                    "engine_from"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_from),
+                    "assembly_from"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_from),
+                     "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $det->item_id),
+                    "bank_from"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_from),
+                    "transfer_qty"=>$det->transfer_qty,
+                    "bank_to"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_to),
+                );
+            }
+        }else {
+            $data['info']=array();
         }
         $data['location']=$this->super_model->select_all_order_by("assembly_location", "location_name", "ASC");
         $data['engine']=$this->super_model->select_all_order_by("assembly_engine", "engine_name", "ASC");
