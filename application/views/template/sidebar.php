@@ -508,7 +508,7 @@
 						</a>
 					</li>
 					<li>
-						<a class="" href="<?php echo base_url(); ?>index.php/assembly/bank_list_new">
+						<a class="" href="<?php echo base_url(); ?>index.php/assembly/bank_list">
 							<span class="fa fa-arrow-right">&nbsp;</span> Bank
 						</a>
 					</li>
