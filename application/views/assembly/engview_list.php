@@ -35,6 +35,9 @@ $CI=&get_instance();
 		margin-top:20px;
 	}
 </style>
+<select class="form-control" style="width: 30%">
+	<option>---Select--</option>
+</select>
 <div id="printableArea">
 	<table class="table table-bordered" style="margin-bottom: 70px" >
 		
