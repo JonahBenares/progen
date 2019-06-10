@@ -49,6 +49,7 @@
 										<td><?php echo $b->right_column;?></td>
 										<td>
 											<a href="<?php echo base_url(); ?>index.php/assembly/delete_bank_head/<?php echo $b->bh_id;?>"  onclick="confirmationDelete(this);return false;" class="btn btn-danger btn-sm" title="DELETE" title="DELETE" alt='DELETE'><span class="fa fa-trash-o"></span></a>
+											<a onclick="chooseBank('<?php echo base_url();?>','<?php echo $b->bh_id;?>')" class="btn btn-info btn-sm"><span class="fa fa-eye"></span></a>
 										</td>
 									</tr>
 									<?php } ?>

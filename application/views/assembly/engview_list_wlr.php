@@ -44,7 +44,8 @@ $CI=&get_instance();
 			<td></td>
 			<td>Qty</td>
 			<td>Units</td>		
-			<td colspan="10">A - Bank or Left Bank</td>		
+			<td colspan="<?php echo $left; ?>">A - Bank or Left Bank</td>		
+			<td colspan="<?php echo $right; ?>">B - Bank or Right Bank</td>
 			<td rowspan="2" align="center" style="padding-top: 30px">Remarks</td>
 			<td rowspan="2" align="center" style="padding-top: 30px">Inspected</td>
 			<td rowspan="2" align="center" style="padding-top: 30px">Cleaned</td>
@@ -55,8 +56,16 @@ $CI=&get_instance();
 			<td><p style="width:100px">Part No.</p></td>
 			<td></td>
 			<td></td>
-			
-			<td><p class="lbwidth"></p></td>
+				
+			<?php  foreach($leftbank AS $lb){ ?>
+			<td><p class="lbwidth"><?php echo $lb->bank_name; ?></p></td>
+			<?php } 
+
+			foreach($rightbank AS $rb){ ?>
+			<td><p class="lbwidth"><?php echo $rb->bank_name; ?></p></td>
+
+			<?php } ?>
+			<!-- <td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
@@ -65,7 +74,7 @@ $CI=&get_instance();
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>			
-			<td><p class="lbwidth"></p></td>			
+			<td><p class="lbwidth"></p></td> -->			
 			
 		</tr>
 		<tr>
@@ -77,7 +86,8 @@ $CI=&get_instance();
 			<td></td>
 			<td></td>
 						
-			<td colspan="10" align="center">Plate Number na d</td>
+			<td colspan="<?php echo $left; ?>" align="center">Plate Number na d</td>
+			<td colspan="<?php echo $right; ?>" align="center">Plate Number na d</td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -93,7 +103,8 @@ $CI=&get_instance();
 			<td>kg</td>
 
 
-			<td colspan="10"><span class='fa fa-check'></span></td>
+			<td colspan="5"><span class='fa fa-check'></span></td>
+			<td colspan="5"><span style='color:red; font-weight:bold'>0</span></td>
 
 
 			<td></td>

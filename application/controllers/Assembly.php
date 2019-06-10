@@ -60,6 +60,52 @@ class Assembly extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function choose_bank(){
+        $bh_id=$this->uri->segment(3);
+        $data['bh_id']=$this->uri->segment(3);
+        $data['bank'] = $this->super_model->select_row_where('bank_header','bh_id',$bh_id);
+        $this->load->view('template/header');
+        $this->load->view('assembly/choose_bank',$data);
+        $this->load->view('template/footer');
+    }
+
+    public function savechoose_bank(){
+        $bh_id=$this->input->post('bh_id');
+        if($this->input->post('type') == 'No Left/Right'){
+            for($y=1;$y<=$this->input->post('no_col');$y++){
+                $data = array(
+                    'bh_id'=>$this->input->post('bh_id'),
+                    'bank_name'=>$this->input->post('bank_name'.$y),
+                );
+                if($this->super_model->insert_into("bank_details", $data)){
+                    echo "<script>alert('Successfully Added!'); window.close(); window.opener.location.href = '".base_url()."index.php/assembly/bank_list_new';</script>";
+                }
+            }
+        }else {
+            for($x=1;$x<=$this->input->post('left');$x++){
+                if($this->input->post('bank_name_l'.$x)!=''){
+                    $data = array(
+                        'bh_id'=>$this->input->post('bh_id'),
+                        'bank_location'=>$this->input->post('bank_location_l'),
+                        'bank_name'=>$this->input->post('bank_name_l'.$x),
+                    );
+                    $this->super_model->insert_into("bank_details", $data);
+                }
+            }
+            for($z=1;$z<=$this->input->post('right');$z++){
+                if($this->input->post('bank_name_r'.$z)!=''){
+                    $data = array(
+                        'bh_id'=>$this->input->post('bh_id'),
+                        'bank_location'=>$this->input->post('bank_location_l'),
+                        'bank_name'=>$this->input->post('bank_name_r'.$z),
+                    );
+                    $this->super_model->insert_into("bank_details", $data);
+                }
+            }
+            echo "<script>alert('Successfully Added!'); window.location = '".base_url()."index.php/assembly/choose_bank/$bh_id';</script>";
+        }
+    }
+
     public function bank_list_new(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
@@ -351,13 +397,75 @@ class Assembly extends CI_Controller {
 
     public function engview_list_nolr(){
         $this->load->view('template/header');
-        $this->load->view('assembly/engview_list_nolr');
+        $bh_id=$this->uri->segment(3);
+        /*$data['engine_id'] = $engine;
+        $data['engine_name'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
+        $data['assembly'] = $this->super_model->select_row_where("assembly_head", "engine_id", $engine);
+        $count= $this->super_model->count_rows_where("assembly_details", "engine_id", $engine);
+        if($count!=0){
+            foreach($this->super_model->select_row_where("assembly_details", "engine_id", $engine) AS $det){
+                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
+                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
+                $data['items'][] = array(
+                    "id"=>$det->ad_id,
+                    "assembly_id"=>$det->assembly_id,
+                    "item_id"=>$det->item_id,
+                    "item_name"=>$itemname,
+                    "pn_no"=>$det->pn_no,
+                    "qty"=>$det->qty,
+                    "uom"=>$uom
+                );
+            }
+        } else {
+            $data['items']=array();
+        }*/
+        /*$data['left'] = $this->super_model->count_rows_where("bank_details","bank_location","A");
+        $data['right'] = $this->super_model->count_rows_where("bank_details","bank_location","B");*/
+        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
+        $this->load->view('assembly/engview_list_nolr',$data);
         $this->load->view('template/footer');
     }
 
     public function engview_list_wlr(){
         $this->load->view('template/header');
-        $this->load->view('assembly/engview_list_wlr');
+        $bh_id=$this->uri->segment(3);
+        /*$data['engine_id'] = $engine;
+        $data['engine_name'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
+        $data['assembly'] = $this->super_model->select_row_where("assembly_head", "engine_id", $engine);
+        $count= $this->super_model->count_rows_where("assembly_details", "engine_id", $engine);
+        if($count!=0){
+            foreach($this->super_model->select_row_where("assembly_details", "engine_id", $engine) AS $det){
+                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
+                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
+                $data['items'][] = array(
+                    "id"=>$det->ad_id,
+                    "assembly_id"=>$det->assembly_id,
+                    "item_id"=>$det->item_id,
+                    "item_name"=>$itemname,
+                    "pn_no"=>$det->pn_no,
+                    "qty"=>$det->qty,
+                    "uom"=>$uom
+                );
+            }
+        } else {
+            $data['items']=array();
+        }*/
+        $data['left'] = $this->super_model->count_rows_where("bank_details","bank_location","A");
+        $data['right'] = $this->super_model->count_rows_where("bank_details","bank_location","B");
+        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
+        $data['rightbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
+        /*foreach($this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC") AS $l){
+            $data['leftbank'][]=array(
+                'bank_name'=>$l->bank_name,
+            );
+        }
+
+        foreach($this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC") AS $r){
+            $data['rightbank'][]=array(
+                'bank_name'=>$r->bank_name,
+            );
+        }*/
+        $this->load->view('assembly/engview_list_wlr',$data);
         $this->load->view('template/footer');
     }
 

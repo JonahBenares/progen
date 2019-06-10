@@ -206,7 +206,39 @@
 				document.getElementById('b').style.display = "none";
 				document.getElementById('c').style.display = "none";
 			}
-		} 
+		}  
+	</script>
+
+	<script type="text/javascript">
+		function showBank(select){
+			if(select.value=='No Left/Right'){
+				document.getElementById('a').style.display = "block";
+				document.getElementById('b').style.display = "none";
+			}
+			else if(select.value=='With Left/Right'){
+				document.getElementById('a').style.display = "none";
+				document.getElementById('b').style.display = "block";
+			}
+			else{
+				document.getElementById('a').style.display = "block";
+				document.getElementById('b').style.display = "none";
+			}
+		}
+
+		function showLoc(select){
+			if(select.value=='A'){
+				document.getElementById('c').style.display = "block";
+				document.getElementById('d').style.display = "none";
+			}
+			else if(select.value=='B'){
+				document.getElementById('c').style.display = "none";
+				document.getElementById('d').style.display = "block";
+			}
+			else{
+				document.getElementById('c').style.display = "none";
+				document.getElementById('d').style.display = "none";
+			}
+		}
 	</script>
 </body>
 </html>
