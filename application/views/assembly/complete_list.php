@@ -43,6 +43,9 @@ if(empty($inventory)){
 }
  ?>
 
+<select class="form-control" style="width: 30%">
+	<option>---Select--</option>
+</select>
 <form method='POST' action="<?php echo $loc; ?>">
 
 <div id="printableArea">	
