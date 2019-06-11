@@ -35,17 +35,35 @@ $CI=&get_instance();
 		margin-top:20px;
 	}
 </style>
+<form method="POST" action = "<?php echo base_url(); ?>index.php/assembly/proceedNext">
+	<table width="100%">
+		<tr>
+			<td width="20%">
+				<select class="form-control" name = "type">
+					<option value = "">--Select type--</option>
+					<?php foreach($heads AS $h){ ?>
+					<option value = "<?php echo $h->bh_id."-".$h->bank_type;?>"><?php echo $h->bank_category;?></option>
+					<?php } ?>
+				</select>
+			</td>
+			<td width="10%">
+				<input type="submit" name ="submit" value = "Submit" class = "btn btn-primary">
+			</td>
+			<td width="70%"></td>
+		</tr>
+	</table>
+	<input type='hidden' name='engine_id' value="<?php echo $engine_id; ?>">
+	<input type='hidden' name='assembly_id' value="<?php echo $assembly_id; ?>">
+</form>
+
 <?php
 if(empty($inventory)){
 	$loc = base_url()."index.php/assembly/insert_inventory";
 } else {
 	$loc = base_url()."index.php/assembly/update_inventory";
 }
- ?>
+?>
 
-<select class="form-control" style="width: 30%">
-	<option>---Select--</option>
-</select>
 <form method='POST' action="<?php echo $loc; ?>">
 
 <div id="printableArea">	

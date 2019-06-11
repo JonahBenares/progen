@@ -55,11 +55,8 @@ $CI=&get_instance();
 			<td><p style="width:100px">Part No.</p></td>
 			<td></td>
 			<td></td>
-			
-			<?php foreach($leftbank AS $lb){ ?>
-			<td><p class="lbwidth"><?php echo $lb->bank_name; ?></p></td>
-			<?php } ?>
-			<!-- <td><p class="lbwidth"></p></td>
+			<td><p class="lbwidth"></p></td>
+			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
@@ -67,7 +64,7 @@ $CI=&get_instance();
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>			
-			<td><p class="lbwidth"></p></td> -->			
+			<td><p class="lbwidth"></p></td>			
 			
 		</tr>
 		<tr>

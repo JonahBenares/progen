@@ -385,6 +385,16 @@ class Assembly extends CI_Controller {
         return $col; 
     }
 
+    public function searchNolrplate($engine, $assembly, $bdid, $column){
+        $col = $this->super_model->select_column_custom_where("assembly_inventory", $column,"engine_id = '$engine' AND assembly_id = '$assembly' AND bd_id = '$bdid'");
+        return $col; 
+    }
+
+    public function searchNolrqty($engine, $assembly, $bdid, $item, $column){
+        $col = $this->super_model->select_column_custom_where("assembly_inventory", $column,"engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bd_id = '$bdid'");
+        return $col; 
+    }
+
      public function getReqQty($engine, $assembly, $item){
         $col = $this->super_model->select_column_custom_where("assembly_details", "qty","engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item'");
         return $col; 
@@ -397,75 +407,13 @@ class Assembly extends CI_Controller {
 
     public function engview_list_nolr(){
         $this->load->view('template/header');
-        $bh_id=$this->uri->segment(3);
-        /*$data['engine_id'] = $engine;
-        $data['engine_name'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
-        $data['assembly'] = $this->super_model->select_row_where("assembly_head", "engine_id", $engine);
-        $count= $this->super_model->count_rows_where("assembly_details", "engine_id", $engine);
-        if($count!=0){
-            foreach($this->super_model->select_row_where("assembly_details", "engine_id", $engine) AS $det){
-                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
-                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
-                $data['items'][] = array(
-                    "id"=>$det->ad_id,
-                    "assembly_id"=>$det->assembly_id,
-                    "item_id"=>$det->item_id,
-                    "item_name"=>$itemname,
-                    "pn_no"=>$det->pn_no,
-                    "qty"=>$det->qty,
-                    "uom"=>$uom
-                );
-            }
-        } else {
-            $data['items']=array();
-        }*/
-        /*$data['left'] = $this->super_model->count_rows_where("bank_details","bank_location","A");
-        $data['right'] = $this->super_model->count_rows_where("bank_details","bank_location","B");*/
-        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
-        $this->load->view('assembly/engview_list_nolr',$data);
+        $this->load->view('assembly/engview_list_nolr');
         $this->load->view('template/footer');
     }
 
     public function engview_list_wlr(){
         $this->load->view('template/header');
-        $bh_id=$this->uri->segment(3);
-        /*$data['engine_id'] = $engine;
-        $data['engine_name'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
-        $data['assembly'] = $this->super_model->select_row_where("assembly_head", "engine_id", $engine);
-        $count= $this->super_model->count_rows_where("assembly_details", "engine_id", $engine);
-        if($count!=0){
-            foreach($this->super_model->select_row_where("assembly_details", "engine_id", $engine) AS $det){
-                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
-                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
-                $data['items'][] = array(
-                    "id"=>$det->ad_id,
-                    "assembly_id"=>$det->assembly_id,
-                    "item_id"=>$det->item_id,
-                    "item_name"=>$itemname,
-                    "pn_no"=>$det->pn_no,
-                    "qty"=>$det->qty,
-                    "uom"=>$uom
-                );
-            }
-        } else {
-            $data['items']=array();
-        }*/
-        $data['left'] = $this->super_model->count_rows_where("bank_details","bank_location","A");
-        $data['right'] = $this->super_model->count_rows_where("bank_details","bank_location","B");
-        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
-        $data['rightbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
-        /*foreach($this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC") AS $l){
-            $data['leftbank'][]=array(
-                'bank_name'=>$l->bank_name,
-            );
-        }
-
-        foreach($this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC") AS $r){
-            $data['rightbank'][]=array(
-                'bank_name'=>$r->bank_name,
-            );
-        }*/
-        $this->load->view('assembly/engview_list_wlr',$data);
+        $this->load->view('assembly/engview_list_wlr');
         $this->load->view('template/footer');
     }
 
@@ -532,20 +480,94 @@ class Assembly extends CI_Controller {
         } else {
             $data['items']=array();
         }
+
+        $data['heads']=$this->super_model->select_all_order_by("bank_header","bank_category",'ASC');
         $this->load->view('template/header');
         $this->load->view('assembly/complete_list', $data);
         $this->load->view('template/footer');
     }
 
+    public function proceedNext(){
+        $type = $this->input->post('type');
+        $engine = $this->input->post('engine_id');
+        $assembly = $this->input->post('assembly_id');
+
+        $type=explode("-", $type);
+        $bh_id=$type[0];
+        $bank_type=$type[1];
+
+        if($bank_type=='No Left/Right'){
+            echo "<script>window.location.href  = '".base_url()."index.php/assembly/complete_list_nolr/".$engine."/".$assembly."/".$bh_id."'</script>";
+        }else {
+            echo "<script>window.location.href  = '".base_url()."index.php/assembly/complete_list_wlr/".$engine."/".$assembly."/".$bh_id."'</script>";
+        }
+    }   
+
     public function complete_list_nolr(){
         $this->load->view('template/header');
-        $this->load->view('assembly/complete_list_nolr');
+        $engine=$this->uri->segment(3);
+        $assembly=$this->uri->segment(4);
+        $bh_id=$this->uri->segment(5);
+        $data['engine_id'] = $engine;
+        $data['assembly_id'] = $assembly;
+        $data['engine'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
+        $data['assembly'] = $this->super_model->select_column_where("assembly_head","assembly_name", "assembly_id", $assembly);
+        $data['left'] = $this->super_model->count_custom_where('bank_details',"bh_id = '$bh_id'");
+        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bh_id = '$bh_id' ORDER BY bank_name ASC");
+        $data['inventory']= $this->super_model->select_custom_where("assembly_inventory", "engine_id = '$engine' AND assembly_id = '$assembly'");
+        $count= $this->super_model->count_rows_where("assembly_details", "assembly_id", $assembly);
+        if($count!=0){
+            foreach($this->super_model->select_row_where("assembly_details", "assembly_id", $assembly) AS $det){
+                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
+                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
+                $data['items'][] = array(
+                    "id"=>$det->ad_id,
+                    "item_id"=>$det->item_id,
+                    "item_name"=>$itemname,
+                    "pn_no"=>$det->pn_no,
+                    "qty"=>$det->qty,
+                    "uom"=>$uom
+                );
+            }
+        } else {
+            $data['items']=array();
+        }
+        $this->load->view('assembly/complete_list_nolr',$data);
         $this->load->view('template/footer');
     }
 
     public function complete_list_wlr(){
         $this->load->view('template/header');
-        $this->load->view('assembly/complete_list_wlr');
+        $engine=$this->uri->segment(3);
+        $assembly=$this->uri->segment(4);
+        $bh_id=$this->uri->segment(5);
+        $data['engine_id'] = $engine;
+        $data['assembly_id'] = $assembly;
+        $data['engine'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
+        $data['assembly'] = $this->super_model->select_column_where("assembly_head","assembly_name", "assembly_id", $assembly);
+        $data['left'] = $this->super_model->count_custom_where('bank_details',"bank_location = 'A' AND bh_id = '$bh_id'");
+        $data['right'] = $this->super_model->count_custom_where('bank_details',"bank_location = 'B' AND bh_id = '$bh_id'");
+        $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
+        $data['rightbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
+        $data['inventory']= $this->super_model->select_custom_where("assembly_inventory", "engine_id = '$engine' AND assembly_id = '$assembly'");
+        $count= $this->super_model->count_rows_where("assembly_details", "assembly_id", $assembly);
+        if($count!=0){
+            foreach($this->super_model->select_row_where("assembly_details", "assembly_id", $assembly) AS $det){
+                $itemname=$this->super_model->select_column_where("items","item_name", "item_id", $det->item_id);
+                $uom=$this->super_model->select_column_where("uom","unit_name", "unit_id", $det->uom);
+                $data['items'][] = array(
+                    "id"=>$det->ad_id,
+                    "item_id"=>$det->item_id,
+                    "item_name"=>$itemname,
+                    "pn_no"=>$det->pn_no,
+                    "qty"=>$det->qty,
+                    "uom"=>$uom
+                );
+            }
+        } else {
+            $data['items']=array();
+        }
+        $this->load->view('assembly/complete_list_wlr',$data);
         $this->load->view('template/footer');
     }
 
@@ -557,7 +579,6 @@ class Assembly extends CI_Controller {
         for($y=0;$y<=$item_counter;$y++){
             $qty = $this->input->post('qty'.$y);
             $bank = $this->input->post('bank'.$y);
-
             for($x=0;$x<$bank_counter;$x++){
             $plate = $this->input->post('plate'.$x);
                
@@ -587,7 +608,38 @@ class Assembly extends CI_Controller {
         echo "<script>alert('Beginning balance has been set.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
     }
 
-     public function update_inventory(){
+    public function insert_inventory_wnlr(){
+        $now=date('Y-m-d H:i:s');
+        $item_counter = $this->input->post('counter_item');
+        $bank_counter = $this->input->post('counter');
+        $engine = $this->input->post('engine');
+        for($y=0;$y<=$item_counter;$y++){
+            $qty = $this->input->post('qty'.$y);
+            $bd_id = $this->input->post('bd_id'.$y);
+            for($x=0;$x<$bank_counter;$x++){
+            $plate = $this->input->post('plate'.$x);
+                $data=array(
+                    "engine_id"=>$this->input->post('engine'),
+                    "assembly_id"=>$this->input->post('assembly'),
+                    "item_id"=>$this->input->post('item'.$y),
+                    "bd_id"=>$bd_id[$x],
+                    "plate_no"=>$plate,
+                    "qty"=>$qty[$x],
+                    "remarks"=>$this->input->post('remarks'.$y),
+                    "inspected"=>$this->input->post('inspected'.$y),
+                    "cleaned"=>$this->input->post('cleaned'.$y),
+                    "status"=>$this->input->post('status'.$y),
+                    "location"=>$this->input->post('location'.$y),
+                    "create_date"=>$now,
+                    "user_id"=>$this->input->post('userid')
+                );
+                $this->super_model->insert_into("assembly_inventory", $data);
+            }
+        }
+        echo "<script>alert('Beginning balance has been set.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
+    }
+
+    public function update_inventory(){
         $now=date('Y-m-d H:i:s');
         $item_counter = $this->input->post('counter_item');
         $bank_counter = $this->input->post('counter');
@@ -647,6 +699,63 @@ class Assembly extends CI_Controller {
         }
 
           echo "<script>alert('Beginning balance has been updated.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
+    }
+
+    public function update_inventory_wnlr(){
+        $now=date('Y-m-d H:i:s');
+        $item_counter = $this->input->post('counter_item');
+        $bank_counter = $this->input->post('counter');
+        $engine=$this->input->post('engine');
+        $assembly=$this->input->post('assembly');
+        for($y=0;$y<=$item_counter;$y++){
+            $qty = $this->input->post('qty'.$y);
+            $bd_id = $this->input->post('bd_id'.$y);
+            $item=$this->input->post('item'.$y);
+            for($x=0;$x<$bank_counter;$x++){
+                $plate = $this->input->post('plate'.$x);
+               
+                  // echo $this->input->post('item'.$y) . " - ". $qty[$x]. " - " . $bh_id[$x] ." - ". $plate . "<br>";
+                $count= $this->super_model->count_custom_where("assembly_inventory","engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bd_id = '$bd_id[$x]'");
+              //  echo "engine_id = ".$engine. " AND assembly_id = ". $assembly ." AND item_id = ". $item . " AND bank_id = ". $bank[$x] . "<br>";
+               if($count==0){
+                   // if(!empty($qty[$x])){
+                        $data=array(
+                            "engine_id"=>$engine,
+                            "assembly_id"=>$assembly,
+                            "item_id"=>$item,
+                            "bd_id"=>$bd_id[$x],
+                            "plate_no"=>$plate,
+                            "qty"=>$qty[$x],
+                            "remarks"=>$this->input->post('remarks'.$y),
+                            "inspected"=>$this->input->post('inspected'.$y),
+                            "cleaned"=>$this->input->post('cleaned'.$y),
+                            "status"=>$this->input->post('status'.$y),
+                            "location"=>$this->input->post('location'.$y),
+                            "create_date"=>$now,
+                            "user_id"=>$this->input->post('userid')
+                        );
+                        //print_r($data);
+                        $this->super_model->insert_into("assembly_inventory", $data);
+                   // }
+                } else {
+                   // if(!empty($qty[$x])){
+                        $data=array(
+                            "plate_no"=>$plate,
+                            "qty"=>$qty[$x],
+                            "remarks"=>$this->input->post('remarks'.$y),
+                            "inspected"=>$this->input->post('inspected'.$y),
+                            "cleaned"=>$this->input->post('cleaned'.$y),
+                            "status"=>$this->input->post('status'.$y),
+                            "location"=>$this->input->post('location'.$y),
+                            "create_date"=>$now,
+                            "user_id"=>$this->input->post('userid')
+                        );
+                        $this->super_model->update_custom_where("assembly_inventory", $data,"engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bd_id = '$bd_id[$x]'");
+                   // }
+                }
+            }
+        }
+        echo "<script>alert('Beginning balance has been updated.'); window.location = '".base_url()."index.php/assembly/engview_list/".$engine."'</script>";
     }
 
     public function insert_issue(){
