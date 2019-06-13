@@ -75,7 +75,7 @@
 							      		<?php 
 							      		$a=1;
 							      		foreach($assembly AS $as){ 
-							      			if($en->engine_id == $as->engine_id) { ?>
+							      			if($en->engine_id == $as['engine_id']) { ?>
 							        	<div class="card m-b-5" id="engines_sub">
 											<div class="btn-group btn-block ">
 												<button class="btn btn-sm btn-info" type="button" style="width:5%">
@@ -85,15 +85,15 @@
 												      	</h5>
 													</div>
 										        </button>
-											    <button class="btn btn-sm btn-default border-acc"  type="button" data-toggle="collapse" data-target="#collapseAssembly<?php echo $ass; ?>" aria-expanded="true" aria-controls="collapseAssembly<?php echo $ass; ?>" <?php echo (($as->locked == '1') ? "style='width:75%'" : "style='width:80%'") ?> >
+											    <button class="btn btn-sm btn-default border-acc"  type="button" data-toggle="collapse" data-target="#collapseAssembly<?php echo $ass; ?>" aria-expanded="true" aria-controls="collapseAssembly<?php echo $ass; ?>" <?php echo (($as['locked'] == '1') ? "style='width:75%'" : "style='width:80%'") ?> >
 													<div class="card-header" id="headingOne">
 												      	<h5 class="mb-0 pull-left">
-													          <?php echo $as->assembly_name; ?>
+													          <?php echo $as['assembly_name']; ?>
 												      	</h5>
 													</div>
 										        </button>
 										        
-												<?php if($as->locked == '1'){ ?>
+												<?php if($as['locked'] == '1'){ ?>
 												 <a href="" class="btn btn-sm btn-danger" type="button" style="width:5%" title="Locked">
 													<div class="card-header">
 														<h5 class="mb-0">
@@ -102,22 +102,39 @@
 													</div>
 										        </a>
 											     <?php } ?>
-												
-										        <a href="<?php  echo base_url();?>index.php/assembly/complete_list/<?php echo $en->engine_id; ?>/<?php echo $as->assembly_id; ?>" target="_blank" class="btn btn-sm btn-info" type="button" style="width:5%" title="Add Beginning Balance">
-													<div class="card-header">
-														<h5 class="mb-0">
-															<span class="fa fa-table text-white"></span>
-												      	</h5>
-													</div>
-										        </a>
-										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as->assembly_id; ?>" data-trigger="<?php echo $as->assembly_name; ?>"  style="width:5%" title="Update Assembly">
+												<?php if($as['bh_id'] == 0){ ?>
+											        <a href="<?php  echo base_url();?>index.php/assembly/complete_list/<?php echo $en->engine_id; ?>/<?php echo $as['assembly_id']; ?>/<?php echo $as['bh_id']; ?>" target="_blank" class="btn btn-sm btn-info" type="button" style="width:5%" title="Add Beginning Balance">
+														<div class="card-header">
+															<h5 class="mb-0">
+																<span class="fa fa-table text-white"></span>
+													      	</h5>
+														</div>
+											        </a>
+										    	<?php } else if($as['bank_type'] == 'No Left/Right'){ ?>
+										    		<a href="<?php  echo base_url();?>index.php/assembly/complete_list_nolr/<?php echo $en->engine_id; ?>/<?php echo $as['assembly_id']; ?>/<?php echo $as['bh_id']; ?>" target="_blank" class="btn btn-sm btn-info" type="button" style="width:5%" title="Add Beginning Balance">
+														<div class="card-header">
+															<h5 class="mb-0">
+																<span class="fa fa-table text-white"></span>
+													      	</h5>
+														</div>
+											        </a>
+										    	<?php } else if($as['bank_type'] == 'With Left/Right'){ ?>
+										    		<a href="<?php  echo base_url();?>index.php/assembly/complete_list_wlr/<?php echo $en->engine_id; ?>/<?php echo $as['assembly_id']; ?>/<?php echo $as['bh_id']; ?>" target="_blank" class="btn btn-sm btn-info" type="button" style="width:5%" title="Add Beginning Balance">
+														<div class="card-header">
+															<h5 class="mb-0">
+																<span class="fa fa-table text-white"></span>
+													      	</h5>
+														</div>
+											        </a>
+										    	<?php } ?>
+										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>"  style="width:5%" title="Update Assembly">
 													<div class="card-header">
 														<h5 class="mb-0">
 															<span class="fa fa-pencil text-white"></span>
 												      	</h5>
 													</div>
 										        </a>
-										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#addItem"  data-trigger="<?php echo $as->assembly_id; ?>" id='addItem_button' style="width:5%" title="Add Item">
+										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#addItem"  data-trigger="<?php echo $as['assembly_id']; ?>" id='addItem_button' style="width:5%" title="Add Item">
 													<div class="card-header" >
 														<h5 class="mb-0">
 															<span class="fa fa-plus text-white"></span>
@@ -141,7 +158,7 @@
 											      			   <?php 
 											      			   $ic=1;
 											      			   foreach($items AS $i){ 
-											      			   	if($en->engine_id == $i['engine_id'] && $as->assembly_id == $i['assembly_id']){ ?>
+											      			   	if($en->engine_id == $i['engine_id'] && $as['assembly_id'] == $i['assembly_id']){ ?>
 												      			<tr>
 												      				<td align="center" width="3%"><?php echo $ic; ?></td>
 												      				<td><?php echo $i['item']; ?></td>

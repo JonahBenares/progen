@@ -35,6 +35,7 @@ $CI=&get_instance();
 		margin-top:20px;
 	}
 </style>
+<?php if($bh_id!='0'){ ?>
 <form method="POST" action = "<?php echo base_url(); ?>index.php/assembly/proceedNext">
 	<table width="100%">
 		<tr>
@@ -55,6 +56,7 @@ $CI=&get_instance();
 	<input type='hidden' name='engine_id' value="<?php echo $engine_id; ?>">
 	<input type='hidden' name='assembly_id' value="<?php echo $assembly_id; ?>">
 </form>
+<?php } ?>
 
 <?php
 if(empty($inventory)){
