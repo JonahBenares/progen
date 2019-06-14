@@ -484,6 +484,10 @@ class Assembly extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function getbanktype($bhid){
+        $type = $this->super_model->select_column_where("bank_header","bank_type", "bh_id", $bhid);
+        return $type;
+    }
 
     public function engview_list(){
         $engine=$this->uri->segment(3);
@@ -491,10 +495,10 @@ class Assembly extends CI_Controller {
         $data['engine_id'] = $engine;
         $data['bh_id'] = $bh_id;
         
-        foreach($this->super_model->select_row_where('bank_header','bh_id',$bh_id) AS $bh){
+       /* foreach($this->super_model->select_row_where('bank_header','bh_id',$bh_id) AS $bh){
             $bank_type = $bh->bank_type;
             $data['bank_type'] = $bh->bank_type;
-        }
+        }*/
         
         $data['engine_name'] = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
         $data['assembly'] = $this->super_model->select_row_where("assembly_head", "engine_id", $engine);
@@ -517,12 +521,12 @@ class Assembly extends CI_Controller {
             $data['items']=array();
         }
 
-        if(!isset($bh_id)){
+     /*   if(!isset($bh_id)){
             $data['left'] = $this->super_model->count_rows_where("assembly_bank","bank_location","A");
             $data['right'] = $this->super_model->count_rows_where("assembly_bank","bank_location","B");
             $data['leftbank'] = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","A","bank_name", "ASC");
             $data['rightbank'] = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","B","bank_name", "ASC");
-        }else if($bank_type=='No Left/Right'){
+       }else if($bank_type=='No Left/Right'){
             $data['left'] = $this->super_model->count_custom_where('bank_details',"bh_id = '$bh_id'");
             $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bh_id = '$bh_id' ORDER BY bank_name ASC");
         }else if($bank_type=='With Left/Right'){
@@ -530,18 +534,78 @@ class Assembly extends CI_Controller {
             $data['right'] = $this->super_model->count_custom_where('bank_details',"bank_location='B' AND bh_id = '$bh_id'");
             $data['leftbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
             $data['rightbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bh_id' ORDER BY bank_name ASC");
-        }else {
-            $data['left'] = $this->super_model->count_rows_where("assembly_bank","bank_location","A");
-            $data['right'] = $this->super_model->count_rows_where("assembly_bank","bank_location","B");
-            $data['leftbank'] = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","A","bank_name", "ASC");
-            $data['rightbank'] = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","B","bank_name", "ASC");
-        }
+        }*/
 
         $this->load->view('template/header');
         $this->load->view('assembly/engview_list',$data);
         $this->load->view('template/footer');
     }
 
+
+    public function get_left_bank($bhid, $banktype){
+         if(!isset($bhid)){
+/*            $data['left'] = $this->super_model->count_rows_where("assembly_bank","bank_location","A");
+            $data['right'] = $this->super_model->count_rows_where("assembly_bank","bank_location","B");*/
+            $leftbank = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","A","bank_name", "ASC");
+         //   $data['rightbank'] = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","B","bank_name", "ASC");
+       }
+        else if($banktype=='No Left/Right'){
+         //   $data['left'] = $this->super_model->count_custom_where('bank_details',"bh_id = '$bhid'");
+            $leftbank = $this->super_model->select_custom_where('bank_details', "bh_id = '$bhid' ORDER BY bank_name ASC");
+
+        } else if($banktype=='With Left/Right'){
+         //   $data['left'] = $this->super_model->count_custom_where('bank_details',"bank_location='A' AND bh_id = '$bhid'");
+        //    $data['right'] = $this->super_model->count_custom_where('bank_details',"bank_location='B' AND bh_id = '$bhid'");
+            $leftbank = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+          //  $data['rightbank'] = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+        }
+
+        return $leftbank;
+    }
+
+      public function get_right_bank($bhid, $banktype){
+         if(!isset($bhid)){
+/*            $data['left'] = $this->super_model->count_rows_where("assembly_bank","bank_location","A");
+            $data['right'] = $this->super_model->count_rows_where("assembly_bank","bank_location","B");*/
+           // $leftbank = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","A","bank_name", "ASC");
+           $rightbank = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","B","bank_name", "ASC");
+       }
+        else if($banktype=='No Left/Right'){
+         //   $data['left'] = $this->super_model->count_custom_where('bank_details',"bh_id = '$bhid'");
+            //$leftbank = $this->super_model->select_custom_where('bank_details', "bh_id = '$bhid' ORDER BY bank_name ASC");
+            $rightbank='';
+
+        } else if($banktype=='With Left/Right'){
+         //   $data['left'] = $this->super_model->count_custom_where('bank_details',"bank_location='A' AND bh_id = '$bhid'");
+        //    $data['right'] = $this->super_model->count_custom_where('bank_details',"bank_location='B' AND bh_id = '$bhid'");
+            //$leftbank = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+            $rightbank = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+        }
+
+        return $rightbank;
+    }
+
+      public function get_left($bhid, $banktype){
+         if(!isset($bhid)){
+            $left = $this->super_model->count_rows_where("assembly_bank","bank_location","A");
+            //$data['right'] = $this->super_model->count_rows_where("assembly_bank","bank_location","B");*/
+           // $leftbank = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","A","bank_name", "ASC");
+        //   $rightbank = $this->super_model->select_row_where_order_by("assembly_bank", "bank_location","B","bank_name", "ASC");
+       }
+        else if($banktype=='No Left/Right'){
+            $left = $this->super_model->count_custom_where('bank_details',"bh_id = '$bhid'");
+            //$leftbank = $this->super_model->select_custom_where('bank_details', "bh_id = '$bhid' ORDER BY bank_name ASC");
+         //   $rightbank='';
+
+        } else if($banktype=='With Left/Right'){
+            $left = $this->super_model->count_custom_where('bank_details',"bank_location='A' AND bh_id = '$bhid'");
+        //    $data['right'] = $this->super_model->count_custom_where('bank_details',"bank_location='B' AND bh_id = '$bhid'");
+            //$leftbank = $this->super_model->select_custom_where('bank_details', "bank_location = 'A' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+           // $rightbank = $this->super_model->select_custom_where('bank_details', "bank_location = 'B' AND bh_id = '$bhid' ORDER BY bank_name ASC");
+        }
+
+        return $left;
+    }
 
      public function complete_list(){
         $engine=$this->uri->segment(3);
