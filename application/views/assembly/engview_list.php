@@ -45,7 +45,7 @@ $CI=&get_instance();
 			$a=1;
 			foreach($assembly AS $as){ 
 				$bank_type = $CI->getbanktype($as->bh_id);
-		//	echo $bh_id . " = ".$bank_type . "<br>";
+					echo $bh_id . " = ".$bank_type . "<br>";
 
 				$leftbank = $CI->get_left_bank($as->bh_id, $bank_type);
 				$rightbank = $CI->get_right_bank($as->bh_id, $bank_type);
@@ -214,7 +214,7 @@ $CI=&get_instance();
 			<td></td>
 			<?php  foreach($leftbank AS $lb){ 
 				echo $lb->bank_name . "<br>";?>
-			<td><p class="lbwidth"><?php //echo $lb->bank_name; ?></p></td>
+			<td><p class="lbwidth"><?php echo $lb->bank_name; ?></p></td>
 			<?php } ?>
 			<!-- <td><p class="lbwidth"></p></td>
 			<td><p class="lbwidth"></p></td>
@@ -237,9 +237,9 @@ $CI=&get_instance();
 			<td></td>
 			<td></td>
 			<?php  foreach($leftbank AS $lb){ 
-			//	$plate = $CI->searchNolrplate($engine_id,$as->assembly_id,$lb->bd_id,"plate_no");
+				$plate = $CI->searchNolrplate($engine_id,$as->assembly_id,$lb->bd_id,"plate_no");
 			?>		
-			<td align="center"><?php// echo $plate; ?></td>
+			<td align="center"><?php echo $plate; ?></td>
 			<?php } ?>
 			<td></td>
 			<td></td>
@@ -260,7 +260,7 @@ $CI=&get_instance();
 			<td><?php echo $it['qty']; ?></td>
 			<td><?php echo $it['uom']; ?></td>
 			<?php  foreach($leftbank AS $lb){ 
-				/*$qty = $CI->searchNolrqty($engine_id,$as->assembly_id,$lb->bd_id,$it['item_id'],"qty"); 
+				$qty = $CI->searchNolrqty($engine_id,$as->assembly_id,$lb->bd_id,$it['item_id'],"qty"); 
 				$req_qty = $CI->getReqQty($engine_id,$as->assembly_id,$it['item_id']); 
 				if($req_qty!=0){
 					if($qty == 0){
@@ -276,7 +276,7 @@ $CI=&get_instance();
 					} else if($qty>0) {
 						$q = "<span style='color:red; font-weight:bold'>".$qty."</span>";
 					}
-				}*/
+				}
 			?>
 			<td><?php echo $q; ?></td>
 			<?php 
