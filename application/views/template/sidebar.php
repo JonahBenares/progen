@@ -509,7 +509,12 @@
 					</li>
 					<li>
 						<a class="" href="<?php echo base_url(); ?>index.php/assembly/bank_list">
-							<span class="fa fa-arrow-right">&nbsp;</span> Bank
+							<span class="fa fa-arrow-right">&nbsp;</span> Default Bank
+						</a>
+					</li>
+					<li>
+						<a class="" href="<?php echo base_url(); ?>index.php/assembly/bank_list_new">
+							<span class="fa fa-arrow-right">&nbsp;</span> Customize Bank
 						</a>
 					</li>
 					<li>
