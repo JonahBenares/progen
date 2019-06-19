@@ -237,9 +237,10 @@ class Assembly extends CI_Controller {
         $data['engine'] = $this->super_model->select_all('assembly_engine');
         //$data['assembly'] = $this->super_model->select_all('assembly_head');
         foreach($this->super_model->select_all('assembly_head') AS $b){
-            foreach($this->super_model->select_row_where('bank_header','bh_id',$b->bh_id) AS $bd){
+            /*foreach($this->super_model->select_row_where('bank_header','bh_id',$b->bh_id) AS $bd){
                 $bank_type = $bd->bank_type;
-            }
+            }*/
+            $bank_type = $this->super_model->select_column_where('bank_header','bank_type','bh_id',$b->bh_id);
             $data['assembly'][]=array(
                 'assembly_id'=>$b->assembly_id,
                 'engine_id'=>$b->engine_id,
