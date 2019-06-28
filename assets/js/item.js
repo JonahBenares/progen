@@ -464,7 +464,6 @@ function readPic1(input) {
 
     var img3 = document.getElementById('img3');
     frm.append('img3', img3.files[0]);
-    
    
     /*if(subcat==''){
       $("#subcat").focus();
@@ -488,8 +487,7 @@ function readPic1(input) {
             processData: false,
             cache: false,
             success: function(output){
-               //var output= output.trim();
-               //alert(output);
+               var output= output.trim();
           
                if(output=='ext'){
                 alert('Error: File extension error.')

@@ -35,7 +35,7 @@ $CI=&get_instance();
 		margin-top:20px;
 	}
 </style>
-<?php if($bh_id!='0'){ ?>
+<?php if(!isset($bh_id)){ ?>
 <form method="POST" action = "<?php echo base_url(); ?>index.php/assembly/proceedNext">
 	<table width="100%">
 		<tr>

@@ -757,7 +757,7 @@ class Assembly extends CI_Controller {
                     $this->super_model->insert_into("assembly_inventory", $data);
 
                     $data=array(
-                        'bh_id'=>'0',
+                        'bh_id'=>null,
                     );
                     $this->super_model->update_custom_where("assembly_head", $data,"engine_id = '$engine' AND assembly_id = '$assembly'");
                    // }
@@ -856,7 +856,7 @@ class Assembly extends CI_Controller {
                             );
                             $this->super_model->insert_into("assembly_inventory", $data);
                             $data_head=array(
-                                'bh_id'=>'0',
+                                'bh_id'=>null,
                             );
                             $this->super_model->update_custom_where("assembly_head", $data_head,"assembly_id = '$assembly'");
                        // }
@@ -875,7 +875,7 @@ class Assembly extends CI_Controller {
                             );
                             $this->super_model->update_custom_where("assembly_inventory", $data,"engine_id = '$engine' AND assembly_id = '$assembly' AND item_id = '$item' AND bank_id = '$bank[$x]'");
                             $data_head=array(
-                                'bh_id'=>'',
+                                'bh_id'=>null,
                             );
                             $this->super_model->update_custom_where("assembly_head", $data_head,"assembly_id = '$assembly'");
                        // }

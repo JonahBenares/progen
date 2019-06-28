@@ -54,9 +54,9 @@ $CI=&get_instance();
 
 		<tr>
 			<td colspan="3" rowspan="2">
-				<?php if($a==1){ ?>
+				<?php ////if($a==1){ ?>
 				<h2 style="width:500px"><?php echo $engine_name; ?></h2>
-				<?php } ?>
+				<?php ////} ?>
 			</td>
 			<td></td>
 			<td>Qty</td>
@@ -193,9 +193,9 @@ $CI=&get_instance();
 		 ?>
 		<tr>
 			<td colspan="3" rowspan="2">
-				<?php if($a==1){ ?>
+				<?php //if($a==1){ ?>
 				<h2 style="width:500px"><?php echo $engine_name; ?></h2>
-				<?php } ?>
+				<?php //} ?>
 			</td>
 			<td></td>
 			<td>Qty</td>
@@ -229,7 +229,7 @@ $CI=&get_instance();
 		<tr>
 			<td><?php echo $a; ?></td>
 			<td colspan="2" >
-				<p class="aseem" style="width:300px"><?php //echo $as->assembly_name; ?></p>
+				<p class="aseem" style="width:300px"><?php echo $as->assembly_name; ?></p>
 			</td>
 			<td></td>
 			<td></td>
@@ -296,9 +296,9 @@ $CI=&get_instance();
 		<?php } else if(isset($as->bh_id) && $bank_type == 'With Left/Right'){ ?>
 		<tr>
 			<td colspan="3" rowspan="2">
-				<?php if($a==1){ ?>
+				<?php //if($a==1){ ?>
 				<h2 style="width:500px"><?php echo $engine_name; ?></h2>
-				<?php } ?>
+				<?php //} ?>
 			</td>
 			<td></td>
 			<td>Qty</td>

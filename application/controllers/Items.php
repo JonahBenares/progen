@@ -783,7 +783,7 @@ class Items extends CI_Controller {
 
             $pnformat=$this->input->post('pnformat');
 
-            //if($pnformat==1){
+            if($pnformat==1){
                 $pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
@@ -798,7 +798,7 @@ class Items extends CI_Controller {
                 if($row_count==0){
                     $this->super_model->insert_into("pn_series", $pn_data);
                 }
-            //}   
+            }   
 
 
               $data = array(
