@@ -1684,7 +1684,7 @@ class Reports extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="For Accounting Report.xlsx";
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -2040,7 +2040,7 @@ class Reports extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="Inventory Report.xlsx";
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -2242,7 +2242,7 @@ class Reports extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="Restock Report.xlsx";
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -2472,7 +2472,7 @@ class Reports extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="Received Report.xlsx";
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -2704,7 +2704,7 @@ class Reports extends CI_Controller {
         $exportfilename="Issued Report.xlsx";
 
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');

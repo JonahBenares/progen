@@ -260,6 +260,18 @@
 							</tr>
 							<tr><td><br></td></tr>
 							<tr>
+								<td width="5%"><label>Rack:</label></td>
+								<td width="80%" colspan="5">
+									<select name="rack" class="form-control">
+										<option value="" selected="">-Select Rack-</option>
+										<?php foreach($rack AS $r){ ?>
+											<option value="<?php echo $r->rack_id; ?>"><?php echo $r->rack_name; ?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
+							<tr><td><br></td></tr>
+							<tr>
 								<td></td>
 								<td width="8%"><label class="contener">Local:</label></td>
 								<td width="10%"><input style="width:25px" type="checkbox" class="form-control" name="local" id="local" value='1'></td>

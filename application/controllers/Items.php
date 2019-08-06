@@ -76,6 +76,7 @@ class Items extends CI_Controller {
         $data['location'] = $this->super_model->select_all('location');
         $data['warehouse'] = $this->super_model->select_all('warehouse');
         $data['bin'] = $this->super_model->select_all('bin');
+        $data['rack'] = $this->super_model->select_all('rack');
         $row=$this->super_model->count_rows("items");
         if($row!=0){
             foreach($this->super_model->select_all('items') AS $itm){
@@ -313,6 +314,12 @@ class Items extends CI_Controller {
             $subcat='null';
         }
 
+        if(!empty($this->input->post('rack'))){
+            $rack = $this->input->post('rack');
+        } else {
+            $rack='null';
+        }
+
         if(!empty($this->input->post('local'))){
             $local = $this->input->post('local');
         } else {
@@ -327,7 +334,7 @@ class Items extends CI_Controller {
 
          ?>
        <script>
-        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>'</script> <?php
+        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>/<?php echo $rack; ?>'</script> <?php
     }
     public function update_item(){
         $data['id']=$this->uri->segment(3);
@@ -858,6 +865,7 @@ class Items extends CI_Controller {
         $subcat=$this->uri->segment(4);
         $local=$this->uri->segment(5);
         $mnl=$this->uri->segment(6);
+        $rack=$this->uri->segment(7);
 
          $sql="";
         if($cat!='null'){
@@ -866,6 +874,10 @@ class Items extends CI_Controller {
 
         if($subcat!='null'){
             $sql.= " subcat_id = '$subcat' AND";
+        }
+
+        if($rack!='null'){
+            $sql.= " rack_id = '$rack' AND";
         }
 
         if($local!='null' || $mnl != 'null'){
@@ -888,7 +900,7 @@ class Items extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="items.xlsx";
         $objPHPExcel = new PHPExcel();
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -910,13 +922,10 @@ class Items extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6', "Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8', "Main Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G8', "Sub-Category");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "CENTRAL NEGROS POWER RELIABILITY, INC.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "PROGEN DIESEL TECH.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "MATERIAL INVENTORY REPORT TO DATE");
-
-
-
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A10', "No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B10', "Local/Manila");
