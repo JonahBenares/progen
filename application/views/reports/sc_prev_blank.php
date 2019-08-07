@@ -109,7 +109,7 @@
                         <tr>
                             <td colspan="2" align="right">SEMT PN:</td>
                             <td colspan="4" class="text-red"></td>
-                            <td width="5%">Bin No:</td>
+                            <td width="5%">Rack No:</td>
                             <td colspan="4" class="text-red"></td>                            
                         </tr>
                         <tr>

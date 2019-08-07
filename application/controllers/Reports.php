@@ -525,6 +525,7 @@ class Reports extends CI_Controller {
             $nkk_no = $this->super_model->select_column_where('supplier_items','nkk_no','item_id',$det->item_id);
             $semt_no = $this->super_model->select_column_where('supplier_items','semt_no','item_id',$det->item_id);
             $bin = $this->super_model->select_column_where('bin','bin_name','bin_id',$det->bin_id);
+            $rack = $this->super_model->select_column_where('rack','rack_name','rack_id',$det->rack_id);
             $data['item'][]=array(
                 'item'=>$det->item_name,
                 'group'=>$group,
@@ -533,6 +534,7 @@ class Reports extends CI_Controller {
                 'pn'=>$det->original_pn,
                 'location'=>$location,
                 'bin'=>$bin,
+                'rack'=>$rack,
             );
         }
 

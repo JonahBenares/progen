@@ -130,8 +130,8 @@
                         <tr>
                             <td colspan="2" align="right" class="ptext-white">SEMT PN:</td>
                             <td colspan="4" class="text-red">&nbsp;<?php echo $i['semt'];?></td>
-                            <td class="ptext-white">Bin No:</td>
-                            <td colspan="4" class="text-red">&nbsp;<?php echo $i['bin'];?></td>
+                            <td class="ptext-white">Rack No:</td>
+                            <td colspan="4" class="text-red">&nbsp;<?php echo $i['rack'];?></td>
                         </tr>
                         <?php } ?>
 
