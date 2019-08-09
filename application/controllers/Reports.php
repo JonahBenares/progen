@@ -507,7 +507,7 @@ class Reports extends CI_Controller {
       //  echo $id;
         $sup=$this->uri->segment(4);
         $supit=0;
-        $cat=$this->uri->segment(5);
+        $cat=str_replace("%20"," ",$this->uri->segment(5));
         $nkk=$this->uri->segment(6);
         $semt=$this->uri->segment(7);
         $brand=$this->uri->segment(8);
@@ -547,38 +547,38 @@ class Reports extends CI_Controller {
         }
 
         if($sup!='null'){
-            $sql.= " supplier_id = '$sup' OR";
+            $sql.= " supplier_id = '$sup' AND";
         }else {
             $sql.= "";
         }
 
         if($cat!='null'){
-            $sql.= " catalog_no = '$cat' OR";
+            $sql.= " catalog_no = '$cat' AND";
         }else {
             $sql.= "";
         }
 
         
         if($nkk!='null'){
-            $sql.= " nkk_no = '$nkk' OR";
+            $sql.= " nkk_no = '$nkk' AND";
         }else {
             $sql.= "";
         }
 
         if($semt!='null'){
-            $sql.= " semt_no = '$semt' OR";
+            $sql.= " semt_no = '$semt' AND";
         }else {
             $sql.= "";
         }
 
         if($brand!='null'){
-            $sql.= " brand_id = '$brand' OR";
+            $sql.= " brand_id = '$brand' AND";
         }else {
             $sql.= "";
         }
 
         $query=substr($sql,0,-3);
-
+        //echo $query;
         foreach($this->super_model->select_custom_where("receive_items", $query) AS $rec){
             $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
             $data['date'][]=$receivedate;
