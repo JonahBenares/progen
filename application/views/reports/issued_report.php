@@ -77,42 +77,47 @@
 							<br>
 							<?php if(!empty($issue)){ ?>
 							<a href = "<?php echo base_url(); ?>index.php/reports/export_issue/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>/<?php echo $item1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+									<span  class="fa fa-print"></span>
+							</button>
 							<br>
-							<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
-							<table class="table table-hover table-bordered" id="received" style="font-size: 12px">
-								<thead>
-									<tr>
-										<td align="center"><strong>Issue Date</strong></td>
-										<td align="center"><strong>PR No.</strong></td>
-										<td align="center"><strong>Item Part No.</strong></td>
-										<td align="center"><strong>Item Description</strong></td>
-										<td align="center"><strong>UoM</strong></td>
-										<td align="center"><strong>Total Qty Issued</strong></td>
-										<td align="center"><strong>Supplier</strong></td>
-										<td align="center"><strong>Department</strong></td>
-										<td align="center"><strong>Purpose</strong></td>
-										<td align="center"><strong>End Use</strong></td>
-										<td style="width:2%" align="center"><strong>Freq</strong></td>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($issue AS $is){ ?>
-									<tr>
-										<td align="center"><?php echo  date('d-M-Y',strtotime($is['issue_date']));?></td>
-										<td align="center"><?php echo $is['pr']?></td>
-										<td align="center"><?php echo $is['pn'];?></td>
-										<td align="center"><?php echo $is['item'];?></td>
-										<td align="center"><?php echo $is['unit'];?></td>
-										<td align="center"><?php echo $is['issqty'];?></td>
-										<td align="center"><?php echo $is['supplier'];?></td>
-										<td align="center"><?php echo $is['department'];?></td>
-										<td align="center"><?php echo $is['purpose'];?></td>
-										<td align="center"><?php echo $is['enduse'];?></td>
-										<td align="center"><?php ?></td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
+							<div id="printableArea">
+								<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
+								<table class="table table-hover table-bordered" id="received" style="font-size: 12px">
+									<thead>
+										<tr>
+											<td align="center"><strong>Issue Date</strong></td>
+											<td align="center"><strong>PR No.</strong></td>
+											<td align="center"><strong>Item Part No.</strong></td>
+											<td align="center"><strong>Item Description</strong></td>
+											<td align="center"><strong>UoM</strong></td>
+											<td align="center"><strong>Total Qty Issued</strong></td>
+											<td align="center"><strong>Supplier</strong></td>
+											<td align="center"><strong>Department</strong></td>
+											<td align="center"><strong>Purpose</strong></td>
+											<td align="center"><strong>End Use</strong></td>
+											<td style="width:2%" align="center"><strong>Freq</strong></td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($issue AS $is){ ?>
+										<tr>
+											<td align="center"><?php echo  date('d-M-Y',strtotime($is['issue_date']));?></td>
+											<td align="center"><?php echo $is['pr']?></td>
+											<td align="center"><?php echo $is['pn'];?></td>
+											<td align="center"><?php echo $is['item'];?></td>
+											<td align="center"><?php echo $is['unit'];?></td>
+											<td align="center"><?php echo $is['issqty'];?></td>
+											<td align="center"><?php echo $is['supplier'];?></td>
+											<td align="center"><?php echo $is['department'];?></td>
+											<td align="center"><?php echo $is['purpose'];?></td>
+											<td align="center"><?php echo $is['enduse'];?></td>
+											<td align="center"><?php ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
 							<?php } ?>
 						</div>
 					</div>

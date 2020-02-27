@@ -651,11 +651,40 @@
 					</span>
 				</a>
 				<ul class="children collapse" id="sub-item-2">
-					<li>
+					<li class="parent ">
+						<a data-toggle="collapse" href="#subsub-item-4">
+							<span data-toggle="collapse" href="#subsub-item-4" class="icon">
+								<em class="fa fa-plus"></em>
+							</span>&nbsp;PR <small>Report</small>							
+						</a>
+						<ul class="children collapse" id="subsub-item-4">
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/all_pr_report" target="_blank">
+									<span class="fa fa-arrow-right">&nbsp;</span> Overall
+								</a>
+							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/pr_report" target="_blank">
+									<span class="fa fa-arrow-right">&nbsp;</span> Receive
+								</a>
+							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/pr_report_issue" target="_blank">
+									<span class="fa fa-arrow-right">&nbsp;</span> Issue
+								</a>
+							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/pr_report_restock">
+									<span class="fa fa-arrow-right">&nbsp;</span> Restock
+								</a>
+							</li>
+						</ul>
+					</li>
+					<!-- <li>
 						<a class="" href="<?php echo base_url(); ?>index.php/reports/pr_report">
 							<span class="fa fa-arrow-right">&nbsp;</span> PR
 						</a>
-					</li>
+					</li> -->
 					<li>
 						<a class="" href="<?php echo base_url(); ?>index.php/reports/item_report">
 							<span class="fa fa-arrow-right">&nbsp;</span> Item PR

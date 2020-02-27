@@ -2,6 +2,11 @@
 <script src="<?php echo base_url(); ?>assets/js/reports.js"></script>
 <style type="text/css">
 	    #name-item li {width: 50%}
+	    @media print{
+	    	#btn-print, .hello{
+	    		display: none;
+	    	}
+	    }
 </style>	
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row">
@@ -70,27 +75,36 @@
 								<input type="submit" name="export" class = "btn btn-primary pull-right" value = "Export to Excel">
 							</form> -->
 							<?php if(!empty($head)){ ?>
-							<a href = "<?php echo base_url(); ?>index.php/reports/export/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<div id="btn-print">
+								<a id="hello" href = "<?php echo base_url(); ?>index.php/reports/export/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel
+								</a>
+								<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+										<span  class="fa fa-print"></span>
+								</button>	
+							</div>
+							<!-- <a href = "<?php echo base_url(); ?>index.php/reports/export/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel</a> -->
 							<br>
-							<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
-							<table class="table table-hover table-bordered">
-								<thead>
-									<tr>
-										<td align="center"><strong>Item Part No.</strong></td>
-										<td align="center"><strong>Item Description</strong></td>
-										<td align="center"><strong>Avail. Qty</strong></td>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($head as $h){ ?>
-									<tr>
-										<td align="center"><strong><?php echo $h['pn']?></strong></td>
-										<td align="center"><strong><?php echo $h['item']?></strong></td>
-										<td align="center"><strong><?php echo $h['total']?></strong></td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
+							<div id="printableArea">
+								<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
+								<table class="table table-hover table-bordered">
+									<thead>
+										<tr>
+											<td align="center"><strong>Item Part No.</strong></td>
+											<td align="center"><strong>Item Description</strong></td>
+											<td align="center"><strong>Avail. Qty</strong></td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($head as $h){ ?>
+										<tr>
+											<td align="center"><strong><?php echo $h['pn']?></strong></td>
+											<td align="center"><strong><?php echo $h['item']?></strong></td>
+											<td align="center"><strong><?php echo $h['total']?></strong></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
 							<?php } ?>
 						</div>
 					</div>

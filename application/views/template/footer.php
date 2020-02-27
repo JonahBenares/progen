@@ -108,7 +108,7 @@
 		document.getElementById('e').value = new Date().toISOString().substring(0, 10);
 		document.getElementById('d').value = new Date().toISOString().substring(0, 10);
 	</script>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		$(document).ready(function(){
 	        $('.type').change(function(){
 	            if($('.type option:selected').val() ==  'JO / PR' ){
@@ -119,7 +119,7 @@
 	            }
 	        });
 	    });
-	</script>
+	</script> -->
 	<script type="text/javascript">
 		// Get the modal
 		var modal = document.getElementById('myModal1');
@@ -190,6 +190,13 @@
 
 	</script>
 	<script type="text/javascript">
+		function printDiv(divName) {
+		     var printContents = document.getElementById(divName).innerHTML;
+		     var originalContents = document.body.innerHTML;
+		     document.body.innerHTML = printContents;
+		     window.print();
+		     document.body.innerHTML = originalContents;
+		}
 		function showDiv(select){
 			if(select.value=='No Left/Right'){
 				document.getElementById('a').style.display = "block";

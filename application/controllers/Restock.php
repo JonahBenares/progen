@@ -65,7 +65,7 @@ class Restock extends CI_Controller {
                 $data['restock'][] = array(
                     'rhead_id'=>$res->rhead_id,
                     'date'=>$res->restock_date,
-                    'prno'=>$res->pr_no,
+                    'prno'=>$res->from_pr,
                     'department'=>$department,
                     'enduse'=>$enduse,
                     'purpose'=>$purpose,
@@ -151,7 +151,7 @@ class Restock extends CI_Controller {
             $data['restock'][] = array(
                 'rhead_id'=>$res->rhead_id,
                 'date'=>$res->restock_date,
-                'pr_no'=>$res->pr_no,
+                'pr_no'=>$res->from_pr,
                 'department'=>$department,
                 'purpose'=>$purpose,
                 'enduse'=>$enduse,
@@ -200,7 +200,7 @@ class Restock extends CI_Controller {
             $data['restock'][] = array(
                 'rhead_id'=>$res->rhead_id,
                 'date'=>$res->restock_date,
-                'pr_no'=>$res->pr_no,
+                'pr_no'=>$res->from_pr,
                 'department'=>$department,
                 'purpose'=>$purpose,
                 'enduse'=>$enduse,
@@ -376,7 +376,7 @@ class Restock extends CI_Controller {
             $noted_by = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $stock->noted_by);
             $data['restock'][] = array(
                 'date'=>$stock->restock_date,
-                'prno'=>$stock->pr_no,
+                'prno'=>$stock->from_pr,
                 'returned'=>$returned,
                 'received'=>$received,
                 'department'=>$department,
@@ -505,7 +505,7 @@ class Restock extends CI_Controller {
         }
         $data = array(
            'restock_date'=>$date,
-           'pr_no'=> $this->input->post('prno'),
+           'from_pr'=> $this->input->post('prno'),
            'returned_by'=> $this->input->post('returned'),
            'received_by'=> $this->input->post('received'),
            'acknowledge_by'=> $this->input->post('acknowledge'),

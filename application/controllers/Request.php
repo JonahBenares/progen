@@ -153,6 +153,37 @@ class Request extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function edit_endpurp(){  
+        $this->load->view('template/header');
+        $data['id']=$this->input->post('id');
+        $id=$this->input->post('id');
+        $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
+        $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
+        $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
+        foreach($this->super_model->select_row_where('request_head', 'request_id', $id) AS $i){
+            $data['request_list'][]=array(
+                'purpose_id'=>$i->purpose_id,
+                'enduse_id'=>$i->enduse_id,
+                'department_id'=>$i->department_id,
+            );
+        }
+        $this->load->view('request/edit_endpurp',$data);
+    }
+
+    public function update_purend(){
+        $data = array(
+            'purpose_id'=>$this->input->post('purpose'),
+            'enduse_id'=>$this->input->post('enduse'),
+            'department_id'=>$this->input->post('department'),
+        );
+        $request_id = $this->input->post('request_id');
+        if($this->super_model->update_where('request_head', $data, 'request_id', $request_id)){
+            $this->super_model->update_where('issuance_head', $data, 'request_id', $request_id);
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/request/request_list'; </script>";
+        }
+    }
+
     public function view_request(){
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
@@ -352,11 +383,20 @@ class Request extends CI_Controller {
         echo $id;
     }
 
-     public function inventory_balance($itemid){
+     /*public function inventory_balance($itemid){
          $recqty= $this->super_model->select_sum("supplier_items", "quantity", "item_id", $itemid);
          $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
          $balance=$recqty-$issueqty;
          return $balance;
+    }*/
+
+    public function inventory_balance($itemid){
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
+        $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND saved='1'","rhead_id");
+        $balance=($recqty+$begbal+$restockqty)-$issueqty;
+        return $balance;
     }
 
     public function checkpritem(){

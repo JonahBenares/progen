@@ -51,7 +51,7 @@
 						  for($x=0;$x<$h;$x++){
 						  	
 							
-							$saved= $head[$x]['saved']; ?>
+							//$saved= $head[$x]['saved']; ?>
 							<div style="margin: 10px 10px"> 
 								<div class="row border-class shadow">
 									<div style="padding:0px 15px!important">
@@ -128,7 +128,7 @@
 														<tr>
 															
 															<td>
-																<?php if($saved==0){ ?>
+																<?php if($it['quantity']!=0){ ?>
 																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' value="<?php echo $it['quantity']; ?>" style='width:50px' max="<?php echo $it['quantity']; ?>">
 																<?php } else { 
 																	echo $it['issue_qty'];
@@ -143,26 +143,17 @@
 															<td><?php echo $it['supplier']; ?></td>
 															<td><?php echo $it['item']; ?></td>
 															<td><?php echo $it['brand']; ?></td>
-															<td><?php if($saved==0){ ?>
+															<td>
 																<select name='serial[]'>
 																	<option value='' selected>-Serial No-</option>
 																	<?php foreach($serial[$ct] AS $ser){ ?>
 																	<option value='<?php echo $ser->serial_id; ?>'><?php echo $ser->serial_no; ?></option>
 																	<?php } ?>
 																</select>
-																<?php } else { 
-																	echo $it['serial'];
-
-																 } ?>
 															</td>
 
 															<td>
-																<?php if($saved==0){ ?>
 																<textarea name='remarks[]' id='remarks[]'></textarea>
-																<?php } else { 
-																	echo $it['remarks'];
-
-																 } ?>
 															</td>
 															
 														</tr>
@@ -184,12 +175,12 @@
 												<input type="hidden" name="count" id="count" value="<?php echo $ct; ?>">
 											<!-- 	<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>"> -->
 												<input type="hidden" name="userid" id="userid" value="<?php echo $_SESSION['user_id']; ?>">
-												<?php if($saved==0){ ?>
+												<!-- <?php if($saved==0){ ?> -->
 												<input type='button' class="btn btn-md btn-warning"  onclick='saveIssue()' style="width:100%;background: #ff5d00" value='Save and Print'>
-												<?php } else { ?>
+												<!-- <?php } else { ?>
 												
 												<input type='button' class="btn btn-md btn-warning"  onclick='reprintIssue(<?php echo $head[$x]['issueid']; ?>)' style="width:100%;background: #ff5d00" value='Re-Print MIF'>
-												<?php } ?>
+												<?php } ?> -->
 											</div>
 										</div>
 									</div>

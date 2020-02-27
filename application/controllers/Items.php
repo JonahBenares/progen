@@ -403,19 +403,33 @@ class Items extends CI_Controller {
     }*/
 
     public function inventory_balance($itemid){
-         $recqty= $this->super_model->select_sum("supplier_items", "quantity", "item_id", $itemid);
-      //   $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
-         $issueqty= $this->super_model->select_sum("issuance_details","quantity", "item_id",$itemid);
-         $balance=$recqty-$issueqty;
-         return $balance;
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
+        $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND excess = '0' AND saved='1'","rhead_id");
+        $balance=($recqty+$begbal+$restockqty)-$issueqty;
+        return $balance;
+
+        //$recqty= $this->super_model->select_sum("supplier_items", "quantity", "item_id", $itemid);
+        //   $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
+         //$issueqty= $this->super_model->select_sum("issuance_details","quantity", "item_id",$itemid);
+         //$balance=$recqty-$issueqty;
     }
 
     public function crossref_balance($itemid,$supplierid,$brandid,$catalogno){
-        $recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno'");
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
+        $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","receive_id");
+
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","issuance_id");
+
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND excess = '0' AND saved='1'","rhead_id");
+        $balance=($recqty+$begbal+$restockqty)-$issueqty;
+         return $balance;
+        /*$recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno'");
 
         $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","issuance_id");
          $balance=$recqty-$issueqty;
-         return $balance;
+         return $balance;*/
     }
 
 
@@ -1080,6 +1094,8 @@ class Items extends CI_Controller {
         $data['group'] = $this->super_model->select_all('group');
         $data['location'] = $this->super_model->select_all('location');
         $data['bin'] = $this->super_model->select_all('bin');
+        $data['rack'] = $this->super_model->select_all('rack');
+        $data['warehouse'] = $this->super_model->select_all('warehouse');
 
         $sql="";
         $filter ="";
@@ -1130,7 +1146,7 @@ class Items extends CI_Controller {
         }
 
         if(!empty($rack)){
-            $sql.= " items.rack = '$rack' AND";
+            $sql.= " items.rack_id = '$rack' AND";
             $filter.="Rack = " .  $rack . ", ";
         }
 

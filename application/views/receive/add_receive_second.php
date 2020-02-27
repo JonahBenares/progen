@@ -123,11 +123,11 @@
 							<?php } else { 
 								foreach($details AS $det) { ?>
 
-								<div class="col-lg-3">
+								<div class="col-lg-2 col-lg-offset-1">
 									<h5>PR#:
 									<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control"></h5>
 								</div>
-								<div class="col-lg-3">
+								<div class="col-lg-2">
 									<h5>Department: 
 										<select name="department" id='department' class="form-control">
 											<option value = ""></option>
@@ -137,7 +137,7 @@
 										</select>
 									</h5>
 								</div>	
-								<div class="col-lg-3">
+								<div class="col-lg-2">
 									<h5>End-Use: 
 									<select name="enduse" id='enduse' class="form-control">
 										<option value = ""></option>
@@ -147,7 +147,7 @@
 									</select>
 									</h5>
 								</div>	
-								<div class="col-lg-3">
+								<div class="col-lg-2">
 									<h5>Purpose: 
 									<select name="purpose" id="purpose" class="form-control">
 										<option value = ""></option>
@@ -157,8 +157,17 @@
 									</select>
 									</h5>
 								</div>	
-								
-								<input type="text" name="rdid" id='rdid' value='<?php echo $rdid; ?>'>
+								<div class="col-lg-2">
+									<h5>Inspected By:
+									<select name="inspected" id="inspected" class="form-control">
+										<option value = ""></option>
+										<?php foreach($employee AS $emp){ ?>
+										<option value = "<?php echo $emp['empid'];?>" <?php echo (($det['inspected'] == $emp['empid']) ? ' selected' : '');?>><?php echo $emp['empname'];?></option>
+										<?php } ?>
+									</select>
+									</h5>
+								</div>
+								<input type="hidden" name="rdid" id='rdid' value='<?php echo $rdid; ?>'>
 							<?php 
 								}
 							} ?>							

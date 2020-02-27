@@ -66,6 +66,8 @@ class Receive extends CI_Controller {
                 'prno'=>$det->pr_no,
                 'enduse'=>$enduse,
                 'purpose'=>$purpose,
+                'purpose_id'=>$det->purpose_id,
+                'enduse_id'=>$det->enduse_id,
                 'department'=>$deparment,
                 'closed'=>$det->closed
             );
@@ -106,6 +108,40 @@ class Receive extends CI_Controller {
         $this->load->view('receive/view_receive',$data);
         $this->load->view('template/footer');
     } 
+
+    public function edit_endpurp(){  
+        $this->load->view('template/header');
+        $data['id']=$this->input->post('id');
+        $id=$this->input->post('id');
+        $data['rec_id']=$this->input->post('recid');
+        $rec_id=$this->input->post('recid');
+        $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
+        $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
+        $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
+        $this->load->model('super_model');
+        foreach($this->super_model->select_row_where('receive_details', 'rd_id', $id) AS $det){
+            $data['details'][] = array(
+                'department_id'=>$det->department_id,
+                'purpose_id'=>$det->purpose_id,
+                'enduse_id'=>$det->enduse_id,
+            );
+        }
+        $this->load->view('receive/edit_endpurp',$data);
+    }
+
+    public function update_purend(){
+        $data = array(
+            'purpose_id'=>$this->input->post('purpose'),
+            'enduse_id'=>$this->input->post('enduse'),
+            'department_id'=>$this->input->post('department'),
+        );
+        $rd_id = $this->input->post('rd_id');
+        $rec_id = $this->input->post('rec_id');
+        if($this->super_model->update_where('receive_details', $data, 'rd_id', $rd_id)){
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/receive/view_receive/$rec_id'; </script>";
+        }
+    }
 
      public function mrf(){
         $data['id']=$this->uri->segment(3);
@@ -313,7 +349,8 @@ class Receive extends CI_Controller {
                 'department'=>$department,
                 'department_id'=>$d->department_id,
                 'enduse_id'=>$d->enduse_id,
-                'purpose_id'=>$d->purpose_id
+                'purpose_id'=>$d->purpose_id,
+                'inspected'=>$d->inspected_by,
             );
         }
         $data['enduse'] = $this->super_model->select_all_order_by("enduse",'enduse_name','ASC');
@@ -325,36 +362,41 @@ class Receive extends CI_Controller {
                     'empid'=>$sign->employee_id
                 );
         }
-        foreach($this->super_model->select_row_where("receive_items", "rd_id", $rdid) AS $rit){
-            foreach($this->super_model->select_custom_where("items", "item_id = '$rit->item_id'") AS $itema){
-                $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itema->unit_id);
+        $count_ri = $this->super_model->count_rows_where("receive_items", "rd_id", $rdid);
+        if($count_ri!=0){
+            foreach($this->super_model->select_row_where("receive_items", "rd_id", $rdid) AS $rit){
+                foreach($this->super_model->select_custom_where("items", "item_id = '$rit->item_id'") AS $itema){
+                    $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itema->unit_id);
+                }
+                $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $rit->item_id);
+                $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $rit->supplier_id);
+                /*$unit = $this->super_model->select_column_where('items', 'unit', 'item_id', $rit->item_id);*/
+                $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $rit->brand_id);
+                $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $rit->inspected_by);
+                $total=$rit->received_qty*$rit->item_cost;
+                $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $rit->serial_id);
+                $data['receive_items'][] = array(
+                        'riid'=>$rit->ri_id,
+                        'rdid'=>$rdid,
+                        'supplier'=>$supplier,
+                        'item'=>$item,
+                        'brand'=>$brand,
+                        'catalog_no'=>$rit->catalog_no,
+                        'nkk_no'=>$rit->nkk_no,
+                        'semt_no'=>$rit->semt_no,
+                        'unit_cost'=>$rit->item_cost,
+                        'unit'=>$unit,
+                        'expqty'=>$rit->expected_qty,
+                        'recqty'=>$rit->received_qty,
+                        'remarks'=>$rit->remarks,
+                        'inspected'=>$inspected,
+                        'total'=>$total,
+                        'serial'=>$serial,
+                        'local_mnl'=>$rit->local_mnl
+                    );
             }
-            $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $rit->item_id);
-            $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $rit->supplier_id);
-            /*$unit = $this->super_model->select_column_where('items', 'unit', 'item_id', $rit->item_id);*/
-            $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $rit->brand_id);
-            $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $rit->inspected_by);
-            $total=$rit->received_qty*$rit->item_cost;
-            $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $rit->serial_id);
-            $data['receive_items'][] = array(
-                    'riid'=>$rit->ri_id,
-                    'rdid'=>$rdid,
-                    'supplier'=>$supplier,
-                    'item'=>$item,
-                    'brand'=>$brand,
-                    'catalog_no'=>$rit->catalog_no,
-                    'nkk_no'=>$rit->nkk_no,
-                    'semt_no'=>$rit->semt_no,
-                    'unit_cost'=>$rit->item_cost,
-                    'unit'=>$unit,
-                    'expqty'=>$rit->expected_qty,
-                    'recqty'=>$rit->received_qty,
-                    'remarks'=>$rit->remarks,
-                    'inspected'=>$inspected,
-                    'total'=>$total,
-                    'serial'=>$serial,
-                    'local_mnl'=>$rit->local_mnl
-                );
+        } else {
+            $data['receive_items'] = array();
         }
         $this->load->view('template/header');
         $this->load->view('receive/add_receive_second',$data);
@@ -490,7 +532,7 @@ class Receive extends CI_Controller {
             foreach($this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rd.pr_no LIKE '%$prno%' AND rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no") AS $pr){ 
                     $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id",$pr->purpose_id);
                     ?>
-                   <li onClick="selectPRNO('<?php echo $pr->pr_no; ?>','<?php echo $pr->department_id; ?>','<?php echo $pr->enduse_id; ?>','<?php echo $pr->purpose_id; ?>','<?php echo $purpose; ?>')"><?php echo $pr->pr_no; ?></li>
+                   <li onClick="selectPRNO('<?php echo $pr->pr_no; ?>','<?php echo $pr->department_id; ?>','<?php echo $pr->enduse_id; ?>','<?php echo $pr->purpose_id; ?>')"><?php echo $pr->pr_no; ?></li>
                 <?php 
             }
            
@@ -532,6 +574,63 @@ class Receive extends CI_Controller {
 
     public function seriallist(){
         $serial=$this->input->post('serial');
+        $item=$this->input->post('item');
+        $brand=$this->input->post('brand');
+        $brandl=$this->input->post('brandl');
+        $iteml=$this->input->post('iteml');
+        $seriall=$this->input->post('seriall');
+        $count_exist=0;
+      //  print_r($seriall);
+        if(empty($seriall)){
+            $s = array();
+        } else {
+            $s =  array($seriall);
+        }
+
+        if(empty($iteml)){
+            $i = array();
+        } else {
+            $i =  array($iteml);
+        }
+
+         if(empty($brandl)){
+            $b = array();
+        } else {
+            $b =  array($brandl);
+        }
+
+       if(in_array($item, $i)){
+        $count_exist++;
+       }
+
+       if(in_array($brand, $b)){
+        $count_exist++;
+       }
+
+       if(in_array($serial, $s)){
+        $count_exist++;
+       }
+
+
+       if($count_exist==3){
+           echo "error";
+        } else {
+             $rows=$this->super_model->count_custom_where("serial_number","serial_no LIKE '%$serial%'");
+            if($rows!=0){
+                 echo "<ul id='name-item'>";
+                foreach($this->super_model->select_custom_where("serial_number", "serial_no LIKE '%$serial%'") AS $srl){ 
+                       
+                        ?>
+                       <li onClick="selectSerial('<?php echo $srl->serial_id; ?>','<?php echo $srl->serial_no; ?>')"><?php echo $srl->serial_no; ?></li>
+                    <?php 
+                }
+                 echo "<ul>";
+            } 
+        }
+    }
+
+    /*public function seriallist(){
+        $serial=$this->input->post('serial');
         $rows=$this->super_model->count_custom_where("serial_number","serial_no LIKE '%$serial%'");
         if($rows!=0){
              echo "<ul id='name-item'>";
@@ -543,7 +642,7 @@ class Receive extends CI_Controller {
             }
              echo "<ul>";
         }
-    }
+    }*/
     
      public function getitem(){
        /* if(!empty($this->input->post('inspected'))){

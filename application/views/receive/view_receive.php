@@ -40,7 +40,14 @@
 								<td width="5%"><p class="nomarg">Date:</p></td>
 								<td width="20%"><label class="labelStyle"><?php echo date('F j, Y',strtotime($h->receive_date)); ?></label></td>
 								<td width="5%"></td>
+								<?php if($h->saved==0){ ?>
 								<td><a onclick="update_head('<?php echo $h->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+								<?php }else if($_SESSION['user_id'] == '5' && $h->saved==1){ ?>
+								<td><a onclick="update_head('<?php echo $h->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+								<?php }else { ?>
+								<td><a onclick="update_head('<?php echo $h->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm" style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>
+								<?php } ?>
+								<!-- <td><a onclick="update_head('<?php echo $h->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td> -->
 							</tr>
 							<tr>
 								<td></td>
@@ -75,6 +82,12 @@
 									<form method = "POST">
 									<div class="col-lg-2">
 										<div class="pull-right">
+											<?php if($_SESSION['user_id'] == '5'){ ?>
+												<a class="btn btn-info" data-toggle="modal" data-target="#updatePR" id = 'getEP' data-id="<?php echo $d['rdid']; ?>" title="Update Purpose & Enduse">
+												<span class="fa fa-pencil"></span>
+												</a>
+												<input type='hidden' name='rec' id='rec' value="<?php echo $id; ?>">
+											<?php } ?>
 											<?php if($d['closed'] == '0'){ ?>
 											<a onclick="confirmClose('<?php echo $d['prno'];?>', '<?php echo base_url(); ?>','<?php echo $id; ?>');" class="btn btn-gold" title="close PR"><span class="fa fa-unlock-alt"></span></a>
 											<?php } else { ?>
@@ -82,8 +95,31 @@
 											<?php } ?>
 										</div>
 									</div>
-									</form>		
-									
+									</form>	
+										
+									<div class="modal fade" id="updatePR" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLongTitle">Update Purpose & Enduse
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</h5>															
+												</div>
+												<form method="POST" action = "<?php echo base_url(); ?>/index.php/receive/update_purend">
+													<div class="modal-body">
+														<div id = 'ep'></div>
+													</div>
+													<input type='hidden' name='rec_id' id='rec_id' value="<?php echo $id; ?>">
+													<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+													<div class="modal-footer">
+														<button type="submit" class="btn btn-primary btn-block">Save changes</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 									<table width="100%" class="table table-bordered " >
 										<tr >
 											<th class="tr-bottom" width="5%"><center>Item No.</center></th>

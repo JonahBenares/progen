@@ -203,7 +203,13 @@
 							<tr>
 								<td class="td-sclass"><label for="sub">Rack:</label></td>
 								<td class="td-sclass">
-									<input class="form-control" name="rack">
+									<select class="form-control" name="rack">
+										<option value='' selected>-Choose Rack-</option>
+										<?php foreach($rack as $r) { ?>
+										<option value='<?php echo $r->rack_id; ?>'><?php echo $r->rack_name; ?></option>
+										<?php } ?>
+									</select>
+									<!-- <input class="form-control" name="rack"> -->
 								</td>
 							</tr>
 							<tr>

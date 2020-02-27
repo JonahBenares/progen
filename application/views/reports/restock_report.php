@@ -76,50 +76,55 @@
 							<br>
 							<?php if(!empty($restock)){ ?>
 							<a href = "<?php echo base_url(); ?>index.php/reports/export_restock/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+									<span  class="fa fa-print"></span>
+							</button>
 							<br>
-							<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
-							<div style="overflow-x: scroll;padding-bottom: 20px ">
-							<table class="table-bordered table-hover table" id="received" style="font-size: 12px;width: 150%">
-								<thead>
-									<tr>
-										<td width="" align="center"><strong>Restock Date</strong></td>
-										<td width="" align="center"><strong>PR#.</strong></td>
-										<td width="" align="center"><strong>Item Part No.</strong></td>
-										<td width="" align="center"><strong>Item Description</strong></td>
-										<td width="" align="center"><strong>UoM</strong></td>
-										<td width="" align="center"><strong>Quantity</strong></td>
-										<td width="" align="center"><strong>Supplier</strong></td>
-										<td width="" align="center"><strong>Department</strong></td>
-										<td width="30%" align="center"><strong>End-Use</strong></td>
-										<td width="" align="center"><strong>Purpose</strong></td>
-										<td width="" align="center"><strong>Acknowledge By</strong></td>
-										<td width="" align="center"><strong>Noted By</strong></td>
-										<td width="" align="center"><strong>Returned By</strong></td>
-										<td align="center" ><strong>Received By</strong></td>
+							<div id="printableArea">
+								<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
+								<div style="overflow-x: scroll;padding-bottom: 20px ">
+								<table class="table-bordered table-hover table" id="received" style="font-size: 12px;width: 150%">
+									<thead>
+										<tr>
+											<td width="" align="center"><strong>Restock Date</strong></td>
+											<td width="" align="center"><strong>PR#.</strong></td>
+											<td width="" align="center"><strong>Item Part No.</strong></td>
+											<td width="" align="center"><strong>Item Description</strong></td>
+											<td width="" align="center"><strong>UoM</strong></td>
+											<td width="" align="center"><strong>Quantity</strong></td>
+											<td width="" align="center"><strong>Supplier</strong></td>
+											<td width="" align="center"><strong>Department</strong></td>
+											<td width="30%" align="center"><strong>End-Use</strong></td>
+											<td width="" align="center"><strong>Purpose</strong></td>
+											<td width="" align="center"><strong>Acknowledge By</strong></td>
+											<td width="" align="center"><strong>Noted By</strong></td>
+											<td width="" align="center"><strong>Returned By</strong></td>
+											<td align="center" ><strong>Received By</strong></td>
 
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($restock as $rec){ ?>
-									<tr>
-										<td align="center"><?php echo date('d-M-Y',strtotime($rec['res_date']));?></td>
-										<td align="center"><?php echo $rec['pr']?></td>
-										<td align="center"><?php echo $rec['pn']?></td>
-										<td align="center"><?php echo $rec['item']?></td>
-										<td align="center"><?php echo $rec['unit']?></td>
-										<td align="center"><?php echo $rec['qty']?></td>
-										<td align="center"><?php echo $rec['supplier']?></td>
-										<td align="center"><?php echo $rec['department']?></td>
-										<td align="center"><?php echo $rec['enduse']?></td>
-										<td align="center"><?php echo $rec['purpose']?></td>
-										<td align="center"><?php echo $rec['acknowledge']?></td>
-										<td align="center"><?php echo $rec['noted_by']?></td>
-										<td align="center"><?php echo $rec['returned_by']?></td>
-										<td align="center"><?php echo $rec['received_by']?></td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($restock as $rec){ ?>
+										<tr>
+											<td align="center"><?php echo date('d-M-Y',strtotime($rec['res_date']));?></td>
+											<td align="center"><?php echo $rec['pr']?></td>
+											<td align="center"><?php echo $rec['pn']?></td>
+											<td align="center"><?php echo $rec['item']?></td>
+											<td align="center"><?php echo $rec['unit']?></td>
+											<td align="center"><?php echo $rec['qty']?></td>
+											<td align="center"><?php echo $rec['supplier']?></td>
+											<td align="center"><?php echo $rec['department']?></td>
+											<td align="center"><?php echo $rec['enduse']?></td>
+											<td align="center"><?php echo $rec['purpose']?></td>
+											<td align="center"><?php echo $rec['acknowledge']?></td>
+											<td align="center"><?php echo $rec['noted_by']?></td>
+											<td align="center"><?php echo $rec['returned_by']?></td>
+											<td align="center"><?php echo $rec['received_by']?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
 							<?php } ?>
 						</div>
 						</div>

@@ -74,41 +74,46 @@
 							<br>
 							<?php if(!empty($rec)){ ?>
 							<a href = "<?php echo base_url(); ?>index.php/reports/export_rec/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+									<span  class="fa fa-print"></span>
+							</button>
 							<br>
-							<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
-							<table class="table table-hover table-bordered" id="received"  style="font-size: 12px">
-								<thead>
-									<tr>
-										
-										<th align="center"><strong>Receive Date</strong></th>
-										<th align="center"><strong>PR No.</strong></th>
-										<th align="center"><strong>Item Part No.</strong></th>
-										<th align="center"><strong>Item Description</strong></th>
-										<th align="center"><strong>Total Qty Received</strong></th>
-										<th align="center"><strong>UoM</strong></th>
-										<th align="center"><strong>Supplier</strong></th>
-										<th align="center"><strong>Department</strong></th>
-										<th align="center"><strong>Purpose</strong></th>
-										<th align="center"><strong>End Use</strong></th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php foreach($rec as $rec){ ?>
-									<tr>
-										<td align="center"><?php echo date('d-M-Y',strtotime($rec['rec_date']));?></td>
-										<td align="center"><?php echo $rec['pr']?></td>
-										<td align="center"><?php echo $rec['pn']?></td>
-										<td align="center"><?php echo $rec['item']?></td>
-										<td align="center"><?php echo $rec['recqty']?></td>
-										<td align="center"><?php echo $rec['unit']?></td>
-										<td align="center"><?php echo $rec['supplier']?></td>
-										<td align="center"><?php echo $rec['department']?></td>
-										<td align="center"><?php echo $rec['purpose']?></td>
-										<td align="center"><?php echo $rec['enduse']?></td>
-									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
+							<div id="printableArea">
+								<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
+								<table class="table table-hover table-bordered" id="received"  style="font-size: 12px">
+									<thead>
+										<tr>
+											
+											<th align="center"><strong>Receive Date</strong></th>
+											<th align="center"><strong>PR No.</strong></th>
+											<th align="center"><strong>Item Part No.</strong></th>
+											<th align="center"><strong>Item Description</strong></th>
+											<th align="center"><strong>Total Qty Received</strong></th>
+											<th align="center"><strong>UoM</strong></th>
+											<th align="center"><strong>Supplier</strong></th>
+											<th align="center"><strong>Department</strong></th>
+											<th align="center"><strong>Purpose</strong></th>
+											<th align="center"><strong>End Use</strong></th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($rec as $rec){ ?>
+										<tr>
+											<td align="center"><?php echo date('d-M-Y',strtotime($rec['rec_date']));?></td>
+											<td align="center"><?php echo $rec['pr']?></td>
+											<td align="center"><?php echo $rec['pn']?></td>
+											<td align="center"><?php echo $rec['item']?></td>
+											<td align="center"><?php echo $rec['recqty']?></td>
+											<td align="center"><?php echo $rec['unit']?></td>
+											<td align="center"><?php echo $rec['supplier']?></td>
+											<td align="center"><?php echo $rec['department']?></td>
+											<td align="center"><?php echo $rec['purpose']?></td>
+											<td align="center"><?php echo $rec['enduse']?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
 							<?php } ?>
 						</div>
 					</div>

@@ -17,6 +17,25 @@ function updateReceivePR(baseurl, id, rdid) {
 }
 
 
+$(document).on('click', '#getEP', function(e){
+    e.preventDefault();
+    var uid = $(this).data('id');    
+    var loc= document.getElementById("baseurl").value;
+    var rec_id= document.getElementById("rec").value;
+    var redirect1=loc+'/index.php/receive/edit_endpurp';
+    $.ajax({
+          url: redirect1,
+          type: 'POST',
+          data: 'id='+uid+'&recid='+rec_id,
+        beforeSend:function(){
+            $("#ep").html('Please wait ..');
+        },
+        success:function(data){
+           $("#ep").html(data);
+        },
+    })
+});
+
 $(document).ready(function(){
     var loc= document.getElementById("baseurl").value;
     var redirect=loc+'/index.php/receive/itemlist';
@@ -99,7 +118,7 @@ $(document).ready(function(){
           });
      });*/
 
-     $("#serial").keyup(function(){
+    /* $("#serial").keyup(function(){
         var loc= document.getElementById("baseurl").value;
         var redirect=loc+'/index.php/receive/seriallist';
           $.ajax({
@@ -113,6 +132,54 @@ $(document).ready(function(){
                 $("#suggestion-serial").show();
                 $("#suggestion-serial").html(data);
                 $("#serial").css("background","#FFF");
+            }
+          });
+     });*/
+
+     $("#serial").keyup(function(){
+        var loc= document.getElementById("baseurl").value;
+        var item =$('#item').val();
+        var brand =$('#brand').val();
+         var counter =$('#item_body tr').length;
+         var brandl = [];
+            for(var x = 1; x<=counter; x++){
+                var bl =$('#brandlist_'+x).val();
+                brandl.push(bl);
+            }
+
+        var iteml = [];
+            for(var x = 1; x<=counter; x++){
+                var il =$('#itemlist_'+x).val();
+                iteml.push(il);
+            }
+         
+         var seriall = [];
+            for(var x = 1; x<=counter; x++){
+                var sl =$('#seriallist_'+x).val();
+                seriall.push(sl);
+            }
+
+        var redirect=loc+'/index.php/receive/seriallist';
+          $.ajax({
+            type: "POST",
+            url: redirect,
+            data:'serial='+$(this).val()+'&item='+item+'&brand='+brand+'&brandl='+brandl+'&iteml='+iteml+'&seriall='+seriall,
+            beforeSend: function(){
+                $("#serial").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+            },
+            success: function(data){
+                if(data!='error'){
+                    $("#suggestion-serial").show();
+                    $("#suggestion-serial").html(data);
+                    $("#serial").css("background","#FFF");
+                   document.getElementById("additem").style.pointerEvents="auto";
+                   document.getElementById("additem").style.cursor="pointer";
+                } else {
+                    alert('Warning: Serial number with the same item and brand is already existing.');
+                    document.getElementById("additem").style.pointerEvents="none";
+                    document.getElementById("additem").style.cursor="default";
+                }
+                
             }
           });
      });
@@ -170,7 +237,7 @@ function selectSerial(id, val) {
     $("#suggestion-purpose").hide();
 }*/
 
-function selectPRNO(valu,dept,enduse,purposeid,purpose1) {
+function selectPRNO(valu,dept,enduse,purposeid) {
  
  
     $("#prno").val(valu);

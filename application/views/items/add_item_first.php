@@ -130,11 +130,11 @@
 										</div>
 									</div>
 									<div class="row" style="padding: 0px 0px 10px 0px">
-										<div class="col-lg-4">
+										<!-- <div class="col-lg-4">
 											<label class="btn btn-danger"><input  type="checkbox" value="1" name="damage" id="damage" class="form-control"> Damage</label>
-										</div>
-										<div class="col-lg-4 col-lg-offset-4">
-											<label for="pn">Minimun Order Quantity:</label>
+										</div> -->
+										<div class="col-lg-4">
+											<label for="pn">Minimum Order Quantity:</label>
 											<input style="text-align: right" class="form-control"  type="text" name="minimum" id="minimum">
 										</div>
 									</div>

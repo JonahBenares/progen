@@ -53,7 +53,7 @@ class Issue extends CI_Controller {
     }
 
    
-    public function load_issue(){
+    public function load_issue_old(){
         $id=$this->uri->segment(3);
         $data['id']=$id;
         $saved = $this->super_model->select_column_where("issuance_head", "saved", "request_id", $id);
@@ -175,6 +175,97 @@ class Issue extends CI_Controller {
         }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('issue/load_issue_old',$data);
+        $this->load->view('template/footer');
+    }
+
+    public function load_issue(){
+        $id=$this->uri->segment(3);
+        $data['id']=$id;
+    
+        $year=date('Y-m');
+       
+
+       $rows=$this->super_model->count_custom_where("issuance_head","create_date LIKE '$year%'");
+      
+        if($rows==0){
+             $mifno = "MIF-".$year."-0001";
+        } else {
+            $maxrecno=$this->super_model->get_max_where("issuance_head", "mif_no","create_date LIKE '$year%'");
+            $recno = explode('-',$maxrecno);
+           
+            $series = $recno[3]+1;
+            if(strlen($series)==1){
+                $mifno = "MIF-".$year."-000".$series;
+            } else if(strlen($series)==2){
+                 $mifno = "MIF-".$year."-00".$series;
+            } else if(strlen($series)==3){
+                 $mifno = "MIF-".$year."-0".$series;
+            } else if(strlen($series)==4){
+                 $mifno = "MIF-".$year."-".$series;
+            }
+        }
+        
+            foreach($this->super_model->select_row_where("request_head", "request_id", $id) AS $hd){
+              
+                $saved = $this->super_model->select_column_where("issuance_head", "saved", "request_id", $id);
+                $issueid = $this->super_model->select_column_where("issuance_head", "issuance_id", "request_id", $id);
+                $data['head'][] = array(
+                    "issueid"=>$issueid,
+                    "requestid"=>$id,
+                    "mif"=>$mifno,
+                    "mreqf_no"=>$hd->mreqf_no,
+                    "request_date"=>$hd->request_date,
+                    "request_time"=>$hd->request_time,
+                    "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $hd->department_id),
+                    "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $hd->purpose_id),
+                    "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $hd->enduse_id),
+                    "prno"=>$hd->pr_no,
+                    "borrowfrom"=>$hd->borrowfrom_pr,
+                    "remarks"=>$hd->remarks,
+
+                );
+            }
+            $x=0;
+            foreach($this->super_model->select_row_where("request_items", "request_id", $id) AS $it){
+                //echo $it->rq_id;
+                //$issue_qty = $this->super_model->select_column_where("issuance_details", "quantity", "rq_id", $it->rq_id);
+                $remarks = $this->super_model->select_column_where("issuance_details", "remarks", "rq_id", $it->rq_id);
+                $issueid = $this->super_model->select_column_where("issuance_details", "issuance_id", "rq_id", $it->rq_id);
+                $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
+                $issued_qty = $this->super_model->select_sum_join("quantity","issuance_head","issuance_details", "request_id = '$id' AND item_id ='$it->item_id' AND rq_id = '$it->rq_id'","issuance_id");
+
+                $rem_qty = $it->quantity - $issued_qty;
+                $data['items'][] = array(
+                    "rqid"=>$it->rq_id,
+                    "nkk_no"=>$it->nkk_no,
+                    "semt_no"=>$it->semt_no,
+                    "catalog_no"=>$it->catalog_no,
+                    "uom"=>$unit,
+                    "rem_quantity"=>$rem_qty,
+                    "quantity"=>$it->quantity,
+                    "pn_no"=>$it->pn_no,
+                    "item"=>$this->super_model->select_column_where("items", "item_name", "item_id", $it->item_id),
+                    "supplier"=>$this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $it->supplier_id),
+                    "brand"=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $it->brand_id),
+                  
+                    "item_id"=>$it->item_id,
+                    "supplier_id"=>$it->supplier_id,
+                    "brand_id"=>$it->brand_id,
+                    "issue_qty"=>$issued_qty,
+                    "remarks"=>$remarks,
+                    "issueid"=>$issueid
+
+                );
+
+                 $siid=$this->super_model->select_column_custom_where("supplier_items", "si_id", "item_id = '$it->item_id' AND supplier_id = '$it->supplier_id' AND brand_id ='$it->brand_id' AND catalog_no = '$it->catalog_no'"); 
+                 $data['serial'][$x]=$this->super_model->select_row_where("serial_number", "si_id", $siid);
+                 $x++;
+             }
+            
+         
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('issue/load_issue',$data);
         $this->load->view('template/footer');
     }
@@ -224,7 +315,7 @@ class Issue extends CI_Controller {
         $this->load->view('template/footer');
     }
 
-    public function new_inv_balance($itemid, $prno){
+    public function new_inv_balance_old($itemid, $prno){
         foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS rqty FROM receive_details rd INNER JOIN receive_items ri ON rd.rd_id = ri.rd_id WHERE ri.item_id = '$itemid' AND rd.pr_no = '$prno'") AS $r){
             $received = $r->rqty;
         }
@@ -242,6 +333,65 @@ class Issue extends CI_Controller {
         $bal = ($received+$restock+$wh_stocks) - $issued;
         return $bal;
     }
+
+    public function edit_endpurp(){  
+        $this->load->view('template/header');
+        $data['id']=$this->input->post('id');
+        $id=$this->input->post('id');
+        $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_id', 'ASC');
+        $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_id', 'ASC');
+        $data['dept'] = $this->super_model->select_all_order_by('department', 'department_id', 'ASC');
+        foreach($this->super_model->select_row_where('issuance_head', 'issuance_id', $id) AS $i){
+            $data['issue_list'][]=array(
+                'purpose_id'=>$i->purpose_id,
+                'enduse_id'=>$i->enduse_id,
+                'department_id'=>$i->department_id,
+            );
+        }
+        $this->load->view('issue/edit_endpurp',$data);
+    }
+
+    public function update_purend(){
+        $data = array(
+            'purpose_id'=>$this->input->post('purpose'),
+            'enduse_id'=>$this->input->post('enduse'),
+            'department_id'=>$this->input->post('department'),
+        );
+        $issuance_id = $this->input->post('issuance_id');
+        if($this->super_model->update_where('issuance_head', $data, 'issuance_id', $issuance_id)){
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/issue/view_issue'; </script>";
+        }
+    }
+
+    public function new_inv_balance($itemid, $pr_no){
+        if(empty($pr_no)){
+            $prno = "pr_no = ''";
+            $frompr = "from_pr = ''";
+        } else {
+            $prno = "pr_no = '".$pr_no."'";
+            $frompr = "from_pr = '".$pr_no."'";
+        }
+
+        foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS rqty FROM receive_head rh INNER JOIN  receive_details rd ON rd.receive_id = rh.receive_id INNER JOIN receive_items ri ON rd.rd_id = ri.rd_id WHERE ri.item_id = '$itemid' AND saved ='1'") AS $r){
+            $received = $r->rqty;
+        }
+
+        foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS iqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE id.item_id = '$itemid' AND saved='1'") AS $i){
+            $issued = $i->iqty;
+        }
+
+   
+        foreach($this->super_model->custom_query("SELECT SUM(rsd.quantity) AS rsqty FROM restock_head rsh INNER JOIN restock_details rsd ON rsh.rhead_id = rsd.rhead_id WHERE rsd.item_id = '$itemid' AND excess = '0' AND saved='1'") AS $rs){
+            $restock = $rs->rsqty;
+        }
+
+        $wh_stocks = $this->super_model->select_sum_where("supplier_items", "quantity", "item_id ='$itemid' AND supplier_id = '0' AND catalog_no ='begbal'");
+
+        $bal = ($received+$restock+$wh_stocks) - $issued;
+        return $bal;
+    }
+
     public function mif(){
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
