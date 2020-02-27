@@ -1476,24 +1476,20 @@ class Assembly extends CI_Controller {
     }
 
     public function receive_report(){
-        $row = $this->super_model->count_custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id");
+        $row = $this->super_model->count_custom_query("SELECT rh.*, rd.* FROM assembly_receive_head rh INNER JOIN assembly_receive_details rd ON rh.ass_rec_id = rd.ass_rec_id");
         if($row!=0){
-            foreach($this->super_model->custom_query("SELECT ih.*, id.* FROM assembly_issuance_head ih INNER JOIN assembly_issuance_detail id ON ih.issuance_id = id.issuance_id ORDER BY ih.transfer_date DESC") AS $det){
-                $data['info'][] = array(
-                    "issuance_id"=>$det->issuance_id,
-                    "transfer_date"=>$det->transfer_date,
-                    "transfer_to"=>$this->super_model->select_column_where("assembly_location", "location_name", "al_id", $det->transfer_to),
-                    "department"=>$this->super_model->select_column_where("department", "department_name", "department_id", $det->department_id),
-                     "purpose"=>$this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $det->purpose_id),
-                    "enduse"=>$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $det->enduse_id),
-                    "engine_to"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_to),
-                    "assembly_to"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_to),
-                    "engine_from"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_from),
-                    "assembly_from"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_from),
-                     "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $det->item_id),
-                    "bank_from"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_from),
-                    "transfer_qty"=>$det->transfer_qty,
-                    "bank_to"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $det->bank_to),
+            foreach($this->super_model->custom_query("SELECT rh.*, rd.* FROM assembly_receive_head rh INNER JOIN assembly_receive_details rd ON rh.ass_rec_id = rd.ass_rec_id ORDER BY rh.receive_date DESC") AS $det){
+                $item_id = $this->super_model->select_column_where("assembly_inventory", "item_id", "ass_inv_id", $det->ass_inv_id);
+                $bank_id = $this->super_model->select_column_where("assembly_inventory", "bank_id", "ass_inv_id", $det->ass_inv_id);
+                   $data['info'][] = array(
+                    "receive_id"=>$det->ass_rec_id,
+                    "receive_date"=>$det->receive_date,
+                    "receipt_no"=>$det->receipt_no,
+                    "engine"=>$this->super_model->select_column_where("assembly_engine", "engine_name", "engine_id", $det->engine_id),
+                    "assembly"=>$this->super_model->select_column_where("assembly_head", "assembly_name", "assembly_id", $det->assembly_id),
+                    "item_name"=>$this->super_model->select_column_where("items", "item_name", "item_id", $item_id),
+                    "bank"=>$this->super_model->select_column_where("assembly_bank", "bank_name", "bank_id", $bank_id),
+                    "received_qty"=>$det->received_qty,
                 );
             }
         }else {
@@ -1504,7 +1500,7 @@ class Assembly extends CI_Controller {
         $data['assembly']=$this->super_model->select_all_group("assembly_head","assembly_name");
         $this->load->view('template/header');
         $this->load->view('template/topbar');
-        $this->load->view('assembly/issue_report',$data);
+        $this->load->view('assembly/receive_report',$data);
         $this->load->view('template/footer');
     }
 
