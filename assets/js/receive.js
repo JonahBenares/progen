@@ -28,7 +28,7 @@ $(document).on('click', '#getEP', function(e){
           type: 'POST',
           data: 'id='+uid+'&recid='+rec_id,
         beforeSend:function(){
-            $("#ep").html('Please wait ..');
+            $("#ep").html('Please wait ...');
         },
         success:function(data){
            $("#ep").html(data);
@@ -237,13 +237,14 @@ function selectSerial(id, val) {
     $("#suggestion-purpose").hide();
 }*/
 
-function selectPRNO(valu,dept,enduse,purposeid) {
+function selectPRNO(valu,dept,enduse,purposeid,inspected_by) {
  
  
     $("#prno").val(valu);
     $("#department").val(dept);
     $("#enduse").val(enduse);
     $("#purpose").val(purposeid);
+    $("#inspected").val(inspected_by);
  //   $("#purpose").val(purpose1);
   
    /* $("#purpose_id").val(purposeid);*/
@@ -261,7 +262,9 @@ function add_item(){
 
 	var supplier =$('#supplier').val();
 	var supplierid =$('#supplier_id').val();
+    var suppliername =$('#supplier_name').val();
 	var itemid =$('#item_id').val();
+    var itemname =$('#item_name').val();
     var brand =$('#brand').val();
     var brandid =$('#brand_id').val();
     var serial =$('#serial').val();
@@ -295,14 +298,17 @@ function add_item(){
          alert('Supplier must not be empty. Please choose/click from the suggested supplier list.');
     } else if(itemid==''){
          alert('Item must not be empty. Please choose/click from the suggested item list.');
-    }
-     else {
+    }else if(unitcost==''){
+         alert('Unit Cost must not be empty.');
+    }else if(recqty==''){
+         alert('Delivered/Received quantity must not be empty.');
+    }else {
     	  var rowCount = $('#item_body tr').length;
     	  count=rowCount+1;
     	  $.ajax({
     	 		type: "POST",
     	 		url:redirect,
-    	 		data: "supplier="+supplier+"&supplierid="+supplierid+"&itemid="+itemid+"&brand="+brand+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&unitcost="+unitcost+"&catno="+catno+"&nkk="+nkk+"&semt="+semt+"&unit="+unit+"&expqty="+expqty+"&recqty="+recqty+"&remarks="+remarks+"&item="+item+"&count="+count+"&local_mnl="+local_mnl,
+    	 		data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&unitcost="+unitcost+"&catno="+catno+"&nkk="+nkk+"&semt="+semt+"&unit="+unit+"&expqty="+expqty+"&recqty="+recqty+"&remarks="+remarks+"&item="+item+"&count="+count+"&local_mnl="+local_mnl,
                 success: function(html){
                     //alert(html);
                 	$('#item_body').append(html);
@@ -310,7 +316,9 @@ function add_item(){
                 	$('#itemtable').show();
                 	document.getElementById("supplier").value = '';
                     document.getElementById("supplier_id").value = '';
+                    document.getElementById("supplier_name").value = '';
                     document.getElementById("item_id").value = '';
+                    document.getElementById("item_name").value = '';
                     document.getElementById("unit").value = '';
                     document.getElementById("exp_qty").value = '';
                     document.getElementById("rec_qty").value = '';
@@ -486,3 +494,48 @@ function closePopup(){
     window.close();
 }
 
+function chooseItem(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/receive/getIteminformation';
+    var item = document.getElementById("item").value;
+    document.getElementById('alerto').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#additem").hide(); 
+    setTimeout(function() {
+        document.getElementById('alerto').innerHTML=''; 
+        $("#additem").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'item='+item,
+        dataType: 'json',
+        success: function(response){
+            $("#item_id").val(response.item_id);
+            $("#item_name").val(response.item_name);
+            $("#unit").val(response.unit);
+            $("#original_pn1").val(response.pn);
+        }
+    }); 
+}
+
+function chooseSupplier(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/receive/getSupplierinformation';
+    var supplier = document.getElementById("supplier").value;
+    document.getElementById('alerto').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#additem").hide(); 
+    setTimeout(function() {
+        document.getElementById('alerto').innerHTML=''; 
+        $("#additem").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'supplier='+supplier,
+        dataType: 'json',
+        success: function(response){
+            $("#supplier_id").val(response.supplier_id);
+            $("#supplier_name").val(response.supplier_name);
+        }
+    }); 
+}

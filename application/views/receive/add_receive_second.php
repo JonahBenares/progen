@@ -175,10 +175,19 @@
 						<div style="background-color: #fbecd0; padding: 15px;border-radius: 10px; box-shadow: inset 0px 0px 5px 1px #c7c4c4;">
 							<div class="row" >
 								<div class="col-lg-6">
-									<p style="margin:0px" for="">Supplier:</p>
-									<input class="form-control" name="supplier" id="supplier" autocomplete="off">
-									<span id="suggestion-supplier"></span>
-									<input type='hidden' name='supplier_id' id='supplier_id'>
+									<p style="margin:0px" for="">Item Description:</p>
+									<!-- <textarea name = "item" id = "item" class="form-control" rows="1" autocomplete="off"></textarea>
+									<span id="suggestion-item"></span> -->
+									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
+										<option value = ""></option>
+										<?php foreach($items AS $itm){ ?>
+										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->original_pn." - ".$itm->item_name;?></option>
+										<?php } ?>
+									</select>
+									<input type='hidden' name='item_id' id='item_id'>
+									<input type='hidden' name='item_name' id='item_name'>
+									<input type='hidden' name='original_pn' id='original_pn1'>
+									<input type='hidden' name='unit' id='unit'>
 								</div>								
 								<div class="col-lg-2">
 									<p  style="margin:0px" for="">Brand:</p>
@@ -199,12 +208,17 @@
 							</div>
 							<div class="row" >
 								<div class="col-lg-6">
-									<p style="margin:0px" for="">Item Description:</p>
-									<textarea name = "item" id = "item" class="form-control" rows="1" autocomplete="off"></textarea>
-									 <span id="suggestion-item"></span>
-									 <input type='hidden' name='item_id' id='item_id'>
-									 <input type='hidden' name='original_pn' id='original_pn1'>
-									 <input type='hidden' name='unit' id='unit'>
+									<p style="margin:0px" for="">Supplier:</p>
+									<!-- <input class="form-control" name="supplier" id="supplier" autocomplete="off">
+									<span id="suggestion-supplier"></span> -->
+									<select name="supplier" id='supplier' class="form-control select2" onchange="chooseSupplier()">
+										<option value = ""></option>
+										<?php foreach($supplier AS $sup){ ?>
+										<option value = "<?php echo $sup->supplier_id;?>"><?php echo $sup->supplier_name;?></option>
+										<?php } ?>
+									</select>
+									<input type='hidden' name='supplier_name' id='supplier_name'>
+									<input type='hidden' name='supplier_id' id='supplier_id'>
 								</div>
 								<div class="col-lg-2">
 									<p style="margin:0px" for="">Catalog No.:</p>
@@ -255,7 +269,8 @@
 								 -->
 								<div class="col-lg-1">
 									<br>
-									<a class="btn btn-primary btn-outlined btn-md" style="margin-top:5px" onclick='add_item()'><span class="fa fa-plus"></span></a>
+									<div id='alerto' style="font-weight:bold"></div>
+									<a class="btn btn-primary btn-outlined btn-md" id='additem' style="margin-top:5px" onclick='add_item()'><span class="fa fa-plus"></span></a>
 								</div>
 							</div>	
 						</div>

@@ -11,8 +11,7 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/request/request_list">Request </a></li>
-			<li class="active"> View Details</li>
+			<li class="active"> PR Report (Receive)</li>
 		</ol>
 	</div><!--/.row-->
 	
@@ -29,10 +28,17 @@
 							<form method="POST" action ="<?php echo base_url();?>index.php/reports/generatePr">
 								<div class="col-lg-3"> <h5 class="pull-right">Enter PR:</h5> </div>
 								<div class="col-lg-5">
-									<input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
-									<span id="suggestion-pr"></span>
+									<!-- <input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
+									<span id="suggestion-pr"></span> -->
+									<select name="pr" id='pr' class="form-control select2" onchange="choosePRS()" style="margin:4px;width:100%">
+										<option value = "">-Choose PR-</option>
+										<?php foreach($pr_rep AS $prs){ ?>
+										<option value = "<?php echo $prs->pr_no;?>"><?php echo $prs->pr_no;?></option>
+										<?php } ?>
+									</select>
 								</div>
-								<div class="col-lg-4"><input type="submit" class="btn btn-warning" name="search_pr" Value="Find"></div>
+								<div id='alrt' style="font-weight:bold"></div>
+								<div class="col-lg-4"><input type="submit" class="btn btn-warning" id ="submit" name="search_pr" Value="Find"></div>
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 								<input type="hidden" name="prid" id="prid">
 							</form>
@@ -41,15 +47,18 @@
 				</div>
 			</div>
 		</div>
+	<?php if(!empty($head) && !empty($details)){ ?>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default shadow">
-				<div class="panel-heading" style="height:20px">
+				<div class="panel-heading">
+				<button class="btn btn-md btn-primary pull-right " onclick="printDiv('printableArea')">Print</button>
 				</div>
 				<div class="panel-body">
 					<div class="canvas-wrapper">
+						<div id="printableArea">
 						<?php foreach($head AS $h){ ?>	
-						<div style="padding:10px; margin-bottom: 20px;border-radius: 10px;box-shadow: 0px 0px 5px 2px #b9b9b9">
+						<div style="padding:10px; margin-bottom: 20px;border-radius: 10px;box-shadow: 0px 0px 5px 2px #b9b9b9;border: 1px solid #b9b9b9">
 							<table width="100%">
 								<tr>
 									<td width="10%"><p class="nomarg">Date:</p></td>
@@ -137,10 +146,16 @@
 								</div>
 							</div>
 						</div>	
+						<table width="100%" id="prntby">
+			                <tr>
+			                    <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> </td>
+			                </tr>
+			            </table>
 						<?php } ?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<?php } ?>
 

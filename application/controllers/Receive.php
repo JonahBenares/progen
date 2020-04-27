@@ -16,6 +16,7 @@ class Receive extends CI_Controller {
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+        $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
        // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
        // $this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
 
@@ -57,6 +58,7 @@ class Receive extends CI_Controller {
         $id=$this->uri->segment(3);
         $this->load->model('super_model');
         $data['head'] = $this->super_model->select_row_where('receive_head', 'receive_id', $id);
+        $data['saved']=$this->super_model->select_column_where("receive_head",'saved','receive_id',$id);
         foreach($this->super_model->select_row_where('receive_details', 'receive_id', $id) AS $det){
             $purpose = $this->super_model->select_column_where('purpose', 'purpose_desc', 'purpose_id', $det->purpose_id);
             $enduse = $this->super_model->select_column_where('enduse', 'enduse_name', 'enduse_id', $det->enduse_id);            
@@ -233,6 +235,7 @@ class Receive extends CI_Controller {
         }
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('template/header');
+        $this->load->view('template/print_head');
         $this->load->view('receive/mrf',$data);
     }
 
@@ -337,6 +340,7 @@ class Receive extends CI_Controller {
         $data['rdid']=$rdid;
         $data['supplier'] = $this->super_model->select_all_order_by("supplier", "supplier_name", "ASC");
         $data['items'] = $this->super_model->select_all_order_by("items", "item_name", "ASC");
+        $data['pr_list'] = $this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no");
         foreach($this->super_model->select_row_where("receive_details", "rd_id", $rdid) AS $d){
             $enduse = $this->super_model->select_column_where('enduse', 'enduse_name', 'enduse_id', $d->enduse_id);
             $purpose = $this->super_model->select_column_where('purpose', 'purpose_desc', 'purpose_id', $d->purpose_id);
@@ -402,6 +406,22 @@ class Receive extends CI_Controller {
         $this->load->view('receive/add_receive_second',$data);
         $this->load->view('template/footer');
     } 
+
+    public function getIteminformation(){
+        $item = $this->input->post('item');
+        foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 
+            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getSupplierinformation(){
+        $supplier = $this->input->post('supplier');
+        foreach($this->super_model->select_custom_where("supplier", "supplier_id='$supplier'") AS $sup){ 
+            $return = array('supplier_id' => $sup->supplier_id,'supplier_name' => $sup->supplier_name); 
+            echo json_encode($return);   
+        }
+    }
 
     public function tag_receive(){
         $this->load->view('template/header');
@@ -529,10 +549,10 @@ class Receive extends CI_Controller {
         $rows=$this->super_model->custom_query("SELECT pr_no FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rd.pr_no LIKE '%$prno%' AND rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no");
         if($rows!=0){
              echo "<ul id='name-item'>";
-            foreach($this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rd.pr_no LIKE '%$prno%' AND rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no") AS $pr){ 
+            foreach($this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id, inspected_by FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rd.pr_no LIKE '%$prno%' AND rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no") AS $pr){ 
                     $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id",$pr->purpose_id);
                     ?>
-                   <li onClick="selectPRNO('<?php echo $pr->pr_no; ?>','<?php echo $pr->department_id; ?>','<?php echo $pr->enduse_id; ?>','<?php echo $pr->purpose_id; ?>')"><?php echo $pr->pr_no; ?></li>
+                   <li onClick="selectPRNO('<?php echo $pr->pr_no; ?>','<?php echo $pr->department_id; ?>','<?php echo $pr->enduse_id; ?>','<?php echo $pr->purpose_id; ?>','<?php echo $pr->inspected_by; ?>')"><?php echo $pr->pr_no; ?></li>
                 <?php 
             }
            
@@ -660,40 +680,40 @@ class Receive extends CI_Controller {
         $total=$this->input->post('unitcost')*$this->input->post('recqty');
         $serial =  $this->input->post('serialid');
         $item =  $this->input->post('itemid');
-        $count = $this->super_model->count_custom_where("receive_items","serial_id = '$serial' AND item_id = '$item'");
+        /*$count = $this->super_model->count_custom_where("receive_items","serial_id = '$serial' AND item_id = '$item'");
         if($count!=0){
             ?>
             <script>
                 alert('WARNING: Item with the same serial number has already been encoded.');
             </script>
             <?php
-        }else{
-            $data['list'] = array(
-                'supplier'=>$this->input->post('supplier'),
-                'supplierid'=>$this->input->post('supplierid'),
-                'itemid'=>$this->input->post('itemid'),
-                'brandid'=>$this->input->post('brandid'),
-                'brand'=>$this->input->post('brand'),
-                'serialid'=>$this->input->post('serialid'),
-                'serial'=>$this->input->post('serial'),
-                'catno'=>$this->input->post('catno'),
-                'nkk'=>$this->input->post('nkk'),
-                'semt'=>$this->input->post('semt'),
-                'unitcost'=>$this->input->post('unitcost'),
-                'unit'=>$this->input->post('unit'),
-                'unit_name'=>$unit,
-                'expqty'=>$this->input->post('expqty'),
-                'recqty'=>$this->input->post('recqty'),
-                'remarks'=>$this->input->post('remarks'),
-                /*'inspected_name'=>$inspected_name,
-                'inspected'=>$inspected,*/
-                'item'=>$this->input->post('item'),
-                'local_mnl'=>$this->input->post('local_mnl'),
-                'count'=>$this->input->post('count'),
-                'total'=>$total
-            );  
-            $this->load->view('receive/row_item',$data);
-        }
+        }else{*/
+        $data['list'] = array(
+            'supplier'=>$this->input->post('suppliername'),
+            'supplierid'=>$this->input->post('supplierid'),
+            'itemid'=>$this->input->post('itemid'),
+            'brandid'=>$this->input->post('brandid'),
+            'brand'=>$this->input->post('brand'),
+            'serialid'=>$this->input->post('serialid'),
+            'serial'=>$this->input->post('serial'),
+            'catno'=>trim($this->input->post('catno'), " "),
+            'nkk'=>trim($this->input->post('nkk'), " "),
+            'semt'=>trim($this->input->post('semt'), " "),
+            'unitcost'=>$this->input->post('unitcost'),
+            'unit'=>$this->input->post('unit'),
+            'unit_name'=>$unit,
+            'expqty'=>$this->input->post('expqty'),
+            'recqty'=>$this->input->post('recqty'),
+            'remarks'=>$this->input->post('remarks'),
+            /*'inspected_name'=>$inspected_name,
+            'inspected'=>$inspected,*/
+            'item'=>$this->input->post('itemname'),
+            'local_mnl'=>$this->input->post('local_mnl'),
+            'count'=>$this->input->post('count'),
+            'total'=>$total
+        );  
+        $this->load->view('receive/row_item',$data);
+        //}
      }
 
      public function insertReceivePR(){
@@ -800,9 +820,9 @@ class Receive extends CI_Controller {
                 'supplier_id'=> $this->input->post('supplier_id['.$a.']'),
                 'item_id'=> $this->input->post('item_id['.$a.']'),
                 'brand_id'=> $bid,
-                'catalog_no'=> $this->input->post('catalog_no['.$a.']'),
-                'nkk_no'=> $this->input->post('nkk_no['.$a.']'),
-                'semt_no'=> $this->input->post('semt_no['.$a.']'),
+                'catalog_no'=> str_replace(" ", "", $this->input->post('catalog_no['.$a.']')),
+                'nkk_no'=> str_replace(" ", "", $this->input->post('nkk_no['.$a.']')),
+                'semt_no'=> str_replace(" ", "", $this->input->post('semt_no['.$a.']')),
                 'serial_id'=> $serialid,
                 'item_cost'=> $this->input->post('unit_cost['.$a.']'),
                 'expected_qty'=> $this->input->post('expqty['.$a.']'),

@@ -16,6 +16,7 @@ class Issue extends CI_Controller {
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+        $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
        // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
         //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
 
@@ -185,7 +186,7 @@ class Issue extends CI_Controller {
     
         $year=date('Y-m');
        
-
+        $data['mreqf_list']=$this->super_model->select_custom_where("request_head","saved = '1'");
        $rows=$this->super_model->count_custom_where("issuance_head","create_date LIKE '$year%'");
       
         if($rows==0){
@@ -270,6 +271,14 @@ class Issue extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function getMreqfinformation(){
+        $mreqf = $this->input->post('mreqf');
+        foreach($this->super_model->select_custom_where("request_head","mreqf_no LIKE '%$mreqf%' AND saved = '1'") AS $mr){ 
+            $return = array('mreqf' => $mr->mreqf_no, 'request_id' => $mr->request_id); 
+            echo json_encode($return);   
+        }
+    }
+
     public function mreqflist(){
         $mreqf=$this->input->post('mreqf');
 
@@ -294,6 +303,7 @@ class Issue extends CI_Controller {
                 $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
                 $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
                 $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);
+                $type=  $this->super_model->select_column_where("request_head", "type", "mreqf_no", $issue->mreqf_no);
                 $data['issue_list'][] = array(
                     'issuance_id'=>$issue->issuance_id,
                     'mifno'=>$issue->mif_no,
@@ -301,6 +311,7 @@ class Issue extends CI_Controller {
                     'prno'=>$issue->pr_no,
                     'date'=>$issue->issue_date,
                     'time'=>$issue->issue_time,
+                    'type'=>$type,
                     'department'=>$department,
                     'purpose'=>$purpose,
                     'enduse'=>$enduse
@@ -461,6 +472,7 @@ class Issue extends CI_Controller {
         }
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('template/header');
+        $this->load->view('template/print_head');
         $this->load->view('issue/mif',$data);
 
     }
@@ -563,6 +575,7 @@ class Issue extends CI_Controller {
      
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('template/header');
+        $this->load->view('template/print_head'); 
         $this->load->view('issue/gatepass',$data);
     }
 

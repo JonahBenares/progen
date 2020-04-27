@@ -69,8 +69,14 @@
 									<tr>
 										<td width="26%"><label>PR No. :</label></td>		
 										<td>
-											<input type = "text" name = "prno" id="pr" class = "form-control" style="margin:4px" autocomplete="off">
-											<span id="suggestion-pr"></span>
+											<!-- <input type = "text" name = "prno" id="pr" class = "form-control" style="margin:4px" autocomplete="off">
+											<span id="suggestion-pr"></span> -->
+											<select name="prno" id='pr' class="form-control select2" onchange="choosePRres()" style="margin:4px;width:100%">
+												<option value = "">-Choose PR-</option>
+												<?php foreach($pr_list AS $prs){ ?>
+												<option value = "<?php echo $prs->pr_no;?>"><?php echo $prs->pr_no;?></option>
+												<?php } ?>
+											</select>
 										</td>	
 									</tr>
 									<tr>
@@ -183,7 +189,7 @@
 										</select></td>					
 									</tr>
 									<tr>
-										<td colspan="2"><input type="button" class="btn btn-warning" name="" value="Submit" style="width:100%;margin:4px" onclick='saveRestock()'></td>
+										<td colspan="2" align="center"><input type="button" class="btn btn-warning" id = "sub" name="" value="Submit" style="width:100%;margin:4px" onclick='saveRestock()'><div id='alertss' style="font-weight:bold"></div></td>
 									</tr>
 									
 									<input type = "hidden" name = "item_id" id="item_id" class = "form-control" style="margin:4px">

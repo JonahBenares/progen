@@ -200,10 +200,8 @@ function saveRestock1(){
             data:restockdata1,
             success: function(output){
                 //alert(output);
-                if(output==output){
-                    alert('Restock Successfully!');
-                    window.location = loc+'index.php/restock/add_restock_first/'+output;
-                }
+                alert('Restock Successfully!');
+                window.location = loc+'index.php/restock/add_restock_first/'+output;
             }
           });
     }
@@ -258,7 +256,9 @@ function add_item(){
 
     var supplier =$('#supplier').val();
     var supplierid =$('#supplier_id').val();
+    var suppliername =$('#supplier_name').val();
     var itemid =$('#item_id').val();
+    var itemname =$('#item_name').val();
     var brand =$('#brand').val();
     var brandid =$('#brand_id').val();
     var serial =$('#serial').val();
@@ -285,7 +285,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "supplier="+supplier+"&supplierid="+supplierid+"&itemid="+itemid+"&brand="+brand+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&catno="+catno+"&nkkno="+nkkno+"&semtno="+semtno+"&reason="+reason+"&remarks="+remarks+"&item="+item+"&count="+count+"&quantity="+quantity,
+                data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&catno="+catno+"&nkkno="+nkkno+"&semtno="+semtno+"&reason="+reason+"&remarks="+remarks+"&item="+item+"&count="+count+"&quantity="+quantity,
                 success: function(html){
                     //alert(html);
                     $('#item_body').append(html);
@@ -293,7 +293,9 @@ function add_item(){
                     $('#itemtable').show();
                     document.getElementById("supplier").value = '';
                     document.getElementById("supplier_id").value = '';
+                    document.getElementById("supplier_name").value = '';
                     document.getElementById("item_id").value = '';
+                    document.getElementById("item_name").value = '';
                     document.getElementById("reason").value = '';
                     document.getElementById("remarks").value = '';
                     document.getElementById("item").value = '';
@@ -351,4 +353,98 @@ function getSelectionStart(o) {
         if (r.text == '') return o.value.length
         return o.value.lastIndexOf(r.text)
     } else return o.selectionStart
+}
+
+function chooseItem(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/restock/getIteminformation';
+    var item = document.getElementById("item").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#additm").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#additm").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'item='+item,
+        dataType: 'json',
+        success: function(response){
+            $("#item_id").val(response.item_id);
+            $("#item_name").val(response.item_name);
+            $("#unit").val(response.unit);
+            $("#original_pn1").val(response.pn);
+        }
+    }); 
+}
+
+function chooseSupplier(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/restock/getSupplierinformation';
+    var supplier = document.getElementById("supplier").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#additm").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#additm").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'supplier='+supplier,
+        dataType: 'json',
+        success: function(response){
+            $("#supplier_id").val(response.supplier_id);
+            $("#supplier_name").val(response.supplier_name);
+        }
+    }); 
+}
+
+function choosePRSS(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/restock/getPRinformation';
+    var prno = document.getElementById("prres").value;
+    document.getElementById('alert').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#proceed").hide(); 
+    setTimeout(function() {
+        document.getElementById('alert').innerHTML=''; 
+        $("#proceed").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'prno='+prno,
+        dataType: 'json',
+        success: function(response){
+            $("#prres").val(response.pr_no);
+            $("#endres").val(response.enduse);
+            $("#deptres").val(response.department);
+            $("#purres").val(response.purpose);
+        }
+    }); 
+}
+
+function choosePRres(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/restock/getPRinformation';
+    var prno = document.getElementById("pr").value;
+    document.getElementById('alertss').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#sub").hide(); 
+    setTimeout(function() {
+        document.getElementById('alertss').innerHTML=''; 
+        $("#sub").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'prno='+prno,
+        dataType: 'json',
+        success: function(response){
+            $("#pr").val(response.pr_no);
+            $("#end").val(response.enduse);
+            $("#dept").val(response.department);
+            $("#pur").val(response.purpose);
+        }
+    }); 
 }

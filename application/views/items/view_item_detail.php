@@ -1,3 +1,6 @@
+<?php
+	$ci =& get_instance();
+?>
 <style type="text/css">
 	p {
 	    margin: 0 0 1px;
@@ -181,19 +184,19 @@
 													if(empty($sup['catalog_no'])){
 														$cat='null';
 													} else {
-														$cat= $sup['catalog_no'];
+														$cat= rawurlencode($ci->slash_replace($sup['catalog_no']));
 													}
 
 													if(empty($sup['nkk'])){
 														$nkk='null';
 													} else {
-														$nkk= $sup['nkk'];
+														$nkk= rawurlencode($ci->slash_replace($sup['nkk']));
 													}
 
 													if(empty($sup['semt'])){
 														$semt='null';
 													} else {
-														$semt= $sup['semt'];
+														$semt= rawurlencode($ci->slash_replace($sup['semt']));
 													}
 
 													if(empty($sup['brand_id'])){

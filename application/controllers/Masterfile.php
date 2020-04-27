@@ -15,6 +15,7 @@ class Masterfile extends CI_Controller {
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+        $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
       //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
 
@@ -276,6 +277,58 @@ class Masterfile extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function export_enduse(){
+        require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
+        $objPHPExcel = new PHPExcel();
+        $exportfilename="Enduse List.xlsx";
+        foreach(range('A','B') as $columnID){
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', "ENDUSE LIST");
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("B1")->getFont()->setBold(true)->setName('Arial Black')->setSize(12);
+        $num=3;
+        $x=1;
+        $styleArray1 = array(
+            'borders' => array(
+                'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "#");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Enduse Name");
+        $objPHPExcel->getActiveSheet()->getStyle("A2:B2".$num)->applyFromArray($styleArray1);
+        $objPHPExcel->getActiveSheet()->getStyle("A2:B2")->getFont()->setBold(true)->setName('Arial Black')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        foreach($this->super_model->select_all_order_by("enduse","enduse_name","ASC") AS $end){
+            $styleArray = array(
+                'borders' => array(
+                    'allborders' => array(
+                      'style' => PHPExcel_Style_Border::BORDER_THIN
+                    )
+                )
+            );
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, "$x");
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, "$end->enduse_name");
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":B".$num)->applyFromArray($styleArray);
+            $num++;
+            $x++;
+        }
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        if (file_exists($exportfilename))
+        unlink($exportfilename);
+        $objWriter->save($exportfilename);
+        unset($objPHPExcel);
+        unset($objWriter);   
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Enduse List.xlsx"');
+        readfile($exportfilename);
+    }
+
     public function warehouse_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
@@ -313,6 +366,58 @@ class Masterfile extends CI_Controller {
         $data['access']=$this->access;
         $this->load->view('masterfile/purpose_list',$data);
         $this->load->view('template/footer');
+    }
+
+    public function export_purpose(){
+        require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
+        $objPHPExcel = new PHPExcel();
+        $exportfilename="Purpose List.xlsx";
+        foreach(range('A','B') as $columnID){
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', "PURPOSE LIST");
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('B1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle("B1")->getFont()->setBold(true)->setName('Arial Black')->setSize(12);
+        $num=3;
+        $x=1;
+        $styleArray1 = array(
+            'borders' => array(
+                'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "#");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Purpose");
+        $objPHPExcel->getActiveSheet()->getStyle("A2:B2".$num)->applyFromArray($styleArray1);
+        $objPHPExcel->getActiveSheet()->getStyle("A2:B2")->getFont()->setBold(true)->setName('Arial Black')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        foreach($this->super_model->select_all_order_by("purpose","purpose_desc","ASC") AS $purp){
+            $styleArray = array(
+                'borders' => array(
+                    'allborders' => array(
+                      'style' => PHPExcel_Style_Border::BORDER_THIN
+                    )
+                )
+            );
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, "$x");
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, "$purp->purpose_desc");
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":B".$num)->applyFromArray($styleArray);
+            $num++;
+            $x++;
+        }
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        if (file_exists($exportfilename))
+        unlink($exportfilename);
+        $objWriter->save($exportfilename);
+        unset($objPHPExcel);
+        unset($objWriter);   
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Purpose List.xlsx"');
+        readfile($exportfilename);
     }
 
     public function view_cat(){

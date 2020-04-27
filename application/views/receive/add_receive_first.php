@@ -40,7 +40,13 @@
 								<td width="5%"><p class="nomarg">Date:</p></td>
 								<td width="20%"><label class="labelStyle"><?php echo date('F j, Y',strtotime($li->receive_date)); ?></label></td>
 								<td width="5%"></td>
+								<?php if($li->saved==0){ ?> 
 								<td><a onclick="update_head('<?php echo $li->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+								<?php }else if($_SESSION['user_id']==5 && $li->saved==1){ ?>
+								<td><a onclick="update_head('<?php echo $li->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm"><span class="fa fa-pencil"></span></a></td>
+								<?php }else { ?>
+								<td><a onclick="update_head('<?php echo $li->receive_id;?>','<?php echo base_url();?>')" class="btn btn-info btn-sm" style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>
+								<?php } ?>
 							</tr>
 							<tr>
 								<td></td>
@@ -86,8 +92,16 @@
 									<?php if($saved==0){ ?>
 									<div class="col-lg-2 col-md-2 col-sm-2  col-xs-2">
 										<div style="padding-left:50% ">
+										<?php if($saved==0){ ?> 
 										<a href="javascript:void(0)" onclick="updateReceivePR('<?php echo base_url(); ?>','<?php echo $receiveid; ?>', '<?php echo $det['rdid']; ?>')" class="btn btn-primary btn-sm" title="Update" ><span class="fa fa-pencil"></span></a>
 										<a href="javascript:void(0)" onclick="deleteReceiveDetails('<?php echo $det['rdid']; ?>','<?php echo $receiveid; ?>','<?php echo base_url(); ?>')" class="btn btn-danger btn-sm" title="Delete"><span class="fa fa-trash"></span></a></div>
+										<?php } else if($_SESSION['user_id']==5 && $saved==1) { ?>
+										<a href="javascript:void(0)" onclick="updateReceivePR('<?php echo base_url(); ?>','<?php echo $receiveid; ?>', '<?php echo $det['rdid']; ?>')" class="btn btn-primary btn-sm" title="Update" ><span class="fa fa-pencil"></span></a>
+										<a href="javascript:void(0)" onclick="deleteReceiveDetails('<?php echo $det['rdid']; ?>','<?php echo $receiveid; ?>','<?php echo base_url(); ?>')" class="btn btn-danger btn-sm" title="Delete"><span class="fa fa-trash"></span></a></div>
+										<?php }else{ ?>
+										<a href="javascript:void(0)" style ="pointer-events: none" disabled onclick="updateReceivePR('<?php echo base_url(); ?>','<?php echo $receiveid; ?>', '<?php echo $det['rdid']; ?>')" class="btn btn-primary btn-sm" title="Update" ><span class="fa fa-pencil"></span></a>
+										<a href="javascript:void(0)" style ="pointer-events: none" disabled onclick="deleteReceiveDetails('<?php echo $det['rdid']; ?>','<?php echo $receiveid; ?>','<?php echo base_url(); ?>')" class="btn btn-danger btn-sm" title="Delete"><span class="fa fa-trash"></span></a></div>
+										<?php } ?>
 									</div>
 									<?php } ?>
 									

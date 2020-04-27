@@ -32,9 +32,9 @@
 				<div class="panel-heading">
 					RESTOCK
 					<div class="pull-right">
-						<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
+						<!-- <a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
-						</a>
+						</a> -->
 						<a class="clickable panel-toggle panel-button-tab-right shadow"   href="<?php echo base_url(); ?>index.php/restock/add_restock">
 							<span class="fa fa-plus"></span></span>
 						</a>
@@ -49,7 +49,7 @@
 								<thead>
 									<tr>
 										<td width="" align="center"><strong>Restock Date</strong></td>
-										<td width="" align="center"><strong>PR#.</strong></td>
+										<td width="" align="center"><strong>From PR</strong></td>
 										<td width="" align="center"><strong>Department</strong></td>
 										<td width="30%" align="center"><strong>End-Use</strong></td>
 										<td width="" align="center"><strong>Purpose</strong></td>
@@ -57,6 +57,7 @@
 										<td width="" align="center"><strong>Noted By</strong></td>
 										<td width="" align="center"><strong>Returned By</strong></td>
 										<td align="center" ><strong>Received By</strong></td>
+										<td align="center" ><strong>Excess</strong></td>
 										<td align="center" ><strong>Action</strong></td>
 
 									</tr>
@@ -73,6 +74,7 @@
 										<td align="center"><?php echo $res['noted'];?></td>
 										<td align="center"><?php echo $res['returned'];?></td>
 										<td align="center"><?php echo $res['received'];?></td>
+										<td align="center"><?php if($res['excess']==1){ echo 'Excess Material'; } ?></td>
 										<td style="padding:3px" align="center">
 											<a  href="<?php echo base_url();?>index.php/restock/view_restock/<?php echo $res['rhead_id'];?>" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 										</td>

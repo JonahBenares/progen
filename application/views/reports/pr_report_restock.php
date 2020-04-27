@@ -28,10 +28,17 @@
 							<form method="POST" action ="<?php echo base_url();?>index.php/reports/generatePrRestock">
 								<div class="col-lg-3"> <h5 class="pull-right">Enter PR:</h5> </div>
 								<div class="col-lg-5">
-									<input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
-									<span id="suggestion-pr"></span>
+									<!-- <input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
+									<span id="suggestion-pr"></span> -->
+									<select name="pr" id='pr' class="form-control select2" onchange="choosePRS()" style="margin:4px;width:100%">
+										<option value = "">-Choose PR-</option>
+										<?php foreach($pr_rep AS $prs){ ?>
+										<option value = "<?php echo $prs->pr_no;?>"><?php echo $prs->pr_no;?></option>
+										<?php } ?>
+									</select>
 								</div>
-								<div class="col-lg-4"><input type="submit" class="btn btn-warning" name="search_pr" Value="Find"></div>
+								<div id='alrt' style="font-weight:bold;"></div>
+								<div class="col-lg-4"><input type="submit" class="btn btn-warning" id="submit" name="search_pr" Value="Find"></div>
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 								<input type="hidden" name="prid" id="prid">
 							</form>

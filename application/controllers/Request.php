@@ -16,6 +16,7 @@ class Request extends CI_Controller {
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+        $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
         //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
         if(isset($_SESSION['user_id'])){
@@ -295,6 +296,7 @@ class Request extends CI_Controller {
         }
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('template/header');
+        $this->load->view('template/print_head');
         $this->load->view('request/mreqf',$data);
     }
 
@@ -303,6 +305,7 @@ class Request extends CI_Controller {
         $id=$this->uri->segment(3);
         $data['requestid']= $id;
         $data['request']= $id;
+        $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
         foreach($this->super_model->select_row_where("request_head", "request_id", $id) AS $req){
             $data['head'][]=array(
                 "mreqf_no"=>$req->mreqf_no,
@@ -349,6 +352,15 @@ class Request extends CI_Controller {
         $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('request/add_request',$data);
         $this->load->view('template/footer');
+    }
+
+    public function getIteminformation(){
+        $item = $this->input->post('item');
+        foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 
+            $rec_qty = $this->inventory_balance($itm->item_id);
+            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn, 'recqty' => $rec_qty); 
+            echo json_encode($return);   
+        }
     }
 
     public function insertRequest(){
@@ -417,7 +429,7 @@ class Request extends CI_Controller {
 
         $issue_qty = array_sum($qty);
         $bal=($recqty-$issue_qty);
-        echo "Available Balance for this PR and Item: ".$bal;
+        echo $bal;
     }
 
      public function itemlist(){
@@ -509,7 +521,7 @@ class Request extends CI_Controller {
             'quantity'=>$this->input->post('quantity'),
             'unit_cost'=>$this->input->post('cost'),
             'total_cost'=>$totalcost,
-            'item'=>$this->input->post('item'),
+            'item'=>$this->input->post('itemname'),
             'count'=>$this->input->post('count'),
             'borrow'=>$this->input->post('borrow')
         );
@@ -543,6 +555,22 @@ class Request extends CI_Controller {
         $cost = $this->super_model->select_column_join_where_order_limit("item_cost", "receive_items","receive_head", "saved=1 AND supplier_id = '$supplier' AND brand_id = '$brand' AND catalog_no = '$catalog' AND item_id = '$item'","receive_id","DESC","1");*/
         $cost = $this->super_model->select_column_where("supplier_items", "item_cost", "si_id", $siid);
         echo $cost;
+    }
+
+    public function getMaxqty(){
+        $siid=$this->input->post('siid');
+
+        $brand=$this->super_model->select_column_where("supplier_items", "brand_id", "si_id", $siid);
+        $supplier=$this->super_model->select_column_where("supplier_items", "supplier_id", "si_id", $siid);
+        $catalog=$this->super_model->select_column_where("supplier_items", "catalog_no", "si_id", $siid);
+        $itemid=$this->super_model->select_column_where("supplier_items", "item_id", "si_id", $siid);
+
+        $recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplier' AND brand_id = '$brand' AND catalog_no ='$catalog'");
+
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplier' AND brand_id = '$brand' AND catalog_no = '$catalog' AND saved='1'","issuance_id");
+
+        $maxqty = $recqty-$issueqty;
+        echo $maxqty;
     }
 }
 ?>

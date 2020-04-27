@@ -21,6 +21,9 @@
 						END-USE LIST
 						<div class="pull-right">
 							<?php if($access['masterfile_add'] == 1){ ?>
+							<a class="btn btn-primary btn-md"  href="<?php echo base_url(); ?>index.php/masterfile/export_enduse">
+								Export Enduse
+							</a>
 							<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#myModal">
 								<span class="fa fa-plus"></span>
 							</a>

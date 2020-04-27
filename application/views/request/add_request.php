@@ -1,5 +1,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/request.js"></script>
+<link href="<?php echo base_url(); ?>assets/Styles/select2.min.css" rel="stylesheet" />
+<script src="<?php echo base_url(); ?>assets/js/select2.min.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row">
 		<ol class="breadcrumb">
@@ -74,9 +76,16 @@
 						<div class="row">
 							<div class="col-lg-4">							
 								<p>
-									<input placeholder="Item Description" type="text" name="item" id="item" class="form-control" autocomplete="off">
-									<span id="suggestion-item"></span>
+									<!-- <input placeholder="Item Description" type="text" name="item" id="item" class="form-control" autocomplete="off">
+									<span id="suggestion-item"></span> -->
+									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
+										<option value = ""></option>
+										<?php foreach($item_list AS $itm){ ?>
+										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->original_pn." - ".$itm->item_name;?></option>
+										<?php } ?>
+									</select>
 									<input type='hidden' name='item_id' id='item_id'>
+									<input type='hidden' name='item_name' id='item_name'>
 									<input type='hidden' name='original_pn' id='original_pn'>
 									<input type='hidden' name='unit' id='unit'>
 									<input type='hidden' name='invqty' id='invqty'>
@@ -97,11 +106,13 @@
 							<div class="col-lg-2">
 								<p>				
 									<input placeholder="Quantity" type="text" name="quantity" id="quantity" class="form-control" onkeypress="return isNumberKey(event)">
+									<input type='hidden' name='maxqty' id = "maxqty">
 								</p>
 							</div>
 							<div class="col-lg-1">
+								<div id='alrt' style="font-weight:bold"></div>
 								<p>				
-									<a type="button" onclick='add_item()' class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
+									<a type="button" onclick='add_item()' id = "submit" class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
 								</p>
 							</div>
 							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
@@ -160,3 +171,6 @@
 			</div>
 		</div>
 	</div>
+<script>
+    $('.select2').select2();
+</script>

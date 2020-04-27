@@ -182,7 +182,13 @@
 											<td><center><?php echo $it['recqty']; ?></center></td>
 											<td><center><?php echo $it['unit']; ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
-											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info"><span class="fa fa-pencil"></span></a></td>
+											<?php if($saved==0){ ?> 
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
+											<?php } else if($_SESSION['user_id']==5 && $saved==1) { ?>
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
+											<?php } else { ?>
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info " style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>
+											<?php } ?>
 										</tr>
 										<?php
 											$itemno++;

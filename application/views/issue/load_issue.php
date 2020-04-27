@@ -33,10 +33,18 @@
 						<table width="100%" >
 							<tr>
 								<td width="20%"><label class="pull-right">Search MReqF No.:</label></td>
-								<td width="60%"><input type = "type" name="mreqf" id="mreqf" class = "form-control" style="margin:4px" autocomplete="off">
-									<span id="suggestion-mreqf"></span>
+								<td width="60%">
+									<!-- <input type = "type" name="mreqf" id="mreqf" class = "form-control" style="margin:4px" autocomplete="off">
+									<span id="suggestion-mreqf"></span> -->
+									<select name="mreqf" id='mreqf' class="form-control select2" onchange="chooseMreqf()">
+										<option value = ""></option>
+										<?php foreach($mreqf_list AS $mrf){ ?>
+										<option value = "<?php echo $mrf->mreqf_no;?>"><?php echo $mrf->mreqf_no;?></option>
+										<?php } ?>
+									</select>
 									<input type='hidden' name='request_id' id='request_id'></td>
-								<td ><input type='submit' class="btn btn-warning" value="Load" onclick="loadIssuance()"></td>					
+								<td align="center"><div id='alrt' style="font-weight:bold;"></div></td>
+								<td ><input type='submit' id="saveissuance" class="btn btn-warning" value="Load" onclick="loadIssuance()"></td>					
 							</tr>
 						</table>
 						<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
@@ -129,12 +137,8 @@
 															
 															<td>
 																<?php if($it['quantity']!=0){ ?>
-																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' value="<?php echo $it['quantity']; ?>" style='width:50px' max="<?php echo $it['quantity']; ?>">
-																<?php } else { 
-																	echo $it['issue_qty'];
-
-																 } ?>
-
+																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['rem_quantity']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['rem_quantity']; ?>">
+																<?php } ?>
 															</td>
 															<td><center><?php echo $it['quantity']; ?></center></td>
 															<td><?php echo $it['uom']; ?></td>

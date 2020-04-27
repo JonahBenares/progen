@@ -34,7 +34,7 @@
 							<tr>
 								<td width="20%"><label class="pull-right">Choose PO No.:</label></td>
 								<td width="60%">
-									<select name="mreqf" id="mreqf" class = "form-control" >
+									<select name="mreqf" id="mreqf" class = "form-control select2" >
 										<option value='' selected></option>
 										<?php 
 

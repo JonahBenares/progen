@@ -122,7 +122,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModal">
+	<div class="modal fade" id="requestModal" role="dialog" aria-labelledby="requestModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header modal-headback">
@@ -149,8 +149,8 @@
 							</tr>
 							<tr>
 								<td width="20%" class = "t"><label>JO / PR #:</label></td>
-								<td colspan="2" >
-									<select name = "prno" id="prno" class = "form-control t" onChange="choosePR();" style="margin:4px">
+								<td colspan="2" style ="padding-bottom: 5px;padding-left: 4px;" >
+									<select name = "prno" id="prno" class = "form-control t select2" onchange="choosePR();" style="margin:4px;width:100%">
 										<option value="" selected="">-Select PR-</option>
 										<?php 
 										$ctpr= count($prno);
@@ -198,8 +198,9 @@
 							</tr>
 						</table>
 						<div class="modal-footer">
+							<div id='alerts' style="font-weight:bold;text-align: center"></div>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<input type='submit' class="btn btn-warning" value='Proceed '> 
+							<input type='submit' class="btn btn-warning" id = "proceeds" value='Proceed '> 
 							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">							
 						</div>
@@ -234,7 +235,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="restockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="restockModal" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header modal-headback">
@@ -252,9 +253,15 @@
 							</tr> -->
 							<tr>
 								<td width="26%"><label>PR No. :</label></td>		
-								<td>
-									<input type = "text" name = "prno" id="prres" class = "form-control" style="margin:4px" autocomplete="off">
-									<span id="suggestion-pr1"></span>
+								<td style ="padding-bottom: 5px;padding-left: 4px;">
+									<!-- <input type = "text" name = "prno" id="prres" class = "form-control" style="margin:4px" autocomplete="off">
+									<span id="suggestion-pr1"></span> -->
+									<select name="prno" id='prres' class="form-control select2" onchange="choosePRSS()" style="margin:4px;width:100%">
+										<option value = "">-Choose PR-</option>
+										<?php foreach($pr_list AS $pr){ ?>
+										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
+										<?php } ?>
+									</select>
 								</td>	
 							</tr>
 							<tr>
@@ -330,9 +337,10 @@
 							</tr>
 						</table>
 						<div class="modal-footer">
+							<div id='alert' style="font-weight:bold;text-align: center"></div>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							<!-- <input type='submit' class="btn btn-warning" value='Proceed '>  -->
-							<input type="button" class="btn btn-warning" onclick='saveRestock1()' value='Proceed'>
+							<input type="button" class="btn btn-warning" id="proceed" onclick='saveRestock1()' value='Proceed'>
 							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
 							<input type="hidden" name="baseurl" id="baseurl1" value="<?php echo base_url(); ?>">
 						</div>
@@ -730,6 +738,11 @@
 							<li>
 								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/restock_report">
 									<span class="fa fa-arrow-right">&nbsp;</span> Restock
+								</a>
+							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/excess_report">
+									<span class="fa fa-arrow-right">&nbsp;</span> Excess
 								</a>
 							</li>
 						</ul>

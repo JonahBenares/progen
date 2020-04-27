@@ -135,3 +135,72 @@ function chooseCategory(){
            }
     }); 
 }
+
+function choosePRS(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/reports/getPRinformation';
+    var prno = document.getElementById("pr").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#submit").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#submit").show(); 
+    },5000);
+
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'pr='+prno,
+        dataType: 'json',
+        success: function(response){
+        	$("#prid").val(response.receive_id);
+            $("#pr_no").val(response.pr_no);
+        }
+    }); 
+}
+
+function chooseItem(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/reports/getIteminformation';
+    var item = document.getElementById("item").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#submit").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#submit").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'item='+item,
+        dataType: 'json',
+        success: function(response){
+            $("#item_id").val(response.item_id);
+            $("#item_name").val(response.item_name);
+            $("#unit").val(response.unit);
+            $("#original_pn").val(response.pn);
+        }
+    }); 
+}
+
+function chooseSupplier(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/reports/getSupplierinformation';
+    var supplier = document.getElementById("supplier").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#submit").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#submit").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'supplier='+supplier,
+        dataType: 'json',
+        success: function(response){
+            $("#supplier_id").val(response.supplier_id);
+            $("#supplier_name").val(response.supplier_name);
+        }
+    }); 
+}

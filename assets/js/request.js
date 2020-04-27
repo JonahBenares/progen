@@ -2,6 +2,12 @@ function choosePR(){
     var loc= document.getElementById("baseurl").value;
     var redirect = loc+'index.php/request/getPR';
     var prno = document.getElementById("prno").value;
+    document.getElementById('alerts').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#proceeds").hide(); 
+    setTimeout(function() {
+        document.getElementById('alerts').innerHTML=''; 
+        $("#proceeds").show(); 
+    },5000);
     $.ajax({
             type: 'POST',
             url: redirect,
@@ -97,7 +103,8 @@ function balancePRItem(){
             url: redirectcr,
             data:'item='+itemid+'&pr='+pr,
             success: function(output){
-                alert(output);
+                alert("Available Balance for this PR and Item: " + output);
+                document.getElementById("maxqty").value = output;
             }
           });
     } 
@@ -141,11 +148,13 @@ function add_item(){
 
 
 	var itemid =$('#item_id').val();
+    var itemname =$('#item_name').val();
     var borrowfrom =$('#borrowfrom').val();
     var original_pn =$('#original_pn').val();
     var unit =$('#unit').val();
     /*var invqty =$('#invqty').val();*/
-    var quantity =$('#quantity').val();
+    var invqty =parseInt($('#invqty').val());
+    var quantity =parseInt($('#quantity').val());
     var unit_cost =$('#unit_cost').val();
     var siid =$('#siid').val();
     
@@ -153,25 +162,29 @@ function add_item(){
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
     var itm = i.replace(/"/gi,"");
+    var maxqty = parseInt(document.getElementById("maxqty").value);
 
     if(itemid==''){
          alert('Item must not be empty. Please choose/click from the suggested item list.');
     } else if(siid==''){
          alert('Cross Reference must not be empty.');
-    } else if(quantity==''){
+    }else if(quantity==''){
          alert('Quantity must not be empty.');
+    }else if(quantity>invqty){
+         alert('Cannot request more than existing quantity!');
     } else {
     	  var rowCount = $('#item_body tr').length;
     	  count=rowCount+1;
     	  $.ajax({
     	 		type: "POST",
     	 		url:redirect,
-    	 		data: "itemid="+itemid+"&siid="+siid+"&original_pn="+original_pn+"&unit="+unit+"&cost="+unit_cost+"&quantity="+quantity+"&item="+item+"&count="+count+"&borrow="+borrowfrom,
+    	 		data: "itemid="+itemid+"&itemname="+itemname+"&siid="+siid+"&original_pn="+original_pn+"&unit="+unit+"&cost="+unit_cost+"&quantity="+quantity+"&item="+item+"&count="+count+"&borrow="+borrowfrom,
                 success: function(html){
                 	$('#item_body').append(html);
                 	$('#itemtable').show();
                 	$('#savebutton').show();
                 	document.getElementById("item_id").value = '';
+                    document.getElementById("item_name").value = '';
                     document.getElementById("original_pn").value = '';
                     document.getElementById("unit").value = '';
                     document.getElementById("unit_cost").value = '';
@@ -190,16 +203,25 @@ function add_item(){
 function saveRequest(){
     var req = $("#Requestfrm").serialize();
     var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/request/insertRequest';
+    //var redirect = loc+'index.php/request/insertRequest';
+    var conf = confirm('Are you sure you want to save this record?');
+    if(conf==true){
+        var redirect = loc+'index.php/request/insertRequest';
+    }else {
+        var redirect = '';
+    }
      $.ajax({
             type: "POST",
             url: redirect,
             data: req,
             success: function(output){
-                alert("Request successfully Added!");
-                /*window.location = loc+'index.php/request/mreqf/'+output;*/
-                location.reload();
-                window.open(loc+'index.php/request/mreqf/'+output, '_blank');
+                //var conf = confirm('Are you sure you want to save this record?');
+                if(conf==true){
+                    alert("Request successfully Added!");
+                    /*window.location = loc+'index.php/request/mreqf/'+output;*/
+                    location.reload();
+                    window.open(loc+'index.php/request/mreqf/'+output, '_blank');
+                }
                //alert(output);
             }
       });
@@ -247,4 +269,38 @@ function getUnitCost(){
                 document.getElementById("unit_cost").value = output;
             }
     });
+}
+
+$(document).ready(function(){
+    $("#quantity").keyup(function(){
+        var x = document.getElementById("quantity").value;
+        $('input[name="getmax"]').val(x);
+    });
+});
+
+function chooseItem(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getIteminformation';
+    var item = document.getElementById("item").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#submit").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#submit").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'item='+item,
+        dataType: 'json',
+        success: function(response){
+            $("#item_id").val(response.item_id);
+            $("#item_name").val(response.item_name);
+            $("#unit").val(response.unit);
+            $("#original_pn").val(response.pn);
+            $("#invqty").val(response.recqty);
+            crossreferencing();
+            balancePRItem();
+        }
+    }); 
 }

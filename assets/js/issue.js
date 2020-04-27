@@ -22,6 +22,36 @@ $(document).ready(function(){
 	        }
 	      });
 	 });
+
+    $(".iss_qty").change(function(){
+        var iss= parseInt($(this).val());
+        var rem_qty = parseInt($(this).attr('data-id')); 
+       
+        if(iss>rem_qty){
+            alert('Error: Issued quantity is greater than remaining quantity of item.');
+             $('input[type="button"]').attr('disabled','disabled');
+        } else {
+             $('input[type="button"]').removeAttr('disabled');
+        }
+    });
+});
+
+$(document).on('click', '#getEP', function(e){
+    e.preventDefault();
+    var uid = $(this).data('id');    
+    var loc= document.getElementById("baseurl").value;
+    var redirect1=loc+'/index.php/issue/edit_endpurp';
+    $.ajax({
+          url: redirect1,
+          type: 'POST',
+          data: 'id='+uid,
+        beforeSend:function(){
+            $("#ep").html('Please wait ..');
+        },
+        success:function(data){
+           $("#ep").html(data);
+        },
+    })
 });
 
 function isNumberKey(evt){
@@ -159,4 +189,26 @@ function printGP(){
                 
             }
     });
+}
+
+function chooseMreqf(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/issue/getMreqfinformation';
+    var mreqf = document.getElementById("mreqf").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#saveissuance").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#saveissuance").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'mreqf='+mreqf,
+        dataType: 'json',
+        success: function(response){
+            $("#mreqf").val(response.mreqf);
+            $("#request_id").val(response.request_id);
+        }
+    }); 
 }

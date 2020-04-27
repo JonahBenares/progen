@@ -97,6 +97,8 @@
 											<th class="tr-bottom" width="10%"><center>Catalog No.</center></th>
 											<th class="tr-bottom" width="10%"><center>NKK No.</center></th>
 											<th class="tr-bottom" width="10%"><center>SEMT No.</center></th>
+											<th class="tr-bottom" width="10%"><center>Unit Cost</center></th>
+											<th class="tr-bottom" width="10%"><center>Total Cost</center></th>
 											<th class="tr-bottom" width="10%"><center>Serial No.</center></th>
 											<th class="tr-bottom" width="5%"><center>Reason</center></th>
 											<th class="tr-bottom" width="20%"><center>Remarks</center></th>
@@ -115,6 +117,8 @@
 											<td><center><?php echo $det['catalog_no'];?></center></td>
 											<td><center><?php echo $det['nkk_no'];?></center></td>
 											<td><center><?php echo $det['semt_no'];?></center></td>
+											<td><center><?php echo $det['item_cost'];?></center></td>
+											<td><center><?php echo $det['total'];?></center></td>
 											<td><center><?php echo $det['serial'];?></center></td>
 											<td><?php echo $det['reason'];?></td>
 											<td><?php echo $det['remarks'];?></td>

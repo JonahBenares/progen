@@ -16,6 +16,7 @@ class Restock extends CI_Controller {
         $this->dropdown['employee'] = $this->super_model->select_all_order_by('employees', 'employee_name', 'ASC');
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
+        $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         // $this->dropdown['prno'] = $this->super_model->select_join_where("receive_details","receive_head", "saved='1' AND create_date BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()","receive_id");
         //$this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
          if(isset($_SESSION['user_id'])){
@@ -61,7 +62,12 @@ class Restock extends CI_Controller {
                 $returned_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->returned_by);
                 $noted_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->noted_by);
                 $acknowledge_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->acknowledge_by);
-                $received_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->received_by);
+                if($res->excess!=1){
+                    $received_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->received_by);
+                }else{
+                    $received_by = $this->super_model->select_column_where("users", "fullname", "user_id", $res->received_by);
+                }
+                /*$received_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->received_by);*/
                 $data['restock'][] = array(
                     'rhead_id'=>$res->rhead_id,
                     'date'=>$res->restock_date,
@@ -72,6 +78,7 @@ class Restock extends CI_Controller {
                     'acknowledge'=>$acknowledge_by,
                     'noted'=>$noted_by,
                     'returned'=>$returned_by,
+                    'excess'=>$res->excess,
                     'received'=>$received_by
                 );
             }
@@ -114,6 +121,7 @@ class Restock extends CI_Controller {
             $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $rit->brand_id);
             $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $rit->serial_id);
             $data['rdetails_id'] = $this->super_model->select_column_where('restock_details', 'rdetails_id', 'rhead_id', $id);
+            $total=$rit->quantity*$rit->item_cost;
             $data['details'][] = array(
                     'rdetails_id'=>$rit->rdetails_id,
                     'rhead_id'=>$rit->rhead_id,
@@ -125,6 +133,8 @@ class Restock extends CI_Controller {
                     'semt_no'=>$rit->semt_no,
                     'reason'=>$rit->reason,
                     'remarks'=>$rit->remarks,
+                    'item_cost'=>$rit->item_cost,
+                    'total'=>$total,
                     'qty'=>$rit->quantity,
                     'serial'=>$serial
                 );
@@ -134,6 +144,29 @@ class Restock extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function getIteminformation(){
+        $item = $this->input->post('item');
+        foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 
+            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getSupplierinformation(){
+        $supplier = $this->input->post('supplier');
+        foreach($this->super_model->select_custom_where("supplier", "supplier_id='$supplier'") AS $sup){ 
+            $return = array('supplier_id' => $sup->supplier_id,'supplier_name' => $sup->supplier_name); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getPRinformation(){
+        $prno = $this->input->post('prno');
+        foreach($this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE pr_no LIKE '%$prno%' AND saved='1' GROUP BY pr_no") AS $pr){ 
+            $return = array('pr_no' => $pr->pr_no,'enduse' => $pr->enduse_id, 'purpose' => $pr->purpose_id, 'department' => $pr->department_id); 
+            echo json_encode($return);   
+        }
+    }
 
     public function add_restock_first(){
         $id=$this->uri->segment(3);
@@ -164,6 +197,7 @@ class Restock extends CI_Controller {
             $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $det->supplier_id);
             $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $det->brand_id);
             $data['rdetails_id'] = $this->super_model->select_column_where('restock_details', 'rdetails_id', 'rhead_id', $id);
+            $total=$det->quantity*$det->item_cost;
             $data['details'][] = array(
                 'rhead_id'=>$det->rhead_id,
                 'serial'=>$serial,
@@ -174,6 +208,8 @@ class Restock extends CI_Controller {
                 'catalog_no'=>$det->catalog_no,
                 'nkk_no'=>$det->nkk_no,
                 'semt_no'=>$det->semt_no,
+                'item_cost'=>$det->item_cost,
+                'total'=>$total,
                 'reason'=>$det->reason,
                 'remarks'=>$det->remarks
             );
@@ -326,21 +362,34 @@ class Restock extends CI_Controller {
     }
 
     public function getitem(){
+        $item_id=$this->input->post('itemid');
+        $supplier_id=$this->input->post('supplierid');
+        $brand_id=$this->input->post('brandid');
+        $cat_no=$this->input->post('catno');
+        $nkkno=$this->input->post('nkkno');
+        $semtno=$this->input->post('semtno');
+        foreach($this->super_model->select_custom_where("receive_items", "item_id='$item_id' AND supplier_id='$supplier_id' AND brand_id='$brand_id' AND catalog_no='$cat_no' AND nkk_no='$nkkno' AND semt_no='$semtno'") AS $itm){
+            $item_cost=$itm->item_cost; 
+        }
+        $totalcost=$this->input->post('quantity')*$item_cost;
         $data['list'] = array(
             'supplier'=>$this->input->post('supplier'),
-            'supplierid'=>$this->input->post('supplierid'),
-            'itemid'=>$this->input->post('itemid'),
-            'brandid'=>$this->input->post('brandid'),
+            'supplierid'=>$supplier_id,
+            'supplier_name'=>$this->input->post('suppliername'),
+            'itemid'=>$item_id,
+            'brandid'=>$brand_id,
             'brand'=>$this->input->post('brand'),
             'serialid'=>$this->input->post('serialid'),
             'serial'=>$this->input->post('serial'),
-            'catno'=>$this->input->post('catno'),
-            'nkkno'=>$this->input->post('nkkno'),
-            'semtno'=>$this->input->post('semtno'),
+            'catno'=>$cat_no,
+            'nkkno'=>$nkkno,
+            'semtno'=>$semtno,
             'reason'=>$this->input->post('reason'),
             'remarks'=>$this->input->post('remarks'),
-            'item'=>$this->input->post('item'),
+            'item'=>$this->input->post('itemname'),
             'quantity'=>$this->input->post('quantity'),
+            'item_cost'=>$item_cost,
+            'total'=>$totalcost,
             'count'=>$this->input->post('count')
         );   
         $this->load->view('restock/row_item',$data);
@@ -350,10 +399,12 @@ class Restock extends CI_Controller {
 
     public function prnolist(){
         $prno=$this->input->post('prres');
-        $rows=$this->super_model->custom_query("SELECT pr_no,saved FROM issuance_head WHERE pr_no LIKE '%$prno%' AND saved='1'  GROUP BY pr_no");
+        //$rows=$this->super_model->custom_query("SELECT pr_no,saved FROM issuance_head WHERE pr_no LIKE '%$prno%' AND saved='1'  GROUP BY pr_no");
+        $rows=$this->super_model->custom_query("SELECT rd.pr_no, rh.saved FROM receive_head rh INNER JOIN receive_details rd WHERE rd.pr_no LIKE '%$prno%' AND rh.saved='1'  GROUP BY rd.pr_no");
         if($rows!=0){
              echo "<ul id='name-item'>";
-            foreach($this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id,saved FROM issuance_head WHERE pr_no LIKE '%$prno%' AND saved='1' GROUP BY pr_no") AS $pr){ 
+            /*foreach($this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id,saved FROM issuance_head WHERE pr_no LIKE '%$prno%' AND saved='1' GROUP BY pr_no") AS $pr){*/ 
+            foreach($this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE pr_no LIKE '%$prno%' AND saved='1' GROUP BY pr_no") AS $pr){ 
                     ?>
                    <li onClick="selectPrRestock('<?php echo $pr->pr_no; ?>','<?php echo $pr->enduse_id; ?>','<?php echo $pr->purpose_id; ?>','<?php echo $pr->department_id; ?>')"><?php echo $pr->pr_no; ?></li>
                 <?php 
@@ -367,7 +418,12 @@ class Restock extends CI_Controller {
         $id=$this->uri->segment(3);
         $this->load->model('super_model');
         foreach($this->super_model->select_row_where('restock_head','rhead_id', $id) AS $stock){
-            $received = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->received_by);
+            //$received = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->received_by);
+            if($stock->excess!=1){
+                $received = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->received_by);
+            }else {
+                $received = $this->super_model->select_column_where("users", "fullname", "user_id", $stock->received_by);
+            }
             $returned = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->returned_by);
             $acknowledge = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->acknowledge_by);
             $department = $this->super_model->select_column_where("department", "department_name", "department_id", $stock->department_id);
@@ -418,6 +474,7 @@ class Restock extends CI_Controller {
             );
         }
         $this->load->view('template/header');
+        $this->load->view('template/print_head');
         $this->load->view('restock/mrsf',$data);
     }
 

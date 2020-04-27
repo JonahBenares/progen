@@ -28,10 +28,17 @@
 							<form method="POST" action ="<?php echo base_url();?>index.php/reports/generatePrIssue">
 								<div class="col-lg-3"> <h5 class="pull-right">Enter PR:</h5> </div>
 								<div class="col-lg-5">
-									<input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
-									<span id="suggestion-pr"></span>
+									<!-- <input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
+									<span id="suggestion-pr"></span> -->
+									<select name="pr" id='pr' class="form-control select2" onchange="choosePRS()" style="margin:4px;width:100%">
+										<option value = "">-Choose PR-</option>
+										<?php foreach($pr_rep AS $prs){ ?>
+										<option value = "<?php echo $prs->pr_no;?>"><?php echo $prs->pr_no;?></option>
+										<?php } ?>
+									</select>
 								</div>
-								<div class="col-lg-4"><input type="submit" class="btn btn-warning" name="search_pr" Value="Find"></div>
+								<div id='alrt' style="font-weight:bold"></div>
+								<div class="col-lg-4"><input type="submit" class="btn btn-warning" id="submit" name="search_pr" Value="Find"></div>
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 								<input type="hidden" name="prid" id="prid">
 							</form>
@@ -57,7 +64,7 @@
 										<td width="10%"><p class="nomarg">Date:</p></td>
 										<td width="20%" colspan="1"><h5 class="nomarg"><?php echo $h['issue_date'] . " " . $h['issue_time']; ?></h5></td>
 										<td width="10%"><p class="nomarg">PR/JO #:</p></td>
-										<td > <h5 class="nomarg labelStyle"><?php echo $h['prno']; ?></h5></td>
+										<td > <?php echo (($h['type'] == 'JO / PR') ? $h['prno'] :  $h['type']); ?></td>
 
 										<!--  <td width = "5%">
 										 	
@@ -125,12 +132,12 @@
 									</div>
 								</div>
 							</div>
+							<?php } ?>
 							<table width="100%" id="prntby">
 				                <tr>
 				                    <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> </td>
 				                </tr>
-				            </table> 	
-							<?php } ?>
+				            </table> 
 						</div>
 						<!-- end loop -->
 					</div>
