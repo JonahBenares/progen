@@ -121,6 +121,8 @@
 									<thead>
 										<tr>
 											<td align="center"><strong>Issue Date</strong></td>
+											<td align="center"><strong>Dr No.</strong></td>
+											<td align="center"><strong>MIF No.</strong></td>
 											<td align="center"><strong>PR No.</strong></td>
 											<td align="center"><strong>Item Part No.</strong></td>
 											<td align="center"><strong>Item Description</strong></td>
@@ -139,6 +141,8 @@
 										<?php foreach($issue AS $is){ ?>
 										<tr>
 											<td align="center"><?php echo  date('d-M-Y',strtotime($is['issue_date']));?></td>
+											<td align="center"><?php echo $is['dr_no']?></td>
+											<td align="center"><?php echo $is['mif_no']?></td>
 											<td align="center"><?php echo $is['pr']?></td>
 											<td align="center"><?php echo $is['pn'];?></td>
 											<td align="center"><?php echo $is['item'];?></td>

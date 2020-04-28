@@ -102,6 +102,8 @@
 											<tr>
 												
 												<th align="center"><strong>Receive Date</strong></th>
+												<th align="center"><strong>Dr No.</strong></th>
+												<th align="center"><strong>MRECF No.</strong></th>
 												<th align="center"><strong>PR No.</strong></th>
 												<th align="center"><strong>Item Part No.</strong></th>
 												<th align="center"><strong>Item Description</strong></th>
@@ -119,6 +121,8 @@
 											<?php foreach($rec as $rec){ ?>
 											<tr>
 												<td align="center"><?php echo date('d-M-Y',strtotime($rec['rec_date']));?></td>
+												<td align="center"><?php echo $rec['dr_no']?></td>
+												<td align="center"><?php echo $rec['mrecf_no']?></td>
 												<td align="center"><?php echo $rec['pr']?></td>
 												<td align="center"><?php echo $rec['pn']?></td>
 												<td align="center"><?php echo $rec['item']?></td>
