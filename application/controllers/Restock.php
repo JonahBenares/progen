@@ -368,7 +368,7 @@ class Restock extends CI_Controller {
         $cat_no=$this->input->post('catno');
         $nkkno=$this->input->post('nkkno');
         $semtno=$this->input->post('semtno');
-        foreach($this->super_model->select_custom_where("receive_items", "item_id='$item_id' AND supplier_id='$supplier_id' AND brand_id='$brand_id' AND catalog_no='$cat_no' AND nkk_no='$nkkno' AND semt_no='$semtno'") AS $itm){
+        foreach($this->super_model->select_custom_where("receive_items", "item_id='$item_id' AND supplier_id='$supplier_id'") AS $itm){
             $item_cost=$itm->item_cost; 
         }
         $totalcost=$this->input->post('quantity')*$item_cost;
