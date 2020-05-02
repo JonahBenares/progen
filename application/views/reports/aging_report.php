@@ -99,6 +99,7 @@
 								</thead>
 								<tbody>
 									<?php 
+									if(!empty($info)){
 										foreach($item_info as $in){ 
 											
 										/*$datec = date_create($t['date']);
@@ -286,7 +287,7 @@
 											</table>											
 										</td>
 										</tr>
-									<?php } } ?>
+									<?php } } } ?>
 								</tbody>
 								<tfoot>
 									<tr>
@@ -314,7 +315,7 @@
 								<div class="pull-right" style="margin-bottom: 10px">
 								<button class="btn btn-warning btn-lg animated headShake">TOTAL: <b><?php 
 
-								echo number_format(array_sum($total2),2); ?></b></button>
+								echo (!empty($total2)) ? number_format(array_sum($total2),2) : ''; ?></b></button>
 								</div>
 								<br>
 								<table class="table table-hover table-bordered" id="aging_table2" >
@@ -331,7 +332,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach($info as $t){ 
+									<?php if(!empty($info)){ foreach($info as $t){ 
 										$diff = dateDifference($now,$t['receive_date']); 
 										$start_diff=$days-59;
 										if($days!='361'){
@@ -363,7 +364,7 @@
 											<td width="20%"><?php echo $t['unit_cost']; ?></td>
 											<td width="20%"><center><?php echo number_format($t['unit_x'],2); ?></center></td>
 										</tr>
-									<?php } } } } } ?>
+									<?php } } } } } } ?>
 								</tbody>
 							</table>
 						</div>
