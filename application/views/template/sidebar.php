@@ -569,26 +569,7 @@
 						<em class="fa fa-plus"></em>
 					</span>
 				</a>
-				<ul class="children collapse" id="sub-item-1">					
-					<li class="parent ">
-						<a data-toggle="collapse" href="#sub-request">
-							<span class="fa fa-pencil-square-o">&nbsp;</span> Request 
-						</a>
-						<ul class="children collapse" id="sub-request">
-							<?php if($request_add == 1){ ?>
-							<li>
-								<a style="padding-left:60px"  data-toggle="modal" data-target="#requestModal" >
-									<span class="fa fa-arrow-right">&nbsp;</span> Add New
-								</a>
-							</li>
-							<?php } ?>
-							<li>
-								<a style="padding-left:60px" class="" href="<?php echo base_url(); ?>index.php/request/request_list">
-									<span class="fa fa-arrow-right">&nbsp;</span> View List
-								</a>
-							</li>
-						</ul>
-					</li>	
+				<ul class="children collapse" id="sub-item-1">	
 					<li class="parent ">
 						<a data-toggle="collapse" href="#sub-receiving">
 							<span class="fa fa-sign-in">&nbsp;</span> Receive 
@@ -607,7 +588,26 @@
 								</a>
 							</li>
 						</ul>
-					</li>						
+					</li>				
+					<li class="parent ">
+						<a data-toggle="collapse" href="#sub-request">
+							<span class="fa fa-pencil-square-o">&nbsp;</span> Request 
+						</a>
+						<ul class="children collapse" id="sub-request">
+							<?php if($request_add == 1){ ?>
+							<li>
+								<a style="padding-left:60px"  data-toggle="modal" data-target="#requestModal" >
+									<span class="fa fa-arrow-right">&nbsp;</span> Add New
+								</a>
+							</li>
+							<?php } ?>
+							<li>
+								<a style="padding-left:60px" class="" href="<?php echo base_url(); ?>index.php/request/request_list">
+									<span class="fa fa-arrow-right">&nbsp;</span> View List
+								</a>
+							</li>
+						</ul>
+					</li>							
 					<li class="parent ">
 						<a data-toggle="collapse" href="#sub-issue">
 							<span class="fa fa-share-square-o">&nbsp;</span> Issue 
