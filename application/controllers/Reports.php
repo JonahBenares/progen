@@ -1789,6 +1789,8 @@ class Reports extends CI_Controller {
                     $data['rec_itm'][] = array(
                         'supplier'=>$supplier,
                         'catalog_no'=>$cat,
+                        'nkk'=>$nkk,
+                        'semt'=>$semt,
                         'brand'=>$brandname,
                         'item_cost'=>$cost,
                         'receive_qty'=>0,
