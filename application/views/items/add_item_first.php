@@ -170,7 +170,8 @@
 									</div>
 									<br>	
 									<div class="row" style="padding: 0px 0px 50px 0px">
-										<div class="col-lg-12"><input type='button' class="btn btn-warning form-control" style="background: #ff5d00" onclick='saveItem()' value='NEXT' name='nextitem'></div>
+										<center><div id='alt' style="font-weight:bold"></div></center>
+										<div class="col-lg-12"><input type='button' class="btn btn-warning form-control" style="background: #ff5d00" onclick='saveItem()' value='NEXT' id="next" name='nextitem'></div>
 									</div>
 									<input type="hidden" name="category_id" id="category_id">
 									<input type="hidden" name="binid" id="binid">
