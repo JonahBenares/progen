@@ -150,7 +150,7 @@
 											<td><center><?php echo $rq['unitcost']; ?></center></td>
 											<td><center><?php echo $rq['totalcost']; ?></center></td>
 											<td><center><?php echo $rq['invqty']; ?></center></td>
-											<td><center></center></td>
+											<td><center><?php echo $rq['borrowfrom_pr']; ?></center></td>
 											<td><center></center></td>
 										</tr>
 										<?php } ?>

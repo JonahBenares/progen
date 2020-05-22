@@ -342,6 +342,7 @@ class Request extends CI_Controller {
                     'cross'=>$cross,
                     'unitcost'=>$rt->unit_cost,
                     'totalcost'=>$rt->total_cost,
+                    'borrowfrom_pr'=>$rt->borrowfrom_pr,
                     'invqty'=>$rec_qty
                 );
             }
