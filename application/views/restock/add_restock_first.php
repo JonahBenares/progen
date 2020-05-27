@@ -6,8 +6,8 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class=""><a href="<?php echo base_url(); ?>index.php/restock/restock">Receive </a></li>
-			<li class="active"> Delivery Receipt</li>
+			<li class=""><a href="<?php echo base_url(); ?>index.php/restock/restock">Restock </a></li>
+			<li class="active"> Add</li>
 		</ol>
 	</div><!--/.row-->
 	
@@ -129,7 +129,8 @@
 							</div>
 							<hr>
 							<?php if($saved==0){ ?>
-							<button onclick="SaveRes('<?php echo $rhead_id; ?>','<?php echo base_url(); ?>')" class="btn btn-warning" style="width:100%;background: #ff5d00">Save</button>
+							<center><div id='alt' style="font-weight:bold"></div></center>
+							<button onclick="SaveRes('<?php echo $rhead_id; ?>','<?php echo base_url(); ?>')" class="btn btn-warning" style="width:100%;background: #ff5d00" id="savebutton">Save</button>
 							</div>
 							<?php } } }?>
 					</div>

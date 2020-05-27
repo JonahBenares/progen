@@ -113,6 +113,10 @@ function saveIssue(){
 	        type: "POST",
 	        url: redirect,
 	        data: issuedata,
+            beforeSend: function(){
+                document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
+                $("#savebutton").hide(); 
+            },
 	        success: function(output){
                 //alert(output);
               // console.log(output);

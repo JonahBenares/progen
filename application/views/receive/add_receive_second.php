@@ -69,8 +69,20 @@
 						<div class="row">
 							<?php if(!isset($rdid)) { ?>
 							<div class="col-lg-2 col-lg-offset-1">
-								<h5>PR/JO#: <input type="text" name="prno" id='prno' class="form-control" autocomplete="off">
-									<span id="suggestion-prno"></span></h5>
+								<h5>
+									PR/JO#: 
+									<select name="prno" id='prno' class="form-control select2" onchange="choosePR()">
+										<option value = ""></option>
+										<?php foreach($pr_list AS $pr){ ?>
+										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
+										<?php } ?>
+									</select>
+								</h5>
+								<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#PRModal">
+									<span class="fa fa-plus"></span>
+								</a>
+								<!-- <h5>PR/JO#: <input type="text" name="prno" id='prno' class="form-control" autocomplete="off">
+									<span id="suggestion-prno"></span></h5> -->
 							</div>
 							<div class="col-lg-2">
 								<h5>Department: 
@@ -191,9 +203,19 @@
 								</div>								
 								<div class="col-lg-2">
 									<p  style="margin:0px" for="">Brand:</p>
-									<input type class="form-control" name='brand' id='brand' autocomplete="off">
-									<span id="suggestion-brand"></span>
+									<!-- <input type class="form-control" name='brand' id='brand' autocomplete="off">
+									<span id="suggestion-brand"></span> -->
+									<select name="brand" id='brand' class="form-control select2" onchange="chooseBrand()">
+										<option value = ""></option>
+										<?php foreach($brand AS $brnd){ ?>
+										<option value = "<?php echo $brnd->brand_id;?>"><?php echo $brnd->brand_name;?></option>
+										<?php } ?>
+									</select>
+									<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#myModal">
+										<span class="fa fa-plus"></span>
+									</a>
 									<input type='hidden' name='brand_id' id='brand_id'>
+									<input type='hidden' name='brand_name' id='brand_name'>
 								</div>	
 								<div class="col-lg-2">
 									<p style="margin:0px" for="">Serial No. :</p>
@@ -334,6 +356,7 @@
 								<?php } ?>
 							</table>
 						</div>
+						<center><div id='alt' style="font-weight:bold"></div></center>
 						<input type='hidden' name='receiveid' id='receiveid' value='<?php echo $receiveid; ?>'>
 						<input type='hidden' name='counter' id='counter'>
 						<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
@@ -344,6 +367,55 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="modal fade" id="PRModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add New PR No.</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<label>PR No.</label>
+						<input type = "text" name = "pr_no" id="pr_no" class = "form-control option">
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="hidden" name="baseurl2" id="baseurl2" value="<?php echo base_url(); ?>">
+							<input type="button" id = "btnAddPR"  class="btn btn-warning" value = "Add" onclick = "addPR()" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add New Brand</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<label>Brand Name</label>
+						<input type = "text" name = "brandname" id="brandname" class = "form-control option">
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="hidden" name="baseurl1" id="baseurl1" value="<?php echo base_url(); ?>">
+							<input type="button" id = "btnAdd"  class="btn btn-warning" value = "Add" onclick = "addBrand()" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	$('#btnAdd').click(function() {
+	    $('#myModal').modal('hide');
+	});
+	$('#btnAddPR').click(function() {
+	    $('#PRModal').modal('hide');
+	});
+</script>
 
 	

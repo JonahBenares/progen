@@ -339,6 +339,7 @@ class Receive extends CI_Controller {
         $data['receiveid']=$id;
         $data['rdid']=$rdid;
         $data['supplier'] = $this->super_model->select_all_order_by("supplier", "supplier_name", "ASC");
+        $data['brand'] = $this->super_model->select_custom_where("brand", "brand_name!='' ORDER BY brand_name ASC");
         $data['items'] = $this->super_model->select_all_order_by("items", "item_name", "ASC");
         $data['pr_list'] = $this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no");
         foreach($this->super_model->select_row_where("receive_details", "rd_id", $rdid) AS $d){
@@ -561,6 +562,14 @@ class Receive extends CI_Controller {
         }
     }
 
+    public function getPRinformation(){
+        $prno = $this->input->post('prno');
+        foreach($this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id, inspected_by FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rd.pr_no='$prno' AND rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no") AS $pr){   
+            $return = array('pr_no' => $pr->pr_no,'department_id' => $pr->department_id,'enduse_id' => $pr->enduse_id,'purpose_id' => $pr->purpose_id,'inspected_by' => $pr->inspected_by); 
+            echo json_encode($return);   
+        }
+    }
+
     /*public function purposelist(){
         $purpose=$this->input->post('purpose');
         $rows=$this->super_model->count_custom_where("purpose","purpose_desc LIKE '%$purpose%'");
@@ -589,6 +598,14 @@ class Receive extends CI_Controller {
                 <?php 
             }
              echo "<ul>";
+        }
+    }
+
+    public function getBrandinformation(){
+        $brand = $this->input->post('brand');
+        foreach($this->super_model->select_custom_where("brand", "brand_id='$brand'") AS $brnd){  
+            $return = array('brand_id' => $brnd->brand_id,'brand_name' => $brnd->brand_name); 
+            echo json_encode($return);   
         }
     }
 
@@ -693,7 +710,7 @@ class Receive extends CI_Controller {
             'supplierid'=>$this->input->post('supplierid'),
             'itemid'=>$this->input->post('itemid'),
             'brandid'=>$this->input->post('brandid'),
-            'brand'=>$this->input->post('brand'),
+            'brand'=>$this->input->post('brandname'),
             'serialid'=>$this->input->post('serialid'),
             'serial'=>$this->input->post('serial'),
             'catno'=>trim($this->input->post('catno'), " "),

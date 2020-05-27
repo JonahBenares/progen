@@ -161,6 +161,7 @@
 								<input type='hidden' name='requestid' id='requestid' value='<?php echo $requestid; ?>'>
 								<input type='hidden' name='counter' id='counter'>
 								<?php if($saved==0){ ?>
+								<center><div id='alt' style="font-weight:bold"></div></center>
 								<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='saveRequest()' style="width:100%;background: #ff5d00" value='Save and Print'>
 								<?php } ?>
 							</div>

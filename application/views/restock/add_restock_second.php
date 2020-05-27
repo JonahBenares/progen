@@ -84,9 +84,19 @@
 								</div>								
 								<div class="col-lg-2">
 									<p  style="margin:0px" for="">Brand:</p>
-									<input type class="form-control" name='brand' id='brand' autocomplete="off">
-									<span id="suggestion-brand"></span>
+									<!-- <input type class="form-control" name='brand' id='brand' autocomplete="off">
+									<span id="suggestion-brand"></span> -->
+									<select name="brand" id='brand' class="form-control select2" onchange="chooseBrand()">
+										<option value = ""></option>
+										<?php foreach($brand AS $brnd){ ?>
+										<option value = "<?php echo $brnd->brand_id;?>"><?php echo $brnd->brand_name;?></option>
+										<?php } ?>
+									</select>
+									<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#myModal">
+										<span class="fa fa-plus"></span>
+									</a>
 									<input type='hidden' name='brand_id' id='brand_id'>
+									<input type='hidden' name='brand_name' id='brand_name'>
 								</div>	
 								<div class="col-lg-2">
 									<p style="margin:0px" for="">Quantity:</p>
@@ -136,8 +146,14 @@
 								</div>
 								<div class="col-lg-4">
 									<p  style="margin:0px" for="">Reason:</p>
-									<textarea class="form-control" rows="1" name='reason' id='reason'></textarea>
-									<span id="suggestion-reason"></span></td>
+									<select name="reason" id='reason' class="form-control select2">
+										<option value = ""></option>
+										<?php foreach($reasonlist AS $res){ ?>
+										<option value = "<?php echo $res->reason;?>"><?php echo $res->reason;?></option>
+										<?php } ?>
+									</select>
+									<!-- <textarea class="form-control" rows="1" name='reason' id='reason'></textarea>
+									<span id="suggestion-reason"></span></td> -->
 								</div>
 								<div class="col-lg-1">
 									<br>
@@ -196,6 +212,7 @@
 								<tbody id="item_body"></tbody>
 							<?php } ?>
 						</table>
+						<center><div id='alt' style="font-weight:bold"></div></center>
 						<input type='hidden' name='rhead_id' id='rhead_id' value='<?php echo $rhead_id; ?>'>
 						<input type='hidden' name='counter' id='counter'>
 						<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
@@ -207,10 +224,34 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add New Brand</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<label>Brand Name</label>
+						<input type = "text" name = "brandname" id="brandname" class = "form-control option">
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="hidden" name="baseurl1" id="baseurl1" value="<?php echo base_url(); ?>">
+							<input type="button" id = "btnAdd"  class="btn btn-warning" value = "Add" onclick = "addBrand()" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
 	    $('.select2').select2();
 	</script>
 	<script type="text/javascript">
+		$('#btnAdd').click(function() {
+		    $('#myModal').modal('hide');
+		});
 		function removeresitem(rdetails_id,baseurl){
 		    var redirect = baseurl+'index.php/restock/deleteResItem';
 		    var result = confirm("Are you sure you want to delete this item?");

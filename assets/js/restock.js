@@ -225,6 +225,10 @@ function saveRestock(){
         type: "POST",
         url: redirect,
         data: prdata,
+        beforeSend: function(){
+            document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
+            $("#savebutton").hide(); 
+        },
         success: function(output){
             alert('successfully added.');
             window.close();
@@ -242,6 +246,10 @@ function SaveRes(restockID,baseurl){
                 type: "POST",
                 url: redirect,
                 data: 'restockID='+restockID,
+                beforeSend: function(){
+                    document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
+                    $("#savebutton").hide(); 
+                },
                 success: function(output){
                     alert('Restock successfully saved.');
                     location.reload();
@@ -261,6 +269,7 @@ function add_item(){
     var itemname =$('#item_name').val();
     var brand =$('#brand').val();
     var brandid =$('#brand_id').val();
+    var brandname =$('#brand_name').val();
     var serial =$('#serial').val();
     var serialid =$('#serial_id').val();
     var catno =$('#catalog_no').val();
@@ -285,7 +294,7 @@ function add_item(){
           $.ajax({
                 type: "POST",
                 url:redirect,
-                data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&catno="+catno+"&nkkno="+nkkno+"&semtno="+semtno+"&reason="+reason+"&remarks="+remarks+"&item="+item+"&count="+count+"&quantity="+quantity,
+                data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandname="+brandname+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&catno="+catno+"&nkkno="+nkkno+"&semtno="+semtno+"&reason="+reason+"&remarks="+remarks+"&item="+item+"&count="+count+"&quantity="+quantity,
                 success: function(html){
                     //alert(html);
                     $('#item_body').append(html);
@@ -301,6 +310,7 @@ function add_item(){
                     document.getElementById("item").value = '';
                     document.getElementById("brand").value = '';
                     document.getElementById("brand_id").value = '';
+                    document.getElementById("brand_name").value = '';
                     document.getElementById("serial").value = '';
                     document.getElementById("serial_id").value = '';
                     document.getElementById("catalog_no").value = '';
@@ -447,4 +457,47 @@ function choosePRres(){
             $("#pur").val(response.purpose);
         }
     }); 
+}
+
+
+function chooseBrand(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/restock/getBrandinformation';
+    var brand = document.getElementById("brand").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#additm").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#additm").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'brand='+brand,
+        dataType: 'json',
+        success: function(response){
+            $("#brand_id").val(response.brand_id);
+            $("#brand_name").val(response.brand_name);
+        }
+    }); 
+}
+
+function addBrand() {
+   var brand = document.getElementById("brand");
+   var brandname = document.getElementById("brandname").value;
+   var option = document.createElement("OPTION");
+   option.innerHTML = document.getElementById("brandname").value;
+   option.value = document.getElementById("brandname").value;
+   brand.options.add(option);
+   /*var loc= document.getElementById("baseurl1").value;
+   var redirect = loc+'index.php/receive/insertbrand';
+   $.ajax({
+        type: "POST",
+        url: redirect,
+        data: 'brandname='+brandname,
+        success: function(output){
+            $('#brand').selectmenu('refresh', true);
+            document.getElementById("brandname").value = '';
+        }
+    });*/
 }
