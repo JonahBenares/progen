@@ -501,3 +501,12 @@ function addBrand() {
         }
     });*/
 }
+
+function addReason() {
+   var reason = document.getElementById("reason");
+   var reasonname = document.getElementById("reasonname").value;
+   var option = document.createElement("OPTION");
+   option.innerHTML = document.getElementById("reasonname").value;
+   option.value = document.getElementById("reasonname").value;
+   reason.options.add(option);
+}

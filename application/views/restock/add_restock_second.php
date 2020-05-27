@@ -62,6 +62,12 @@
 						<!-- <a class="clickable btn-info btn panel-button-tab-right shadow"  href="<?php echo base_url(); ?>index.php/items/add_item_first" target='_blank'>
 							<span class="fa fa-plus"></span> Add New Item
 						</a> -->
+						<a class="animated pulse infinite  clickable btn btn-warning shadow" data-toggle="modal" data-target="#myModal" style="border:1px solid #d68a00">
+							<span class="fa fa-plus"></span> Add New Brand
+						</a>
+						<a class="animated pulse infinite  clickable btn btn-danger shadow"  data-toggle="modal" data-target="#Reasonmodal" style="border:1px solid #d68a00">
+							<span class="fa fa-plus"></span> Add New Reason
+						</a>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -92,9 +98,9 @@
 										<option value = "<?php echo $brnd->brand_id;?>"><?php echo $brnd->brand_name;?></option>
 										<?php } ?>
 									</select>
-									<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#myModal">
+									<!-- <a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#myModal">
 										<span class="fa fa-plus"></span>
-									</a>
+									</a> -->
 									<input type='hidden' name='brand_id' id='brand_id'>
 									<input type='hidden' name='brand_name' id='brand_name'>
 								</div>	
@@ -245,12 +251,36 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="Reasonmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add New Reason</h4>
+				</div>
+				<div class="modal-body">
+					<form method="POST">
+						<label>Reason Name</label>
+						<input type = "text" name = "reasonname" id="reasonname" class = "form-control option">
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type="hidden" name="baseurl1" id="baseurl1" value="<?php echo base_url(); ?>">
+							<input type="button" id = "btnAddres"  class="btn btn-warning" value = "Add" onclick = "addReason()" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
 	    $('.select2').select2();
 	</script>
 	<script type="text/javascript">
 		$('#btnAdd').click(function() {
 		    $('#myModal').modal('hide');
+		});
+		$('#btnAddres').click(function() {
+		    $('#Reasonmodal').modal('hide');
 		});
 		function removeresitem(rdetails_id,baseurl){
 		    var redirect = baseurl+'index.php/restock/deleteResItem';
