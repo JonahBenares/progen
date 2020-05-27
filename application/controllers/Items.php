@@ -892,6 +892,8 @@ class Items extends CI_Controller {
                 if($row_count==0){
                     $this->super_model->insert_into("pn_series", $pn_data);
                 }
+            }else {
+                $pn_no=$this->input->post('pn');
             }   
 
 
