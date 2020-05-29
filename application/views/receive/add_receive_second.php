@@ -77,7 +77,7 @@
 							<div class="col-lg-2 col-lg-offset-1">
 								<h5>
 									PR/JO#: 
-									<select name="prno" id='prno' class="form-control select2" onchange="choosePR()">
+									<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
 										<option value = ""></option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
@@ -143,7 +143,14 @@
 
 								<div class="col-lg-2 col-lg-offset-1">
 									<h5>PR#:
-									<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control"></h5>
+										<!--<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control">-->
+										<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
+											<option value = ""></option>
+											<?php foreach($pr_list AS $prs){ ?>
+											<option value = "<?php echo $prs->pr_no;?>" <?php echo (($det['prno'] == $prs->pr_no) ? ' selected' : ''); ?>><?php echo $prs->pr_no;?></option>
+											<?php } ?>
+										</select>
+									</h5>
 								</div>
 								<div class="col-lg-2">
 									<h5>Department: 

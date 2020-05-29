@@ -710,7 +710,7 @@ class Receive extends CI_Controller {
             'supplierid'=>$this->input->post('supplierid'),
             'itemid'=>$this->input->post('itemid'),
             'brandid'=>$this->input->post('brandid'),
-            'brand'=>$this->input->post('brandname'),
+            'brand'=>$this->input->post('brand'),
             'serialid'=>$this->input->post('serialid'),
             'serial'=>$this->input->post('serial'),
             'catno'=>trim($this->input->post('catno'), " "),

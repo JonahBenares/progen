@@ -591,7 +591,7 @@ function addBrand() {
     });*/
 }
 
-function choosePR(){
+function choosePRrec(){
     var loc= document.getElementById("baseurl").value;
     var redirect = loc+'index.php/receive/getPRinformation';
     var prno = document.getElementById("prno").value;
