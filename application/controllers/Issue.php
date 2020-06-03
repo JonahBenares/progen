@@ -730,6 +730,12 @@ class Issue extends CI_Controller {
         $this->super_model->update_where("issuance_head", $data, "issuance_id", $id);
         echo "success";
     }
+
+    public function delivery_receipt(){        
+        $this->load->view('template/header');
+        $this->load->view('template/print_head');
+        $this->load->view('issue/delivery_receipt');
+    }
    
 }
 ?>
