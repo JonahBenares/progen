@@ -158,14 +158,14 @@
             <table width="100%">
                 <tr>
                     <td width="16%"><strong><h6 class="nomarg">Buyer</h6></strong></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
                     <td width="7%"></td>
                     <td width="10%"><strong><h6 class="nomarg pull-right">DR No. &nbsp</h6></strong></td>
                     <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>                    
                 </tr>
                 <tr>
                     <td><strong><h6 class="nomarg">Address</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
+                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
                     <td></td>
                     <td><strong><h6 class="nomarg pull-right">Date &nbsp</h6></strong></td>
                     <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>  
@@ -173,12 +173,12 @@
                 </tr>
                 <tr>
                     <td><strong><h6 class="nomarg">Contact Person</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
+                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
                     <td></td>
                 </tr>  
                 <tr>
                     <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
+                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
                     <td></td>
                 </tr>    
                 <tr>
