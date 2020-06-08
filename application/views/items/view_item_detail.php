@@ -155,6 +155,8 @@
 											<?php 
 											
 												if(!empty($supplier)){
+												$columns = array_column($supplier, 'date');
+                                            	$a = array_multisort($columns, SORT_DESC, $supplier);
 												foreach($supplier AS $sup){ 
 											?>
 											<tr>
