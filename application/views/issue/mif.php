@@ -333,6 +333,9 @@
                 <div style="margin-top: 2px">
                     <a class="btn btn-primary btn-md" id="printgpass" href="<?php echo base_url(); ?>index.php/issue/gatepass/<?php echo $id; ?>" style="width: 50%">Print Gate Pass</a>
                 </div>
+                <!-- <div style="margin-top: 2px">
+                    <a class="btn btn-primary btn-md" id="printgpass" href="<?php echo base_url(); ?>index.php/issue/delivery_receipt/<?php echo $id; ?>" style="width: 50%">Print DR</a>
+                </div> -->
                 <br>
                 <h5>After Clicking this Button. <br>Configure your <strong>Margin</strong> into <i>none</i></h5>
                 <p>____________________________________________________</p>

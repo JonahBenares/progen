@@ -154,187 +154,211 @@
                 </td>
             </tr>
         </table>
-        <div class="col-lg-12" style="margin:10px 0px 10px">
-            <table width="100%">
-                <tr>
-                    <td width="16%"><strong><h6 class="nomarg">Buyer</h6></strong></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
-                    <td width="7%"></td>
-                    <td width="10%"><strong><h6 class="nomarg pull-right">DR No. &nbsp</h6></strong></td>
-                    <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>                    
-                </tr>
-                <tr>
-                    <td><strong><h6 class="nomarg">Address</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
-                    <td></td>
-                    <td><strong><h6 class="nomarg pull-right">Date &nbsp</h6></strong></td>
-                    <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>  
-                    
-                </tr>
-                <tr>
-                    <td><strong><h6 class="nomarg">Contact Person</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
-                    <td></td>
-                </tr>  
-                <tr>
-                    <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="" class="form-control" style="width:95%;display: unset;height: 25px" name=""></td>
-                    <td></td>
-                </tr>    
-                <tr>
-                    <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
-                    <td></td>
-                    <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
-                    <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>  
-                </tr>            
-            </table>
-            
-        </div>
-        <div class="col-lg-12">
-            <table width="100%" class="table-bordered">
-                <tr>
-                    <td width="1%" align="center"><strong>#</strong></td>
-                    <td width="30%" align="center"><strong>Item Description</strong></td>                    
-                    <td width="20%" align="center"><strong>Part No.</strong></td>
-                    <td width="5%" align="center"><strong>Qty</strong></td>
-                    <td width="10%" align="center"><strong>U/M</strong></td>
-                    <!-- <td width="10%" align="center"><strong>Inv.Bal.*</strong></td> -->
-                </tr>
-                <tr>
-                    <tr>                        
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="left">&nbsp;</td>
-                       <!--  <td align="center"><?php echo $req['invqty'];?></td> -->
+        <?php
+            foreach($heads as $det){ 
+                $dr_buyer = $det->dr_buyer;  
+                $dr_no = $det->dr_no;  
+                $dr_address= $det->dr_address;
+                $dr_contact_person= $det->dr_contact_person;
+                $dr_contact_no= $det->dr_contact_no;
+                $dr_date= $det->dr_date;
+                $shipped_via= $det->shipped_via;
+                $waybill_no= $det->waybill_no;
+                $dr_prepared_by= $det->dr_prepared_by;
+                $dr_verified_by= $det->dr_verified_by;
+                $dr_noted_by= $det->dr_noted_by;
+                $dr_received_by=$det->dr_received_by;
+            }  
+        ?>
+        <form method='POST' id='drsign'>
+            <div class="col-lg-12" style="margin:10px 0px 10px">
+                <?php foreach($issuance_details AS $iss){ ?>
+                <table width="100%">
+                    <tr>
+                        <td width="16%"><strong><h6 class="nomarg">Buyer</h6></strong></td>
+                        <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="buyer" value="<?php echo (!empty($dr_buyer)) ? $dr_buyer : '';?>"></td>
+                        <td width="7%"></td>
+                        <td width="10%"><strong><h6 class="nomarg pull-right">DR No. &nbsp</h6></strong></td>
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo (empty($dr_no)) ? $iss['dr_no'] : $dr_no; ?></label></td>
+                        <input type='hidden' name='dr_no' id='dr_no' value="<?php echo (empty($dr_no)) ? $iss['dr_no'] : $dr_no; ?>">
                     </tr>
                     <tr>
-                        <td align="center" colspan='10'><center>No Data Available.</center></td>
+                        <td><strong><h6 class="nomarg">Address</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="address" value="<?php echo (!empty($dr_address)) ? $dr_address : '';?>"></td>
+                        <td></td>
+                        <td><strong><h6 class="nomarg pull-right">Date &nbsp</h6></strong></td>
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo (empty($dr_date)) ? date('d-M-y') : $dr_date; ?></label></td>  
+                        <input type='hidden' name='dr_date' id='dr_date' value="<?php echo (!empty($dr_date)) ? $dr_date : date('Y-m-d');?>">
                     </tr>
-                </tr>
-                <tr>
-                    <td colspan="6"><center>***nothing follows***</center></td>
-                </tr>
-            </table>
-            <br>
-            <table width="100%">
-                <tr>
-                    <td width="10%">Remarks:</td>
-                    <td style="border-bottom: 1px solid #999">
-                        
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <table width="100%">
-                <tr>
-                    <td width="10%">Shipped Via:</td>
-                    <td style="border-bottom: 1px solid #999"></td>
-                    <td width="10%">Waybill No:</td>
-                    <td style="border-bottom: 1px solid #999"></td>
-                </tr>
-
-            </table>
-            <br>
-            <form method='POST' id='mreqfsign'>
-            <table width="100%">
-                <tr>
-                    <td width="10%"></td>
-                    <td width="35%">Prepared and Released by:</td>
-                    <td width="10%"></td>
-                    <td width="35%">Verified by:</td>
-                    <td width="10%"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='acknowledged'>
-                            <option></option>
-                            <option value = "" ></option>
-                        </select>
-                    </td>
-                    <td></td>
-                    <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='noted'>
-                            <option></option>
-                            <option value = "" ></option>
-                        </select>
-                    </td>
-                    <td></td>                
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><center>Warehouse Personnel</center></td>
-                    <td></td>
-                    <td><center>Warehouse In-Charge</center></td>
-                    <td></td>                
-                </tr>
-            </table>
-            <br>
-            <table width="100%">
-                <tr>
-                    <td width="10%"></td>
-                    <td width="35%">Noted by:</td>
-                    <td width="10%"></td>
-                    <td width="35%">Received the above items in good condition</td>
-                    <td width="10%"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='acknowledged'>
-                            <option></option>
-                            <option value = "" ></option>
-                        </select>
-                    </td>
-                    <td></td>
-                    <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='noted'>
-                            <option></option>
-                            <option value = "" ></option>
-                        </select>
-                    </td>
-                    <td></td>                
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="vertical-align: top"><center>Plant Director</center></td>
-                    <td></td>
-                    <td><center>Signature over Printed Name<br></center>Date/Time:</td>
-                    <td></td>                
-                </tr>
-            </table>
-            <br>
-            <br>
-            <table width="100%">
-                <tr>                 
-                    <!-- <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> </td> -->
-                </tr>
-            </table>
-            <div style="border-bottom: 1px solid #e8e8e8;width: 100%">&nbsp</div>        
-            <div class="print" id="print1">        
-                <input class="btn btn-warning btn-md " id="print" type="button" value="Print" onclick="printDR()" /><br>
-                <h5>After Clicking this Button. <br>Configure your <strong>Margin</strong> into <i>none</i></h5>
-                <p>____________________________________________________</p>
-                <li>Click <a><span class="fa fa-plus"></span> More Settings</a> at the right side of the screen</li>
-                <li>Click and Choose<a> None from Margins </a> </li>
-                <select class="form-control " style="width: 100px">
-                    <option>none</option>
-                </select>
+                    <tr>
+                        <td><strong><h6 class="nomarg">Contact Person</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="contact_person" value="<?php echo (!empty($dr_contact_person)) ? $dr_contact_person : '';?>"></td>
+                        <td></td>
+                    </tr>  
+                    <tr>
+                        <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="contact_no" value="<?php echo (!empty($dr_contact_no)) ? $dr_contact_no : '';?>"></td>
+                        <td></td>
+                    </tr>    
+                    <tr>
+                        <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $iss['prno']; ?></label></td>
+                        <td></td>
+                        <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $iss['date']?></label></td>  
+                    </tr>           
+                </table>
+                
             </div>
-        </div>    
-        <input type="hidden" name="baseurl" id="baseurl" value="">
-        <input type='hidden' name='mreqfid' id='mreqfid' value="" >
+            <div class="col-lg-12">
+                <table width="100%" class="table-bordered">
+                    <tr>
+                        <td width="1%" align="center"><strong>#</strong></td>
+                        <td width="30%" align="center"><strong>Item Description</strong></td>                    
+                        <td width="20%" align="center"><strong>Part No.</strong></td>
+                        <td width="5%" align="center"><strong>Qty</strong></td>
+                        <td width="10%" align="center"><strong>U/M</strong></td>
+                    </tr>
+                    <tr>
+                        <?php 
+                            $x =1; 
+                            if(!empty($issue_itm)){
+                                foreach($issue_itm as $issitm){
+                        ?>
+                        <tr>                        
+                            <td align="center"><?php echo $x; ?></td>
+                            <td><?php echo $issitm['item']; ?></td>
+                            <td align="center"><?php echo $issitm['pn']; ?></td>
+                            <td align="center"><?php echo $issitm['qty']; ?></td>
+                            <td align="left">&nbsp;<?php echo $issitm['uom']; ?></td>
+                        </tr>
+                        <?php $x++; } }else {?>
+                        <tr>
+                            <td align="center" colspan='10'><center>No Data Available.</center></td>
+                        </tr>
+                        <?php } ?>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><center>***nothing follows***</center></td>
+                    </tr>
+                </table>
+                <br>
+                <table width="100%">
+                    <tr>
+                        <td width="10%">Remarks:</td>
+                        <td style="border-bottom: 1px solid #999">
+                            <?php echo $iss['remarks']?>    
+                        </td>
+                    </tr>
+                </table>
+                <?php } ?> 
+                <br>
+                <table width="100%">
+                    <tr>
+                        <td width="10%">Shipped Via:</td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="shipped" value="<?php echo (!empty($shipped_via)) ? $shipped_via : '';?>"></td>
+                        <td width="10%">Waybill No:</td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="waybill" value="<?php echo (!empty($waybill_no)) ? $waybill_no : '';?>"></td>
+                    </tr>
+
+                </table>
+                <br>
+                <form method='POST' id='mreqfsign'>
+                <table width="100%">
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="35%">Prepared and Released by:</td>
+                        <td width="10%"></td>
+                        <td width="35%">Verified by:</td>
+                        <td width="10%"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <input class="select" type="text" name='prepared_by' value="<?php echo ($dr_prepared_by==0) ? $_SESSION['username'] : $prepared_by;?>">
+                            <input type="hidden" class="select" name="dr_prepared_by" value="<?php echo ($dr_prepared_by==0) ? $_SESSION['user_id'] : $prepared_by;?>">
+                        </td>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <select class="select" type="text" name='verified_by'>
+                                <option></option>
+                                <?php foreach($reviewed_emp AS $rev){ ?>
+                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $dr_verified_by) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td></td>                
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><center>Warehouse Personnel</center></td>
+                        <td></td>
+                        <td><center>Warehouse In-Charge</center></td>
+                        <td></td>                
+                    </tr>
+                </table>
+                <br>
+                <table width="100%">
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="35%">Noted by:</td>
+                        <td width="10%"></td>
+                        <td width="35%">Received the above items in good condition</td>
+                        <td width="10%"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <select class="select" type="text" name='noted_by'>
+                                <option></option>
+                                <?php foreach($noted_emp AS $note){ ?>
+                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $dr_noted_by) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <input class="select" name='dr_received_by' id='dr_received_by' value = "<?php echo (!empty($dr_received_by) ? $dr_received_by : ''); ?>">
+                        </td>
+                        <td></td>                
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="vertical-align: top"><center>Plant Director</center></td>
+                        <td></td>
+                        <td><center>Signature over Printed Name<br></center>Date/Time:</td>
+                        <td></td>                
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <table width="100%">
+                    <tr>                 
+                        <!-- <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> </td> -->
+                    </tr>
+                </table>
+                <div style="border-bottom: 1px solid #e8e8e8;width: 100%">&nbsp</div>        
+                <div class="print" id="print1">        
+                    <input class="btn btn-warning btn-md " id="print" type="button" value="Print" onclick="printDR()" /><br>
+                    <h5>After Clicking this Button. <br>Configure your <strong>Margin</strong> into <i>none</i></h5>
+                    <p>____________________________________________________</p>
+                    <li>Click <a><span class="fa fa-plus"></span> More Settings</a> at the right side of the screen</li>
+                    <li>Click and Choose<a> None from Margins </a> </li>
+                    <select class="form-control " style="width: 100px">
+                        <option>none</option>
+                    </select>
+                </div>
+            </div>    
+            <input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+            <input type='hidden' name='issueid' id='issueid' value="<?php echo $id; ?>" >
         </form>           
     </div>
 </body>
 <script type="text/javascript">
 function printDR(){
-    var sign = $("#mreqfsign").serialize();
+    var sign = $("#drsign").serialize();
     var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/request/printDR';
+    var redirect = loc+'index.php/issue/printDR';
      $.ajax({
             type: "POST",
             url: redirect,

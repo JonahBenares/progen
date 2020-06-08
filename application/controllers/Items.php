@@ -985,7 +985,13 @@ class Items extends CI_Controller {
             $sql= substr($sql,0,-3);
             $query2='';
         }
-        $q=$sql . " " . $query2;
+
+        if(!empty($sql)){
+             $q=" WHERE " .$sql . " " . $query2;
+        } else {
+            $q=$sql . " " . $query2;
+        }
+        //$q=$sql . " " . $query2;
         require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
         $objPHPExcel = new PHPExcel();
         $exportfilename="items.xlsx";
@@ -1038,7 +1044,7 @@ class Items extends CI_Controller {
           )
         );
         //echo "SELECT i.*, ri.local_mnl FROM items i INNER JOIN receive_items ri ON i.item_id = ri.item_id WHERE " .$q." ORDER BY i.item_name ASC";
-        foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id WHERE " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){
+        foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $items->unit_id);
             $rack =$this->super_model->select_column_where("rack","rack_name", "rack_id", $items->rack_id);
             $group =$this->super_model->select_column_where("group","group_name", "group_id", $items->group_id);

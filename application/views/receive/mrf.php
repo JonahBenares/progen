@@ -320,7 +320,7 @@
                     </td>     
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <textarea class="select" rows="2" style="word-wrap:break-word;"></textarea>
+                        <textarea class="select" rows="2" name="delivered" style="word-wrap:break-word;"><?php echo $delivered; ?></textarea>
                     </td>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
@@ -334,7 +334,7 @@
                 </tr>
                 <tr>
                     <td><!-- <input class="select animated headShake" type="" name="" placeholder="Type Designation Here.." > -->
-                        <select class="select animated headShake" type="text" name='received'>
+                        <select class="select animated headShake" type="text">
                             <option value = "">Select Your Designation Here..</option>
                             <option value = "">Warehouse Assistant</option>
                             <option value = "">Parts Inventory Assistant</option>

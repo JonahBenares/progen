@@ -731,10 +731,86 @@ class Issue extends CI_Controller {
         echo "success";
     }
 
+    public function printDR(){
+        $id=$this->input->post('issueid');
+        $data = array(
+            "dr_buyer"=>$this->input->post('buyer'),
+            "dr_address"=>$this->input->post('address'),
+            "dr_contact_person"=>$this->input->post('contact_person'),
+            "dr_contact_no"=>$this->input->post('contact_no'),
+            "dr_no"=>$this->input->post('dr_no'),
+            "dr_date"=>$this->input->post('dr_date'),
+            "shipped_via"=>$this->input->post('shipped'),
+            "waybill_no"=>$this->input->post('waybill'),
+            "dr_prepared_by"=>$this->input->post('dr_prepared_by'),
+            "dr_verified_by"=>$this->input->post('verified_by'),
+            "dr_received_by"=>$this->input->post('dr_received_by'),
+            "dr_noted_by"=>$this->input->post('noted_by'),
+        );
+
+        $this->super_model->update_where("issuance_head", $data, "issuance_id", $id);
+        echo "success";
+    }
+
     public function delivery_receipt(){        
         $this->load->view('template/header');
         $this->load->view('template/print_head');
-        $this->load->view('issue/delivery_receipt');
+        $data['id']=$this->uri->segment(3);
+        $id=$this->uri->segment(3);
+        $year=date('Y');
+        $rows=$this->super_model->count_custom_where("issuance_head","issue_date LIKE '$year%' AND dr_no!=''");
+        if($rows==0){
+            $dr_no = "PRO".$year."-0001";
+        } else {
+            $maxdrno=$this->super_model->get_max_where("issuance_head", "dr_no","create_date LIKE '$year%'");
+            $drno = explode('-',$maxdrno);
+            $series = $drno[1]+1;
+            if(strlen($series)==1){
+                $dr_no = "PRO".$year."-000".$series;
+            } else if(strlen($series)==2){
+                 $dr_no = "PRO".$year."-00".$series;
+            } else if(strlen($series)==3){
+                 $dr_no = "PRO".$year."-0".$series;
+            } else if(strlen($series)==4){
+                 $dr_no = "PRO".$year."-".$series;
+            }
+        }
+        $data['heads'] = $this->super_model->select_row_where('issuance_head', 'issuance_id', $id);
+        foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
+            $data['prepared_by']=$this->super_model->select_column_where("users","username","user_id",$issue->dr_prepared_by);
+            $data['issuance_details'][] = array(
+                'mif'=>$issue->mif_no,
+                'dr_no'=>$dr_no,
+                'prno'=>$issue->pr_no,
+                'date'=>$issue->issue_date,
+                'remarks'=>$issue->remarks
+            );
+            foreach($this->super_model->select_row_where('issuance_details','issuance_id', $issue->issuance_id) AS $rt){
+                $item = $this->super_model->select_column_where("items", "item_name", "item_id", $rt->item_id);
+                $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
+                $data['issue_itm'][] = array(
+                    'item'=>$item,
+                    'qty'=>$rt->quantity,
+                    'uom'=>$uom,
+                    'pn'=>$rt->pn_no,
+                    'remarks'=>$rt->remarks
+                );
+            }
+        }
+        foreach($this->super_model->select_row_where("signatories", "reviewed", "1") AS $sign){
+            $data['reviewed_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $sign->employee_id),
+                'empid'=>$sign->employee_id
+            );
+        }
+
+        foreach($this->super_model->select_row_where("signatories", "noted", "1") AS $sign){
+            $data['noted_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $sign->employee_id),
+                'empid'=>$sign->employee_id
+            );
+        }
+        $this->load->view('issue/delivery_receipt',$data);
     }
    
 }
