@@ -136,6 +136,10 @@
 											checked <?php }	?> type="checkbox" name="damage" id="damage" class="form-control"> Damage</label>
 										</div> -->
 										<div class="col-lg-4">
+											<label for="pn">Selling Price:</label>
+											<input style="text-align: right" class="form-control" value='<?php echo $i->selling_price; ?>' type="text" name="selling" id="selling">
+										</div>
+										<div class="col-lg-4">
 											<label for="pn">Minimun Order Quantity:</label>
 											<input style="text-align: right" class="form-control" value='<?php echo $i->min_qty; ?>' type="text" name="minimum" id="minimum">
 										</div>

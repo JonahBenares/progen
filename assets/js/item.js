@@ -345,6 +345,9 @@ function readPic1(input) {
     var minimum =document.getElementById('minimum').value;
     frm.append('minimum', minimum);
 
+    var selling =document.getElementById('selling').value;
+    frm.append('selling', selling);
+
     var pnformat =document.getElementById('pn_format').value;
     frm.append('pnformat', pnformat);
 
@@ -452,6 +455,9 @@ function readPic1(input) {
     } else {
       frm.append('damage', dam);
     }*/
+
+    var selling =document.getElementById('selling').value;
+    frm.append('selling', selling);
 
     var minimum =document.getElementById('minimum').value;
     frm.append('minimum', minimum);

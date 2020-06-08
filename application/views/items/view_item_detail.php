@@ -70,7 +70,8 @@
 									<tr>
 										<td width="17%"><strong>Min Order Quantity:</strong></td>
 										<td ><h4><?php echo $det['minimum'];?></h4></td>
-										<td></td>
+										<td width="15%"><strong>Selling Price:</strong></td>
+										<td width="29%"><h4><?php echo number_format($det['selling_price'],2)?></h4></td>
 									</tr>
 									<tr>
 										<td width="17%"><strong>Description:</strong></td>
