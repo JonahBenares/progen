@@ -40,19 +40,21 @@
 									</tr>
 								</thead>
 								<tbody>
+									<?php foreach($buyer AS $buy){ ?>
 									<tr>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<td><?php echo $buy->buyer_name;?></td>
+										<td><?php echo $buy->address;?></td>
+										<td><?php echo $buy->contact_person;?></td>
+										<td><?php echo $buy->contact_no;?></td>
 										<td width="1%">
-											<a href = "<?php echo base_url(); ?>index.php/masterfile/update_buyer/" class = "btn btn-primary btn-sm" title="UPDATE"><span class="fa fa-pencil-square-o"></span></a>
-											<!-- <?php if($access['masterfile_edit'] == 1){ ?> -->
-											<!-- <?php } if($access['masterfile_delete'] == 1){ ?> -->
-											<!-- <?php } ?> -->
-											<a href="<?php echo base_url(); ?>index.php/masterfile/delete_buyer/" onclick="confirmationDelete(this);return false;" class="btn btn-danger btn-sm" title="DELETE" title="DELETE" alt='DELETE'><span class="fa fa-trash-o"></span></a>
+											<?php if($access['masterfile_edit'] == 1){ ?>
+											<a href = "<?php echo base_url(); ?>index.php/masterfile/update_buyer/<?php echo $buy->buyer_id; ?>" class = "btn btn-primary btn-sm" title="UPDATE"><span class="fa fa-pencil-square-o"></span></a>
+											<?php } if($access['masterfile_delete'] == 1){ ?>
+											<a href="<?php echo base_url(); ?>index.php/masterfile/delete_buyer/<?php echo $buy->buyer_id; ?>" onclick="confirmationDelete(this);return false;" class="btn btn-danger btn-sm" title="DELETE" title="DELETE" alt='DELETE'><span class="fa fa-trash-o"></span></a>
+											<?php } ?>
 										</td>
 									</tr>
+									<?php } ?>
 								</tbody>
 							</table>
 						</div>
@@ -82,7 +84,7 @@
 							<input type = "text" name = "contact_person" class = "form-control">
 
 							<label>Contact No.</label>
-							<input type = "text" name = "contactno" class = "form-control">
+							<input type = "text" name = "contact_no" class = "form-control">
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button type="submit" class="btn btn-warning">Save changes</button>

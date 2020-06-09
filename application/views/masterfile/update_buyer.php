@@ -41,26 +41,26 @@
 				<div class="panel-body">
 					<div class="canvas-wrapper">
 						<div class="col-lg-12">
-							<form method='POST' action="<?php echo base_url(); ?>index.php/masterfile/">
-								
+							<form method='POST' action="<?php echo base_url(); ?>index.php/masterfile/edit_buyer">
+								<?php foreach($buyer AS $buy){ ?>
 								<div class="col-lg-6">
 									<div class="form-group"></div>
 									<label>Buyer</label>
-									<input class="form-control" type="text" name="buyer" value="">
+									<input class="form-control" type="text" name="buyer" value="<?php echo $buy->buyer_name;?>">
 					
 									<label>Address</label>
-									<input class="form-control" type="text" name="address" value="">
+									<input class="form-control" type="text" name="address" value="<?php echo $buy->address;?>">
 							
 									<label>Contact Person</label>
-									<input class="form-control" type="text" name="contact person" value="">
+									<input class="form-control" type="text" name="contact_person" value="<?php echo $buy->contact_person;?>">
 						
 									<label>Contact No</label>
-									<input class="form-control" type="text" name="contactno" value="">
+									<input class="form-control" type="text" name="contact_no" value="<?php echo $buy->contact_no;?>">
 									<br>
-									<input type='hidden' name='department_id' value=''>
+									<input type='hidden' name='buyer_id' value='<?php echo $id; ?>'>
 									<input class="btn btn-primary btn-md" type="submit" name="add_item" value="Submit">			
 								</div>
-								
+								<?php } ?>
 							</form>
 						</div>
 					</div>
