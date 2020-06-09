@@ -20,6 +20,7 @@ class Delivery extends CI_Controller {
         $this->dropdown['assembly_loc'] = $this->super_model->select_all_order_by('assembly_location', 'al_id', 'ASC');
         $this->dropdown['engine'] = $this->super_model->select_all_order_by('assembly_engine', 'engine_name', 'ASC');
         $this->dropdown['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
+        $this->dropdown['buyer']=$this->super_model->select_all_order_by("buyer","buyer_name","ASC");
       //  $this->dropdown['prno'] = $this->super_model->select_join_where_order("receive_details","receive_head", "saved='1'","receive_id", "receive_date", "DESC");
        if(isset($_SESSION['user_id'])){
         $sessionid= $_SESSION['user_id'];
@@ -65,43 +66,41 @@ class Delivery extends CI_Controller {
         $this->load->view('template/print_head');
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
-        $year=date('Y');
-        $rows=$this->super_model->count_custom_where("issuance_head","issue_date LIKE '$year%' AND dr_no!=''");
-        if($rows==0){
-            $dr_no = "PRO".$year."-0001";
-        } else {
-            $maxdrno=$this->super_model->get_max_where("issuance_head", "dr_no","create_date LIKE '$year%'");
-            $drno = explode('-',$maxdrno);
-            $series = $drno[1]+1;
-            if(strlen($series)==1){
-                $dr_no = "PRO".$year."-000".$series;
-            } else if(strlen($series)==2){
-                 $dr_no = "PRO".$year."-00".$series;
-            } else if(strlen($series)==3){
-                 $dr_no = "PRO".$year."-0".$series;
-            } else if(strlen($series)==4){
-                 $dr_no = "PRO".$year."-".$series;
-            }
-        }
-        $data['heads'] = $this->super_model->select_row_where('issuance_head', 'issuance_id', $id);
-        foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
-            $data['prepared_by']=$this->super_model->select_column_where("users","username","user_id",$issue->dr_prepared_by);
-            $data['issuance_details'][] = array(
-                'mif'=>$issue->mif_no,
-                'dr_no'=>$dr_no,
-                'prno'=>$issue->pr_no,
-                'date'=>$issue->issue_date,
-                'remarks'=>$issue->remarks
+        foreach($this->super_model->select_row_where("delivery_head","delivery_id",$id) AS $h){
+            $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
+            $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
+            $contact_person=$this->super_model->select_column_where("buyer","contact_person","buyer_id",$h->buyer_id);
+            $contact_no=$this->super_model->select_column_where("buyer","contact_no","buyer_id",$h->buyer_id);
+            $verified_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->verified_by);
+            $prepared_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->user_id);
+            $noted_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->noted_by);
+            $data['heads'][]=array(
+                "delivery_id"=>$h->delivery_id,
+                "buyer_name"=>$buyer_name,
+                "address"=>$address,
+                "contact_person"=>$contact_person,
+                "contact_no"=>$contact_no,
+                "date"=>$h->date,
+                "po_date"=>$h->po_date,
+                "pr_no"=>$h->pr_no,
+                "dr_no"=>$h->dr_no,
+                "shipped_via"=>$h->shipped_via,
+                "waybill_no"=>$h->waybill_no,
+                "verified_by"=>$verified_by,
+                "prepared_by"=>$prepared_by,
+                "noted_by"=>$noted_by,
+                "received_by"=>$h->received_by,
+                "remarks"=>$h->remarks,
             );
-            foreach($this->super_model->select_row_where('issuance_details','issuance_id', $issue->issuance_id) AS $rt){
-                $item = $this->super_model->select_column_where("items", "item_name", "item_id", $rt->item_id);
-                $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
-                $data['issue_itm'][] = array(
-                    'item'=>$item,
-                    'qty'=>$rt->quantity,
-                    'uom'=>$uom,
-                    'pn'=>$rt->pn_no,
-                    'remarks'=>$rt->remarks
+            foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
+                $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
+                $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
+                $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $data['details'][]=array(
+                    "item_name"=>$item_name,
+                    "pn_no"=>$original_pn,
+                    "unit"=>$unit,
+                    "qty"=>$h->qty,
                 );
             }
         }
@@ -121,9 +120,63 @@ class Delivery extends CI_Controller {
         $this->load->view('delivery/delivery_receipt',$data);
     }
 
+    public function insert_delivery(){
+        $location=LOCATION;
+        $date=$this->input->post('date');
+        $pr_no=$this->input->post('pr_no');
+        $buyer=$this->input->post('buyer');
+        $po_date=$this->input->post('po_date');
+        $rows=$this->super_model->count_rows("delivery_head");
+        if($rows==0){
+            $dr_no = $location."-0001";
+        } else {
+            $dr=$this->super_model->get_max("delivery_head", "dr_no");
+            $dr_nos = explode('-',$dr);
+            $series = $dr_nos[1]+1;
+            if(strlen($series)==1){
+                $dr_no = $location."-000".$series;
+            } else if(strlen($series)==2){
+                 $dr_no = $location."-00".$series;
+            } else if(strlen($series)==3){
+                 $dr_no = $location."-0".$series;
+            } else if(strlen($series)==4){
+                 $dr_no = $location."-".$series;
+            }
+        }
+        $head_rows = $this->super_model->count_rows("delivery_head");
+        if($head_rows==0){
+            $delivery_id=1;
+        } else {
+            $maxid=$this->super_model->get_max("delivery_head", "delivery_id");
+            $delivery_id=$maxid+1;
+        }
+        $data = array(
+            'delivery_id'=>$delivery_id,
+            'date'=>$date,
+            'po_date'=>$po_date,
+            'dr_no'=>$dr_no,
+            'pr_no'=>$pr_no,
+            'buyer_id'=>$buyer,
+            'created_date'=>date('Y-m-d h:i:s'),
+        );
+        if($this->super_model->insert_into("delivery_head", $data)){
+            echo "<script>alert('Successfully Added!'); 
+                window.location ='".base_url()."index.php/delivery/delivery_receipt/$delivery_id'; </script>";
+        }
+    }
+
     public function gatepass(){
         $this->load->view('template/header');
         $this->load->view('template/print_head'); 
         $this->load->view('delivery/gatepass');
+    }
+
+    public function getBuyer(){
+        $buyer = $this->input->post('buyer');
+        $address= $this->super_model->select_column_where('buyer', 'address', 'buyer_id', $buyer);
+        $contact_person= $this->super_model->select_column_where('buyer', 'contact_person', 'buyer_id', $buyer);
+        $contact_no= $this->super_model->select_column_where('buyer', 'contact_no', 'buyer_id', $buyer);
+        $return = array('address' => $address, 'contact_person' => $contact_person, 'contact_no' => $contact_no);
+        echo json_encode($return);
     }
 }

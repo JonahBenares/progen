@@ -31,6 +31,29 @@
 	           }
 	    }); 
 	}
+
+	function chooseBuyer(){
+	    var loc= document.getElementById("baseurl11").value;
+	    var redirect = loc+'index.php/delivery/getBuyer';
+	    var buyer = document.getElementById("buyer").value;
+	    document.getElementById('alertbuy').innerHTML='<b>Please wait, Loading data...</b>'; 
+	    $("#procedure").hide(); 
+	    setTimeout(function() {
+	        document.getElementById('alertbuy').innerHTML=''; 
+	        $("#procedure").show(); 
+	    },5000);
+	    $.ajax({
+	            type: 'POST',
+	            url: redirect,
+	            data: 'buyer='+buyer,
+	            dataType: 'json',
+	            success: function(response){
+	               document.getElementById("address").value  = response.address;
+	               document.getElementById("contact_person").value  = response.contact_person;
+	               document.getElementById("contact_no").value  = response.contact_no;
+	           }
+	    }); 
+	}
 </script>
 <body>	
 
@@ -129,42 +152,50 @@
 					<h4 class="modal-title" id="myModalLabel">Add Delivery</h4>
 				</div>
 				<div class="modal-body" style="padding:30px 50px 30px 50px">
-					<form method="POST" action = "<?php echo base_url();?>index.php/">
+					<form method="POST" action = "<?php echo base_url();?>index.php/delivery/insert_delivery">
 						<table width="100%">
 							<tr>
 								<td width="15%"><label>Date:</label></td>
-								<td width="85%"><input type = "date" name = "receive_date" class = "form-control"><br></td>
+								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" readonly><br></td>
 							</tr>
 							<tr>
-								<td width="15%"><label>PO#:</label></td>
-								<td width="85%"><input type = "text" name = "dr_no" class = "form-control"><br></td>
+								<td width="15%"><label>PO Date:</label></td>
+								<td width="85%"><input type = "date" name = "po_date" class = "form-control"><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>PR#/PO#:</label></td>
-								<td width="85%"><input type = "text" name = "po_no" class = "form-control"><br></td>
+								<td width="85%"><input type = "text" name = "pr_no" class = "form-control"><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>Buyer:</label></td>
-								<td width="85%"><input type = "text" name = "jo_no" class = "form-control"><br></td>
+								<td width="85%">
+									<select name = "buyer" id="buyer" class = "form-control" onchange="chooseBuyer();">
+										<option value="">--Select Buyer--</option>
+										<?php foreach($buyer AS $buy){ ?>
+										<option value="<?php echo $buy->buyer_id; ?>"><?php echo $buy->buyer_name; ?></option>
+										<?php } ?>
+									</select>
+									<br>
+								</td>
 							</tr>
 							<tr>
 								<td width="15%"><label>Address:</label></td>
-								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+								<td width="85%"><input type = "text" name = "address" id="address" class = "form-control"><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>Contact Person:</label></td>
-								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+								<td width="85%"><input type = "text" name = "contact_person" id="contact_person" class = "form-control"><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>Contact #:</label></td>
-								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+								<td width="85%"><input type = "text" name = "contact_no" id="contact_no" class = "form-control"><br></td>
 							</tr>
 						</table>
 						<div class="modal-footer">
+							<div id='alertbuy' style="font-weight:bold;text-align: center"></div>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-							<input type='submit' class="btn btn-warning" value='Proceed '> 
-							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
+							<input type='submit' class="btn btn-warning" id="procedure" value='Proceed '> 
+							<input type="hidden" name="baseurl" id="baseurl11" value="<?php echo base_url(); ?>">
 						</div>
 					</form>
 				</div>
@@ -708,7 +739,7 @@
 						<ul class="children collapse" id="sub-deliver">
 							
 							<li>
-								<a style="padding-left:60px"  data-toggle="modal" data-target="#deliver" >
+								<a style="padding-left:60px"  data-toggle="modal" data-target="#deliverModal" >
 									<span class="fa fa-arrow-right">&nbsp;</span> Add New
 								</a>
 							</li>
