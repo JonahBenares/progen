@@ -1983,6 +1983,18 @@ class Masterfile extends CI_Controller {
         $this->load->view('masterfile/assembly_master');
         $this->load->view('template/footer');
     }
+    public function buyer_list(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('masterfile/buyer_list');
+        $this->load->view('template/footer');
+    }
+    public function update_buyer(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('masterfile/update_buyer');
+        $this->load->view('template/footer');
+    }
 
 }
 ?>
