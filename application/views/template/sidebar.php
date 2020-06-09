@@ -390,6 +390,12 @@
 							<span class="tooltiptext shadow">Supplier</span>
 						</a>
 					</li>
+					<li class="subcategory" >
+						<a class="dropdown-toggle count-info " href="<?php echo base_url(); ?>index.php/masterfile/supplier_list">
+							<span class="fa fa-truck-o"></span>
+							<span class="tooltiptext shadow">Supplier</span>
+						</a>
+					</li>
 					<li class="employees">
 						<a class="dropdown-toggle count-info" href="<?php echo base_url(); ?>index.php/masterfile/department_list">
 							<span class="fa fa-building-o"></span>
