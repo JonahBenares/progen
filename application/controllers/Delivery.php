@@ -126,4 +126,11 @@ class Delivery extends CI_Controller {
         $this->load->view('template/print_head'); 
         $this->load->view('delivery/gatepass');
     }
+
+    public function add_delivery(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('delivery/add_delivery');
+        $this->load->view('template/footer');
+    }
 }
