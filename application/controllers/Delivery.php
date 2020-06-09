@@ -170,7 +170,6 @@ class Delivery extends CI_Controller {
         $this->load->view('template/print_head'); 
         $this->load->view('delivery/gatepass');
     }
-
     public function getBuyer(){
         $buyer = $this->input->post('buyer');
         $address= $this->super_model->select_column_where('buyer', 'address', 'buyer_id', $buyer);
@@ -178,5 +177,12 @@ class Delivery extends CI_Controller {
         $contact_no= $this->super_model->select_column_where('buyer', 'contact_no', 'buyer_id', $buyer);
         $return = array('address' => $address, 'contact_person' => $contact_person, 'contact_no' => $contact_no);
         echo json_encode($return);
+    }
+    
+    public function add_delivery(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('delivery/add_delivery');
+        $this->load->view('template/footer');
     }
 }
