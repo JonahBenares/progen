@@ -154,58 +154,40 @@
                 </td>
             </tr>
         </table>
-        <?php
-            foreach($heads as $det){ 
-                $dr_buyer = $det->dr_buyer;  
-                $dr_no = $det->dr_no;  
-                $dr_address= $det->dr_address;
-                $dr_contact_person= $det->dr_contact_person;
-                $dr_contact_no= $det->dr_contact_no;
-                $dr_date= $det->dr_date;
-                $shipped_via= $det->shipped_via;
-                $waybill_no= $det->waybill_no;
-                $dr_prepared_by= $det->dr_prepared_by;
-                $dr_verified_by= $det->dr_verified_by;
-                $dr_noted_by= $det->dr_noted_by;
-                $dr_received_by=$det->dr_received_by;
-            }  
-        ?>
+        <?php foreach($heads as $det){ ?>
         <form method='POST' id='drsign'>
             <div class="col-lg-12" style="margin:10px 0px 10px">
-                <?php foreach($issuance_details AS $iss){ ?>
                 <table width="100%">
                     <tr>
                         <td width="16%"><strong><h6 class="nomarg">Buyer</h6></strong></td>
-                        <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="buyer" value="<?php echo (!empty($dr_buyer)) ? $dr_buyer : '';?>"></td>
+                        <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $det['buyer_name'];?></td>
                         <td width="7%"></td>
                         <td width="10%"><strong><h6 class="nomarg pull-right">DR No. &nbsp</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo (empty($dr_no)) ? $iss['dr_no'] : $dr_no; ?></label></td>
-                        <input type='hidden' name='dr_no' id='dr_no' value="<?php echo (empty($dr_no)) ? $iss['dr_no'] : $dr_no; ?>">
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['dr_no']; ?></label></td>
                     </tr>
                     <tr>
                         <td><strong><h6 class="nomarg">Address</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="address" value="<?php echo (!empty($dr_address)) ? $dr_address : '';?>"></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $det['address'];?></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">Date &nbsp</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo (empty($dr_date)) ? date('d-M-y') : $dr_date; ?></label></td>  
-                        <input type='hidden' name='dr_date' id='dr_date' value="<?php echo (!empty($dr_date)) ? $dr_date : date('Y-m-d');?>">
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo date("d-M-y",strtotime($det['date'])); ?></label></td> 
                     </tr>
                     <tr>
                         <td><strong><h6 class="nomarg">Contact Person</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="contact_person" value="<?php echo (!empty($dr_contact_person)) ? $dr_contact_person : '';?>"></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $det['contact_person'];?></td>
                         <td></td>
                     </tr>  
                     <tr>
                         <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="contact_no" value="<?php echo (!empty($dr_contact_no)) ? $dr_contact_no : '';?>"></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $det['contact_no']; ?></td>
                         <td></td>
                     </tr>    
                     <tr>
                         <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $iss['prno']; ?></label></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['pr_no']; ?></label></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $iss['date']?></label></td>  
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['po_date']?></label></td>  
                     </tr>           
                 </table>
                 
@@ -222,15 +204,15 @@
                     <tr>
                         <?php 
                             $x =1; 
-                            if(!empty($issue_itm)){
-                                foreach($issue_itm as $issitm){
+                            if(!empty($details)){
+                                foreach($details as $buyitm){
                         ?>
                         <tr>                        
                             <td align="center"><?php echo $x; ?></td>
-                            <td align="center"><?php echo $issitm['pn']; ?></td>
-                            <td><?php echo $issitm['item']; ?></td>
-                            <td align="center"><?php echo $issitm['qty']; ?></td>
-                            <td align="left">&nbsp;<?php echo $issitm['uom']; ?></td>
+                            <td align="center"><?php echo $buyitm['pn_no']; ?></td>
+                            <td><?php echo $buyitm['item_name']; ?></td>
+                            <td align="center"><?php echo $buyitm['qty']; ?></td>
+                            <td align="left">&nbsp;<?php echo $buyitm['unit']; ?></td>
                         </tr>
                         <?php $x++; } }else {?>
                         <tr>
@@ -247,18 +229,17 @@
                     <tr>
                         <td width="10%" style="vertical-align: top">Remarks:</td>
                         <td style="border-bottom: 1px solid #999">
-                            <textarea class="form-control" rows="1"><?php echo $iss['remarks']?></textarea>  
+                            <textarea class="form-control" rows="1"><?php echo $det['remarks']?></textarea>  
                         </td>
                     </tr>
                 </table>
-                <?php } ?> 
                 <br>
                 <table width="100%">
                     <tr>
                         <td width="10%">Shipped Via:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="shipped" value="<?php echo (!empty($shipped_via)) ? $shipped_via : '';?>"></td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="shipped" value="<?php echo $det['shipped_via'];?>"></td>
                         <td width="10%">Waybill No:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="waybill" value="<?php echo (!empty($waybill_no)) ? $waybill_no : '';?>"></td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="waybill_no" value="<?php echo $det['waybill_no'];?>"></td>
                     </tr>
 
                 </table>
@@ -275,15 +256,14 @@
                     <tr>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" type="text" name='prepared_by' value="<?php echo ($dr_prepared_by==0) ? $_SESSION['username'] : $prepared_by;?>">
-                            <input type="hidden" class="select" name="dr_prepared_by" value="<?php echo ($dr_prepared_by==0) ? $_SESSION['user_id'] : $prepared_by;?>">
+                            <input class="select" type="text" name='prepared_by' value="<?php echo (!empty($det['prepared_by'])) ? $det['prepared_by'] : $_SESSION['username']; ?>">
                         </td>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
                             <select class="select" type="text" name='verified_by'>
                                 <option></option>
                                 <?php foreach($reviewed_emp AS $rev){ ?>
-                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $dr_verified_by) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
+                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_by']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
                                 <?php } ?>
                             </select>
                         </td>
@@ -312,13 +292,13 @@
                             <select class="select" type="text" name='noted_by'>
                                 <option></option>
                                 <?php foreach($noted_emp AS $note){ ?>
-                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $dr_noted_by) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
+                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_by']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
                                 <?php } ?>
                             </select>
                         </td>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" name='dr_received_by' id='dr_received_by' value = "<?php echo (!empty($dr_received_by) ? $dr_received_by : ''); ?>">
+                            <input class="select" name='received_by' id='received_by' value = "<?php echo $det['received_by']; ?>">
                         </td>
                         <td></td>                
                     </tr>
@@ -354,7 +334,8 @@
             </div>    
             <input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
             <input type='hidden' name='issueid' id='issueid' value="<?php echo $id; ?>" >
-        </form>           
+        </form>   
+        <?php } ?>        
     </div>
 </body>
 <script type="text/javascript">
