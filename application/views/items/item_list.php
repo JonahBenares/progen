@@ -76,10 +76,10 @@
 								<tr>
 									<th width="8%">Original PN</th>
 									<th width="50%">Item Description</th>
+									<th width="5%">Qty</th>
 									<th width="10%">Uom</th>
 									<th width="10%">Location</th>
 									<th width="10%">Rack</th>
-									<th width="5%">Qty</th>
 									<th width="5%">Price</th>
 									<th width="12%">Action</th>
 								</tr>
@@ -93,10 +93,10 @@
 										<?php echo $itm['original_pn'];  ?>
 										</td>
 									<td><?php echo $itm['item_name']?></td>
+									<td align="center"><?php echo $itm['quantity']?></td>
 									<td><?php echo $itm['uom']?></td>
 									<td><?php echo $itm['location'];?></td>
 									<td><?php echo $itm['rack'];?></td>
-									<td align="center"><?php echo $itm['quantity']?></td>
 									<td align="center"><?php echo number_format($itm['unit_price'],2);?></td>
 									<td>
 										<?php ?>
