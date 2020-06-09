@@ -161,7 +161,7 @@ class Delivery extends CI_Controller {
         );
         if($this->super_model->insert_into("delivery_head", $data)){
             echo "<script>alert('Successfully Added!'); 
-                window.location ='".base_url()."index.php/delivery/delivery_receipt/$delivery_id'; </script>";
+                window.location ='".base_url()."index.php/delivery/add_delivery/$delivery_id'; </script>";
         }
     }
 
