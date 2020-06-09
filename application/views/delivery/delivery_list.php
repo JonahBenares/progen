@@ -30,12 +30,12 @@
 		<div class="col-md-12">
 			<div class="panel panel-default shadow">
 				<div class="panel-heading">
-					DELIVERED
+					DELIVER
 					<div class="pull-right">
-						<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
+						<!-- <a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
-						</a>
-						<a class="clickable panel-toggle panel-button-tab-right shadow"   data-toggle="modal" data-target="#receiveModal">
+						</a> -->
+						<a class="clickable panel-toggle panel-button-tab-right shadow"   data-toggle="modal" data-target="#deliverModal">
 							<span class="fa fa-plus"></span></span>
 						</a>
 					</div>
@@ -51,7 +51,7 @@
 									<div class='alert alert-warning alert-shake'>
 										<center>
 											<strong>Filters applied:</strong> <!-- <?php echo  $filter; ?> -->.
-											<a href='<?php echo base_url(); ?>index.php/receive/receive_list' class='remove_filter alert-link'>Remove Filters</a>. 
+											<a href='<?php echo base_url(); ?>index.php/delivery/delivery_list' class='remove_filter alert-link'>Remove Filters</a>. 
 										</center>
 									</div>
 							<!-- <?php  }?> -->
@@ -63,17 +63,13 @@
 									<td align="center"><strong>DR No.</strong></td>
 									<td align="center"><strong>Buyer</strong></td>
 									<td align="center"><strong>Address</strong></td>
-									<td align="center"><strong>contact Person</strong></td>
-									<td width="20%" align="center"><strong>Contact No.</strong></td>									
+									<td align="center"><strong>Shipped Via</strong></td>
+									<td width="20%" align="center"><strong>Waybill No.</strong></td>									
 									<td width="20%" align="center"><strong>PR# / PO#</strong></td>									
 									<td width="5%" align="center" ><strong>Action</strong></td>
 								</tr>
 							</thead>
 							<tbody>
-								<?php 
-									$x = 1;
-									foreach($receive AS $rec) {
-								?>
 								<tr>
 									<td style="padding:3px" align="center"></td>
 									<td style="padding:3px" align="center"></td>
@@ -82,74 +78,10 @@
 									<td style="padding:3px" align="center"></td>
 									<td style="padding:3px" align="center"></td>
 									<td style="padding:3px">
-										<?php
-											foreach($details AS $det){ 
-										 		switch($det){
-										 			case($rec['receive_id'] == $det['receive_id']):
-
-										 			
-										?>
-											<li class="dropdown" style="list-style:none;margin:0px;width:100%">
-												<!-- <p style="background: #f5e4c5;color:black;font-weight: 400;margin-bottom: 2px; font-size: 15px;width:100%"> -->
-														
-														
-														<a class="btn btn-default btn-sm " style="width:100%;text-align: left; letter-spacing: 1px;font-size: 13px; font-weight: 700" data-toggle="dropdown" href="#">
-															<?php if($det['closed'] == '0'){ ?>
-															<p class="btn btn-default disabled btn-xs"><span style="width:10px" class="fa fa-unlock"></span></p><span class="fa fa-caret-right "></span>
-														<?php } else { ?>
-															<p class="btn btn-gold disabled btn-xs"><span style="width:10px" class="fa fa-lock"></span></p><span class="fa fa-caret-right "></span>
-														<?php } ?>
-															&nbsp<?php echo $det['prno'];?>
-																
-															</a>
-													<!-- </p> -->
-												<ul class="dropdown-menu dropdown-alerts animated fadeInLeft" style="width:350px;top:30px;border:1px solid #e66614;left:-170px;">
-													<span class="arrow-top2"></span>
-													<li style="padding:5px">
-														<table class="table table-hover table-bordered" style="margin:0px">
-															
-															<tr>
-																<td class="pad-t-4"><strong>MRecF_No:</strong></td>
-																<td class="pad-t-4">
-																	<label style="color:#555;font-weight: 600"><?php echo $rec['mrecf_no']; ?></label >
-																</td>
-															</tr>
-															<tr>
-																<td width="35%" class="pad-t-4"><strong>Department:</strong></td>
-																<td class="pad-t-4">
-																	<label style="color:#555;font-weight: 600"><?php echo $det['department']; ?></label >
-																</td>
-															</tr>
-															<tr>
-																<td class="pad-t-4"><strong>Purpose:</strong></td>
-																<td class="pad-t-4">
-																	<label style="color:#555;font-weight: 600"><?php echo $det['purpose']; ?></label >
-																</td>
-															</tr>
-															<tr>
-																<td class="pad-t-4"><strong>End Use:</strong></td>
-																<td class="pad-t-4">
-																	<label style="color:#555;font-weight: 600"><?php echo $det['enduse']; ?></label >
-																</td>
-															</tr>
-														</table>
-													</li>
-												</ul>
-											</li>																				
-										 <?php	
-									 		break;
-									 		default: 
-									 		} } 
-								 		?> 
-
 									</td>
 									<td style="padding:3px" align="center">
-										<a  href="<?php echo base_url();?>index.php/receive/view_receive/<?php echo $rec['receive_id'];?>" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
+										<a  href="<?php echo base_url();?>index.php/delivery/delivery_receipt/" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 									</td>
-									<?php 
-										$x++;
-										} 
-									?>
 								</tr>
 							</tbody>
 						</table>
@@ -159,48 +91,7 @@
 		</div>
 	</div>
 	<!---MO-D-A-L-->
-	<div class="modal fade" id="receiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header modal-headback">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Add Receive</h4>
-				</div>
-				<div class="modal-body" style="padding:30px 50px 30px 50px">
-					<form method="POST" action = "<?php echo base_url();?>index.php/Receive/insert_receive_head">
-						<table width="100%">
-							<tr>
-								<td width="10%"><label>Date:</label></td>
-								<td width="90%"><input type = "date" name = "receive_date" class = "form-control"><br></td>
-							</tr>
-							<tr>
-								<td width="10%"><label>DR#:</label></td>
-								<td width="90%"><input type = "text" name = "dr_no" class = "form-control"><br></td>
-							</tr>
-							<tr>
-								<td width="10%"><label>PO#:</label></td>
-								<td width="90%"><input type = "text" name = "po_no" class = "form-control"><br></td>
-							</tr>
-							<tr>
-								<td width="10%"><label>JO#:</label></td>
-								<td width="90%"><input type = "text" name = "jo_no" class = "form-control"><br></td>
-							</tr>
-							<tr>
-								<td width="10%"><label>SI#:</label></td>
-								<td width="90%"><input type = "text" name = "si_no" class = "form-control"><br></td>
-							</tr>
-						</table>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-							<input type='submit' class="btn btn-warning" value='Proceed '> 
-							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
 		<div class="modal-dialog" role="document">
 			<div class="modal-content modbod">
@@ -229,12 +120,7 @@
 									<input type="text" name="po" class="form-control">
 								</td>
 							</tr>
-							<!-- <tr>
-								<td class="td-sclass"><label for="jo">JO No.:</label></td>
-								<td class="td-sclass">
-									<input type="text" name="jo" class="form-control">
-								</td>
-							</tr> -->
+						
 							<tr>
 								<td class="td-sclass"><label for="si">SI No.:</label></td>
 								<td class="td-sclass">

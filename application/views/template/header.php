@@ -360,7 +360,31 @@ if (isset($this->session->userdata['logged_in'])) {
 	    opacity: 1;
 	}
 	/*----------------category BUTTON--------------------*/
-
+	/*----------------category BUTTON--------------------*/
+	.buyer{
+		background-color: rgba(255, 86, 21, 0.5);
+		float: left;
+	    margin: 10px 8px;
+	    padding: 0px;
+	    border-radius: 4px;
+	    
+	}
+	.buyer a{
+		color: white;
+	}
+	.buyer:hover{
+		background-color:rgba(255, 86, 21);
+		float: left;
+	    margin: 10px 8px;
+	    padding: 0px;
+	    border-radius: 4px;
+		box-shadow: 0px 1px 20px 0px #c19246;
+	}
+	.buyer:hover .tooltiptext{
+		visibility: visible;
+	    opacity: 1;
+	}
+	/*----------------category BUTTON--------------------*/
 	/*----------------SUB category BUTTON--------------------*/
 	
 	.uom{

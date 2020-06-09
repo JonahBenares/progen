@@ -214,8 +214,8 @@
                 <table width="100%" class="table-bordered">
                     <tr>
                         <td width="1%" align="center"><strong>#</strong></td>
-                        <td width="30%" align="center"><strong>Item Description</strong></td>                    
                         <td width="20%" align="center"><strong>Part No.</strong></td>
+                        <td width="30%" align="center"><strong>Item Description</strong></td>                    
                         <td width="5%" align="center"><strong>Qty</strong></td>
                         <td width="10%" align="center"><strong>U/M</strong></td>
                     </tr>
@@ -227,8 +227,8 @@
                         ?>
                         <tr>                        
                             <td align="center"><?php echo $x; ?></td>
-                            <td><?php echo $issitm['item']; ?></td>
                             <td align="center"><?php echo $issitm['pn']; ?></td>
+                            <td><?php echo $issitm['item']; ?></td>
                             <td align="center"><?php echo $issitm['qty']; ?></td>
                             <td align="left">&nbsp;<?php echo $issitm['uom']; ?></td>
                         </tr>
@@ -245,9 +245,9 @@
                 <br>
                 <table width="100%">
                     <tr>
-                        <td width="10%">Remarks:</td>
+                        <td width="10%" style="vertical-align: top">Remarks:</td>
                         <td style="border-bottom: 1px solid #999">
-                            <?php echo $iss['remarks']?>    
+                            <textarea class="form-control" rows="1"><?php echo $iss['remarks']?></textarea>  
                         </td>
                     </tr>
                 </table>
@@ -340,6 +340,9 @@
                 <div style="border-bottom: 1px solid #e8e8e8;width: 100%">&nbsp</div>        
                 <div class="print" id="print1">        
                     <input class="btn btn-warning btn-md " id="print" type="button" value="Print" onclick="printDR()" /><br>
+                    <div style="margin-top: 2px">
+                        <a class="btn btn-primary btn-md" id="printgpass" href="<?php echo base_url(); ?>index.php/delivery/gatepass/<?php echo $id; ?>" style="width: 50%">Print Gate Pass</a>
+                    </div>
                     <h5>After Clicking this Button. <br>Configure your <strong>Margin</strong> into <i>none</i></h5>
                     <p>____________________________________________________</p>
                     <li>Click <a><span class="fa fa-plus"></span> More Settings</a> at the right side of the screen</li>

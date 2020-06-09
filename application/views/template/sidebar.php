@@ -121,7 +121,56 @@
 			</div>
 		</div>
 	</div>
-	
+	<div class="modal fade" id="deliverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add Delivery</h4>
+				</div>
+				<div class="modal-body" style="padding:30px 50px 30px 50px">
+					<form method="POST" action = "<?php echo base_url();?>index.php/">
+						<table width="100%">
+							<tr>
+								<td width="15%"><label>Date:</label></td>
+								<td width="85%"><input type = "date" name = "receive_date" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>PO#:</label></td>
+								<td width="85%"><input type = "text" name = "dr_no" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>PR#/PO#:</label></td>
+								<td width="85%"><input type = "text" name = "po_no" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>Buyer:</label></td>
+								<td width="85%"><input type = "text" name = "jo_no" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>Address:</label></td>
+								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>Contact Person:</label></td>
+								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+							</tr>
+							<tr>
+								<td width="15%"><label>Contact #:</label></td>
+								<td width="85%"><input type = "text" name = "si_no" class = "form-control"><br></td>
+							</tr>
+						</table>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+							<input type='submit' class="btn btn-warning" value='Proceed '> 
+							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="modal fade" id="requestModal" role="dialog" aria-labelledby="requestModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -390,10 +439,10 @@
 							<span class="tooltiptext shadow">Supplier</span>
 						</a>
 					</li>
-					<li class="subcategory" >
-						<a class="dropdown-toggle count-info " href="<?php echo base_url(); ?>index.php/masterfile/supplier_list">
-							<span class="fa fa-truck-o"></span>
-							<span class="tooltiptext shadow">Supplier</span>
+					<li class="buyer">
+						<a class="dropdown-toggle count-info " href="<?php echo base_url(); ?>index.php/masterfile/buyer_list">
+							<span class="fa fa-shopping-cart"></span>
+							<span class="tooltiptext shadow">Buyer</span>
 						</a>
 					</li>
 					<li class="employees">

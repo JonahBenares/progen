@@ -185,13 +185,13 @@
             <table width="100%">                
                 <tr>
                     <td width="15%"><h6 class="nomarg">Employee/Contractor</h6></td>
-                    <td width="35%" style="border-bottom: 1px solid #999"> <label class="nomarg">: 
-                     <select type="text" class="select" name="gp_employee" id='gp_employee'>
+                    <td width="35%" style="border-bottom: 1px solid #999">  
+                     <select type="text" class="select" name="gp_employee" id='gp_employee' style="text-align: left;text-align-last: auto;">
                             <option></option>
                             <?php foreach($employees AS $rel){ ?>
                             <option value="<?php echo $rel['empid']; ?>"<?php echo (($rel['empid'] == $employee) ?  ' selected' : ''); ?>><?php echo $rel['empname'];?></option>
                             <?php } ?>
-                        </select></label></td>
+                        </select></td>
             <?php foreach($issuance_details as $d){ ?>
                     <td width="7%"></td>
                     <td width="18%"><h6 class="nomarg pull-right">Material Gate Pass No. &nbsp</h6></td>
