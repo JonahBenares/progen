@@ -1983,17 +1983,68 @@ class Masterfile extends CI_Controller {
         $this->load->view('masterfile/assembly_master');
         $this->load->view('template/footer');
     }
+
     public function buyer_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('masterfile/buyer_list');
+        $data['buyer']=$this->super_model->select_all_order_by("buyer","buyer_name","ASC");
+        $data['access']=$this->access;
+        $this->load->view('masterfile/buyer_list',$data);
         $this->load->view('template/footer');
     }
+
+    public function add_buyer(){
+        $buyer = $this->input->post('buyer');
+        $address = $this->input->post('address');
+        $contact_person = $this->input->post('contact_person');
+        $contact_no = $this->input->post('contact_no');
+        $data = array(
+            'buyer_name'=>$buyer,
+            'address'=>$address,
+            'contact_person'=>$contact_person,
+            'contact_no'=>$contact_no
+        );
+        if($this->super_model->insert_into("buyer", $data)){
+            echo "<script>alert('Buyer Successfully Added!'); 
+                window.location ='".base_url()."index.php/masterfile/buyer_list'; </script>";
+        }
+    }
+
     public function update_buyer(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('masterfile/update_buyer');
+        $id=$this->uri->segment(3);
+        $data['id']=$id;
+        $data['buyer']=$this->super_model->select_row_where("buyer","buyer_id",$id);
+        $this->load->view('masterfile/update_buyer',$data);
         $this->load->view('template/footer');
+    }
+
+    public function edit_buyer(){
+        $id=$this->input->post('buyer_id');
+        $buyer = $this->input->post('buyer');
+        $address = $this->input->post('address');
+        $contact_person = $this->input->post('contact_person');
+        $contact_no = $this->input->post('contact_no');
+        $data = array(
+            'buyer_name'=>$buyer,
+            'address'=>$address,
+            'contact_person'=>$contact_person,
+            'contact_no'=>$contact_no
+        );
+
+        if($this->super_model->update_where("buyer", $data, "buyer_id", $id)){
+            echo "<script>alert('Buyer Successfully Updated!'); 
+                window.location ='".base_url()."index.php/masterfile/buyer_list'; </script>";
+        }
+    }
+
+    public function delete_buyer(){
+        $id=$this->uri->segment(3);
+        if($this->super_model->delete_where('buyer', 'buyer_id', $id)){
+            echo "<script>alert('Succesfully Deleted'); 
+                window.location ='".base_url()."index.php/masterfile/buyer_list'; </script>";
+        }
     }
 
 }
