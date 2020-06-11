@@ -152,6 +152,7 @@
 											      				<th>PN</th>
 											      				<th>UOM</th>
 											      				<th>Qty</th>
+											      				<th>Unit Price</th>
 											      				<th width="10%"><center><span class="fa fa-bars"></span></center></th>
 											      			</tr>
 											      			<tbody>
@@ -165,6 +166,7 @@
 												      				<td><?php echo $i['pn']; ?></td>
 												      				<td><?php echo $i['uom']; ?></td>
 												      				<td><?php echo $i['qty']; ?></td>
+												      				<td><?php echo $i['unit_price']; ?></td>
 												      				<td align="center">
 												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
 												      					<a onclick="return confirm('Are you sure you want to delete it?')" title="Remove Item" href="<?php echo base_url(); ?>index.php/assembly/deleteitem/<?php echo $i['id']; ?>" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>

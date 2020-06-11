@@ -30,6 +30,13 @@
                                         <td><p class="p-b-2"><input type="text" name = "pn_no" id="pn_no" class="form-control " value="<?php echo $i['pn']; ?>"></p></td>
                                     </tr>
                                     <tr>
+                                        <td width="20%"><p class="p-b-2">Unit Price</p></td>
+                                        <td width="5%"><p class="p-b-2">:</p></td>
+                                        <td>                                        
+                                            <p class="p-b-2"><input type="text" id = "unit_price" name = "unit_price" class="form-control " value="<?php echo $i['unit_price']; ?>"></p>                                     
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="20%"><p class="p-b-2">Qty</p></td>
                                         <td width="5%"><p class="p-b-2">:</p></td>
                                         <td>                                        

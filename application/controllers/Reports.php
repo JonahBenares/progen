@@ -649,6 +649,7 @@ class Reports extends CI_Controller {
         $cat=$this->uri->segment(4);
         $subcat=$this->uri->segment(5);
         $to= date("Y-m-d", strtotime("+6 day", strtotime($from)));
+        $end_from= date("Y-m-d", strtotime("-1 day", strtotime($from)));
         $data['cat1']=$this->uri->segment(4);
         $data['subcat1']=$this->uri->segment(5);
         $data['from']=$this->uri->segment(3);
@@ -675,7 +676,7 @@ class Reports extends CI_Controller {
   //while(strtotime($from) <= strtotime($to)) { 
         foreach($this->super_model->custom_query("SELECT * FROM items ".$query." ORDER BY item_name ASC") AS $it){
            $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","item_id = '$it->item_id' AND catalog_no = 'begbal'");
-           $beg = $this->begbal($it->item_id, $from) + $begbal;
+           $beg = $this->begbal($it->item_id, $end_from) + $begbal;
             $ending=($beg + $this->totalReceived_items($it->item_id, $from, $to) + 
                 $this->totalRestocked_items($it->item_id, $from, $to))-$this->totalIssued_items($it->item_id, $from, $to);
             $data['items'][]=array(

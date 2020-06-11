@@ -700,14 +700,7 @@ class Items extends CI_Controller {
             $pnformat=$this->input->post('pnformat');
 
             if($pnformat==1){
-                /*$pndetails=explode("_", $this->input->post('pn'));
-                $subcat_prefix=$pndetails[0];
-                $series = $pndetails[1];
-
-                $pn_data= array(
-                    'subcat_prefix'=>$subcat_prefix,
-                    'series'=>$series
-                );*/
+            
                 $pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
@@ -727,6 +720,8 @@ class Items extends CI_Controller {
                     'series'=>$next
                 );
                 $this->super_model->insert_into("pn_series", $pn_data);
+            } else {
+                $pn_no = $this->input->post('pn');
             }
 
               $data = array(
@@ -843,7 +838,7 @@ class Items extends CI_Controller {
                 $bin= $this->input->post('binid');
              }
 
-            $orig_pn=$this->super_model->select_column_where("items", "original_pn", "item_id", $item_id);
+          /*  $orig_pn=$this->super_model->select_column_where("items", "original_pn", "item_id", $item_id);
             $pn_details=explode("_",$this->input->post('pn'));
             if(count($pn_details)<2){
                 $prefix=0;
@@ -858,11 +853,11 @@ class Items extends CI_Controller {
                 $pnformat=1;
             } else {
                 $pnformat=0;
-            }
+            }*/
 
-            //$pnformat=$this->input->post('pnformat');
+            $pnformat=$this->input->post('pn_format');
 
-            if($pnformat==0){
+            if($pnformat==1){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
