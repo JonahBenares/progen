@@ -262,7 +262,8 @@ class Assembly extends CI_Controller {
                 "item"=>$item,
                 "pn"=>$det->pn_no,
                 "uom"=>$unit,
-                "qty"=>$det->qty
+                "qty"=>$det->qty,
+                "unit_price"=>$det->unit_price
             );
         }
         $this->load->view('template/header');
@@ -283,6 +284,7 @@ class Assembly extends CI_Controller {
                 "pn"=>$det->pn_no,
                 "uom"=>$unit,
                 "qty"=>$det->qty,
+                "unit_price"=>$det->unit_price,
                 "item_id"=>$det->item_id,
                 "uom_id"=>$det->uom
             );
@@ -382,6 +384,7 @@ class Assembly extends CI_Controller {
             'item_id'=>$this->input->post('item_id'),
             'pn_no'=>$this->input->post('pn_no'),
             'qty'=>$this->input->post('qty'),
+            'unit_price'=>$this->input->post('unit_price'),
             'uom'=>$this->input->post('uom_id'),
         );
         if($this->super_model->update_where("assembly_details", $data, 'ad_id', $id)){
@@ -629,6 +632,7 @@ class Assembly extends CI_Controller {
                     "item_id"=>$det->item_id,
                     "item_name"=>$itemname,
                     "pn_no"=>$det->pn_no,
+                    "unit_price"=>$det->unit_price,
                     "qty"=>$det->qty,
                     "uom"=>$uom
                 );
