@@ -154,45 +154,46 @@
                 </td>
             </tr>
         </table>
-        <form method='POST' id='drsign'>
+        <?php foreach($heads AS $hs){ ?>
+        <form method='POST' id='gpsign'>
             <div class="col-lg-12" style="margin:10px 0px 10px">
                 
                 <table width="100%">
                     <tr>
                         <td width="16%"><strong><h6 class="nomarg">Buyer</h6></strong></td>
-                        <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="buyer" value=""></td>
+                        <td width="30%" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $hs['buyer_name']; ?></td>
                         <td width="7%"></td>
                         <td width="16%"><strong><h6 class="nomarg pull-right">Material Gate Pass No.</h6></strong></td>
-                        <td width="20%" colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>
-                        <input type='hidden' name='dr_no' id='dr_no' value="">
+                        <td width="20%" colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['gp_no'];?></label></td>
+                        <input type='hidden' name='gpno' id='gpno' value="<?php echo $hs['gp_no']; ?>">
                     </tr>
                     <tr>
                         <td><strong><h6 class="nomarg">Address</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="address" value=""></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $hs['address']; ?></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">DR No.</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>  
-                        <input type='hidden' name='dr_date' id='dr_date' value="">
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['dr_no']; ?></label></td>  
+                        <input type='hidden' name='dr_date' id='dr_date' value="<?php echo $hs['dr_no']; ?>">
                     </tr>
                     <tr>
                         <td><strong><h6 class="nomarg">Contact Person</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="contact_person" value=""></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $hs['contact_person']; ?></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">Date</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: </label></td>  
-                        <input type='hidden' name='dr_date' id='dr_date' value="">
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['date']; ?></label></td>  
+                        <input type='hidden' name='dr_date' id='dr_date' value="<?php echo $hs['date']; ?>">
                     </tr>  
                     <tr>
                         <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="contact_no" value=""></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $hs['contact_no']; ?></td>
                         <td></td>
                     </tr>    
                     <tr>
                         <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['pr_no']; ?></label></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
-                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">:</label></td>  
+                        <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['po_date']; ?></label></td>  
                     </tr>           
                 </table>
                 
@@ -207,16 +208,19 @@
                         <td width="10%" align="center"><strong>U/M</strong></td>
                     </tr>
                     <tr>
+                        <?php $x=1; if(!empty($details)){ foreach($details AS $d){ ?>
                         <tr>                        
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td></td>
-                            <td align="center"></td>
-                            <td align="left">&nbsp;</td>
+                            <td align="center"><?php echo $x; ?></td>
+                            <td align="center"><?php echo $d['pn_no']; ?></td>
+                            <td><?php echo $d['item_name'];?></td>
+                            <td align="center"><?php echo $d['qty']; ?></td>
+                            <td align="center">&nbsp;<?php echo $d['unit']; ?></td>
                         </tr>
+                        <?php $x++; } }else { ?>
                         <tr>
                             <td align="center" colspan='10'><center>No Data Available.</center></td>
                         </tr>
+                        <?php } ?>
                     </tr>
                     <tr>
                         <td colspan="6"><center>***nothing follows***</center></td>
@@ -227,7 +231,7 @@
                     <tr>
                         <td width="10%" style="vertical-align: top">Remarks:</td>
                         <td style="border-bottom: 1px solid #999">
-                            <textarea class="select" rows="1"></textarea>  
+                            <?php echo $hs['remarks'];?>  
                         </td>
                     </tr>
                 </table>
@@ -235,15 +239,99 @@
                 <table width="100%">
                     <tr>
                         <td width="10%">Shipped Via:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="shipped" value=""></td>
+                        <td style="border-bottom: 1px solid #999"><?php echo $hs['shipped_via'];?></td>
                         <td width="10%">Waybill No:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="select" style="width:95%;display: unset;height: 25px" name="waybill" value=""></td>
+                        <td style="border-bottom: 1px solid #999"><?php echo $hs['waybill_no'];?></td>
                     </tr>
 
                 </table>
                 <br>
-                <form method='POST' id='mreqfsign'>
                 <table width="100%">
+                    <tr>
+                        <td width="30%">Prepared by:</td>
+                        <td width="5%"></td>                    
+                        <td width="30%">Requested by:</td>
+                        <td width="5%"></td>
+                        <td width="30%">Recommending Approval:</td>
+                    </tr>
+                    <tr>
+                        <td style="border-bottom:1px solid #000">
+                             <input class="select" type="" name="gp_prepared" id="gp_prepared" value="<?php echo (!empty($det['prepared'])) ? $det['prepared_by'] : $_SESSION['username']; ?>">
+                             <input type="hidden" name="user_id" value="<?php echo (!empty($det['prepared'])) ? $det['prepared'] : $_SESSION['user_id']; ?>">
+                        </td>     
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <select type="text" class="select" name="gp_requested" id='gp_requested'>
+                                <option></option>
+                                <?php foreach($requested_emp AS $req){ ?>
+                                <option value="<?php echo $req['empid']; ?>"<?php echo (($req['empid'] == $hs['gp_requested']) ?  ' selected' : ''); ?>><?php echo $req['empname'];?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <select type="text" class="select" name="gp_recommend" id="gp_recommend">
+                                <option></option>
+                                <?php foreach($requested_emp AS $req){ ?>
+                                <option value="<?php echo $req['empid']; ?>"<?php echo (($req['empid'] == $hs['gp_recommending']) ?  ' selected' : ''); ?>><?php echo $req['empname'];?></option>
+                                <?php } ?>
+                            </select>
+                         
+                        </td>           
+                    </tr>
+                    <tr>
+                        <td><center>Warehouse Personnel</center></td>
+                        <td></td>
+                        <td><center>End User/Requester</center></td>
+                        <td></td>
+                        <td><center>Site Purchasing/Logistics Officer</center></td>
+                                      
+                    </tr>
+                </table>
+                <br>
+                <table width="100%">
+                    <tr>
+                        <td width="30%">Noted by:</td>
+                        <td width="5%"></td>                    
+                        <td width="30%">Approved by:</td>
+                        <td width="5%"></td>
+                        <td width="30%">Inspected by:</td>
+                    </tr>
+                    <tr>
+                        <!-- <?php foreach($username AS $us) ?> -->
+                        <td style="border-bottom:1px solid #000">
+                              <select type="text" class="select" name="gp_noted" id="gp_noted">
+                                <option></option>
+                                <?php foreach($noted_emp AS $rel){ ?>
+                                <option value = "<?php echo $rel['empid'];?>"<?php echo (($rel['empid'] == $hs['gp_noted']) ?  ' selected' : ''); ?>><?php echo $rel['empname'];?></option>
+                                <?php } ?>
+                            </select>
+                        </td>     
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <select type="text" class="select" name="gp_approved" id="gp_approved">
+                                <option></option>
+                                <?php foreach($approved_emp AS $rel){ ?>
+                                <option value = "<?php echo $rel['empid'];?>"<?php echo (($rel['empid'] == $hs['gp_approved']) ?  ' selected' : ''); ?>><?php echo $rel['empname'];?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <textarea class="select" rows="2" style="word-wrap:break-word;" name='gp_inspected' id='gp_inspected'><?php echo (!empty($hs['gp_inspected']) ? $hs['gp_inspected'] : ''); ?></textarea>
+                            
+                        </td>           
+                    </tr>
+                    <tr>
+                        <td><center>Warehouse In Charge</center></td>
+                        <td></td>
+                        <td><center>Plant Manager/Director</center></td>
+                        <td></td>
+                        <td><center>Security Guard on Duty</center></td>
+                                      
+                    </tr>
+                </table>
+                <!-- <table width="100%">
                     <tr>
                         <td width="10%"></td>
                         <td width="35%">Prepared and Released by:</td>
@@ -303,7 +391,7 @@
                         <td><center>Signature over Printed Name<br></center>Date/Time:</td>
                         <td></td>                
                     </tr>
-                </table>
+                </table> -->
                 <br>
                 <br>
                 <table width="100%">
@@ -313,7 +401,7 @@
                 </table>
                 <div style="border-bottom: 1px solid #e8e8e8;width: 100%">&nbsp</div>        
                 <div class="print" id="print1">        
-                    <input class="btn btn-warning btn-md " id="print" type="button" value="Print" onclick="printDR()" /><br>
+                    <input class="btn btn-warning btn-md " id="print" type="button" value="Print" onclick="printGP()" /><br>
                    
                     <h5>After Clicking this Button. <br>Configure your <strong>Margin</strong> into <i>none</i></h5>
                     <p>____________________________________________________</p>
@@ -325,15 +413,16 @@
                 </div>
             </div>    
             <input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-            <input type='hidden' name='issueid' id='issueid' value="" >
-        </form>           
+            <input type='hidden' name='delivery_id' id='delivery_id' value="<?php echo $id; ?>">
+        </form> 
+        <?php } ?>          
     </div>
 </body>
 <script type="text/javascript">
-function printDR(){
-    var sign = $("#drsign").serialize();
+function printGP(){
+    var sign = $("#gpsign").serialize();
     var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/issue/printDR';
+    var redirect = loc+'index.php/delivery/printGP';
      $.ajax({
             type: "POST",
             url: redirect,

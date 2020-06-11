@@ -57,7 +57,26 @@ class Delivery extends CI_Controller {
     public function delivery_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('delivery/delivery_list');
+        $rows=$this->super_model->count_rows("delivery_head");
+        if($rows!=0){
+            foreach($this->super_model->select_all_order_by("delivery_head","date","ASC") AS $h){
+                $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
+                $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
+                $data['heads'][]=array(
+                    "delivery_id"=>$h->delivery_id,
+                    "buyer_name"=>$buyer_name,
+                    "address"=>$address,
+                    "date"=>$h->date,
+                    "pr_no"=>$h->pr_no,
+                    "dr_no"=>$h->dr_no,
+                    "shipped_via"=>$h->shipped_via,
+                    "waybill_no"=>$h->waybill_no,
+                );
+            }
+        }else{
+            $data['heads']=array();
+        }
+        $this->load->view('delivery/delivery_list',$data);
         $this->load->view('template/footer');
     }
 
@@ -72,7 +91,7 @@ class Delivery extends CI_Controller {
             $contact_person=$this->super_model->select_column_where("buyer","contact_person","buyer_id",$h->buyer_id);
             $contact_no=$this->super_model->select_column_where("buyer","contact_no","buyer_id",$h->buyer_id);
             $verified_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->verified_by);
-            $prepared_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->user_id);
+            $prepared_by=$this->super_model->select_column_where("users","fullname","user_id",$h->prepared_by);
             $noted_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->noted_by);
             $data['heads'][]=array(
                 "delivery_id"=>$h->delivery_id,
@@ -90,6 +109,9 @@ class Delivery extends CI_Controller {
                 "prepared_by"=>$prepared_by,
                 "noted_by"=>$noted_by,
                 "received_by"=>$h->received_by,
+                "user_id"=>$h->prepared_by,
+                "verified_id"=>$h->verified_by,
+                "noted_id"=>$h->noted_by,
                 "remarks"=>$h->remarks,
             );
             foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
@@ -100,7 +122,7 @@ class Delivery extends CI_Controller {
                     "item_name"=>$item_name,
                     "pn_no"=>$original_pn,
                     "unit"=>$unit,
-                    "qty"=>$h->qty,
+                    "qty"=>$d->qty,
                 );
             }
         }
@@ -161,15 +183,118 @@ class Delivery extends CI_Controller {
         );
         if($this->super_model->insert_into("delivery_head", $data)){
             echo "<script>alert('Successfully Added!'); 
-                window.location ='".base_url()."index.php/delivery/delivery_receipt/$delivery_id'; </script>";
+                window.location ='".base_url()."index.php/delivery/add_delivery/$delivery_id'; </script>";
         }
     }
 
     public function gatepass(){
         $this->load->view('template/header');
         $this->load->view('template/print_head'); 
-        $this->load->view('delivery/gatepass');
+        $data['id']=$this->uri->segment(3);
+        $id=$this->uri->segment(3);
+        $year=date('Y-m');
+        $gp= "MGPDR-".$year;
+        $gpdetails=explode("-", $gp);
+        $gp_prefix1=$gpdetails[0];
+        $gp_prefix2=$gpdetails[1];
+        $gp_prefix3=$gpdetails[2];
+        $gp_prefix=$gp_prefix1."-".$gp_prefix2."-".$gp_prefix3;
+        $rows=$this->super_model->count_custom_where("gp_series","gp_prefix='$gp_prefix'");
+        if($rows==0){
+            $gpno = "MGPDR-".$year."-0001";
+        } else {
+            $maxgpno=$this->super_model->get_max_where("gp_series", "series","gp_prefix='$gp_prefix'");
+            $series=$maxgpno+1;
+            //$gateno = explode('-',$maxgpno);
+            //$series = $gateno[3]+1;
+            if(strlen($series)==1){
+                $gpno = "MGPDR-".$year."-000".$series;
+            } else if(strlen($series)==2){
+                 $gpno = "MGPDR-".$year."-00".$series;
+            } else if(strlen($series)==3){
+                 $gpno = "MGPDR-".$year."-0".$series;
+            } else if(strlen($series)==4){
+                 $gpno = "MGPDR-".$year."-".$series;
+            }
+        }
+        foreach($this->super_model->select_row_where("delivery_head","delivery_id",$id) AS $h){
+            $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
+            $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
+            $contact_person=$this->super_model->select_column_where("buyer","contact_person","buyer_id",$h->buyer_id);
+            $contact_no=$this->super_model->select_column_where("buyer","contact_no","buyer_id",$h->buyer_id);
+            $prepared_by=$this->super_model->select_column_where("users","fullname","user_id",$h->prepared_by);
+            if($h->gp_no!=''){
+                $gp_no=$h->gp_no;
+            }else {
+                $gp_no=$gpno;
+            }
+            $data['heads'][]=array(
+                "delivery_id"=>$h->delivery_id,
+                "buyer_name"=>$buyer_name,
+                "address"=>$address,
+                "contact_person"=>$contact_person,
+                "contact_no"=>$contact_no,
+                "date"=>$h->date,
+                "po_date"=>$h->po_date,
+                "pr_no"=>$h->pr_no,
+                "dr_no"=>$h->dr_no,
+                "gp_no"=>$gp_no,
+                "saved"=>$h->saved,
+                "remarks"=>$h->remarks,
+                "shipped_via"=>$h->shipped_via,
+                "waybill_no"=>$h->waybill_no,
+                "gp_recommending"=>$h->gp_recommending,
+                "gp_inspected"=>$h->gp_inspected,
+                "gp_approved"=>$h->gp_approved,
+                "gp_prepared"=>$prepared_by,
+                "prepared"=>$h->prepared_by,
+                "gp_noted"=>$h->gp_noted,
+                "gp_requested"=>$h->gp_requested,
+            );
+            foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
+                $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
+                $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
+                $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $data['details'][]=array(
+                    "item_name"=>$item_name,
+                    "pn_no"=>$original_pn,
+                    "unit"=>$unit,
+                    "qty"=>$d->qty,
+                );
+            }
+        }
+
+        foreach($this->super_model->select_all_order_by("employees", "employee_name", "ASC") AS $emp){
+            $data['employees'][] = array( 
+                'empname'=>$emp->employee_name,
+                'empid'=>$emp->employee_id
+            );
+        }
+
+         foreach($this->super_model->select_row_where("signatories", "requested", "1") AS $notes){
+            $data['requested_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+
+        foreach($this->super_model->select_row_where("signatories", "noted", "1") AS $notes){
+            $data['noted_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+
+
+        foreach($this->super_model->select_row_where("signatories", "approved", "1") AS $notes){
+            $data['approved_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $notes->employee_id),
+                'empid'=>$notes->employee_id
+            );
+        }
+        $this->load->view('delivery/gatepass',$data);
     }
+
     public function getBuyer(){
         $buyer = $this->input->post('buyer');
         $address= $this->super_model->select_column_where('buyer', 'address', 'buyer_id', $buyer);
@@ -178,11 +303,172 @@ class Delivery extends CI_Controller {
         $return = array('address' => $address, 'contact_person' => $contact_person, 'contact_no' => $contact_no);
         echo json_encode($return);
     }
-    
+
+    public function getIteminformation(){
+        $item = $this->input->post('item');
+        foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 
+            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getitem(){
+        $item_id=$this->input->post('itemid');
+        foreach($this->super_model->select_custom_where("items","item_id = '$item_id'") AS $it){
+             $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
+        }
+        $data['list'] = array(
+            'original_pn'=>$this->input->post('original_pn'),
+            'unit'=>$this->input->post('unit'),
+            'unit_name'=>$unit,
+            'itemid'=>$this->input->post('itemid'),
+            'quantity'=>$this->input->post('quantity'),
+            'item'=>$this->input->post('itemname'),
+            'count'=>$this->input->post('count'),
+        );
+            
+        $this->load->view('delivery/row_item',$data);
+    }
+
     public function add_delivery(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('delivery/add_delivery');
+        $data['id']=$this->uri->segment(3);
+        $id=$this->uri->segment(3);
+        $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
+        foreach($this->super_model->select_row_where("delivery_head","delivery_id",$id) AS $h){
+            $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
+            $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
+            $contact_person=$this->super_model->select_column_where("buyer","contact_person","buyer_id",$h->buyer_id);
+            $contact_no=$this->super_model->select_column_where("buyer","contact_no","buyer_id",$h->buyer_id);
+            $data['heads'][]=array(
+                "delivery_id"=>$h->delivery_id,
+                "buyer_name"=>$buyer_name,
+                "address"=>$address,
+                "contact_person"=>$contact_person,
+                "contact_no"=>$contact_no,
+                "date"=>$h->date,
+                "po_date"=>$h->po_date,
+                "pr_no"=>$h->pr_no,
+                "dr_no"=>$h->dr_no,
+                "saved"=>$h->saved,
+            );
+            foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
+                $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
+                $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
+                $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $data['details'][]=array(
+                    "item_name"=>$item_name,
+                    "pn_no"=>$original_pn,
+                    "unit"=>$unit,
+                    "qty"=>$d->qty,
+                );
+            }
+        }
+        $this->load->view('delivery/add_delivery',$data);
         $this->load->view('template/footer');
+    }
+
+    public function insertBuyer(){
+        $counter = $this->input->post('counter');
+        $id=$this->input->post('delivery_id');
+        for($a=0;$a<$counter;$a++){
+            if(!empty($this->input->post('item_id['.$a.']'))){
+                $data = array(
+                    'delivery_id'=>$this->input->post('delivery_id'),
+                    'item_id'=>$this->input->post('item_id['.$a.']'),
+                    'qty'=>$this->input->post('quantity['.$a.']'),
+                    'unit_id'=>$this->input->post('unit_id['.$a.']'),
+                    'pn_no'=>$this->input->post('original_pn['.$a.']'),
+                );
+                $this->super_model->insert_into("delivery_details", $data); 
+            }
+        }
+
+        $saved=array(
+            'saved'=>1
+        );
+        $this->super_model->update_where("delivery_head", $saved, "delivery_id", $id);
+        echo $id;
+    }
+
+    public function printGP(){
+        $id=$this->input->post('delivery_id');
+        $gpdetails=explode("-", $this->input->post('gpno'));
+        $gp_prefix1=$gpdetails[0];
+        $gp_prefix2=$gpdetails[1];
+        $gp_prefix3=$gpdetails[2];
+        $gp_prefix=$gp_prefix1."-".$gp_prefix2."-".$gp_prefix3;
+        $checkgp=$this->super_model->count_custom_where("delivery_head","delivery_id='$id' AND gp_no!=''");
+        $rows=$this->super_model->count_custom_where("gp_series","gp_prefix='$gp_prefix'");
+        if($rows==0){
+            $nxt= "0001";
+            $gpno= $gp_prefix."-0001";
+        } else {
+            $series = $this->super_model->get_max_where("gp_series", "series","gp_prefix='$gp_prefix'");
+            $next=$series+1;
+            //$gpno = $gp_prefix."-".$next;
+            if(strlen($next)==1){
+                $nxt="000".$next;
+                $gpno = $gp_prefix."-000".$next;
+            } else if(strlen($next)==2){
+                $nxt="00".$next;
+                $gpno = $gp_prefix."-00".$next;
+            } else if(strlen($next)==3){
+                $nxt="0".$next;
+                $gpno = $gp_prefix."-0".$next;
+            } else if(strlen($next)==4){
+                $nxt=$next;
+                $gpno = $gp_prefix."-".$next;
+            }
+        }
+
+        if($checkgp==0){
+            $data = array(
+                "gp_no"=>$gpno,
+                "gp_prepared"=>$this->input->post('gp_employee'),
+                "gp_recommending"=>$this->input->post('gp_recommend'),
+                "gp_noted"=>$this->input->post('gp_noted'),
+                "gp_approved"=>$this->input->post('gp_approved'),
+                "gp_requested"=>$this->input->post('gp_requested'),
+                "gp_inspected"=>$this->input->post('gp_inspected')
+            );
+        }else{
+            $data = array(
+                "gp_prepared"=>$this->input->post('gp_employee'),
+                "gp_recommending"=>$this->input->post('gp_recommend'),
+                "gp_noted"=>$this->input->post('gp_noted'),
+                "gp_approved"=>$this->input->post('gp_approved'),
+                "gp_requested"=>$this->input->post('gp_requested'),
+                "gp_inspected"=>$this->input->post('gp_inspected')
+            );
+        }
+
+        if($this->super_model->update_where("delivery_head", $data, "delivery_id", $id)){
+            if($checkgp==0){
+                $data_series = array(
+                    "gp_prefix"=>$gp_prefix,
+                    "series"=>$nxt,
+                );
+                $this->super_model->insert_into("gp_series", $data_series);
+            }
+        }
+        echo "success";
+    }
+
+    public function printDR(){
+        $id=$this->input->post('delivery_id');
+        $data = array(
+            "remarks"=>$this->input->post('remarks'),
+            "shipped_via"=>$this->input->post('shipped'),
+            "waybill_no"=>$this->input->post('waybill_no'),
+            "prepared_by"=>$this->input->post('user_id'),
+            "verified_by"=>$this->input->post('verified_by'),
+            "received_by"=>$this->input->post('received_by'),
+            "noted_by"=>$this->input->post('noted_by'),
+        );
+
+        $this->super_model->update_where("delivery_head", $data, "delivery_id", $id);
+        echo "success";
     }
 }
