@@ -64,6 +64,7 @@
 								</table>
 							</form>
 							<br>
+							<?php if(!empty($report)){ ?>
 							<a href = "<?php echo base_url(); ?>index.php/reports/export_delivery/<?php echo $from;?>/<?php echo $to;?>/<?php echo $item; ?>" class = "btn btn-primary pull-right">Export to Excel</a>
 							<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
 									<span  class="fa fa-print"></span>
@@ -103,6 +104,7 @@
 									</table>
 								</div>
 							</div>
+							<?php } ?>
 						</div>
 					</div>
 				</div>
