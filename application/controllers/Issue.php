@@ -481,19 +481,21 @@ class Issue extends CI_Controller {
     public function gatepass(){
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
-
-         $year=date('Y-m');
-       
-
-       $rows=$this->super_model->count_custom_where("issuance_head","issue_date LIKE '$year%' AND gp_no !=''");
-
-    
+        $year=date('Y-m');
+        $gp= "MGP-".$year;
+        $gpdetails=explode("-", $gp);
+        $gp_prefix1=$gpdetails[0];
+        $gp_prefix2=$gpdetails[1];
+        $gp_prefix3=$gpdetails[2];
+        $gp_prefix=$gp_prefix1."-".$gp_prefix2."-".$gp_prefix3;
+        $rows=$this->super_model->count_custom_where("gp_series","gp_prefix='$gp_prefix'");
         if($rows==0){
              $gpno = "MGP-".$year."-0001";
         } else {
-            $maxgpno=$this->super_model->get_max_where("issuance_head", "gp_no","create_date LIKE '$year%'");
-            $gateno = explode('-',$maxgpno);
-            $series = $gateno[3]+1;
+            $maxgpno=$this->super_model->get_max_where("gp_series", "series","gp_prefix='$gp_prefix'");
+            $series=$maxgpno+1;
+            //$gateno = explode('-',$maxgpno);
+            //$series = $gateno[3]+1;
             if(strlen($series)==1){
                 $gpno = "MGP-".$year."-000".$series;
             } else if(strlen($series)==2){
@@ -515,10 +517,15 @@ class Issue extends CI_Controller {
         foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
             $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
             $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
-            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);            
+            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);
+            if($issue->gp_no!=''){
+                $gp_no=$issue->gp_no;
+            }else {
+                $gp_no=$gpno;
+            }            
             $data['issuance_details'][] = array(
                 'mif'=>$issue->mif_no,
-                'gpno'=>$gpno,
+                'gpno'=>$gp_no,
                 'prno'=>$issue->pr_no,
                 'date'=>$issue->issue_date,
                 'time'=>$issue->issue_time,
@@ -716,19 +723,67 @@ class Issue extends CI_Controller {
 
     public function printGP(){
         $id=$this->input->post('issueid');
+        $gpdetails=explode("-", $this->input->post('gpno'));
+        $gp_prefix1=$gpdetails[0];
+        $gp_prefix2=$gpdetails[1];
+        $gp_prefix3=$gpdetails[2];
+        $gp_prefix=$gp_prefix1."-".$gp_prefix2."-".$gp_prefix3;
+        $checkgp=$this->super_model->count_custom_where("issuance_head","issuance_id='$id' AND gp_no!=''");
+        $rows=$this->super_model->count_custom_where("gp_series","gp_prefix='$gp_prefix'");
+        if($rows==0){
+            $nxt= "0001";
+            $gpno= $gp_prefix."-0001";
+        } else {
+            $series = $this->super_model->get_max_where("gp_series", "series","gp_prefix='$gp_prefix'");
+            $next=$series+1;
+            //$gpno = $gp_prefix."-".$next;
+            if(strlen($next)==1){
+                $nxt="000".$next;
+                $gpno = $gp_prefix."-000".$next;
+            } else if(strlen($next)==2){
+                $nxt="00".$next;
+                $gpno = $gp_prefix."-00".$next;
+            } else if(strlen($next)==3){
+                $nxt="0".$next;
+                $gpno = $gp_prefix."-0".$next;
+            } else if(strlen($next)==4){
+                $nxt=$next;
+                $gpno = $gp_prefix."-".$next;
+            }
+        }
 
-        $data = array(
-            "gp_no"=>$this->input->post('gp_no'),
-            "gp_prepared"=>$this->input->post('gp_employee'),
-            "gp_employee"=>$this->input->post('gp_employee'),
-            "gp_requested"=>$this->input->post('gp_requested'),
-            "gp_recommending"=>$this->input->post('gp_recommend'),
-            "gp_noted"=>$this->input->post('gp_noted'),
-            "gp_approved"=>$this->input->post('gp_approved'),
-            "gp_inspected"=>$this->input->post('gp_inspected')
-        );
+        if($checkgp==0){
+            $data = array(
+                "gp_no"=>$gpno,
+                "gp_prepared"=>$this->input->post('gp_employee'),
+                "gp_employee"=>$this->input->post('gp_employee'),
+                "gp_requested"=>$this->input->post('gp_requested'),
+                "gp_recommending"=>$this->input->post('gp_recommend'),
+                "gp_noted"=>$this->input->post('gp_noted'),
+                "gp_approved"=>$this->input->post('gp_approved'),
+                "gp_inspected"=>$this->input->post('gp_inspected')
+            );
+        }else {
+            $data = array(
+                "gp_prepared"=>$this->input->post('gp_employee'),
+                "gp_employee"=>$this->input->post('gp_employee'),
+                "gp_requested"=>$this->input->post('gp_requested'),
+                "gp_recommending"=>$this->input->post('gp_recommend'),
+                "gp_noted"=>$this->input->post('gp_noted'),
+                "gp_approved"=>$this->input->post('gp_approved'),
+                "gp_inspected"=>$this->input->post('gp_inspected')
+            );
+        }
 
-        $this->super_model->update_where("issuance_head", $data, "issuance_id", $id);
+        if($this->super_model->update_where("issuance_head", $data, "issuance_id", $id)){
+            if($checkgp==0){
+                $data_series = array(
+                    "gp_prefix"=>$gp_prefix,
+                    "series"=>$nxt,
+                );
+                $this->super_model->insert_into("gp_series", $data_series);
+            }
+        }
         echo "success";
     }
 

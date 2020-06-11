@@ -70,19 +70,20 @@
 								</tr>
 							</thead>
 							<tbody>
+								<?php if(!empty($heads)){ foreach($heads AS $h){ ?>
 								<tr>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px" align="center"></td>
-									<td style="padding:3px">
-									</td>
+									<td style="padding:3px" align="center"><?php echo $h['date'];?></td>
+									<td style="padding:3px" align="center"><?php echo $h['dr_no'];?></td>
+									<td style="padding:3px" align="center"><?php echo $h['buyer_name'];?></td>
+									<td style="padding:3px" align="center"><?php echo $h['address'];?></td>
+									<td style="padding:3px" align="center"><?php echo $h['shipped_via'];?></td>
+									<td style="padding:3px" align="center"><?php echo $h['waybill_no'];?></td>
+									<td style="padding:3px"><?php echo $h['pr_no'];?></td>
 									<td style="padding:3px" align="center">
-										<a  href="<?php echo base_url();?>index.php/delivery/delivery_receipt/" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
+										<a  href="<?php echo base_url();?>index.php/delivery/delivery_receipt/<?php echo $h['delivery_id']; ?>" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 									</td>
 								</tr>
+								<?php } } ?>
 							</tbody>
 						</table>
 					</div>

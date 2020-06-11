@@ -54,6 +54,18 @@ class Items extends CI_Controller {
         }
     }
 
+    public function activity_log($activity){
+        $timestamp = date('Y-m-d H:i:s');
+        $data = array(
+            "activity_time"=>$timestamp,
+            "activity_name"=>$activity,
+            "user_id"=>$_SESSION['user_id']
+        );
+
+        $this->super_model->insert_into("activity_logs", $data);
+    }
+
+
     public function index(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
@@ -700,14 +712,7 @@ class Items extends CI_Controller {
             $pnformat=$this->input->post('pnformat');
 
             if($pnformat==1){
-                /*$pndetails=explode("_", $this->input->post('pn'));
-                $subcat_prefix=$pndetails[0];
-                $series = $pndetails[1];
-
-                $pn_data= array(
-                    'subcat_prefix'=>$subcat_prefix,
-                    'series'=>$series
-                );*/
+            
                 $pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
@@ -727,6 +732,8 @@ class Items extends CI_Controller {
                     'series'=>$next
                 );
                 $this->super_model->insert_into("pn_series", $pn_data);
+            } else {
+                $pn_no = $this->input->post('pn');
             }
 
               $data = array(
@@ -843,7 +850,7 @@ class Items extends CI_Controller {
                 $bin= $this->input->post('binid');
              }
 
-            $orig_pn=$this->super_model->select_column_where("items", "original_pn", "item_id", $item_id);
+          /*  $orig_pn=$this->super_model->select_column_where("items", "original_pn", "item_id", $item_id);
             $pn_details=explode("_",$this->input->post('pn'));
             if(count($pn_details)<2){
                 $prefix=0;
@@ -858,11 +865,11 @@ class Items extends CI_Controller {
                 $pnformat=1;
             } else {
                 $pnformat=0;
-            }
+            }*/
 
-            //$pnformat=$this->input->post('pnformat');
+            $pnformat=$this->input->post('pn_format');
 
-            if($pnformat==0){
+            if($pnformat==1){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
@@ -920,6 +927,9 @@ class Items extends CI_Controller {
                     'selling_price' => $this->input->post('selling'),
              );
 
+                $act = "Updated item details of item_id ". $item_id;
+                $this->activity_log($act);
+
               if($this->super_model->update_where("items", $data, "item_id", $item_id)){
                 echo $item_id;
               }
@@ -949,6 +959,9 @@ class Items extends CI_Controller {
     public function delete_item(){
         $id=$this->uri->segment(3);
         $this->load->model('super_model');
+        $act = 'Deleted item id '. $id;
+        $this->activity_log($act);
+        
         if($this->super_model->delete_data($id)){
             echo "<script>alert('Succesfully Deleted'); 
                 window.location ='".base_url()."index.php/items/item_list'; </script>";

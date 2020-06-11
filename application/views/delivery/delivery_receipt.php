@@ -212,7 +212,7 @@
                             <td align="center"><?php echo $buyitm['pn_no']; ?></td>
                             <td><?php echo $buyitm['item_name']; ?></td>
                             <td align="center"><?php echo $buyitm['qty']; ?></td>
-                            <td align="left">&nbsp;<?php echo $buyitm['unit']; ?></td>
+                            <td align="center">&nbsp;<?php echo $buyitm['unit']; ?></td>
                         </tr>
                         <?php $x++; } }else {?>
                         <tr>
@@ -229,7 +229,7 @@
                     <tr>
                         <td width="10%" style="vertical-align: top">Remarks:</td>
                         <td style="border-bottom: 1px solid #999">
-                            <textarea class="form-control" rows="1"><?php echo $det['remarks']?></textarea>  
+                            <textarea class="form-control" name ="remarks" rows="1"><?php echo $det['remarks']?></textarea>  
                         </td>
                     </tr>
                 </table>
@@ -256,14 +256,15 @@
                     <tr>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" type="text" name='prepared_by' value="<?php echo (!empty($det['prepared_by'])) ? $det['prepared_by'] : $_SESSION['username']; ?>">
+                            <input class="select" type="text" name='prepared_by' value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>" required>
+                            <input type="hidden" name="user_id" value="<?php echo (!empty($det['user_id'])) ? $det['user_id'] : $_SESSION['user_id']; ?>">
                         </td>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <select class="select" type="text" name='verified_by'>
+                            <select class="select" type="text" name='verified_by' required>
                                 <option></option>
                                 <?php foreach($reviewed_emp AS $rev){ ?>
-                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_by']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
+                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_id']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
                                 <?php } ?>
                             </select>
                         </td>
@@ -289,16 +290,16 @@
                     <tr>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <select class="select" type="text" name='noted_by'>
+                            <select class="select" type="text" name='noted_by' required>
                                 <option></option>
                                 <?php foreach($noted_emp AS $note){ ?>
-                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_by']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
+                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_id']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
                                 <?php } ?>
                             </select>
                         </td>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" name='received_by' id='received_by' value = "<?php echo $det['received_by']; ?>">
+                            <input class="select" name='received_by' id='received_by' value = "<?php echo $det['received_by']; ?>" required>
                         </td>
                         <td></td>                
                     </tr>
@@ -333,7 +334,7 @@
                 </div>
             </div>    
             <input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-            <input type='hidden' name='issueid' id='issueid' value="<?php echo $id; ?>" >
+            <input type='hidden' name='delivery_id' id='delivery_id' value="<?php echo $id; ?>" >
         </form>   
         <?php } ?>        
     </div>
@@ -342,18 +343,16 @@
 function printDR(){
     var sign = $("#drsign").serialize();
     var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/issue/printDR';
-     $.ajax({
-            type: "POST",
-            url: redirect,
-            data: sign,
-            success: function(output){
-                if(output=='success'){
-                    window.print();
-                }
-                //alert(output);
-                
+    var redirect = loc+'index.php/delivery/printDR';
+    $.ajax({
+        type: "POST",
+        url: redirect,
+        data: sign,
+        success: function(output){
+            if(output=='success'){
+                window.print();
             }
+        }
     });
 }
 </script>

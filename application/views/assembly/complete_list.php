@@ -75,6 +75,7 @@ if(empty($inventory)){
 				<h2 style="width:500px"><?php echo $engine; ?></h2>
 			</td>
 			<td></td>
+			<td>U/P</td>
 			<td>Qty</td>
 			<td>Units</td>		
 			<td colspan="<?php echo $left; ?>">A - Bank or Left Bank</td>		
@@ -143,6 +144,7 @@ if(empty($inventory)){
 			<td>1.<?php echo $x; ?></td>
 			<td><p class="aseem"><?php echo $it['item_name']; ?></p></td>
 			<td><?php echo $it['pn_no']; ?></td>
+			<td><?php echo $it['unit_price']; ?></td>
 			<td><?php echo $it['qty']; ?></td>
 			<td><?php echo $it['uom']; ?></td>
 			<!-- loop 9 times or 18 delete the rest-->
