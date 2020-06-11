@@ -62,8 +62,9 @@
 									<td width="1%" >#</td>
 									<td align="center"><strong>Receive Date</strong></td>
 									<td align="center"><strong>DR No.</strong></td>
-									<td align="center"><strong>PO No.</strong></td>
-									<td align="center"><strong>SI NO.</strong></td>
+									<td align="center"><strong>MRecF_No</strong></td>
+									<!-- <td align="center"><strong>PO No.</strong></td>
+									<td align="center"><strong>SI NO.</strong></td> -->
 									<td width="20%" align="center"><strong>PR NO.</strong></td>									
 									<td width="5%" align="center" ><strong>Action</strong></td>
 								</tr>
@@ -77,8 +78,9 @@
 									<td style="padding:3px" align="center"><?php echo $x; ?></td>
 									<td style="padding:3px" align="center"><?php echo date('Y-m-d',strtotime($rec['receive_date'])); ?></td>
 									<td style="padding:3px" align="center"><?php echo $rec['dr_no']; ?></td>
-									<td style="padding:3px" align="center"><?php echo $rec['po_no']; ?></td>
-									<td style="padding:3px" align="center"><?php echo $rec['si_no']; ?></td>
+									<td style="padding:3px" align="center"><?php echo $rec['mrecf_no']; ?></td>
+									<!-- <td style="padding:3px" align="center"><?php echo $rec['po_no']; ?></td>
+									<td style="padding:3px" align="center"><?php echo $rec['si_no']; ?></td> -->
 									<td style="padding:3px">
 										<?php
 											foreach($details AS $det){ 
@@ -106,12 +108,12 @@
 													<li style="padding:5px">
 														<table class="table table-hover table-bordered" style="margin:0px">
 															
-															<tr>
+															<!-- <tr>
 																<td class="pad-t-4"><strong>MRecF_No:</strong></td>
 																<td class="pad-t-4">
 																	<label style="color:#555;font-weight: 600"><?php echo $rec['mrecf_no']; ?></label >
 																</td>
-															</tr>
+															</tr> -->
 															<tr>
 																<td width="35%" class="pad-t-4"><strong>Department:</strong></td>
 																<td class="pad-t-4">
