@@ -4550,6 +4550,8 @@ class Reports extends CI_Controller {
         }  
     }
 
+    
+
   /*  $col=1;
     $row++;
     $col1=1;
@@ -4574,6 +4576,12 @@ class Reports extends CI_Controller {
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="All Receive.xlsx"');
         readfile ($exportfilename);
+    }
+    public function delivery_report(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('reports/delivery_report');
+        $this->load->view('template/footer');
     }
 }
 ?>
