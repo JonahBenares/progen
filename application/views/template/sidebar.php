@@ -2,6 +2,7 @@
 <script src="<?php echo base_url(); ?>assets/js/request.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/restock.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/assembly.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/delivery.js"></script>
 <script type="text/javascript">
 	function val_cpass() {
 	    var password = $("#newpass").val();
@@ -28,29 +29,6 @@
 	            data: 'category='+category,
 	            success: function(data){
 	                $("#subcat").html(data);
-	           }
-	    }); 
-	}
-
-	function chooseBuyer(){
-	    var loc= document.getElementById("baseurl11").value;
-	    var redirect = loc+'index.php/delivery/getBuyer';
-	    var buyer = document.getElementById("buyer").value;
-	    document.getElementById('alertbuy').innerHTML='<b>Please wait, Loading data...</b>'; 
-	    $("#procedure").hide(); 
-	    setTimeout(function() {
-	        document.getElementById('alertbuy').innerHTML=''; 
-	        $("#procedure").show(); 
-	    },5000);
-	    $.ajax({
-	            type: 'POST',
-	            url: redirect,
-	            data: 'buyer='+buyer,
-	            dataType: 'json',
-	            success: function(response){
-	               document.getElementById("address").value  = response.address;
-	               document.getElementById("contact_person").value  = response.contact_person;
-	               document.getElementById("contact_no").value  = response.contact_no;
 	           }
 	    }); 
 	}
