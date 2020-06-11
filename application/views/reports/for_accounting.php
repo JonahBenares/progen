@@ -38,6 +38,7 @@
 	.color_back{
 		background: yellow;
 	}
+	td{padding: 0px 18px!important}
 
 </style>
 <?php
@@ -109,8 +110,8 @@
 									<thead>
 									<tr>
 										<td class="table-sty2" rowspan="3" align="center">#</td>
-										<td class="table-sty3" rowspan="3" width="40%" align="center">Part Number </td>
-										<td class="table-sty3" rowspan="3" align="center">Item Description</td>
+										<td class="table-sty3" rowspan="3"  align="center">Part Number </td>
+										<td class="table-sty3" rowspan="3"  align="center">Item Description</td>
 										<td class="table-sty2" rowspan="3" align="center">Beginning Balance</td>
 										<td class="table-sty2" rowspan="3" align="center">UOM</td>
 										<td class="table-sty2" colspan="7" align="center">MATERIAL RECEIVED</td>
