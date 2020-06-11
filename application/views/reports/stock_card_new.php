@@ -80,6 +80,17 @@ $total_bal=0;
 										</td>
 									</tr>
 									<tr>
+										<td width="15%"><p>NKK No.:</p></td>
+										<td width="40%">
+											<input type="text" class="form-control" style="width:80%" name="nkk" id = "nkk" autocomplete="off">
+										</td>
+										<td width="10%"><p class="pull-right">SEMT No.:</p></td>
+										<td width="30%"><input type="text" class="form-control" name="semt" id = "semt"></td>
+										<td width="10%" rowspan="2">
+											<!-- <a  href="" class="btn btn-warning ">Generate Report</a> -->
+										</td>
+									</tr>
+									<tr>
 										<td><p>Supplier:</p></td>
 										<td>
 											<!-- <input type="text" class="form-control" name="supplier" id = "supplier" autocomplete="off">
