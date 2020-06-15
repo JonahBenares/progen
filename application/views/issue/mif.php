@@ -301,13 +301,6 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td ></td> 
-                    <td style="border-bottom:1px solid #000"><br><br></td>        
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
                     <td></td>
                     <td >
                         <select type="text" class="select" name="noted">
@@ -317,6 +310,20 @@
                             <?php } ?>
                         </select>
                     </td> 
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ></td> 
+                    <td style="border-bottom:1px solid #000"></td>        
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><center>Warehouse In-Charge</center></td>
                     <td></td>
                     <td></td>
                 </tr>
