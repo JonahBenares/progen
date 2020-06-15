@@ -301,15 +301,15 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td></td>
-                    <td >
+                    <td ></td> 
+                    <td style="border-bottom:1px solid #000">
                         <select type="text" class="select" name="noted">
                             <option></option>
                             <?php foreach($noted_emp AS $rel){ ?>
                             <option value = "<?php echo $rel['empid'];?>"<?php echo (($rel['empid'] == $noted) ?  ' selected' : ''); ?>><?php echo $rel['empname'];?></option>
                             <?php } ?>
                         </select>
-                    </td> 
+                    </td>        
                     <td></td>
                     <td></td>
                 </tr>
