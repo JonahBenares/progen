@@ -229,7 +229,7 @@
                     <tr>
                         <td width="10%" style="vertical-align: top">Remarks:</td>
                         <td style="border-bottom: 1px solid #999">
-                            <textarea class="form-control" name ="remarks" rows="1"><?php echo $det['remarks']?></textarea>  
+                            <textarea class="form-control" name ="remarks" rows="1" style="width:100%;border: 0px;background:unset; "><?php echo $det['remarks']?></textarea>  
                         </td>
                     </tr>
                 </table>
@@ -237,9 +237,9 @@
                 <table width="100%">
                     <tr>
                         <td width="10%">Shipped Via:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="shipped" value="<?php echo $det['shipped_via'];?>"></td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:100%;height: 25px;border: 0px;background:unset; " name="shipped" value="<?php echo $det['shipped_via'];?>"></td>
                         <td width="10%">Waybill No:</td>
-                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:95%;display: unset;height: 25px" name="waybill_no" value="<?php echo $det['waybill_no'];?>"></td>
+                        <td style="border-bottom: 1px solid #999"><input type="text" class="form-control" style="width:100%;height: 25px;border: 0px;background:unset; " name="waybill_no" value="<?php echo $det['waybill_no'];?>"></td>
                     </tr>
 
                 </table>

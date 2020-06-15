@@ -38,6 +38,7 @@
 	.color_back{
 		background: yellow;
 	}
+	td{padding: 0px 18px!important}
 
 </style>
 <?php
@@ -104,12 +105,13 @@
 							<a href = "<?php echo base_url();?>index.php/reports/export_foraccounting/<?php echo $from;?>/<?php echo $cat1;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
 							<br>
 							<br>
-							<div style="overflow-x: scroll;">
-								<table class=" table-bordered table-hover" width="100%" >
+							<div>
+								<table class=" table-bordered table-hover" width="100%"  id="scrollexample" style="font-size: 12px">
+									<thead>
 									<tr>
 										<td class="table-sty2" rowspan="3" align="center">#</td>
-										<td class="table-sty3" rowspan="3" width="40%" align="center">Part Number </td>
-										<td class="table-sty3" rowspan="3" align="center">Item Description</td>
+										<td class="table-sty3" rowspan="3"  align="center">Part Number </td>
+										<td class="table-sty3" rowspan="3"  align="center">Item Description</td>
 										<td class="table-sty2" rowspan="3" align="center">Beginning Balance</td>
 										<td class="table-sty2" rowspan="3" align="center">UOM</td>
 										<td class="table-sty2" colspan="7" align="center">MATERIAL RECEIVED</td>
@@ -167,6 +169,7 @@
 										<td class="table-sty2">Qty</td>
 										<td class="table-sty2">Qty</td>
 									</tr>
+									</thead>
 									<tbody>
 										<?php
 										$num=1;
@@ -238,6 +241,14 @@
 	</div>
 
 	<script type="text/javascript">
+		$(document).ready(function() {
+		    $('#scrollexample').DataTable( {
+		        "scrollY": 300,
+		        "scrollX": true,
+		        "lengthMenu": [[-1, 50, 25, 10], ["All", 50, 25, 10]],
+
+		    } );
+		} );
 		$(document).ready(function () {
 		  $('#dtHorizontalExample').DataTable({
 		    "scrollX": true

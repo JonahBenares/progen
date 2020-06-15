@@ -836,7 +836,7 @@
 						</ul>
 					</li>			
 					<li>
-						<a class="" href="<?php echo base_url(); ?>index.php/reports/stock_card">
+						<a class="" href="<?php echo base_url(); ?>index.php/reports/stock_card_new">
 							<span class="fa fa-arrow-right">&nbsp;</span> Stock Card
 						</a>
 					</li>

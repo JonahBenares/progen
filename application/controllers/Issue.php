@@ -393,6 +393,10 @@ class Issue extends CI_Controller {
             $issued = $i->iqty;
         }
 
+        foreach($this->super_model->custom_query("SELECT SUM(id.qty) AS dqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE id.item_id = '$itemid' AND saved='1'") AS $d){
+            $delivery = $d->dqty;
+        }
+
    
         foreach($this->super_model->custom_query("SELECT SUM(rsd.quantity) AS rsqty FROM restock_head rsh INNER JOIN restock_details rsd ON rsh.rhead_id = rsd.rhead_id WHERE rsd.item_id = '$itemid' AND excess = '0' AND saved='1'") AS $rs){
             $restock = $rs->rsqty;
@@ -400,7 +404,7 @@ class Issue extends CI_Controller {
 
         $wh_stocks = $this->super_model->select_sum_where("supplier_items", "quantity", "item_id ='$itemid' AND supplier_id = '0' AND catalog_no ='begbal'");
 
-        $bal = ($received+$restock+$wh_stocks) - $issued;
+        $bal = ($received+$restock+$wh_stocks) - $issued - $delivery;
         return $bal;
     }
 
