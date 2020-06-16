@@ -25,7 +25,7 @@ if(!empty($stockcard)){
 		} 
 	}
 }
-$total_bal=0;
+//$total_bal=0;
 ?>
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/reports.js"></script>
