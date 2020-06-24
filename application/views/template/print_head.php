@@ -19,6 +19,7 @@
                 </td>
                 <td style="padding:10px;border-bottom: 2px solid #000;"  width="40%" >
                    <p id="head" style="margin: 0px"> <strong>PROGEN Dieseltech Services Corp.</strong></p>
-                    <p id="head" style="margin: 0px">Purok San Jose, Brgy. Calumangan, Bago City</p>
+                    <p id="head" style="margin: 0px">Purok San Jose, Brgy. Calumangan, Bago City,</p>
+                    <p id="head" style="margin: 0px">Negros Occidental, Philippines 6101</p>
                     <p id="head" style="margin: 0px">Tel. No. 476-7382</p>
                 </td>
