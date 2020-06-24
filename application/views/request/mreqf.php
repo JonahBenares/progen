@@ -170,21 +170,30 @@
             }?>
             <?php foreach($req as $r){ ?>
             <table width="100%">
-                <tr>
-                    <td width="10%"><strong><h6 class="nomarg">Department</h6></strong></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['department'];?></label></td>
+                 <tr>
+                    <td width="10%"><strong><h6 class="nomarg">PR / JO #</h6></strong></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['prno'];?></label></td>
                     <td width="7%"></td>
                     <td width="10%"><strong><h6 class="nomarg pull-right">MReqF No. &nbsp</h6></strong></td>
                     <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['mreqf'];?></label></td>                    
                 </tr>
                 <tr>
-                    <td><strong><h6 class="nomarg">Purpose</h6></strong></td>
-                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['purpose'];?></label></td>
-                    <td></td>
+                    <td width="10%"><strong><h6 class="nomarg">Department</h6></strong></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['department'];?></label></td>
+                    <td width="7%"></td>
                     <td><strong><h6 class="nomarg pull-right">Date &nbsp</h6></strong></td>
                     <td width="10%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['date'];?></label></td>
                     <td width="10%" ><strong><h6 class="nomarg pull-right">Time &nbsp</h6></strong></td>
-                    <td width="10%"  style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['time'];?></label></td>
+                    <td width="10%"  style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['time'];?></label></td>                    
+                </tr>
+                <tr>
+                    <td><strong><h6 class="nomarg">Purpose</h6></strong></td>
+                    <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['purpose'];?></label></td>
+                    <td></td>
+                    <td></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
                 </tr>
                 <tr>
                     <td><strong><h6 class="nomarg">End Use</h6></strong></td>

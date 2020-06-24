@@ -24,6 +24,8 @@ if(!empty($stockcard)){
 				$total_bal -= $sc['quantity'];
 		} 
 	}
+}else {
+	$total_bal=0;
 }
 //$total_bal=0;
 ?>
