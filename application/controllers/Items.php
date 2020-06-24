@@ -1016,7 +1016,7 @@ class Items extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="items.xlsx";
         $objPHPExcel = new PHPExcel();
-        $gdImage = imagecreatefrompng('assets/default/progen.png');
+        $gdImage = imagecreatefrompng('assets/default/progen_logow.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -1024,8 +1024,9 @@ class Items extends CI_Controller {
         $objDrawing->setImageResource($gdImage);
         $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
         $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
-        $objDrawing->setHeight(35);
-        $objDrawing->setCoordinates('A2');
+        $objDrawing->setHeight(75);
+        $objDrawing->setOffsetX(25);
+        $objDrawing->setCoordinates('A1');
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
@@ -1038,8 +1039,9 @@ class Items extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6', "Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A8', "Main Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G8', "Sub-Category");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "PROGEN DIESEL TECH.");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Purok San Jose, Brgy. Calumangan, Bago City");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "PROGEN Dieseltech Services Corp.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "MATERIAL INVENTORY REPORT TO DATE");
 
@@ -1159,10 +1161,11 @@ class Items extends CI_Controller {
         $objPHPExcel->getActiveSheet()->getStyle('X2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('X3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('X4')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:N1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:B1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('D1:N1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('A1:N1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle("N2")->getFont()->setBold(true)->setName('Arial Black');
-        $objPHPExcel->getActiveSheet()->getStyle('C2')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         if (file_exists($exportfilename))
         unlink($exportfilename);
