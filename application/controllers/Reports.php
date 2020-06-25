@@ -1387,6 +1387,7 @@ class Reports extends CI_Controller {
                         $wh_wo_cost++;
                     }
                 }
+                $dr_no='';
                 foreach($this->super_model->custom_query("SELECT * FROM receive_details rd INNER JOIN receive_items ri ON rd.receive_id=rd.receive_id WHERE pr_no='$itm->pr_no' AND item_id='$itm->item_id' AND supplier_id ='$itm->supplier_id' AND brand_id = '$itm->brand_id' AND catalog_no='$itm->catalog_no'") AS $rec){
                     $dr_no = $this->super_model->select_column_where("receive_head","dr_no","receive_id",$rec->receive_id);
                 }
