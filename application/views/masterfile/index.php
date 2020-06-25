@@ -34,10 +34,10 @@
 						<td align="center"><span class="fa fa-cog"></span></td>
 					</tr>
 					<?php 
-					if(!empty($list)){
+				
 
 
-						// /print_r($list[0]);
+						 //print_r($list);
 					
 
 					foreach($list AS $li){ 
@@ -53,7 +53,7 @@
 						</td>
 					</tr>
 					<?php } 
-				} ?>
+				 ?>
 				</table> 
 			</div>
 		</div> 
