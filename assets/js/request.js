@@ -215,8 +215,12 @@ function saveRequest(){
             url: redirect,
             data: req,
             beforeSend: function(){
-                document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
-                $("#savebutton").hide(); 
+                if(conf==true){
+                    document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
+                    $("#savebutton").hide(); 
+                }else {
+                    $("#savebutton").show(); 
+                }
             },
             success: function(output){
                 //var conf = confirm('Are you sure you want to save this record?');

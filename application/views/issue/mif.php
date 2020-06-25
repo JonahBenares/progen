@@ -178,14 +178,22 @@
                    
                 </tr>
                 <tr>
-                    <td width="10%"><h6 class="nomarg">Department</h6></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['department']?></label></td>
+                    <td width="10%"><h6 class="nomarg">PR / JO #</h6></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label></td>
                     <td width="7%"></td>
 
                      <td width="10%"><h6 class="nomarg pull-right">MIF No. &nbsp</h6></td>
                     <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['milf']?></label></td>
                     <!-- <td width="10%"><h6 class="nomarg pull-right">MReqF No. &nbsp</h6></td>
                     <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['mreqf']?></label></td> -->
+                </tr>
+                <tr>
+                    <td width="10%"><h6 class="nomarg">Department</h6></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['department']?></label></td>
+                    <td width="7%"></td>
+
+                     <td width="10%"><h6 class="nomarg pull-right">MREQF No. &nbsp</h6></td>
+                    <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['mreqf']?></label></td>
                 </tr>
                 <tr>
                     <td><h6 class="nomarg">Purpose</h6></td>
@@ -310,6 +318,20 @@
                             <?php } ?>
                         </select>
                     </td>        
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td ></td> 
+                    <td style="border-bottom:1px solid #000"></td>        
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><center>Warehouse In-Charge</center></td>
                     <td></td>
                     <td></td>
                 </tr>
