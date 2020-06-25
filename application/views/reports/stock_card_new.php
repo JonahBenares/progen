@@ -24,6 +24,8 @@ if(!empty($stockcard)){
 				$total_bal -= $sc['quantity'];
 		} 
 	}
+}else {
+	$total_bal=0;
 }
 //$total_bal=0;
 ?>
@@ -119,7 +121,7 @@ if(!empty($stockcard)){
 							</form>
 							<br>
 							<div id="printableArea">
-								<p class="pname">
+								<p class="pname"><?php echo $itemdesc; ?>
 									<a href="" class="btn btn-info pull-right">Running Balance: <span style="font-size: 25px" class="badge animated rubberBand "><?php echo $total_bal; ?></span></a>
 									<button title="Print This Page" id="printReport" class="btn btn-primary btn-sm pull-right " onclick="printDiv('printableArea')" style="margin-top: 7px!important;margin-right: 5px!important">
 										<span  class="fa fa-print"></span>
