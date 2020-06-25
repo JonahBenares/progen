@@ -79,38 +79,14 @@ class Masterfile extends CI_Controller {
 
     public function home(){
         $data[]=array();
-        /*foreach($this->super_model->select_all_group("issuance_details","rq_id") AS $issue){
-            foreach($this->super_model->select_row_where("request_items", "rq_id", $issue->rq_id) AS $request){
-                $pr=$this->super_model->select_column_where("issuance_head", "pr_no", "issuance_id", $issue->issuance_id);
-                $mreqf=$this->super_model->select_column_where("issuance_head", "mreqf_no", "issuance_id", $issue->issuance_id);
-                $enduseid=$this->super_model->select_column_where("issuance_head", "enduse_id", "issuance_id", $issue->issuance_id);
-                $enduse=$this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $enduseid);
-                $item=$this->super_model->select_column_where("items", "item_name", "item_id", $issue->item_id);
-                $issueqty= $this->super_model->select_sum("issuance_details", "quantity", "rq_id", $issue->rq_id);
-                $reqqty= $request->quantity;
-                
-
-                if($issueqty < $reqqty){
-                    $data['list'][] = array(
-                        "prno"=>$pr,
-                        "mreqf"=>$mreqf,
-                        "enduse"=>$enduse,
-                        "item"=>$item,
-                        "issue_qty"=>$issueqty,
-                        "req_qty"=>$reqqty,
-                        "issueid"=>$issue->issuance_id,
-                        "rid"=>$request->request_id
-                    );
-                }
-            }
-        }*/
+     
         $x=0;
 
         foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
                  $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
                  $boqty=$this->backorder_qty($ri->ri_id);
                  if($ri->expected_qty>$ri->received_qty){
-                     $data['list'][$x]=array(
+                     $data['list'][]=array(
                         "pono"=>$ri->po_no,
                         "rdid"=>$ri->rd_id,
                         "item"=>$item,
@@ -119,31 +95,7 @@ class Masterfile extends CI_Controller {
                     );
                  }
         }
-      /*   foreach($this->super_model->select_join("receive_items","receive_head", "saved='1'","receive_id") AS $ri){
- 
-               $expected =$this->super_model->select_column_custom_where("receive_items","expected_qty", "po_no='$ri->po_no' AND item_id = '$ri->item_id' AND supplier_id = '$ri->supplier_id' AND brand_id = '$ri->brand_id' AND catalog_no = '$ri->catalog_no'","receive_id");
-            
-                $received=$this->super_model->select_sum_where_group5("receive_items", "received_qty", "po_no='$ri->po_no' AND item_id = '$ri->item_id' AND supplier_id = '$ri->supplier_id' AND brand_id = '$ri->brand_id' AND catalog_no = '$ri->catalog_no'", "po_no","item_id","supplier_id","brand_id","catalog_no");
-         
-                if($expected > $received){
-
-                     $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
-                     
-
-                     $data['list'][$x]=array(
-                        "pono"=>$ri->po_no,
-                        "rdid"=>$ri->rd_id,
-                        "item"=>$item,
-                        "expected"=>$ri->expected_qty,
-                        "received"=>$ri->received_qty,
-                        
-                    );
-                $x++;
-               }
-                
-            
-        }
-*/
+   
         foreach($this->super_model->select_custom_where("items", "min_qty!='0'") AS $items){
             $current_inv=$this->inventory_balance($items->item_id);
             $moq=$items->min_qty;
