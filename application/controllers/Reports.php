@@ -1435,7 +1435,7 @@ class Reports extends CI_Controller {
         $data['semt']=$this->slash_unreplace(rawurldecode($this->uri->segment(7)));
         $brand=$this->uri->segment(8);
         $data['brand']=$this->uri->segment(8);
-
+        $data['itemdesc'] = $this->super_model->select_column_where("items", "item_name", "item_id", $id);
         $sql="";
         if($id!='null'){
             $sql.= " item_id = '$id' AND";
@@ -2484,6 +2484,7 @@ class Reports extends CI_Controller {
         $from5=$this->uri->segment(3);
         $from6=$this->uri->segment(3);
         $to= date("Y-m-d", strtotime("+6 day", strtotime($from)));
+        $end_from= date("Y-m-d", strtotime("-1 day", strtotime($from)));
         $cat=$this->uri->segment(4);
         $subcat=$this->uri->segment(5);
 
@@ -2562,8 +2563,10 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H8', $subcatname);
         $x = 1;
         foreach($this->super_model->custom_query("SELECT * FROM items ".$query." ORDER BY item_name ASC") AS $itm){
-            $ending=($this->begbal($itm->item_id, $from) + $this->totalReceived_items($itm->item_id, $from, $to) + 
-            $this->totalRestocked_items($itm->item_id, $from, $to))-$this->totalIssued_items($itm->item_id, $from, $to);
+            //$ending=($this->begbal($itm->item_id, $from) + $this->totalReceived_items($itm->item_id, $from, $to) + $this->totalRestocked_items($itm->item_id, $from, $to))-$this->totalIssued_items($itm->item_id, $from, $to);
+            $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","item_id = '$itm->item_id' AND catalog_no = 'begbal'");
+            $beg = $this->begbal($itm->item_id, $end_from) + $begbal;
+            $ending=($beg + $this->totalReceived_items($itm->item_id, $from, $to) + $this->totalRestocked_items($itm->item_id, $from, $to))-$this->totalIssued_items($itm->item_id, $from, $to);
             $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $itm->item_id);
             $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $itm->item_id);
             $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $itm->unit_id);
@@ -2595,7 +2598,7 @@ class Reports extends CI_Controller {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $pn);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $item);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $begbal);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $beg);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $unit); 
             if(strtotime($from4) <= strtotime($to)) {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $rec_qty1);
