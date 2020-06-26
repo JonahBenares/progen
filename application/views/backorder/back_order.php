@@ -32,7 +32,7 @@
 					<div class="canvas-wrapper">
 						<table width="100%" >
 							<tr>
-								<td width="20%"><label class="pull-right">Choose PO No.:</label></td>
+								<td width="20%"><label class="pull-right">Choose PR No.:</label></td>
 								<td width="60%">
 									<select name="mreqf" id="mreqf" class = "form-control select2" >
 										<option value='' selected></option>
@@ -40,7 +40,7 @@
 
 										foreach($prback AS $pb){  
 											if($pb['received']!=0){ ?>
-											<option value="<?php echo $pb['rdid']; ?>"><?php echo $pb['pono']; ?></option>
+											<option value="<?php echo $pb['rdid']; ?>"><?php echo $pb['pr_no']." - ".$pb['item']; ?></option>
 										<?php } 
 									 } ?>
 									</select>
@@ -78,6 +78,14 @@
 							<tr>
 								<td><p class="nomarg">JO / PR #:</p></td>
 								<td> <h5 class="nomarg"><?php echo $hd['prno']; ?></h5></td>
+							</tr>
+							<tr>
+								<td><p class="nomarg">PO No.:</p></td>
+								<td> <input type="text" name="po_no" id="po_no"></td>
+							</tr>
+							<tr>
+								<td><p class="nomarg">DR No.:</p></td>
+								<td><input type="text" name="dr_no" id="dr_no"></td>
 							</tr>
 						</table>
 						<input type="hidden" name="receive_id" id="receive_id" value="<?php echo $hd['receiveid']; ?>">

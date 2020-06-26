@@ -27,7 +27,7 @@
 				</center>
 				<table class="table table-bordered table-hover shadow-dash">
 					<tr style="background-color: #ffe0a7; font-weight: 600">
-						<td align="center">PO#</td>
+						<td align="center">PR#</td>
 						<td align="center">Item</td>
 						<td align="center">Expected Qty</td>
 						<td align="center">Received Qty</td>
@@ -41,10 +41,10 @@
 					
 
 					foreach($list AS $li){ 
-							
+							if($li['received']!=0){
 						 ?>
 					<tr>
-						<td align="center"><?php echo $li['pono']; ?></td>
+						<td align="center"><?php echo $li['pr_no']; ?></td>
 						<td align="center"><?php echo $li['item']; ?></td>
 						<td align="center"><?php echo $li['expected']; ?></td>
 						<td align="center"><?php echo $li['received']; ?></td>
@@ -52,7 +52,7 @@
 							<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-warning btn-xs">Receive</a>
 						</td>
 					</tr>
-					<?php } 
+					<?php } }
 				 ?>
 				</table> 
 			</div>
