@@ -417,9 +417,11 @@ class Request extends CI_Controller {
         $item = $this->input->post('item');
         $pr = $this->input->post('pr');
 
-        $rdid=$this->super_model->select_column_where("receive_details", "rd_id", "pr_no", $pr);
+        //$rdid=$this->super_model->select_column_where("receive_details", "rd_id", "pr_no", $pr);
 
-        $recqty=$this->super_model->select_column_custom_where("receive_items", "received_qty", "rd_id ='$rdid' AND item_id = '$item'");
+        //$recqty=$this->super_model->select_column_custom_where("receive_items", "received_qty", "rd_id ='$rdid' AND item_id = '$item'");
+        $recqty = $this->super_model->custom_query_single("received_qty","SELECT ri.received_qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
+
         $qty=array(0);
         foreach($this->super_model->select_row_where("request_head", "pr_no", $pr) AS $req){
             //echo $req->request_id . " - " . $item . "<br>";
@@ -456,10 +458,23 @@ class Request extends CI_Controller {
     }
 
     public function crossref_balance($itemid,$supplierid,$brandid,$catalogno){
-        $recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno'");
+        //$recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno'");
 
-        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","issuance_id");
-         $balance=$recqty-$issueqty;
+        //$issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","issuance_id");
+        
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = 'begbal'");
+
+        //echo "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = 'begbal'";
+
+         $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","receive_id");
+        
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","issuance_id");
+        
+         $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1' AND excess = '0'","rhead_id");
+        
+         $balance=($recqty+$begbal+$restockqty)-$issueqty;
+
+         //$balance=$recqty-$issueqty;
          return $balance;
     }
 
