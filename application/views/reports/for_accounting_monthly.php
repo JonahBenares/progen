@@ -6,7 +6,11 @@
 	    	#btn-print, .hello{
 	    		display: none;
 	    	}
-	    }
+	    }	
+
+	    .color_back{
+			background: yellow;
+		}    
 </style>	
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row">
@@ -14,7 +18,7 @@
 			<li><a href="#">
 				<em class="fa fa-home"></em>
 			</a></li>
-			<li class="active"> Range of Date</li>
+			<li class="active">For Accounting (Range of Date)</li>
 		</ol>
 	</div><!--/.row-->
 	
@@ -32,7 +36,7 @@
 				<div class="panel-body">
 					<div class="canvas-wrapper">
 						<div class="col-lg-12">
-							<form method="POST" action="<?php echo base_url(); ?>index.php/reports/generateRange">
+							<form method="POST" action="<?php echo base_url(); ?>index.php/reports/generateAccountingRange">
 								<table width="100%">
 									<tr>
 										<td width="10%">Search Item:</td>
@@ -74,37 +78,54 @@
 							<!-- <form method="POST" action = "<?php echo base_url(); ?>index.php/reports/export/">
 								<input type="submit" name="export" class = "btn btn-primary pull-right" value = "Export to Excel">
 							</form> -->
-							<?php if(!empty($head)){ ?>
-							<div id="btn-print">
-								<a id="hello" href = "<?php echo base_url(); ?>index.php/reports/export/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel
-								</a>
-								<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
-										<span  class="fa fa-print"></span>
-								</button>	
-							</div>
-							<!-- <a href = "<?php echo base_url(); ?>index.php/reports/export/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel</a> -->
-							<br>
-							<div id="printableArea">
-								<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
-								<table class="table table-hover table-bordered">
-									<thead>
-										<tr>
-											<td align="center"><strong>Item Part No.</strong></td>
-											<td align="center"><strong>Item Description</strong></td>
-											<td align="center"><strong>Avail. Qty</strong></td>
-										</tr>
-									</thead>
-									<tbody>
-										<?php foreach($head as $h){ ?>
-										<tr>
-											<td align="center"><strong><?php echo $h['pn']?></strong></td>
-											<td align="center"><strong><?php echo $h['item']?></strong></td>
-											<td align="center"><strong><?php echo $h['total']?></strong></td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
-							</div>
+							<?php if(!empty($items)){ ?>
+							
+								<div id="btn-print">
+									<a id="hello" href = "<?php echo base_url(); ?>index.php/reports/export_foraccount_mothly/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt;?>/<?php echo $subcat1;?>" class = "btn btn-primary pull-right">Export to Excel
+									</a>
+									<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
+											<span  class="fa fa-print"></span>
+									</button>	
+								</div>
+								<br>
+								<div id="printableArea">	
+									<p class="pname"><?php echo $c; ?> - <small class="main_cat"><?php echo $s; ?></small></p>
+									<table class="table table-hover table-bordered">
+										<thead>
+											<tr>
+												<td align="center"><strong>No.</strong></td>
+												<td align="center"><strong>Part No.</strong></td>
+												<td align="left"><strong>Item Description</strong></td>
+												<td align="center"><strong>Beginning Balance</strong></td>
+												<td align="center"><strong>UoM</strong></td>
+												<td align="center" class="color_back"><strong>Total Items Received(In)</strong></td>
+												<td align="center" class="color_back"><strong>Total Items Issued(Out)</strong></td>
+												<td align="center" class="color_back"><strong>Total Items Restock(In)</strong></td>
+												<td align="center"><strong>Ending Inventory as of(Date)</strong></td>
+											</tr>
+										</thead>
+										<tbody>
+											<?php $x=1; foreach($items as $i){ ?>
+											<tr>
+												<td align="center"><strong><?php echo $x?></strong></td>
+												<td align="center"><strong><?php echo $i['pn']?></strong></td>
+												<td align="left"><strong><?php echo $i['item_name']?></strong></td>
+												<td align="center"><strong><?php echo $i['beginning']?></strong></td>
+												<td align="center"><strong><?php echo $i['unit']?></strong></td>
+												<td align="center" class="color_back"><strong><?php echo $i['total_received']?></strong></td>
+												<td align="center" class="color_back"><strong><?php echo $i['total_issued']?></strong></td>
+												<td align="center" class="color_back"><strong><?php echo $i['total_restocked']?></strong></td>
+												<td align="center"><strong><?php echo $i['ending']?></strong></td>
+											</tr>
+											<?php $x++; } ?>
+										</tbody>
+									</table>
+									<table width="100%" id="prntby">
+					                <tr>
+					                    <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> </td>
+					                </tr>
+					            </table> 
+								</div>
 							<?php } ?>
 						</div>
 					</div>
@@ -131,7 +152,7 @@
 		function chooseCategory(){
 			var loc= document.getElementById("baseurl").value;
 			var redirect = loc+'index.php/reports/getCat';
-			var category = document.getElementById("category").value;
+			var category = document.getElementById('category').value;
 			$.ajax({
 				type: 'POST',
 				url: redirect,
