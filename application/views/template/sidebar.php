@@ -799,6 +799,11 @@
 								</a>
 							</li>
 							<li>
+								<a style="padding-left:60px;height: 80px" href="<?php echo base_url(); ?>index.php/reports/for_accounting_monthly" target="_blank">
+									<span class="fa fa-arrow-right">&nbsp;</span> For Accounting <br> &nbsp;(Range of Date)
+								</a>
+							</li>
+							<li>
 								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/inventory_report">
 									<span class="fa fa-arrow-right">&nbsp;</span> Per Item
 								</a>
