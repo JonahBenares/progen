@@ -82,7 +82,12 @@ class Masterfile extends CI_Controller {
      
         $x=0;
 
-        foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+        
+
+
+       // foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+        foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+
                  $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
                  $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
                  $boqty=$this->backorder_qty($ri->ri_id);
