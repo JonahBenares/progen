@@ -482,31 +482,38 @@ class Reports extends CI_Controller {
     }
 
 
-    public function qty_receive_date($item,$enddate){
+   public function qty_receive_date($item,$enddate){
        $start = $this->first_transaction();
-       foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS qty FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE rh.receive_date BETWEEN '$start' AND '$enddate' AND ri.item_id='$item'") AS $r){
+      /* foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS qty FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE rh.receive_date BETWEEN '$start' AND '$enddate' AND ri.item_id='$item' AND saved='1'") AS $r){
             return $r->qty;
-        }
+        }*/
 
+         $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$item' AND saved='1' AND receive_date BETWEEN '$start' AND '$enddate'","receive_id");
+          return $recqty;
        
     }
 
      public function qty_restocked_date($item,$enddate){
          $start = $this->first_transaction();
-          foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$start' AND '$enddate' AND resd.item_id='$item'") AS $r){
+       /*   foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$start' AND '$enddate' AND resd.item_id='$item' AND saved='1'") AS $r){
             return $r->qty;
         }
+*/
+          $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$item' AND saved='1' AND excess='0' AND restock_date BETWEEN '$start' AND '$enddate' ","rhead_id");
+          return $restockqty;
 
     }
 
     public function qty_issued_date($item,$enddate){
           
         $start = $this->first_transaction();
-          foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS qty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE ih.issue_date BETWEEN '$start' AND '$enddate' AND id.item_id='$item'") AS $r){
+        /*  foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS qty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE ih.issue_date BETWEEN '$start' AND '$enddate' AND id.item_id='$item' AND excess='0' AND saved='1'") AS $r){
             return $r->qty;
-        }
+        }*/
+          $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$item' AND saved='1' AND issue_date BETWEEN '$start' AND '$enddate'","issuance_id");
+          return $issueqty;
     }
-
+    
      public function stock_card_preview(){
         $this->load->view('template/header');
         $id=$this->uri->segment(3);
