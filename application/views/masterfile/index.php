@@ -152,7 +152,53 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="UpreminderModal" tabindex="-1" role="dialog" aria-labelledby="UpreminderModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-headback">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Update Reminder</h4>
+				</div>
+				<div class="modal-body" style="padding:30px 20px 30px 20px">
+					<form method="POST" action="<?php echo base_url() ?>index.php/masterfile/update_reminder">
+						<table class="table" width="100%">
+								<tr>
+									<td width="20%" class="td-sclass">Reminder Date</td>
+									<td><input type="date" id = "reminder_date" name='reminder_date' class="form-control"></td>
+								</tr>
+								<tr>
+									<td width="20%" class="td-sclass">Title</td>
+									<td><input type="text" id = "reminder_title" name='reminder_title' class="form-control"></td>
+								</tr>
+								<tr>
+									<td width="20%" class="td-sclass">Notes</td>
+									<td><textarea name='reminder_notes' id = "reminder_notes" class="form-control"></textarea></td>
+								</tr>
+								<tr>
+									<td width="20%" class="td-sclass">Remind who?</td>
+									<td><select name='remind_person' id = "remind_person" class="form-control">
+										<option value='' selected>-Choose who to remind-</option>
+										<?php 
+										
+										foreach($employee AS $emp) { ?>
+											<option value="<?php echo $emp->employee_id; ?>"><?php echo $emp->employee_name; ?></option>
+										<?php } ?>
+									</select></td>
+								</tr>
 
+								
+							</table>
+						<div class="modal-footer">
+							<input type='hidden' name='reminder_id' id="reminder_id">
+							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<input type='submit' class="btn btn-warning" value='Proceed '> 					
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-lg-5" >
 	<?php if(!empty($reminders)){ ?>
 		<div class="panel panel-default animated fadeInDown" style="border: 1px solid #4ab3f5;">
@@ -183,7 +229,8 @@
 										<p style="padding-left: 17px;padding-right: 20px;padding-top: 5px"><?php echo $rem['title']; ?></p>
 									</td>
 									<td>
-										<a href="<?php echo base_url(); ?>index.php/masterfile/reminderdone/<?php echo $rem['reminder_id']; ?>" onclick="return confirm('Are you sure?')" class='btn btn-primary btn-xs'>Done</a>
+										<a class='btn btn-primary btn-xs' id="UpRem" data-id = "<?php echo $rem['reminder_id'];?>" data-date="<?php echo $rem['reminder_date']; ?>" data-title="<?php echo $rem['title']; ?>" data-notes="<?php echo $rem['notes']; ?>" data-remind="<?php echo $rem['remind_employee']; ?>" data-toggle="modal" data-target="#UpreminderModal">Edit</a>
+										<a href="<?php echo base_url(); ?>index.php/masterfile/reminderdone/<?php echo $rem['reminder_id']; ?>" onclick="return confirm('Are you sure?')" class='btn btn-warning btn-xs'>Done</a>
 									</td>
 								</tr>
 							</table>
@@ -214,5 +261,18 @@
 	<script>
 		$(document).ready(function(){
 		    $('[data-toggle="popover"]').popover();   
+		});
+
+		$(document).on("click", "#UpRem", function () {
+		     var reminder_id = $(this).attr("data-id");
+		     var reminder_date = $(this).attr("data-date");
+		     var reminder_title = $(this).attr("data-title");
+		     var reminder_notes = $(this).attr("data-notes");
+		     var remind_person = $(this).attr("data-remind");
+		     $("#reminder_id").val(reminder_id);
+		     $("#reminder_date").val(reminder_date);
+		     $("#reminder_title").val(reminder_title);
+		     $("#reminder_notes").val(reminder_notes);
+		     $("#remind_person").val(remind_person);
 		});
 	</script>
