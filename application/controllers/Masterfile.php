@@ -121,6 +121,7 @@ class Masterfile extends CI_Controller {
                 "reminder_date"=>$rem->reminder_date,
                 "title"=>$rem->reminder_title,
                 "notes"=>$rem->notes,
+                "remind_employee"=>$rem->remind_employee,
                 "employee"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $rem->remind_employee)
             );
         }
@@ -1913,6 +1914,21 @@ class Masterfile extends CI_Controller {
          if($this->super_model->insert_into("reminders", $data)){
             ?>
             <script>alert('Reminder added!'); window.location= '<?php echo base_url(); ?>index.php/masterfile/home'; </script>
+            <?php
+         }
+    }
+
+    public function update_reminder(){
+        $reminder_id=$this->input->post('reminder_id');
+        $data = array(
+            "reminder_date"=>$this->input->post('reminder_date'),
+            "reminder_title"=>$this->input->post('reminder_title'),
+            "notes"=>$this->input->post('reminder_notes'),
+            "remind_employee"=>$this->input->post('remind_person'),
+        );
+         if($this->super_model->update_where("reminders", $data, "reminder_id", $reminder_id)){
+            ?>
+            <script>alert('Reminder Updated!'); window.location= '<?php echo base_url(); ?>index.php/masterfile/home'; </script>
             <?php
          }
     }
