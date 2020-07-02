@@ -17,7 +17,7 @@
 	</div><!--/.row-->
 	<div class="col-lg-7">
 	<?php if(!empty($list)){ ?>
-		<div class="panel panel-default animated fadeInLeft" style="border: 1px solid #ffcbaa;">
+		<div class="panel panel-default animated fadeInLeft" style="border: 1px solid #4db1ff;">
 			<div class="panel-body">
 				<center>
 					<h3>
@@ -26,7 +26,7 @@
 					</h3>
 				</center>
 				<table class="table table-bordered table-hover shadow-dash">
-					<tr style="background-color: #ffe0a7; font-weight: 600">
+					<tr style="background-color: #4db1ff;font-weight: 600;color: #fff;">
 						<td align="center">PR#</td>
 						<td align="center">Item</td>
 						<td align="center">Expected Qty</td>
@@ -49,7 +49,7 @@
 						<td align="center"><?php echo $li['expected']; ?></td>
 						<td align="center"><?php echo $li['received']; ?></td>
 						<td align="center">
-							<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-warning btn-xs">Receive</a>
+							<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-primary btn-xs">Receive</a>
 						</td>
 					</tr>
 					<?php } }
@@ -67,7 +67,7 @@
 		</div>
 		<?php } ?>
 		<?php if(!empty($nto)){ ?>
-		<div class="panel panel-default animated fadeInRight " style="border: 1px solid #ffcbaa;">
+		<div class="panel panel-default animated fadeInRight " style="border: 1px solid #4db1ff;">
 			<div class="panel-body">
 				<center>
 					<h3>
@@ -76,7 +76,7 @@
 					</h3>
 				</center>
 				<table class="table table-bordered table-hover shadow-dash">
-					<tr style="background-color: #ffe0a7; font-weight: 600">
+					<tr style="background-color: #4db1ff;font-weight: 600;color: #fff;">
 						<td align="center" width="60%">Item</td>
 						<td align="center" width="20%">MOQ</td>
 						<td align="center" width="20%">Cur. Inv.</td>
