@@ -88,62 +88,54 @@ class Masterfile extends CI_Controller {
        // foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
         $result=array();
         foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no AND nx.ri_id > lut.ri_id) AND lut.expected_qty > lut.received_qty ORDER BY ri_id DESC") AS $ri){
-
-                 $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
-                 $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
-                 $boqty=$this->backorder_qty($ri->ri_id);
-                 //if($ri->expected_qty>$ri->received_qty){
-              /*
-                     $data['list'][]=array(
-                        "pono"=>$ri->po_no,
-                        "pr_no"=>$pr_no,
-                        "rdid"=>$ri->rd_id,
-                        "item"=>$item,
-                        "expected"=>$boqty,
-                        "received"=>$ri->received_qty,
-                    );*/
-
-                    $distinct_pr[] = array(
-                        "pono"=>$ri->po_no,
-                        "pr_no"=>$pr_no,
-                        "rdid"=>$ri->rd_id,
-                        "item"=>$item,
-                        "expected"=>$boqty,
-                        "received"=>$ri->received_qty,
-                    );
-                     $distinct_item[] = array(
-                        "pono"=>$ri->po_no,
-                        "pr_no"=>$pr_no,
-                        "rdid"=>$ri->rd_id,
-                        "item"=>$item,
-                        "expected"=>$boqty,
-                        "received"=>$ri->received_qty,
-                    );
-                    
-                    
-                    
-                 //}
+            $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
+            $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
+            $boqty=$this->backorder_qty($ri->ri_id);
+             //if($ri->expected_qty>$ri->received_qty){
+            /*
+                 $data['list'][]=array(
+                    "pono"=>$ri->po_no,
+                    "pr_no"=>$pr_no,
+                    "rdid"=>$ri->rd_id,
+                    "item"=>$item,
+                    "expected"=>$boqty,
+                    "received"=>$ri->received_qty,
+                );*/
+            $distinct_pr[] = array(
+                "pono"=>$ri->po_no,
+                "pr_no"=>$pr_no,
+                "rdid"=>$ri->rd_id,
+                "item"=>$item,
+                "expected"=>$boqty,
+                "received"=>$ri->received_qty,
+            );
+            $distinct_item[] = array(
+                "pono"=>$ri->po_no,
+                "pr_no"=>$pr_no,
+                "rdid"=>$ri->rd_id,
+                "item"=>$item,
+                "expected"=>$boqty,
+                "received"=>$ri->received_qty,
+            );
         }
-
+        $distinct_pr[]=array();
+        $distinct_item[]=array();
         $tempPR = array_unique(array_column($distinct_pr, 'pr_no'));
         $prlist = array_intersect_key($distinct_pr, $tempPR);
-
         $tempItem = array_unique(array_column($distinct_item, 'item'));
         $itemlist = array_intersect_key($distinct_item, $tempItem);
-
         //print_r($prlist);
-
         //print_r($itemlist);
         $result = array_merge($prlist, $itemlist);
         foreach(array_unique($result, SORT_REGULAR) AS $ri){
             $data['list'][]=array(
-                        "pono"=>$ri['pono'],
-                        "pr_no"=>$ri['pr_no'],
-                        "rdid"=>$ri['rdid'],
-                        "item"=>$ri['item'],
-                        "expected"=>$ri['expected'],
-                        "received"=>$ri['received'],
-                    );
+                "pono"=>$ri['pono'],
+                "pr_no"=>$ri['pr_no'],
+                "rdid"=>$ri['rdid'],
+                "item"=>$ri['item'],
+                "expected"=>$ri['expected'],
+                "received"=>$ri['received'],
+            );
         }
       
    
