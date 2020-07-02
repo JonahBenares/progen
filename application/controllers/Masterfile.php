@@ -82,7 +82,12 @@ class Masterfile extends CI_Controller {
      
         $x=0;
 
-        foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+        
+
+
+       // foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+        foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
+
                  $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
                  $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
                  $boqty=$this->backorder_qty($ri->ri_id);
@@ -121,6 +126,7 @@ class Masterfile extends CI_Controller {
                 "reminder_date"=>$rem->reminder_date,
                 "title"=>$rem->reminder_title,
                 "notes"=>$rem->notes,
+                "remind_employee"=>$rem->remind_employee,
                 "employee"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $rem->remind_employee)
             );
         }
@@ -1913,6 +1919,21 @@ class Masterfile extends CI_Controller {
          if($this->super_model->insert_into("reminders", $data)){
             ?>
             <script>alert('Reminder added!'); window.location= '<?php echo base_url(); ?>index.php/masterfile/home'; </script>
+            <?php
+         }
+    }
+
+    public function update_reminder(){
+        $reminder_id=$this->input->post('reminder_id');
+        $data = array(
+            "reminder_date"=>$this->input->post('reminder_date'),
+            "reminder_title"=>$this->input->post('reminder_title'),
+            "notes"=>$this->input->post('reminder_notes'),
+            "remind_employee"=>$this->input->post('remind_person'),
+        );
+         if($this->super_model->update_where("reminders", $data, "reminder_id", $reminder_id)){
+            ?>
+            <script>alert('Reminder Updated!'); window.location= '<?php echo base_url(); ?>index.php/masterfile/home'; </script>
             <?php
          }
     }
