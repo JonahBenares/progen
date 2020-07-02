@@ -39,10 +39,23 @@
 
 						 //print_r($list);
 					
+					/*	$tempArr = array_unique(array_column($list, 'pr_no'));
+						   $list = array_intersect_key($list, $tempArr);*/
 
+						  /* $tempArr = array_unique(array_column($list, 'item'));
+						   $list = array_intersect_key($list, $tempArr);*/
+						//$pids = array();
+						/*foreach ($list AS $li) {
+							//echo $li['pr_no'];
+						    $pids[] = $li['pr_no'];
+						}
+						
+						$uniquePids = array_unique($pids);
+						print_r($uniquePids);*/
 					foreach($list AS $li){ 
 							if($li['received']!=0){
-						 ?>
+					
+					?>
 					<tr>
 						<td align="center"><?php echo $li['pr_no']; ?></td>
 						<td align="center"><?php echo $li['item']; ?></td>
@@ -52,7 +65,7 @@
 							<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-warning btn-xs">Receive</a>
 						</td>
 					</tr>
-					<?php } }
+					<?php   } } 
 				 ?>
 				</table> 
 			</div>
