@@ -138,8 +138,13 @@ function saveBackorder(){
 	        type: "POST",
 	        url: redirect,
 	        data: issuedata,
+            beforeSend: function(){
+                document.getElementById('alt').innerHTML='<b>Please wait, Saving Data...</b>'; 
+                $("#savebutton").hide(); 
+            },
 	        success: function(output){
-
+            $('#savebutton').show();
+            $('#alt').hide();
 	        //window.location.href = loc+'index.php/receive/view_';
 	        window.open( loc+'index.php/receive/mrf/'+output,'_blank');
 	         
@@ -215,4 +220,20 @@ function chooseMreqf(){
             $("#request_id").val(response.request_id);
         }
     }); 
+}
+
+function changePrice(count){
+  //alert(count);
+   var cost = document.getElementById("item_cost"+count).value;
+   var qty = document.getElementById("quantity"+count).value;
+   var item_total = parseFloat(cost) * parseFloat(qty);
+    document.getElementById("total_cost").innerHTML  =item_total;
+}
+
+function changeQty(count){
+  //alert(count);
+   var cost = document.getElementById("item_cost"+count).value;
+   var qty = document.getElementById("quantity"+count).value;
+   var item_total = parseFloat(cost) * parseFloat(qty);
+    document.getElementById("total_cost").innerHTML  =item_total;
 }

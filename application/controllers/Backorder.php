@@ -115,7 +115,8 @@ class Backorder extends CI_Controller {
                 }
             }
         }*/
-
+        $data['supplier']=$this->super_model->select_all_order_by("supplier","supplier_name","ASC");
+        $data['brand']=$this->super_model->select_all_order_by("brand","brand_name","ASC");
           foreach($this->super_model->select_row_where("receive_details", "rd_id", $id) AS $rd){
             
                
@@ -133,6 +134,7 @@ class Backorder extends CI_Controller {
         foreach($this->super_model->select_row_where("receive_items", "rd_id", $id) AS $it){
              if($it->expected_qty > $it->received_qty){
                 $boqty=$this->backorder_qty($it->ri_id);
+                $total_cost=$boqty * $it->item_cost;
                  $data['items'][] = array(
                     "receiveid"=>$it->receive_id,
                     "rdid"=>$it->rd_id,
@@ -143,6 +145,8 @@ class Backorder extends CI_Controller {
                     "item_id"=>$it->item_id,
                     "supplier_id"=>$it->supplier_id,
                     "brand_id"=>$it->brand_id,
+                    "item_cost"=>$it->item_cost,
+                    "total_cost"=>$total_cost,
                     "expected_qty"=>$it->expected_qty,
                     "received_qty"=>$it->received_qty,
                     "quantity"=>$boqty,
@@ -321,12 +325,12 @@ class Backorder extends CI_Controller {
                 'rd_id'=>$newrdid,
                 'receive_id'=> $receiveid,
                 'po_no'=>$po_no,
-                'supplier_id'=> $rd->supplier_id,
+                'supplier_id'=> $this->input->post('supplier['.$a.']'),
                 'item_id'=> $rd->item_id,
-                'brand_id'=> $rd->brand_id,
+                'brand_id'=> $this->input->post('brand['.$a.']'),
                 'catalog_no'=> $rd->catalog_no,
                 'serial_id'=>$rd->serial_id,
-                'item_cost'=> $rd->item_cost,
+                'item_cost'=> $this->input->post('item_cost['.$a.']'),
                 'expected_qty'=>$this->input->post('expqty['.$a.']'),
                 'received_qty'=>$this->input->post('quantity['.$a.']'),
                 'remarks'=> $this->input->post('remarks['.$a.']'),
