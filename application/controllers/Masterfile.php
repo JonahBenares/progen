@@ -77,7 +77,7 @@ class Masterfile extends CI_Controller {
         return $bo_qty;
     }
 
-       public function get_expected_qty($pr,$item){
+    public function get_expected_qty($pr,$item){
         $expected_qty = $this->super_model->custom_query_single("expected_qty","SELECT ri.expected_qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE rd.pr_no = '$pr' AND ri.item_id='$item' ORDER BY ri_id ASC LIMIT 1");
         return $expected_qty;
     }
