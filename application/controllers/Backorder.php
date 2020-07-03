@@ -115,7 +115,8 @@ class Backorder extends CI_Controller {
                 }
             }
         }*/
-
+        $data['supplier']=$this->super_model->select_all_order_by("supplier","supplier_name","ASC");
+        $data['brand']=$this->super_model->select_all_order_by("brand","brand_name","ASC");
           foreach($this->super_model->select_row_where("receive_details", "rd_id", $id) AS $rd){
             
                
@@ -133,6 +134,7 @@ class Backorder extends CI_Controller {
         foreach($this->super_model->select_row_where("receive_items", "rd_id", $id) AS $it){
              if($it->expected_qty > $it->received_qty){
                 $boqty=$this->backorder_qty($it->ri_id);
+                $total_cost=$boqty * $it->item_cost;
                  $data['items'][] = array(
                     "receiveid"=>$it->receive_id,
                     "rdid"=>$it->rd_id,
@@ -143,6 +145,8 @@ class Backorder extends CI_Controller {
                     "item_id"=>$it->item_id,
                     "supplier_id"=>$it->supplier_id,
                     "brand_id"=>$it->brand_id,
+                    "item_cost"=>$it->item_cost,
+                    "total_cost"=>$total_cost,
                     "expected_qty"=>$it->expected_qty,
                     "received_qty"=>$it->received_qty,
                     "quantity"=>$boqty,
@@ -166,26 +170,55 @@ class Backorder extends CI_Controller {
         }*/
 
         //foreach($this->super_model->custom_query("SELECT * FROM receive_items lut INNER JOIN receive_details rd ON rd.rd_id = lut.rd_id WHERE NOT EXISTS (SELECT * FROM receive_items nx INNER JOIN receive_details rx ON rx.rd_id = nx.rd_id WHERE nx.item_id = lut.item_id AND nx.supplier_id = lut.supplier_id AND nx.brand_id = lut.brand_id AND nx.catalog_no = lut.catalog_no AND rd.pr_no = rx.pr_no AND nx.ri_id > lut.ri_id) ORDER BY ri_id DESC") AS $ri){
-         foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no  AND nx.ri_id > lut.ri_id) GROUP BY item_id ORDER BY ri_id DESC") AS $ri){
-                 $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
-                 $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
-                 $boqty=$this->backorder_qty($ri->ri_id);
-
-
-                 if($ri->expected_qty>$ri->received_qty){
-                     $data['prback'][]=array(
-                        "pono"=>$ri->po_no,
-                        "pr_no"=>$pr_no,
-                        "rdid"=>$ri->rd_id,
-                        "item"=>$item,
-                        "expected"=>$boqty,
-                        "received"=>$ri->received_qty,
-                    );
-                 }
+         $result=array();
+        foreach($this->super_model->custom_query("SELECT * FROM receive_items lut WHERE NOT EXISTS (SELECT * FROM receive_items nx WHERE nx.po_no = lut.po_no AND nx.ri_id > lut.ri_id) AND lut.expected_qty > lut.received_qty ORDER BY ri_id DESC") AS $ri){
+            $item=$this->super_model->select_column_where("items", "item_name", "item_id", $ri->item_id);
+            $pr_no=$this->super_model->select_column_where("receive_details", "pr_no", "receive_id", $ri->receive_id);
+            $boqty=$this->backorder_qty($ri->ri_id);
+            /* if($ri->expected_qty>$ri->received_qty){
+                 $data['prback'][]=array(
+                    "pono"=>$ri->po_no,
+                    "pr_no"=>$pr_no,
+                    "rdid"=>$ri->rd_id,
+                    "item"=>$item,
+                    "expected"=>$boqty,
+                    "received"=>$ri->received_qty,
+                );
+             }*/
+            $distinct_pr[] = array(
+                "pono"=>$ri->po_no,
+                "pr_no"=>$pr_no,
+                "rdid"=>$ri->rd_id,
+                "item"=>$item,
+                "expected"=>$boqty,
+                "received"=>$ri->received_qty,
+            );
+            $distinct_item[] = array(
+                "pono"=>$ri->po_no,
+                "pr_no"=>$pr_no,
+                "rdid"=>$ri->rd_id,
+                "item"=>$item,
+                "expected"=>$boqty,
+                "received"=>$ri->received_qty,
+            );
         }
-       
-     
-        
+        $distinct_pr[]=array();
+        $distinct_item[]=array();
+        $tempPR = array_unique(array_column($distinct_pr, 'pr_no'));
+        $prlist = array_intersect_key($distinct_pr, $tempPR);
+        $tempItem = array_unique(array_column($distinct_item, 'item'));
+        $itemlist = array_intersect_key($distinct_item, $tempItem);
+        $result = array_merge($prlist, $itemlist);
+        foreach(array_unique($result, SORT_REGULAR) AS $ri){
+            $data['prback'][]=array(
+                "pono"=>$ri['pono'],
+                "pr_no"=>$ri['pr_no'],
+                "rdid"=>$ri['rdid'],
+                "item"=>$ri['item'],
+                "expected"=>$ri['expected'],
+                "received"=>$ri['received'],
+            );
+        }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('backorder/back_order',$data);
@@ -193,10 +226,8 @@ class Backorder extends CI_Controller {
     }
 
     
-    public function backorder_qty($riid,$receive_id){
-
-        //$expectedqty = $this->super_model->select_sum("receive_items", "expected_qty", "ri_id", $riid);
-        $expectedqty = $this->super_model->custom_query_single("expected_qty","SELECT expected_qty FROM receive_items ri INNER JOIN received_details rd ON ri.rd_id = rd.rd_id GROUP BY rd.pr_no");
+    public function backorder_qty($riid){
+        $expectedqty = $this->super_model->select_sum("receive_items", "expected_qty", "ri_id", $riid);
         $recqty = $this->super_model->select_column_where("receive_items", "received_qty", "ri_id", $riid);
         $bo_qty = $expectedqty-$recqty;
         return $bo_qty;
@@ -294,12 +325,12 @@ class Backorder extends CI_Controller {
                 'rd_id'=>$newrdid,
                 'receive_id'=> $receiveid,
                 'po_no'=>$po_no,
-                'supplier_id'=> $rd->supplier_id,
+                'supplier_id'=> $this->input->post('supplier['.$a.']'),
                 'item_id'=> $rd->item_id,
-                'brand_id'=> $rd->brand_id,
+                'brand_id'=> $this->input->post('brand['.$a.']'),
                 'catalog_no'=> $rd->catalog_no,
                 'serial_id'=>$rd->serial_id,
-                'item_cost'=> $rd->item_cost,
+                'item_cost'=> $this->input->post('item_cost['.$a.']'),
                 'expected_qty'=>$this->input->post('expqty['.$a.']'),
                 'received_qty'=>$this->input->post('quantity['.$a.']'),
                 'remarks'=> $this->input->post('remarks['.$a.']'),
