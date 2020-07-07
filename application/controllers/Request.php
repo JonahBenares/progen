@@ -416,22 +416,19 @@ class Request extends CI_Controller {
     public function checkpritem(){
         $item = $this->input->post('item');
         $pr = $this->input->post('pr');
+      
+        $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(ri.received_qty) AS sumqty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
+       
 
-        //$rdid=$this->super_model->select_column_where("receive_details", "rd_id", "pr_no", $pr);
-
-        //$recqty=$this->super_model->select_column_custom_where("receive_items", "received_qty", "rd_id ='$rdid' AND item_id = '$item'");
-        $recqty = $this->super_model->custom_query_single("received_qty","SELECT ri.received_qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
-
-        $qty=array(0);
-        foreach($this->super_model->select_row_where("request_head", "pr_no", $pr) AS $req){
-            //echo $req->request_id . " - " . $item . "<br>";
+        $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
+        /*foreach($this->super_model->select_row_where("request_head", "pr_no", $pr) AS $req){
+         
                 foreach($this->super_model->select_custom_where("request_items", "request_id ='$req->request_id' AND item_id = '$item'") AS $ri){
-               // echo $ri->rq_id;
+              
                  $qty[]=$this->super_model->select_column_where("issuance_details", "quantity", "rq_id", $ri->rq_id);
                 }
-        }
+        }*/
 
-        $issue_qty = array_sum($qty);
         $bal=($recqty-$issue_qty);
         echo $bal;
     }
