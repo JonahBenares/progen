@@ -441,7 +441,7 @@ class Reports extends CI_Controller {
 
      public function getRestocked_items($item, $date){
         
-        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date = '$date' AND resd.item_id='$item'") AS $r){
+        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date = '$date' AND resd.item_id='$item' AND excess ='0'") AS $r){
             return $r->qty;
         }
 
@@ -463,7 +463,7 @@ class Reports extends CI_Controller {
 
     public function totalRestocked_items($item,  $from, $to){
 
-        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$from' AND '$to' AND resd.item_id='$item'") AS $r){
+        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$from' AND '$to' AND resd.item_id='$item' AND excess ='0'") AS $r){
             return $r->qty;
         }
 
