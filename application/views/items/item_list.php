@@ -245,6 +245,13 @@
 					<form method='POST' action='<?php echo base_url(); ?>index.php/items/filter_export' target='_blank'>
 						<table width="100%" >
 							<tr>
+								<td width="5%"><label>Date:</label></td>
+								<td width="80%" colspan="5">
+									<input type = "date" name="date" class="form-control" id="date">
+								</td>
+							</tr>
+							<tr><td ><br></td></tr>
+							<tr>
 								<td width="5%"><label>Category:</label></td>
 								<td width="80%" colspan="5">
 									<select name="category_exp" class="form-control" id="category_exp" onChange="chooseCategory();">
