@@ -96,6 +96,7 @@
 												<td align="center"><strong>No.</strong></td>
 												<td align="center"><strong>Part No.</strong></td>
 												<td align="left"><strong>Item Description</strong></td>
+												<td align="center"><strong>Unit Price</strong></td>
 												<td align="center"><strong>Beginning Balance</strong></td>
 												<td align="center"><strong>UoM</strong></td>
 												<td align="center" class="color_back"><strong>Total Items Received(In)</strong></td>
@@ -110,6 +111,7 @@
 												<td align="center"><strong><?php echo $x?></strong></td>
 												<td align="center"><strong><?php echo $i['pn']?></strong></td>
 												<td align="left"><strong><?php echo $i['item_name']?></strong></td>
+												<td align="center"><strong><?php echo $i['unit_price']?></strong></td>
 												<td align="center"><strong><?php echo $i['beginning']?></strong></td>
 												<td align="center"><strong><?php echo $i['unit']?></strong></td>
 												<td align="center" class="color_back"><strong><?php echo $i['total_received']?></strong></td>

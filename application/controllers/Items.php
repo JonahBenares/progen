@@ -359,9 +359,15 @@ class Items extends CI_Controller {
             $manila='null';
         }
 
+        if(!empty($this->input->post('date'))){
+            $date = $this->input->post('date');
+        } else {
+            $date='null';
+        }
+
          ?>
        <script>
-        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>/<?php echo $rack; ?>'</script> <?php
+        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>/<?php echo $rack; ?>/<?php echo $date; ?>'</script> <?php
     }
     public function update_item(){
         $data['id']=$this->uri->segment(3);
@@ -976,6 +982,7 @@ class Items extends CI_Controller {
         $local=$this->uri->segment(5);
         $mnl=$this->uri->segment(6);
         $rack=$this->uri->segment(7);
+        $date=$this->uri->segment(8);
 
          $sql="";
         if($cat!='null'){
@@ -988,6 +995,10 @@ class Items extends CI_Controller {
 
         if($rack!='null'){
             $sql.= " rack_id = '$rack' AND";
+        }
+
+        if($date!='null'){
+            $sql.= " receive_date = '$date' AND";
         }
 
         if($local!='null' || $mnl != 'null'){
@@ -1030,10 +1041,14 @@ class Items extends CI_Controller {
         $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-        $date = date("Y-m-d");
+        if($date!='null'){
+            $date_rec = $date;
+        }else{
+            $date_rec = date("Y-m-d");
+        }
         $catname=$this->super_model->select_column_where("item_categories", "cat_name", "cat_id", $cat);
         $subcatname=$this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B6', $date);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B6', $date_rec);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C8', $catname);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I8', $subcatname);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A6', "Date");
@@ -1067,7 +1082,7 @@ class Items extends CI_Controller {
           )
         );
         //echo "SELECT i.*, ri.local_mnl FROM items i INNER JOIN receive_items ri ON i.item_id = ri.item_id WHERE " .$q." ORDER BY i.item_name ASC";
-        foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){
+        foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $items->unit_id);
             $rack =$this->super_model->select_column_where("rack","rack_name", "rack_id", $items->rack_id);
             $group =$this->super_model->select_column_where("group","group_name", "group_id", $items->group_id);
