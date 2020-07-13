@@ -982,6 +982,7 @@ class Items extends CI_Controller {
         $local=$this->uri->segment(5);
         $mnl=$this->uri->segment(6);
         $rack=$this->uri->segment(7);
+        $date=$this->uri->segment(8);
 
          $sql="";
         if($cat!='null'){
