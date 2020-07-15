@@ -336,6 +336,7 @@ function add_item(){
                     document.getElementById("item").value = '';
                     document.getElementById("brand").value = '';
                     document.getElementById("brand_id").value = '';
+                    document.getElementById("brand_name").value = '';
                     document.getElementById("serial").value = '';
                     document.getElementById("serial_id").value = '';
                     document.getElementById("catalog_no").value = '';
