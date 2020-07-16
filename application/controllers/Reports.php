@@ -887,8 +887,8 @@ class Reports extends CI_Controller {
             $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":C".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('D10:G10');
             $objPHPExcel->getActiveSheet()->mergeCells('D'.$num.":G".$num);
-            $objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
-            $objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":I".$num);
+            //$objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
+            //$objPHPExcel->getActiveSheet()->mergeCells('H'.$num.":I".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('J10:K10');
             $objPHPExcel->getActiveSheet()->mergeCells('J'.$num.":K".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('L10:N10');
@@ -926,7 +926,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->getActiveSheet()->mergeCells('J10:K10');
         $objPHPExcel->getActiveSheet()->mergeCells('B10:C10');
         $objPHPExcel->getActiveSheet()->mergeCells('D10:G10');
-        $objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
+        //$objPHPExcel->getActiveSheet()->mergeCells('H10:I10');
         $objPHPExcel->getActiveSheet()->mergeCells('L10:N10');
         $objPHPExcel->getActiveSheet()->mergeCells('O10:Q10');
         $objPHPExcel->getActiveSheet()->mergeCells('R10:T10');
