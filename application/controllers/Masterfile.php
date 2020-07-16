@@ -226,6 +226,18 @@ class Masterfile extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function update_subcategory(){
+        $data = array(
+            'subcat_name'=>$this->input->post('subcat_name'),
+            'subcat_prefix'=>$this->input->post('subcat_pref'),
+        );
+        $subid = $this->input->post('subcat_id');
+            if($this->super_model->update_where('item_subcat', $data, 'subcat_id', $subid)){
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/masterfile/category_list'; </script>";
+        }
+    }
+
     public function department_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
