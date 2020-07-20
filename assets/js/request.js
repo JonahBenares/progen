@@ -273,7 +273,13 @@ function getUnitCost(){
             type: "POST",
             url: redirect,
             data: 'siid='+siid,
+            beforeSend: function(){
+                document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+                $("#submit").hide(); 
+            },
             success: function(output){
+                $("#submit").show(); 
+                $('#alrt').hide();
                 document.getElementById("unit_cost").value = output;
             }
     });
