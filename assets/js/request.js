@@ -318,3 +318,71 @@ function chooseItem(){
         }
     }); 
 }
+
+function chooseEmpreq(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getEmpreq';
+    var requested = document.getElementById("requested").value;
+    document.getElementById('alt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+requested,
+        dataType: 'json',
+        success: function(response){
+            $("#alt").hide();
+            $("#positionreq").val(response.position);
+        }
+    }); 
+}
+
+function chooseEmprev(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getEmprev';
+    var reviewed = document.getElementById("reviewed").value;
+    document.getElementById('alts').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+reviewed,
+        dataType: 'json',
+        success: function(response){
+            $("#alts").hide();
+            $("#positionrev").val(response.position);
+        }
+    }); 
+}
+
+function chooseEmpapp(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getEmpapp';
+    var approved = document.getElementById("approved").value;
+    document.getElementById('altss').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+approved,
+        dataType: 'json',
+        success: function(response){
+            $("#altss").hide();
+            $("#positionapp").val(response.position);
+        }
+    }); 
+}
+
+function chooseEmpnoted(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getEmpnoted';
+    var noted = document.getElementById("noted").value;
+    document.getElementById('altsss').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+noted,
+        dataType: 'json',
+        success: function(response){
+            $("#altsss").hide();
+            $("#positionnoted").val(response.position);
+        }
+    }); 
+}

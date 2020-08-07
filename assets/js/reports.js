@@ -165,10 +165,7 @@ function chooseItem(){
     var item = document.getElementById("item").value;
     document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
     $("#submit").hide(); 
-    setTimeout(function() {
-        document.getElementById('alrt').innerHTML=''; 
-        $("#submit").show(); 
-    },5000);
+    
     $.ajax({
         type: 'POST',
         url: redirect,
@@ -179,6 +176,10 @@ function chooseItem(){
             $("#item_name").val(response.item_name);
             $("#unit").val(response.unit);
             $("#original_pn").val(response.pn);
+            setTimeout(function() {
+                document.getElementById('alrt').innerHTML=''; 
+                $("#submit").show(); 
+            },5000);
         }
     }); 
 }

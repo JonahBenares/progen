@@ -260,7 +260,7 @@
                 <tr>
                     <?php foreach($username AS $us) ?>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="requested">
+                        <select type="text" class="select" name="requested" id="requested" onchange="chooseEmpreq()">
                             <option></option>
                             <?php foreach($requested_emp AS $req){ ?>
                             <option value = "<?php echo $req['empid'];?>"<?php echo (( $req['empid'] == $requested) ?  ' selected' : ''); ?>><?php echo  $req['empname'];?></option>
@@ -278,7 +278,7 @@
                     </td>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="reviewed">
+                        <select type="text" class="select" name="reviewed" id="reviewed" onchange="chooseEmprev()">
                             <option></option>
                             <?php foreach($reviewed_emp AS $rev){ ?>
                             <option value = "<?php echo $rev['empid'];?>"<?php echo (( $rev['empid'] == $reviewed) ?  ' selected' : ''); ?>><?php echo  $rev['empname'];?></option>
@@ -287,11 +287,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><center>End-User/Requester</center></td>
+                    <!-- <td><center>End-User/Requester</center></td> -->
+                    <td>
+                        <center><div id='alt' style="font-weight:bold"></div></center>
+                        <input id="positionreq" class="select" style="pointer-events:none" value="<?php echo $us['positionreq'];?>">
+                    </td>
                     <td></td>
                     <td><center></center></td>
                     <td></td>
-                    <td><center>Department Supervisor</center></td>
+                    <td>
+                        <center><div id='alts' style="font-weight:bold"></div></center>
+                        <input id="positionrev" class="select" style="pointer-events:none" value="<?php echo $us['positionrev'];?>">
+                    </td>
+                    <!-- <td><center>Department Supervisor</center></td> -->
                 </tr>
             </table>
             <br>
@@ -307,7 +315,7 @@
                     <td></td>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select type="text" class="select" name="approved">
+                        <select type="text" class="select" name="approved" id="approved" onchange="chooseEmpapp()">
                             <option></option>
                             <?php foreach($approved_emp AS $appr){ ?>
                             <option value = "<?php echo $appr['empid'];?>"<?php echo (( $appr['empid'] == $approved) ?  ' selected' : ''); ?>><?php echo  $appr['empname'];?></option>
@@ -320,7 +328,11 @@
                 <tr>
                     <td></td>
                     <td></td>
-                    <td><center>Plant Director</center></td>
+                    <td>
+                        <center><div id='altss' style="font-weight:bold"></div></center>
+                        <input id="positionapp" class="select" style="pointer-events:none" value="<?php echo $us['positionapp'];?>">
+                    </td>
+                    <!-- <td><center>Plant Director</center></td> -->
                     <td></td>
                     <td></td>
                 </tr>

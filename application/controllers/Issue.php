@@ -417,6 +417,9 @@ class Issue extends CI_Controller {
         foreach($this->super_model->select_row_where('issuance_head', 'issuance_id', $id) AS $us){
             $data['username'][] = array( 
                 'user'=>$this->super_model->select_column_where('users', 'fullname', 'user_id', $us->user_id),
+                'positionrel'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->released_by),
+                'positionrec'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->received_by),
+                'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
                 'user_id'=>$us->user_id
             );
         }
@@ -812,7 +815,29 @@ class Issue extends CI_Controller {
         echo "success";
     }
 
-   
+    public function getEmprel(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmprec(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmpnoted(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
    
 }
 ?>
