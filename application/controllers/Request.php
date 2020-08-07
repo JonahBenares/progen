@@ -238,6 +238,10 @@ class Request extends CI_Controller {
         foreach($this->super_model->select_row_where('request_head', 'request_id', $id) AS $us){
             $data['username'][] = array( 
                 'user'=>$this->super_model->select_column_where('users', 'fullname', 'user_id', $us->user_id),
+                'positionreq'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->requested_by),
+                'positionrev'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->reviewed_by),
+                'positionapp'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->approved_by),
+                'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
                 'user_id'=>$us->user_id
             );
         }
@@ -585,6 +589,38 @@ class Request extends CI_Controller {
 
         $maxqty = $recqty-$issueqty;
         echo $maxqty;
+    }
+
+    public function getEmpreq(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmprev(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmpapp(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmpnoted(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
     }
 }
 ?>

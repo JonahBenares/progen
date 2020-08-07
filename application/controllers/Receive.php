@@ -154,6 +154,9 @@ class Receive extends CI_Controller {
         foreach($this->super_model->select_row_where('receive_head', 'receive_id', $id) AS $us){
             $data['username'][] = array( 
                 'user'=>$this->super_model->select_column_where('users', 'fullname', 'user_id', $us->user_id),
+                'positionrec'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->received_by),
+                'positionack'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->acknowledged_by),
+                'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
                 'user_id'=>$us->user_id
             );
         }
@@ -1170,6 +1173,30 @@ class Receive extends CI_Controller {
          }
 
     
+    }
+
+    public function getEmpinfo(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmpack(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getEmpnoted(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
     }
 }
 

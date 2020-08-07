@@ -237,3 +237,54 @@ function changeQty(count){
    var item_total = parseFloat(cost) * parseFloat(qty);
     document.getElementById("total_cost").innerHTML  =item_total;
 }
+
+function chooseEmprel(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/issue/getEmprel';
+    var released = document.getElementById("released").value;
+    document.getElementById('alt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+released,
+        dataType: 'json',
+        success: function(response){
+            $("#alt").hide();
+            $("#position").val(response.position);
+        }
+    }); 
+}
+
+function chooseEmprec(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/issue/getEmprec';
+    var received = document.getElementById("received").value;
+    document.getElementById('alts').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+received,
+        dataType: 'json',
+        success: function(response){
+            $("#alts").hide();
+            $("#positionrec").val(response.position);
+        }
+    }); 
+}
+
+function chooseEmpnoted(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/issue/getEmpnoted';
+    var noted = document.getElementById("noted").value;
+    document.getElementById('altss').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'employee_id='+noted,
+        dataType: 'json',
+        success: function(response){
+            $("#altss").hide();
+            $("#positionnoted").val(response.position);
+        }
+    }); 
+}

@@ -324,7 +324,7 @@
                     </td>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='received'>
+                        <select class="select" type="text" name='received' id ="received" onchange="chooseEmprec()">
                             <option></option>
                             <?php foreach($received_emp AS $recei){ ?>
                             <option value = "<?php echo $recei['empid'];?>" <?php echo (($recei['empid'] == $received) ?  ' selected' : ''); ?>><?php echo $recei['empname'];?></option>
@@ -343,7 +343,11 @@
                     <td></td>
                     <td><center>Supplier/Driver</center></td>
                     <td></td>
-                    <td><center>Warehouse Personnel</center></td>
+                    <td>
+                        <center><div id='alt' style="font-weight:bold"></div></center>
+                        <input id="position" class="select" style="pointer-events:none" value="<?php echo $us['positionrec'];?>">
+                    </td>
+                    <!-- <td><center>Warehouse Personnel</center></td> -->
                                   
                 </tr>
             </table>
@@ -361,7 +365,7 @@
                 <tr>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='acknowledged'>
+                        <select class="select" type="text" name='acknowledged' id="acknowledged" onchange="chooseEmpack()">
                             <option></option>
                             <?php foreach($acknowledged_emp AS $ackno){ ?>
                             <option value = "<?php echo $ackno['empid'];?>" <?php echo (($ackno['empid'] == $acknowledged) ?  ' selected' : ''); ?>><?php echo $ackno['empname'];?></option>
@@ -370,7 +374,7 @@
                     </td>
                     <td></td>
                     <td style="border-bottom:1px solid #000">
-                        <select class="select" type="text" name='noted'>
+                        <select class="select" type="text" name='noted' id='noted' onchange="chooseEmpnoted()">
                             <option></option>
                             <<?php foreach($noted_emp AS $not){ ?>
                             <option value = "<?php echo $not['empid'];?>" <?php echo (($not['empid'] == $noted) ?  ' selected' : ''); ?>><?php echo $not['empname'];?></option>
@@ -381,9 +385,17 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><center>Warehouse In-Charge</center></td>
+                   <!--  <td><center>Warehouse In-Charge</center></td> -->
+                    <td>
+                        <center><div id='alts' style="font-weight:bold"></div></center>
+                        <input id="positionack" class="select" style="pointer-events:none" value="<?php echo $us['positionack'];?>">
+                    </td>
                     <td></td>
-                    <td><center>Plant Director</center></td>
+                    <td>
+                        <center><div id='altss' style="font-weight:bold"></div></center>
+                        <input id="positionnoted" class="select" style="pointer-events:none" value="<?php echo $us['positionnote'];?>">
+                    </td>
+                    <!-- <td><center>Plant Director</center></td> -->
                     <td></td>                
                 </tr>
             </table>
