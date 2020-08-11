@@ -245,9 +245,11 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><center><input type="text" class="select" value = "End User/Requester"></center></td>
+                    <!-- <td><center><input type="text" class="select" value = "End User/Requester"></center></td> -->
+                    <td><center><input type="text" class="select" value = "<?php echo $res['positionret'];?>"></center></td>
                     <td></td>
-                    <td><center><input type="text" class="select" value = "Warehouse Personnel"></center></td>                    
+                    <td><center><input type="text" class="select" value = "<?php echo $res['positionrec'];?>"></center></td>   
+                    <!-- <td><center><input type="text" class="select" value = "Warehouse Personnel"></center></td> -->                    
                     <td></td>                
                 </tr>
             </table>
@@ -275,9 +277,11 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><center><input type="text" class="select" value = "Warehouse Supervisor"></center></td>
+                    <td><center><input type="text" class="select" value = "<?php echo $res['positionack'];?>"></center></td>
+                    <!-- <td><center><input type="text" class="select" value = "Warehouse Supervisor"></center></td> -->
                     <td></td>
-                    <td><center><input type="text" class="select" value = "Plant Directory"></center></td>                    
+                    <td><center><input type="text" class="select" value = "<?php echo $res['positionnoted'];?>"></center></td>
+                    <!-- <td><center><input type="text" class="select" value = "Plant Directory"></center></td>  -->                   
                     <td></td>                
                 </tr>
             </table> 

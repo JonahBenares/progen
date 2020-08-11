@@ -429,8 +429,10 @@ class Restock extends CI_Controller {
             //$received = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->received_by);
             if($stock->excess!=1){
                 $received = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->received_by);
+                $receive_id = $stock->received_by;
             }else {
                 $received = $this->super_model->select_column_where("users", "fullname", "user_id", $stock->received_by);
+                $receive_id = '';
             }
             $returned = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->returned_by);
             $acknowledge = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $stock->acknowledge_by);
@@ -438,6 +440,14 @@ class Restock extends CI_Controller {
             $purpose = $this->super_model->select_column_where('purpose', 'purpose_desc', 'purpose_id', $stock->purpose_id);
             $enduse = $this->super_model->select_column_where('enduse', 'enduse_name', 'enduse_id', $stock->enduse_id);
             $noted_by = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $stock->noted_by);
+            if(!empty($receive_id)){
+                $positionrec=$this->super_model->select_column_where('employees', 'position', 'employee_id', $stock->received_by);
+            }else{
+                $positionrec='Warehouse Personnel';
+            }   
+            $positionret=$this->super_model->select_column_where('employees', 'position', 'employee_id', $stock->returned_by);
+            $positionack=$this->super_model->select_column_where('employees', 'position', 'employee_id', $stock->acknowledge_by);
+            $positionnoted=$this->super_model->select_column_where('employees', 'position', 'employee_id', $stock->noted_by);
             $data['restock'][] = array(
                 'date'=>$stock->restock_date,
                 'prno'=>$stock->from_pr,
@@ -448,7 +458,11 @@ class Restock extends CI_Controller {
                 'enduse'=>$enduse,
                 'acknowledge'=>$acknowledge,
                 'noted_by'=>$noted_by,
-                'mrwf_no'=>$stock->mrwf_no
+                'mrwf_no'=>$stock->mrwf_no,
+                'positionrec'=>$positionrec,
+                'positionret'=>$positionret,
+                'positionack'=>$positionack,
+                'positionnoted'=>$positionnoted,
             );
         }
         foreach($this->super_model->select_row_where('restock_details','rhead_id', $id) AS $det){
