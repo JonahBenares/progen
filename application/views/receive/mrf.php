@@ -338,6 +338,7 @@
                             <option value = "">Select Your Designation Here..</option>
                             <option value = "">Warehouse Assistant</option>
                             <option value = "">Parts Inventory Assistant</option>
+                            <option value = "">Projects and Asset Management Assistant</option>
                         </select>
                     </td>  
                     <td></td>
