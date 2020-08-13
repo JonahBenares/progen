@@ -7,7 +7,7 @@
 				<?php foreach($head AS $h){ ?>
 					<tr>
 						<td width="10%"><label>Date:</label></td>
-						<td width="90%"><input type = "date" disabled="" name = "receive_date" class = "form-control" id="e"><br></td>
+						<td width="90%"><input type = "date" disabled="" name = "receive_date" class = "form-control" value ="<?php echo $h->receive_date; ?>"><br></td>
 					</tr>
 					<tr>
 						<td width="10%"><label>DR#:</label></td>
