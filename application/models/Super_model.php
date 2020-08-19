@@ -118,6 +118,16 @@ class super_model extends CI_Model
         return $query->result();
     }
 
+     public function select_inner_join($table1,$table2, $where,$group_id)
+    {
+        $this->db->select($table1.'.*');
+        $this->db->from($table1);
+        $this->db->join($table2, $table1.'.'.$group_id .' = '.$table2.'.'.$group_id);
+        $this->db->where($where);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
      public function select_join($table1,$table2, $where,$group_id)
     {
         $this->db->select($table1.'.*');
