@@ -46,7 +46,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php foreach($list AS $li){ ?>
+									<?php 
+									
+									foreach($list AS $li){ ?>
 									<tr>
 										
 										<td align="center"><?php echo $li['mreqf_no']; ?></td>
