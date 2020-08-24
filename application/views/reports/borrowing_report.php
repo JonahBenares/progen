@@ -27,7 +27,7 @@
 				<div class="panel-heading" style="height:20px">
 				</div>
 				<div class="panel-body">
-					<div class="canvas-wrapper">
+					<div class="canvas-wrapper" style="	overflow-x: scroll;">
 						<div class="col-lg-12">
 							<table class="table table-hover table-bordered" id="item_table" >
 								<thead>
