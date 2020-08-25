@@ -2479,8 +2479,9 @@ class Reports extends CI_Controller {
 
     public function borrowing_report(){         
         $count=$this->super_model->select_count_join_inner("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id");
+
         if($count!=0){
-            foreach($this->super_model->select_join_where_inner("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id") AS $itms){
+            foreach($this->super_model->select_inner_join("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id") AS $itms){
                
                 $data['list'][]=array(
                     'rqid'=>$itms->rq_id,
@@ -2596,7 +2597,7 @@ class Reports extends CI_Controller {
                     
                     $final_balance = $head->qty;
                 } else if($issueqty!=0 && $restockqty==0 && $excessqty==0){
-                    $final_balance = $head->qty-$issueqty;
+                    $final_balance = $head->qty - $issueqty;
                 } else if($issueqty!=0 && $restockqty!=0 && $excessqty==0){
                     $final_balance =  $in_balance + $restockqty; 
                 } else if(($issueqty!=0 && $restockqty!=0 && $excessqty!=0) || ($issueqty==0 && ($restockqty!=0 || $excessqty!=0)) || ($issueqty!=0 && $restockqty==0 && $excessqty!=0)){

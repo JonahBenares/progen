@@ -83,7 +83,7 @@
 											<td align="center"><strong><?php echo $li['excessqty']; ?></strong></td>		
 											<td align="center"><strong><?php echo $li['final_balance']; ?></strong></td>			
 											<td align="center">
-											<?php if($li['excessqty']==0 && $li['restockqty']==0  || ($li['in_balance'] > $ex_total)){ ?>
+											<?php if($li['excessqty']==0 && $li['restockqty']==0  && $li['in_balance'] != 0|| ($li['in_balance'] > $ex_total)){ ?>
 												<a href="<?php echo base_url(); ?>index.php/reports/tagexcess/<?php echo $pr; ?>/<?php echo $li['item_id']; ?>/<?php echo $li['in_balance']; ?>" class="btn btn-md btn-danger" onclick="return confirm('Are you sure you want to tag as excess?')">Tag as Excess</a>
 											<?php } ?></td>
 											
