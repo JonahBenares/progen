@@ -838,6 +838,13 @@ class Issue extends CI_Controller {
             echo json_encode($return);   
         }
     }
+    public function editmodal()
+       {
+        $this->load->view('template/header');        
+        $this->load->view('issue/editmodal');  
+        $this->load->view('template/footer');  
+
+       }
    
 }
 ?>

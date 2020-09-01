@@ -179,7 +179,9 @@
                 </tr>
                 <tr>
                     <td width="10%"><h6 class="nomarg">PR / JO #</h6></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label>
+                        <a onclick="editmodal()" class="btn btn-xs btn-primary pull-right" id="editbtn" ><span class="fa fa-pencil"></span></a>
+                    </td>
                     <td width="7%"></td>
 
                      <td width="10%"><h6 class="nomarg pull-right">MIF No. &nbsp</h6></td>
@@ -384,4 +386,9 @@
            
     </div>
 </body>
+<script type="text/javascript">
+    function editmodal() {
+        window.open("<?php echo base_url();?>index.php/issue/editmodal", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=120,left=460,width=400,height=400");
+    }    
+</script>
 </html>

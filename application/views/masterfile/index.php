@@ -79,6 +79,52 @@
 			</div>
 		</div>
 		<?php } ?>
+
+
+
+		<div class="panel panel-default animated fadeInRight " style="border: 1px solid #4db1ff;">
+			<div class="panel-body">
+				<center>
+					<h3>
+						<span class="fa fa-handshake-o"></span>
+						<strong> Borrow Report</strong>
+					</h3>
+				</center>
+				<div style="height: 200px;overflow-x: scroll;">
+					<table class="table table-bordered table-hover shadow-dash">
+						<tr style="background-color: #4db1ff; font-weight: 600">
+							<td align="center" width="60%">Borrower</td>
+							<td align="center" width="20%">Borrowed From</td>
+							<td align="center" width="20%">Item</td>
+							<td align="center" width="20%">Qty</td>
+							<td align="center" width="20%">MIF No.</td>
+							<td align="center" width="20%"><span class="fa fa-bars"></span></td>
+						</tr>
+						<tr>
+							<td align="center">asdas</td>
+							<td align="center">asdasd</td>
+							<td align="center">asdsadasd</td>
+							<td align="center">12</td>
+							<td align="center">wqeqweqwwe</td>
+							<td align="center"><a href="" class="btn btn-primary btn-xs">Replenish</a></td>							
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- Paki if lang d please -->
+		<div class="panel panel-default animated fadeInRight itemSubBevel itemSubColor2" >
+			<div class="panel-body">
+				<center>
+					<h1 class="subFcolor"><span class="fa fa-handshake-o animated fadeInLeft infinite"></span> </h1><h2 class="subColored" style="margin: 0px">Borrow Report</h2>
+				</center>
+			</div>
+		</div>
+
+
+
+
+
 		<?php if(!empty($nto)){ ?>
 		<div class="panel panel-default animated fadeInRight " style="border: 1px solid #4db1ff;">
 			<div class="panel-body">
