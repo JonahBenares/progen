@@ -1,5 +1,6 @@
 <script src="<?php echo base_url(); ?>assets/js/dashboard/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/dashboard/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/reports.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" >
 	<div class="row">
 		<ol class="breadcrumb">
@@ -81,7 +82,7 @@
 		<?php } ?>
 
 
-
+		<?php if(!empty($borrow)){ ?>
 		<div class="panel panel-default animated fadeInRight " style="border: 1px solid #4db1ff;">
 			<div class="panel-body">
 				<center>
@@ -100,18 +101,21 @@
 							<td align="center" width="20%">MIF No.</td>
 							<td align="center" width="20%"><span class="fa fa-bars"></span></td>
 						</tr>
+						<?php foreach($borrow AS $b){ ?>
 						<tr>
-							<td align="center">asdas</td>
-							<td align="center">asdasd</td>
-							<td align="center">asdsadasd</td>
-							<td align="center">12</td>
-							<td align="center">wqeqweqwwe</td>
-							<td align="center"><a href="" class="btn btn-primary btn-xs">Replenish</a></td>							
+							<td align="center"><?php echo $b['original_pr']; ?></td>
+							<td align="center"><?php echo $b['borrowfrom']; ?></td>
+							<td align="center"><?php echo $b['item']; ?></td>
+							<td align="center"><?php echo $b['quantity']; ?></td>
+							<td align="center"><?php echo $b['mif_no']; ?></td>
+							<td align="center"><a href="javascript:void(0)" onclick="replenishBorrow_dash('<?php echo $b['rqid']; ?>','<?php echo base_url(); ?>')" class="btn btn-info btn-sm">Replenish</a></td>							
 						</tr>
+						<?php } ?>
 					</table>
 				</div>
 			</div>
 		</div>
+	<?php } else { ?>
 		<!-- Paki if lang d please -->
 		<div class="panel panel-default animated fadeInRight itemSubBevel itemSubColor2" >
 			<div class="panel-body">
@@ -121,7 +125,7 @@
 			</div>
 		</div>
 
-
+	<?php } ?>
 
 
 
