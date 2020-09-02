@@ -1,6 +1,22 @@
 <script src="<?php echo base_url(); ?>assets/js/dashboard/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/dashboard/jquery.min.js"></script>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" >
+	<style type="text/css">
+		th {
+		  position: -webkit-sticky;
+		  position: sticky;
+		  top: 0;
+		  z-index: 2;
+		  background-color: #4db1ff;font-weight: 600;color: #fff;
+		}
+		th[scope=row] {
+		  position: -webkit-sticky;
+		  position: sticky;
+		  left: 0;
+		  z-index: 1;
+		  background-color: #4db1ff;font-weight: 600;color: #fff;
+		}
+	</style>
 	<div class="row">
 		<ol class="breadcrumb">
 			<li><a href="#">
@@ -25,49 +41,36 @@
 						<strong> Back Order</strong>
 					</h3>
 				</center>
-				<table class="table table-bordered table-hover shadow-dash">
-					<tr style="background-color: #4db1ff;font-weight: 600;color: #fff;">
-						<td align="center">PR#</td>
-						<td align="center">Item</td>
-						<td align="center">Expected Qty</td>
-						<td align="center">Received Qty</td>
-						<td align="center"><span class="fa fa-cog"></span></td>
-					</tr>
-					<?php 
-				
-
-
-						 //print_r($list);
-					
-					/*	$tempArr = array_unique(array_column($list, 'pr_no'));
-						   $list = array_intersect_key($list, $tempArr);*/
-
-						  /* $tempArr = array_unique(array_column($list, 'item'));
-						   $list = array_intersect_key($list, $tempArr);*/
-						//$pids = array();
-						/*foreach ($list AS $li) {
-							//echo $li['pr_no'];
-						    $pids[] = $li['pr_no'];
-						}
-						
-						$uniquePids = array_unique($pids);
-						print_r($uniquePids);*/
-					foreach($list AS $li){ 
-							if($li['received']!=0){
-					
-					?>
-					<tr>
-						<td align="center"><?php echo $li['pr_no']; ?></td>
-						<td align="center"><?php echo $li['item']; ?></td>
-						<td align="center"><?php echo $li['balance']; ?></td>
-						<td align="center"><?php echo $li['received']; ?></td>
-						<td align="center">
-							<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-primary btn-xs">Receive</a>
-						</td>
-					</tr>
-					<?php   } } 
-				 ?>
-				</table> 
+				<div style="height: 200px;overflow-x: scroll;">
+					<table class="table table-bordered table-hover shadow-dash">
+						<thead>
+							<tr>
+								<th align="center">PR#</th>
+								<th align="center">Item</th>
+								<th align="center">Expected Qty</th>
+								<th align="center">Received Qty</th>
+								<th align="center"><span class="fa fa-cog"></span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php 
+							foreach($list AS $li){ 
+									if($li['received']!=0){
+							?>
+							<tr>
+								<td align="center"><?php echo $li['pr_no']; ?></td>
+								<td align="center"><?php echo $li['item']; ?></td>
+								<td align="center"><?php echo $li['balance']; ?></td>
+								<td align="center"><?php echo $li['received']; ?></td>
+								<td align="center">
+									<a href="<?php echo base_url(); ?>index.php/backorder/back_order/<?php echo $li['rdid']; ?>" class="btn btn-primary btn-xs">Receive</a>
+								</td>
+							</tr>
+							<?php   } } 
+						 	?>
+					 	</tbody>
+					</table> 
+				</div>
 			</div>
 		</div> 
 		<?php } else { ?>
@@ -92,22 +95,26 @@
 				</center>
 				<div style="height: 200px;overflow-x: scroll;">
 					<table class="table table-bordered table-hover shadow-dash">
-						<tr style="background-color: #4db1ff; font-weight: 600">
-							<td align="center" width="60%">Borrower</td>
-							<td align="center" width="20%">Borrowed From</td>
-							<td align="center" width="20%">Item</td>
-							<td align="center" width="20%">Qty</td>
-							<td align="center" width="20%">MIF No.</td>
-							<td align="center" width="20%"><span class="fa fa-bars"></span></td>
-						</tr>
-						<tr>
-							<td align="center">asdas</td>
-							<td align="center">asdasd</td>
-							<td align="center">asdsadasd</td>
-							<td align="center">12</td>
-							<td align="center">wqeqweqwwe</td>
-							<td align="center"><a href="" class="btn btn-primary btn-xs">Replenish</a></td>							
-						</tr>
+						<thead>
+							<tr>
+								<th align="center" width="60%">Borrower</th>
+								<th align="center" width="20%">Borrowed From</th>
+								<th align="center" width="20%">Item</th>
+								<th align="center" width="20%">Qty</th>
+								<th align="center" width="20%">MIF No.</th>
+								<th align="center" width="20%"><span class="fa fa-bars"></span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td align="center">asdas</td>
+								<td align="center">asdasd</td>
+								<td align="center">asdsadasd</td>
+								<td align="center">12</td>
+								<td align="center">wqeqweqwwe</td>
+								<td align="center"><a href="" class="btn btn-primary btn-xs">Replenish</a></td>							
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
