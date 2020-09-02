@@ -122,6 +122,24 @@ function replenishBorrow(id, baseurl){
 	} 
 }
 
+function replenishBorrow_dash(id, baseurl){
+    
+    if(confirm("Are you sure you want to replenish?")){
+        var redirect=baseurl+'/index.php/reports/replenishborrow';
+        $.ajax({
+            type: "POST",
+            url: redirect,
+            data:'id='+id,
+            success: function(output){
+                if(output=='ok'){
+                    alert('Product successfully replenished!');
+                    window.location.href = baseurl+'index.php/masterfile/home';
+                }
+            }
+        });
+    } 
+}
+
 function chooseCategory(){
     var loc= document.getElementById("baseurl").value;
     var redirect = loc+'index.php/reports/getCat';
