@@ -145,6 +145,27 @@ class Masterfile extends CI_Controller {
                 "employee"=>$this->super_model->select_column_where("employees", "employee_name", "employee_id", $rem->remind_employee)
             );
         }
+
+         $count=$this->super_model->select_count_join_inner("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id");
+        if($count!=0){
+            foreach($this->super_model->select_inner_join("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id") AS $itms){
+               
+                $data['borrow'][]=array(
+                    'rqid'=>$itms->rq_id,
+                    'mif_no'=>$this->super_model->select_column_where("issuance_head", "mif_no", "request_id", $itms->request_id),
+                    'original_pr'=>$this->super_model->select_column_where("request_head", "pr_no", "request_id", $itms->request_id),
+                    'borrowfrom'=>$itms->borrowfrom_pr,
+                    'quantity'=>$itms->quantity,
+                    'item'=>$this->super_model->select_column_where("items", "item_name", "item_id", $itms->item_id),
+                    'brand'=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $itms->brand_id),
+                    'catalog'=>$itms->catalog_no
+
+
+                );
+            } 
+        } else {
+            $data['borrow']=array();
+        }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $this->load->view('masterfile/index',$data);

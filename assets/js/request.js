@@ -153,8 +153,8 @@ function add_item(){
     var original_pn =$('#original_pn').val();
     var unit =$('#unit').val();
     /*var invqty =$('#invqty').val();*/
-    var invqty =parseInt($('#invqty').val());
-    var quantity =parseInt($('#quantity').val());
+    var invqty =parseFloat($('#invqty').val());
+    var quantity =parseFloat($('#quantity').val());
     var unit_cost =$('#unit_cost').val();
     var siid =$('#siid').val();
     
@@ -162,7 +162,7 @@ function add_item(){
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");
     var itm = i.replace(/"/gi,"");
-    var maxqty = parseInt(document.getElementById("maxqty").value);
+    var maxqty = parseFloat(document.getElementById("maxqty").value);
 
     if(itemid==''){
          alert('Item must not be empty. Please choose/click from the suggested item list.');

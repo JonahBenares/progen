@@ -411,6 +411,7 @@ class Issue extends CI_Controller {
     public function mif(){
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
+         $data['access']=$this->access;
         $this->load->model('super_model');        
         $data['heads'] = $this->super_model->select_row_where('issuance_head', 'issuance_id', $id);
 
@@ -426,13 +427,15 @@ class Issue extends CI_Controller {
         foreach($this->super_model->select_row_where('issuance_head','issuance_id', $id) AS $issue){
             $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
             $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
-            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);            
+            $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);          
+              $type=  $this->super_model->select_column_where("request_head", "type", "mreqf_no", $issue->mreqf_no);       
             $data['issuance_details'][] = array(
                 'milf'=>$issue->mif_no,
                 'mreqf'=>$issue->mreqf_no,
                 'prno'=>$issue->pr_no,
                 'date'=>$issue->issue_date,
                 'time'=>$issue->issue_time,
+                'type'=>$type,
                 'department'=>$department,
                 'purpose'=>$purpose,
                 'enduse'=>$enduse,
@@ -838,6 +841,27 @@ class Issue extends CI_Controller {
             echo json_encode($return);   
         }
     }
-   
+    public function editmodal()
+       {
+        $data['issue_id'] = $this->uri->segment(3);
+        $data['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
+        $this->load->view('template/header');        
+        $this->load->view('issue/editmodal',$data);  
+        $this->load->view('template/footer');  
+
+       }
+       
+    public function updatePRIssuance(){
+        $id =$this->input->post('issuance_id');
+        $data = array(
+            "pr_no"=>$this->input->post('pr_no')
+        );
+     if($this->super_model->update_where("issuance_head", $data, "issuance_id", $id)){
+        echo "<script>window.opener.location.reload();window.close()</script>";
+     }
+
+
+
+   }
 }
 ?>

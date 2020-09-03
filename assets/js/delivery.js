@@ -54,7 +54,8 @@ function add_item(){
     var itemname =$('#item_name').val();
     var original_pn =$('#original_pn').val();
     var unit =$('#unit').val();
-    var quantity =parseInt($('#qty').val());
+    var quantity =parseFloat($('#qty').val());
+    
     var item =$('#item').val();
     var i = item.replace(/&/gi,"and");
     var i = i.replace(/#/gi,"");

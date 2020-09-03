@@ -172,6 +172,7 @@
                     $released= $det->released_by;
                     $received= $det->received_by;
                     $noted= $det->noted_by;
+                    $issuance_id = $det->issuance_id;
                 }?>
                 <?php foreach($issuance_details as $det){ ?>
                 <tr>
@@ -179,7 +180,14 @@
                 </tr>
                 <tr>
                     <td width="10%"><h6 class="nomarg">PR / JO #</h6></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label></td>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label>
+                        <?php 
+                        if($access['issue_edit']==1){
+                        if(empty($det['prno']) && $det['type'] != 'Warehouse Stocks'){ ?>
+                        <a onclick="editmodal(<?php echo $issuance_id; ?>)" class="btn btn-xs btn-primary pull-right" id="editbtn" ><span class="fa fa-pencil"></span></a>
+                        <?php }
+                        } ?>
+                    </td>
                     <td width="7%"></td>
 
                      <td width="10%"><h6 class="nomarg pull-right">MIF No. &nbsp</h6></td>
@@ -384,4 +392,9 @@
            
     </div>
 </body>
+<script type="text/javascript">
+    function editmodal(issuance_id) {
+        window.open("<?php echo base_url();?>index.php/issue/editmodal/"+issuance_id, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=120,left=460,width=400,height=400");
+    }    
+</script>
 </html>
