@@ -112,7 +112,7 @@ class Items extends CI_Controller {
                 $location = $this->super_model->select_column_where('location', 'location_name','location_id', $itm->location_id);
                 $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itm->unit_id);
                 $unit_price = $this->super_model->select_column_custom_where('receive_items', 'item_cost', "item_id='$itm->item_id' ORDER BY receive_id DESC");
-               // $totalqty=$this->super_model->select_sum("supplier_items", "quantity", "item_id", $itm->item_id);
+                // $totalqty=$this->super_model->select_sum("supplier_items", "quantity", "item_id", $itm->item_id);
                 $totalqty=$this->inventory_balance($itm->item_id);
                 $data['items'][] = array(
                     'item_id'=>$itm->item_id,
@@ -1287,28 +1287,32 @@ class Items extends CI_Controller {
         if($count!=0){
             $data['count_query'] = 1;
             foreach($this->super_model->select_join_where("items", "supplier_items", $query, "item_id") AS $itm){
-                //$totalqty=$this->super_model->select_sum("supplier_items", "quantity", "item_id", $itm->item_id);
-                foreach($this->super_model->select_custom_where("items", "item_id = '$itm->item_id'") AS $itema){
-                    $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itema->unit_id);
-                }
+                $bin = $this->super_model->select_column_where('bin', 'bin_name','bin_id', $itm->bin_id);
+                $rack = $this->super_model->select_column_where('rack', 'rack_name', 'rack_id', $itm->rack_id);
+                $warehouse = $this->super_model->select_column_where('warehouse', 'warehouse_name','warehouse_id', $itm->warehouse_id);
+                $location = $this->super_model->select_column_where('location', 'location_name','location_id', $itm->location_id);
+                $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itm->unit_id);
+                $unit_price = $this->super_model->select_column_custom_where('receive_items', 'item_cost', "item_id='$itm->item_id' ORDER BY receive_id DESC");
+                // $totalqty=$this->super_model->select_sum("supplier_items", "quantity", "item_id", $itm->item_id);
                 $totalqty=$this->inventory_balance($itm->item_id);
                  $data['items'][] = array(
-                        'item_id'=>$itm->item_id,
-                        'original_pn'=>$itm->original_pn,
-                        'item_name'=>$itm->item_name,
-                        'category'=>$this->super_model->select_column_where('item_categories', 'cat_name', 
-                        'cat_id', $itm->category_id),
-                        'subcategory'=>$this->super_model->select_column_where('item_subcat', 'subcat_name', 
-                        'subcat_id', $itm->subcat_id),
-                        'quantity'=>$totalqty,
-                        'damage'=>$itm->damage,
-                        'uom'=>$unit,
-                        'location'=>$this->super_model->select_column_where('location', 'location_name', 
-                        'location_id', $itm->location_id),
-                        'bin'=>$this->super_model->select_column_where('bin', 'bin_name', 
-                        'bin_id', $itm->bin_id),
-                        'minimum'=>$itm->min_qty,
-                    );
+                    'item_id'=>$itm->item_id,
+                    'original_pn'=>$itm->original_pn,
+                    'item_name'=>$itm->item_name,
+                    'category'=>$this->super_model->select_column_where('item_categories', 'cat_name', 
+                    'cat_id', $itm->category_id),
+                    'subcategory'=>$this->super_model->select_column_where('item_subcat', 'subcat_name', 
+                    'subcat_id', $itm->subcat_id),
+                    'quantity'=>$totalqty,
+                    'rack'=>$rack,
+                    'bin'=>$bin,
+                    'unit_price'=>$unit_price,
+                    'warehouse'=>$warehouse,
+                    'location'=>$location,                
+                    'minimum'=>$itm->min_qty,
+                    'damage'=>$itm->damage,
+                    'uom'=>$unit
+                );
             }
         } else {
             $data['count_query'] = 0;
