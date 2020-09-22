@@ -1475,6 +1475,91 @@ class Reports extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function restock_report_print(){
+        $from=$this->uri->segment(3);
+        $to=$this->uri->segment(4);
+        $cat=$this->uri->segment(5);
+        $subcat=$this->uri->segment(6);
+        $item=$this->uri->segment(7);
+        $enduser=$this->uri->segment(8);
+        $data['from']=$this->uri->segment(3);
+        $data['to']=$this->uri->segment(4);
+        $data['catt1']=$this->uri->segment(5);
+        $data['subcat2']=$this->uri->segment(6);
+        $data['item1']=$this->uri->segment(7);
+        $data['enduse1']=$this->uri->segment(8);
+        $data['item'] = $this->super_model->select_all_order_by('items', 'item_name', 'ASC');
+        $data['subcat'] = $this->super_model->select_all_order_by('item_subcat', 'subcat_name', 'ASC');
+        $data['category'] = $this->super_model->select_all_order_by('item_categories', 'cat_name', 'ASC');
+        $data['c'] = $this->super_model->select_column_where("item_categories", "cat_name", "cat_id", $cat);
+        $data['s'] = $this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);
+        $sql="";
+        if($from!='null' && $to!='null'){
+           $sql.= " rh.restock_date BETWEEN '$from' AND '$to' AND";
+        }
+
+        if($cat!='null'){
+            $sql.= " i.category_id = '$cat' AND";
+        }
+
+        if($subcat!='null'){
+            $sql.= " i.subcat_id = '$subcat' AND";
+        }
+
+        if($item!='null'){
+            $sql.= " i.item_id = '$item' AND";
+        }
+
+        if($enduser!='null'){
+            $sql.= " rh.enduse_id = '$enduser' AND";
+        }
+
+        $query=substr($sql,0,-3);
+        $count=$this->super_model->custom_query("SELECT rh.* FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id WHERE rh.saved='1' AND rh.excess='0' AND ".$query);
+        if($count!=0){
+         
+            foreach($this->super_model->custom_query("SELECT rh.*,rd.item_id, rd.item_cost, sr.supplier_id, rd.rdetails_id FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = rd.supplier_id WHERE rh.saved='1' AND rh.excess='0' AND ".$query."ORDER BY rh.restock_date DESC") AS $itm){
+                $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $itm->supplier_id);
+                $qty = $this->super_model->select_column_where('restock_details', 'quantity', 'rhead_id', $itm->rhead_id); 
+                $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $itm->item_id);
+                $pr = $this->super_model->select_column_where('restock_head', 'from_pr', 'rhead_id', $itm->rhead_id);
+                $unit_cost = $itm->item_cost;
+                $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $itm->item_id);
+                $department = $this->super_model->select_column_where('department', 'department_name', 'department_id', $itm->department_id);
+                $purpose = $this->super_model->select_column_where('purpose', 'purpose_desc', 'purpose_id', $itm->purpose_id);
+                $enduse = $this->super_model->select_column_where('enduse', 'enduse_name', 'enduse_id', $itm->enduse_id);  
+                $restock_date = $this->super_model->select_column_where('restock_head', 'restock_date', 'rhead_id', $itm->rhead_id);
+                $reason = $this->super_model->select_column_where("restock_details", "reason", "rdetails_id", $itm->rdetails_id);
+                $remarks = $this->super_model->select_column_where("restock_details", "remarks", "rdetails_id", $itm->rdetails_id);
+                $total_cost = $qty*$unit_cost;
+                foreach($this->super_model->select_custom_where("items", "item_id = '$itm->item_id'") AS $itema){
+                    $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $itema->unit_id);
+                }             
+                $data['restock'][] = array( 
+                    'pr'=>$pr, 
+                    'unit'=>$unit,
+                    'res_date'=>$restock_date,       
+                    'supplier'=>$supplier,
+                    'item'=>$item,
+                    'department'=>$department,
+                    'purpose'=>$purpose,
+                    'enduse'=>$enduse,
+                    'pn'=>$pn,
+                    'unit_cost'=>$unit_cost,
+                    'qty'=>$qty,
+                    'total_cost'=>$total_cost,
+                    'reason'=>$reason,
+                    'remarks'=>$remarks,
+                );
+            }
+        }
+        $this->load->view('template/header');
+        // $this->load->view('template/sidebar',$this->dropdown);
+        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+        $this->load->view('reports/restock_report_print',$data);
+        $this->load->view('template/footer');
+    }
+
     public function received_report(){
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
