@@ -701,6 +701,12 @@ class Receive extends CI_Controller {
         $total=$this->input->post('unitcost')*$this->input->post('recqty');
         $serial =  $this->input->post('serialid');
         $item =  $this->input->post('itemid');
+        $brandid =  $this->input->post('brandid');
+        if(!empty($brandid)){
+            $brandname=$this->input->post('brandname');
+        }else{
+            $brandname=$this->input->post('brand');
+        }
         /*$count = $this->super_model->count_custom_where("receive_items","serial_id = '$serial' AND item_id = '$item'");
         if($count!=0){
             ?>
@@ -714,7 +720,7 @@ class Receive extends CI_Controller {
             'supplierid'=>$this->input->post('supplierid'),
             'itemid'=>$this->input->post('itemid'),
             'brandid'=>$this->input->post('brandid'),
-            'brand'=>$this->input->post('brandname'),
+            'brand'=>$brandname,
             'serialid'=>$this->input->post('serialid'),
             'serial'=>$this->input->post('serial'),
             'catno'=>trim($this->input->post('catno'), " "),
