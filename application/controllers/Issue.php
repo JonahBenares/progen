@@ -669,8 +669,8 @@ class Issue extends CI_Controller {
                 'department_id'=>$req->department_id,
                 'purpose_id'=>$req->purpose_id,
                 'enduse_id'=>$req->enduse_id,
-                'pr_no'=> $pr=$req->pr_no,
-                'user_id'=>'1',
+                'pr_no'=> $req->pr_no,
+                'user_id'=>$userid,
                 'saved'=>'1'
                 
             );

@@ -180,7 +180,7 @@
                 </tr>
                 <tr>
                     <td width="10%"><h6 class="nomarg">PR / JO #</h6></td>
-                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['prno']?></label>
+                    <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo (($det['type'] == 'JO / PR') ? $det['prno'] : $det['type']); ?></label>
                         <?php 
                         if($access['issue_edit']==1){
                         if(empty($det['prno']) && $det['type'] != 'Warehouse Stocks'){ ?>
