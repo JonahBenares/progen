@@ -844,6 +844,7 @@ class Issue extends CI_Controller {
     public function editmodal()
        {
         $data['issue_id'] = $this->uri->segment(3);
+        $data['request_id'] = $this->uri->segment(4);
         $data['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         $this->load->view('template/header');        
         $this->load->view('issue/editmodal',$data);  
@@ -853,15 +854,19 @@ class Issue extends CI_Controller {
        
     public function updatePRIssuance(){
         $id =$this->input->post('issuance_id');
+        $request_id =$this->input->post('request_id');
         $data = array(
             "pr_no"=>$this->input->post('pr_no')
         );
-     if($this->super_model->update_where("issuance_head", $data, "issuance_id", $id)){
-        echo "<script>window.opener.location.reload();window.close()</script>";
-     }
 
-
-
-   }
+        if($this->super_model->update_where("issuance_head", $data, "issuance_id", $id)){
+            $data_req = array(
+                "type"=>'JO / PR',
+                "pr_no"=>$this->input->post('pr_no'),
+            );
+            $this->super_model->update_where("request_head", $data_req, "request_id", $request_id);
+            echo "<script>window.opener.location.reload();window.close()</script>";
+        }
+    }
 }
 ?>
