@@ -173,6 +173,7 @@
                     $received= $det->received_by;
                     $noted= $det->noted_by;
                     $issuance_id = $det->issuance_id;
+                    $request_id = $det->request_id;
                 }?>
                 <?php foreach($issuance_details as $det){ ?>
                 <tr>
@@ -184,7 +185,7 @@
                         <?php 
                         if($access['issue_edit']==1){
                         if(empty($det['prno']) && $det['type'] != 'Warehouse Stocks'){ ?>
-                        <a onclick="editmodal(<?php echo $issuance_id; ?>)" class="btn btn-xs btn-primary pull-right" id="editbtn" ><span class="fa fa-pencil"></span></a>
+                        <a onclick="editmodal(<?php echo $issuance_id; ?>,<?php echo $request_id; ?>)" class="btn btn-xs btn-primary pull-right" id="editbtn" ><span class="fa fa-pencil"></span></a>
                         <?php }
                         } ?>
                     </td>
@@ -393,8 +394,8 @@
     </div>
 </body>
 <script type="text/javascript">
-    function editmodal(issuance_id) {
-        window.open("<?php echo base_url();?>index.php/issue/editmodal/"+issuance_id, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=120,left=460,width=400,height=400");
-    }    
+     function editmodal(issuance_id,request_id) {
+        window.open("<?php echo base_url();?>index.php/issue/editmodal/"+issuance_id+"/"+request_id, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=120,left=460,width=400,height=400");
+    }     
 </script>
 </html>

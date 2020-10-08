@@ -21,6 +21,7 @@
                 </select>
             </div>
             <input type='hidden' name='issuance_id' value="<?php echo $issue_id; ?>">
+            <input type='hidden' name='request_id' value="<?php echo $request_id; ?>">
             <input type="submit" class="btn btn-primary" style="width: 100%" name="edit_pr" value="Save">
         </div>
     	</form>
