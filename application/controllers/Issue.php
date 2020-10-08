@@ -855,18 +855,41 @@ class Issue extends CI_Controller {
     public function updatePRIssuance(){
         $id =$this->input->post('issuance_id');
         $request_id =$this->input->post('request_id');
+        $department =$this->input->post('department');
+        $purpose =$this->input->post('purpose');
+        $enduse =$this->input->post('enduse');
         $data = array(
-            "pr_no"=>$this->input->post('pr_no')
-        );
+            "pr_no"=>$this->input->post('pr_no'),
+            "department_id"=>$this->input->post('department'),
+            "purpose_id"=>$this->input->post('purpose'),
+            "enduse_id"=>$this->input->post('enduse'),
+        ); 
 
         if($this->super_model->update_where("issuance_head", $data, "issuance_id", $id)){
             $data_req = array(
                 "type"=>'JO / PR',
                 "pr_no"=>$this->input->post('pr_no'),
+                "department_id"=>$this->input->post('department'),
+                "purpose_id"=>$this->input->post('purpose'),
+                "enduse_id"=>$this->input->post('enduse'),
             );
             $this->super_model->update_where("request_head", $data_req, "request_id", $request_id);
             echo "<script>window.opener.location.reload();window.close()</script>";
         }
+    }
+
+    public function getPRmodal(){
+        $prno = $this->input->post('prno');
+        $dept= $this->super_model->select_column_where('receive_details', 'department_id', 'pr_no', $prno);
+        $department= $this->super_model->select_column_where('department', 'department_name', 'department_id', $dept);
+
+        $pur= $this->super_model->select_column_where('receive_details', 'purpose_id', 'pr_no', $prno);
+        $purpose= $this->super_model->select_column_where('purpose', 'purpose_desc', 'purpose_id', $pur);
+
+        $end= $this->super_model->select_column_where('receive_details', 'enduse_id', 'pr_no', $prno);
+        $enduse= $this->super_model->select_column_where('enduse', 'enduse_name', 'enduse_id', $end);
+        $return = array('dept' => $dept, 'pur' => $pur, 'end' => $end, 'department' => $department);
+        echo json_encode($return);
     }
 }
 ?>
