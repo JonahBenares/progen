@@ -9,7 +9,7 @@
     <div class="card" style="background: #fff; padding: 30px 20px;box-shadow: 1px 1px 1px 1px #eaeaea; border-radius: 10px  ">
         <h4 style="margin-top: 0px"><span class="fa fa-pencil"></span> Edit PR Number </h4>
         <div class="card-body">
-        	<form method='POST' action="<?php echo base_url(); ?>index.php/Issue/updatePRIssuance">
+        	<form method='POST' action="<?php echo base_url(); ?>index.php/issue/updatePRIssuance">
             <div class="form-group">
                 <select class='select2' name='pr_no'>
                 	<option></option>
