@@ -672,7 +672,7 @@ class Masterfile extends CI_Controller {
             $user_edit = $this->input->post('user_edit'.$x);
             $user_delete = $this->input->post('user_delete'.$x);
 
-            if(!empty($rec_add) || !empty($rec_edit) || !empty($rec_delete) || !empty($req_add) || !empty($req_edit) || !empty($req_delete) || !empty($iss_add) || !empty($iss_edit) || !empty($iss_delete) || !empty($itm_add) || !empty($itm_edit) || !empty($itm_delete) || !empty($sig_add) || !empty($sig_edit) || !empty($sig_delete) || !empty($mas_add) || !empty($mas_edit) || !empty($mas_delete) || !empty($res_add) || !empty($res_edit) || !empty($res_delete) || !empty($user_add) || !empty($user_edit) || !empty($user_delete)){
+            //if(!empty($rec_add) || !empty($rec_edit) || !empty($rec_delete) || !empty($req_add) || !empty($req_edit) || !empty($req_delete) || !empty($iss_add) || !empty($iss_edit) || !empty($iss_delete) || !empty($itm_add) || !empty($itm_edit) || !empty($itm_delete) || !empty($sig_add) || !empty($sig_edit) || !empty($sig_delete) || !empty($mas_add) || !empty($mas_edit) || !empty($mas_delete) || !empty($res_add) || !empty($res_edit) || !empty($res_delete) || !empty($user_add) || !empty($user_edit) || !empty($user_delete)){
                 if(empty($rec_add)) $reca = 0;
                 else $reca=1;
                 if(empty($rec_edit)) $rece = 0;
@@ -769,7 +769,7 @@ class Masterfile extends CI_Controller {
                         }
                     }
                 }
-            }
+            //}
         }
     } 
 
