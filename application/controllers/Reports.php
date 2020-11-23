@@ -369,6 +369,7 @@ class Reports extends CI_Controller {
             } 
                        
         }
+         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('reports/aging_report',$data);
         $this->load->view('template/footer');
     }
@@ -448,14 +449,14 @@ class Reports extends CI_Controller {
     }
 
     public function totalReceived_items($item, $from, $to){
-        foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS qty FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE rh.receive_date BETWEEN '$from' AND '$to' AND ri.item_id='$item'") AS $r){
+        foreach($this->super_model->custom_query("SELECT SUM(ri.received_qty) AS qty FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE rh.receive_date BETWEEN '$from' AND '$to' AND ri.item_id='$item' AND rh.saved='1'") AS $r){
             return $r->qty;
         }
     
     }
 
       public function totalIssued_items($item,  $from, $to){
-        foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS qty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE ih.issue_date BETWEEN '$from' AND '$to' AND id.item_id='$item'") AS $r){
+        foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS qty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE ih.issue_date BETWEEN '$from' AND '$to' AND id.item_id='$item' AND ih.saved='1'") AS $r){
             return $r->qty;
         }
 
@@ -463,14 +464,14 @@ class Reports extends CI_Controller {
 
     public function totalRestocked_items($item,  $from, $to){
 
-        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$from' AND '$to' AND resd.item_id='$item' AND excess ='0'") AS $r){
+        foreach($this->super_model->custom_query("SELECT SUM(resd.quantity) AS qty FROM restock_head resh INNER JOIN restock_details resd ON resh.rhead_id = resd.rhead_id WHERE resh.restock_date BETWEEN '$from' AND '$to' AND resd.item_id='$item' AND excess ='0' AND resh.saved='1'") AS $r){
             return $r->qty;
         }
 
     }
 
     public function begbal($item, $enddate){
-        $beginning= ($this->qty_receive_date($item,$enddate) + $this->qty_restocked_date($item,$enddate)) - $this-> qty_issued_date($item,$enddate);
+        $beginning= ($this->qty_receive_date($item,$enddate) + $this->qty_restocked_date($item,$enddate)) - $this->qty_issued_date($item,$enddate);
         return $beginning;
        // echo $this->qty_receive_date($item,$enddate) . "<br>";
     }
@@ -768,7 +769,7 @@ class Reports extends CI_Controller {
             $begbal = $this->super_model->select_column_custom_where("supplier_items","quantity","item_id = '$it->item_id' AND catalog_no = 'begbal'");
             $beg = $this->begbal($it->item_id, $from) + $begbal;
             $ending=($beg + $this->totalReceived_items($it->item_id, $from, $to) + $this->totalRestocked_items($it->item_id, $from, $to)) - $this->totalIssued_items($it->item_id, $from, $to);
-            $unit_price = $this->super_model->select_column_join_where('item_cost', "receive_head","receive_items", "item_id='$it->item_id' AND receive_date BETWEEN '$from 'AND '$to'","receive_id");
+            $unit_price = $this->super_model->select_column_join_where('item_cost', "receive_head","receive_items", "item_id='$it->item_id' AND receive_date BETWEEN '$from 'AND '$to' AND saved = '1'","receive_id");
             $data['items'][]=array(
                 'item_name'=>$it->item_name,
                 'pn'=>$it->original_pn,
@@ -3546,7 +3547,7 @@ class Reports extends CI_Controller {
         
         $x = 1;
        
-        foreach($this->super_model->custom_query("SELECT rh.*,i.item_id, rd.item_cost, sr.supplier_id, rd.rdetails_id,rd.reason FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = rd.supplier_id WHERE rh.saved='1' AND ".$query."ORDER BY rh.restock_date DESC") AS $itm){
+        foreach($this->super_model->custom_query("SELECT rh.*,i.item_id, rd.item_cost, sr.supplier_id, rd.rdetails_id,rd.reason FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = rd.supplier_id WHERE rh.saved='1' AND rh.excess='0' AND ".$query."ORDER BY rh.restock_date DESC") AS $itm){
             $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $itm->supplier_id);
             $qty = $this->super_model->select_column_where('restock_details', 'quantity', 'rhead_id', $itm->rhead_id); 
             $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $itm->item_id);
@@ -3737,7 +3738,7 @@ class Reports extends CI_Controller {
         $objPHPExcel = new PHPExcel();
         $exportfilename="Excess Report.xlsx";
 
-        $gdImage = imagecreatefrompng('assets/default/logo_cenpri.png');
+        $gdImage = imagecreatefrompng('assets/default/progen_logow.png');
         // Add a drawing to the worksheetecho date('H:i:s') . " Add a drawing to the worksheet\n";
         $objDrawing = new PHPExcel_Worksheet_MemoryDrawing();
         $objDrawing->setName('Sample image');
@@ -3775,7 +3776,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "SUMMARY OF RESTOCK MATERIALS");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "SUMMARY OF EXCESS MATERIALS");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
         $num=11;
