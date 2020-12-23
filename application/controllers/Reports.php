@@ -2737,7 +2737,8 @@ class Reports extends CI_Controller {
     }
 
     public function tagexcess(){
-        $pr=urldecode($this->uri->segment(3));
+        $redirect=urldecode($this->uri->segment(3));
+        $pr=$this->slash_unreplace(rawurldecode($this->uri->segment(3)));
         $item_id=$this->uri->segment(4);
         $exc_qty=$this->uri->segment(5);
         $now = date('Y-m-d H:i:s');
@@ -2840,7 +2841,7 @@ class Reports extends CI_Controller {
 
         ?>
        <script>alert('Successfully tagged as excess.'); 
-        window.location='<?php echo base_url(); ?>index.php/reports/all_pr_report/<?php echo $pr; ?>'
+        window.location='<?php echo base_url(); ?>index.php/reports/all_pr_report/<?php echo $redirect; ?>'
         </script> 
         <?php
     }
