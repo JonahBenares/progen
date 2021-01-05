@@ -12,7 +12,7 @@
 		<li><a href="#">
 			<em class="fa fa-home"></em>
 		</a></li>
-		<li class="active">Deliver</li>
+		<li class="active">Sales</li>
 	</ol>
 </div><!--/.row-->
 <div class="row">
@@ -30,7 +30,7 @@
 		<div class="col-md-12">
 			<div class="panel panel-default shadow">
 				<div class="panel-heading">
-					DELIVER
+					SALES
 					<div class="pull-right">
 						<!-- <a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
