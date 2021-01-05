@@ -127,7 +127,7 @@
 			<div class="modal-content">
 				<div class="modal-header modal-headback">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Add Delivery</h4>
+					<h4 class="modal-title" id="myModalLabel">Add Sales</h4>
 				</div>
 				<div class="modal-body" style="padding:30px 50px 30px 50px">
 					<form method="POST" action = "<?php echo base_url();?>index.php/delivery/insert_delivery">
@@ -712,7 +712,7 @@
 					</li>
 					<li class="parent ">
 						<a data-toggle="collapse" href="#sub-deliver">
-							<span class="fa fa-truck">&nbsp;</span> Delivery 
+							<span class="fa fa-truck">&nbsp;</span> Sales 
 						</a>
 						<ul class="children collapse" id="sub-deliver">
 							
