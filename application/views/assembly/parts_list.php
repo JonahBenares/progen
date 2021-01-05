@@ -40,20 +40,20 @@
 							  ?>
 							<div class="card m-b-5 " id="engines">
 								<div class="btn-group btn-block bor-radius100"> 
-								    <button class="btn btn-default border-acc" type="button" data-toggle="collapse" data-target="#collapseEngine<?php echo $e; ?>" aria-expanded="true" aria-controls="collapseEngine<?php echo $e; ?>" style="width: 85%">
+								    <button class="btn btn-default border-acc" type="button" data-toggle="collapse" data-target="#collapseEngine<?php echo $e; ?>" aria-expanded="true" aria-controls="collapseEngine<?php echo $e; ?>" style="width: 90%">
 										<div class="card-header" id="headingOne">
 									      	<h4 class="mb-0 pull-left">
 										          <b><?php echo $en->engine_name; ?></b>
 									      	</h4>
 										</div>
 							        </button>
-							        <a href="<?php  echo base_url();?>index.php/assembly/engview_list/<?php echo $en->engine_id; ?>" target="_blank" class="btn btn-success" type="button" style="width: 5%" title="View Report">
+							        <!-- <a href="<?php  echo base_url();?>index.php/assembly/engview_list/<?php echo $en->engine_id; ?>" target="_blank" class="btn btn-success" type="button" style="width: 5%" title="View Report">
 										<div class="card-header" id="headingOne">
 											<h4 class="mb-0">
 												<span class="fa fa-eye text-white"></span>
 									      	</h4>
 										</div>
-							        </a>
+							        </a> -->
 							        <a href="" class="btn btn-success" type="button"data-toggle="modal" id="updateEngine_button" data-id="<?php echo $en->engine_id; ?>" data-trigger="<?php echo $en->engine_name; ?>" data-target="#updateEngine" style="width: 5%"  title="Update Engine">
 										<div class="card-header" id="headingOne">
 											<h4 class="mb-0">
@@ -85,7 +85,7 @@
 												      	</h5>
 													</div>
 										        </button>
-											    <button class="btn btn-sm btn-default border-acc"  type="button" data-toggle="collapse" data-target="#collapseAssembly<?php echo $ass; ?>" aria-expanded="true" aria-controls="collapseAssembly<?php echo $ass; ?>" <?php echo (($as['locked'] == '1') ? "style='width:75%'" : "style='width:80%'") ?> >
+											    <button class="btn btn-sm btn-default border-acc"  type="button" data-toggle="collapse" data-target="#collapseAssembly<?php echo $ass; ?>" aria-expanded="true" aria-controls="collapseAssembly<?php echo $ass; ?>" <?php echo (($as['locked'] == '1') ? "style='width:70%'" : "style='width:75%'") ?> >
 													<div class="card-header" id="headingOne">
 												      	<h5 class="mb-0 pull-left">
 													          <?php echo $as['assembly_name']; ?>
@@ -127,6 +127,13 @@
 														</div>
 											        </a>
 										    	<?php } ?>
+										    	<a class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#export"  data-trigger="<?php echo $as['assembly_id']; ?>" id='addItem_button' style="width:5%" title="Export">
+													<div class="card-header" >
+														<h5 class="mb-0">
+															<span class="fa fa-upload text-white"></span>
+												      	</h5>
+													</div>
+										        </a>
 										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>"  style="width:5%" title="Update Assembly">
 													<div class="card-header">
 														<h5 class="mb-0">
@@ -269,6 +276,16 @@
 						</div>
 						<div class="row">
 							<div class="col-lg-6">
+								<label>Unit Price</label>
+								<input type = "number" name = "unit" class = "form-control" >
+							</div>
+							<div class="col-lg-6">
+								<label>Selling Price </label>
+								<input type = "Number" name = "selling" class = "form-control">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
 								<label>UOM</label>
 								<input type = "text" name = "uom" id="uom" class = "form-control" style='pointer-events: none'>
 							</div>
@@ -277,6 +294,7 @@
 								<input type = "Number" name = "qty" class = "form-control">
 							</div>
 						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<input type="hidden" name="uom_id" id="uom_id" >

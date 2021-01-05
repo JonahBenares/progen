@@ -37,6 +37,13 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td width="20%"><p class="p-b-2">Selling Price</p></td>
+                                        <td width="5%"><p class="p-b-2">:</p></td>
+                                        <td>                                        
+                                            <p class="p-b-2"><input type="text" id = "selling_price" name = "selling_price" class="form-control " value=""></p>                                     
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="20%"><p class="p-b-2">Qty</p></td>
                                         <td width="5%"><p class="p-b-2">:</p></td>
                                         <td>                                        
