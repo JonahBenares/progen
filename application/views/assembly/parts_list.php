@@ -160,6 +160,7 @@
 											      				<th>UOM</th>
 											      				<th>Qty</th>
 											      				<th>Unit Price</th>
+											      				<th>Selling Price</th>
 											      				<th width="10%"><center><span class="fa fa-bars"></span></center></th>
 											      			</tr>
 											      			<tbody>
@@ -174,6 +175,7 @@
 												      				<td><?php echo $i['uom']; ?></td>
 												      				<td><?php echo $i['qty']; ?></td>
 												      				<td><?php echo $i['unit_price']; ?></td>
+												      				<td><?php echo $i['selling_price']; ?></td>
 												      				<td align="center">
 												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
 												      					<a onclick="return confirm('Are you sure you want to delete it?')" title="Remove Item" href="<?php echo base_url(); ?>index.php/assembly/deleteitem/<?php echo $i['id']; ?>" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
@@ -277,11 +279,11 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Unit Price</label>
-								<input type = "number" name = "unit" class = "form-control" >
+								<input type = "number" name = "unit_price" class = "form-control" >
 							</div>
 							<div class="col-lg-6">
 								<label>Selling Price </label>
-								<input type = "Number" name = "selling" class = "form-control">
+								<input type = "Number" name = "selling_price" class = "form-control">
 							</div>
 						</div>
 						<div class="row">
