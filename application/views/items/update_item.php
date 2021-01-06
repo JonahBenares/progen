@@ -130,19 +130,33 @@
 										</div>
 									</div>
 									<div class="row" style="padding: 0px 0px 10px 0px">
+										<div class="col-lg-6">
+											<label for="pn">Weight (Kg):</label>
+											<input class="form-control"  type="text" name="weight" id="weight" value=''>
+										</div>
+										<div class="col-lg-3">		
+											<label for="pn">Selling Price:</label>
+											<input style="text-align: right" class="form-control" value='<?php echo $i->selling_price; ?>' type="text" name="selling" id="selling">									
+										</div>
+										<div class="col-lg-3">		
+											<label for="pn">Minimun Order Quantity:</label>
+											<input style="text-align: right" class="form-control" value='<?php echo $i->min_qty; ?>' type="text" name="minimum" id="minimum">						
+										</div>
+									</div>
+									<div class="row" style="padding: 0px 0px 10px 0px">
 										<!-- <div class="col-lg-4">
 											<label class="btn btn-danger"><input value='<?php echo $i->damge; ?>' 
 											<?php $chec = $i->damage; echo $chec;if ($chec==1) {?>
 											checked <?php }	?> type="checkbox" name="damage" id="damage" class="form-control"> Damage</label>
 										</div> -->
-										<div class="col-lg-4">
+										<!-- <div class="col-lg-4">
 											<label for="pn">Selling Price:</label>
 											<input style="text-align: right" class="form-control" value='<?php echo $i->selling_price; ?>' type="text" name="selling" id="selling">
 										</div>
 										<div class="col-lg-4">
 											<label for="pn">Minimun Order Quantity:</label>
 											<input style="text-align: right" class="form-control" value='<?php echo $i->min_qty; ?>' type="text" name="minimum" id="minimum">
-										</div>
+										</div> -->
 									</div>
 
 									<div class="row border-class shadow" >
