@@ -55,6 +55,9 @@ function add_item(){
     var original_pn =$('#original_pn').val();
     var unit =$('#unit').val();
     var quantity =parseFloat($('#qty').val());
+    var selling =parseFloat($('#selling').val());
+    var discount =parseFloat($('#discount').val());
+    var shipping =parseFloat($('#shipping').val());
     
     var item =$('#item').val();
     var i = item.replace(/&/gi,"and");
@@ -71,7 +74,7 @@ function add_item(){
 		$.ajax({
 				type: "POST",
 				url:redirect,
-				data: "itemid="+itemid+"&itemname="+itemname+"&original_pn="+original_pn+"&unit="+unit+"&quantity="+quantity+"&item="+item+"&count="+count,
+				data: "itemid="+itemid+"&itemname="+itemname+"&original_pn="+original_pn+"&unit="+unit+"&quantity="+quantity+"&item="+item+"&count="+count+"&selling="+selling+"&discount="+discount+"&shipping="+shipping,
 		    	success: function(html){
 		    	$('#item_body').append(html);
 		    	$('#itemtable').show();
@@ -80,7 +83,10 @@ function add_item(){
 		        document.getElementById("item_name").value = '';
 		        document.getElementById("original_pn").value = '';
 		        document.getElementById("unit").value = '';
-		        document.getElementById("qty").value = '';
+                document.getElementById("qty").value = '';
+                document.getElementById("selling").value = '';
+                document.getElementById("discount").value = '';
+		        document.getElementById("shipping").value = '';
 		        document.getElementById("item").value = '';
 		        document.getElementById("counter").value = count;
 		    }

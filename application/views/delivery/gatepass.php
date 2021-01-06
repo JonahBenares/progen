@@ -206,6 +206,9 @@
                         <td width="30%" align="center"><strong>Item Description</strong></td>                    
                         <td width="5%" align="center"><strong>Qty</strong></td>
                         <td width="10%" align="center"><strong>U/M</strong></td>
+                        <td width="5%" align="center"><strong>Selling Price</strong></td>
+                        <td width="5%" align="center"><strong>Discount</strong></td>
+                        <td width="5%" align="center"><strong>Shipping Fee</strong></td>
                     </tr>
                     <tr>
                         <?php $x=1; if(!empty($details)){ foreach($details AS $d){ ?>
@@ -215,6 +218,9 @@
                             <td><?php echo $d['item_name'];?></td>
                             <td align="center"><?php echo $d['qty']; ?></td>
                             <td align="center">&nbsp;<?php echo $d['unit']; ?></td>
+                            <td align="center"><?php echo $d['selling_price']; ?></td>
+                            <td align="center"><?php echo $d['discount']; ?></td>
+                            <td align="center"><?php echo $d['shipping_fee']; ?></td>
                         </tr>
                         <?php $x++; } }else { ?>
                         <tr>
@@ -223,7 +229,7 @@
                         <?php } ?>
                     </tr>
                     <tr>
-                        <td colspan="6"><center>***nothing follows***</center></td>
+                        <td colspan="8"><center>***nothing follows***</center></td>
                     </tr>
                 </table>
                 <br>

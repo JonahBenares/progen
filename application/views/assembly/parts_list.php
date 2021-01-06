@@ -127,7 +127,7 @@
 														</div>
 											        </a>
 										    	<?php } ?>
-										    	<a class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#export"  data-trigger="<?php echo $as['assembly_id']; ?>" id='addItem_button' style="width:5%" title="Export">
+										    	<a href="<?php  echo base_url();?>index.php/assembly/export_assembly/<?php echo $en->engine_id; ?>/<?php echo $as['assembly_id']; ?>" class="btn btn-sm btn-info" style="width:5%" title="Export">
 													<div class="card-header" >
 														<h5 class="mb-0">
 															<span class="fa fa-upload text-white"></span>

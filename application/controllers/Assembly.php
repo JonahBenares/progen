@@ -273,6 +273,75 @@ class Assembly extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function export_assembly(){
+        $engine=$this->uri->segment(3);
+        $assembly_id=$this->uri->segment(4);
+        require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
+        $objPHPExcel = new PHPExcel();
+        $exportfilename="Export Assembly.xlsx";
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
+        $engine_name = $this->super_model->select_column_where("assembly_engine","engine_name", "engine_id", $engine);
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+        foreach(range('C','G') as $columnID){
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', "#");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B2', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "PN No.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D2', "UOM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E2', "Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F2', "Unit Price");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G2', "Selling Price");
+        foreach($this->super_model->select_row_where("assembly_engine","engine_id",$engine) AS $en){
+            foreach($this->super_model->select_custom_where("assembly_head","engine_id = '$engine' AND assembly_id = '$assembly_id'") AS $as){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $engine_name." - ".$as->assembly_name);
+                $num=3;
+                $x=1;
+                foreach($this->super_model->select_row_where("assembly_details","engine_id",$as->engine_id) AS $asd){
+                    $item = $this->super_model->select_column_where("items","item_name", "item_id", $asd->item_id);
+                    $unit = $this->super_model->select_column_where("uom","unit_name", "unit_id", $asd->uom);
+                    if($en->engine_id == $asd->engine_id && $as->assembly_id == $asd->assembly_id){
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $item);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$num, $asd->pn_no);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $unit);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $asd->qty);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $asd->unit_price);
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $asd->selling_price);
+                        $objPHPExcel->getActiveSheet()->getStyle('A'.$num.':G'.$num)->applyFromArray($styleArray);
+                        $objPHPExcel->getActiveSheet()->getStyle('E'.$num.":G".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                        $objPHPExcel->getActiveSheet()->getStyle('A'.$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(50);
+                        $objPHPExcel->getActiveSheet()->getStyle('C'.$num.':G'.$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                        $num++;
+                        $x++;
+                    }
+                }
+            }
+        }
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('Arial Black')->setSize(12);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:G2')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:G2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:G2')->applyFromArray($styleArray);
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        if (file_exists($exportfilename))
+        unlink($exportfilename);
+        $objWriter->save($exportfilename);
+        unset($objPHPExcel);
+        unset($objWriter);   
+        ob_end_clean();
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Export Assembly.xlsx"');
+        readfile($exportfilename);
+    }
+
     public function update_item(){
         $id=$this->uri->segment(3);
         $data['id'] = $id;

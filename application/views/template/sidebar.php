@@ -168,6 +168,12 @@
 								<td width="15%"><label>Contact #:</label></td>
 								<td width="85%"><input type = "text" name = "contact_no" id="contact_no" class = "form-control"><br></td>
 							</tr>
+							<tr>
+								<td width="15%"><label>VAT:</label></td>
+								<td width="1%"><input type = "radio" name = "vat" value="1"><br></td>
+								<td width="15%"><label>Non-VAT:</label></td>
+								<td width="15%"><input type = "radio" name = "vat" value="0"><br></td>
+							</tr>
 						</table>
 						<div class="modal-footer">
 							<div id='alertbuy' style="font-weight:bold;text-align: center"></div>
