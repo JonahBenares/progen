@@ -59,12 +59,10 @@
 						</table>
 						<hr>
 						<div class="row">
-							<div class="col-lg-1">
-							</div>
-							<div class="col-lg-6">							
+							<div class="col-lg-3">
 								<p>
 									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
-										<option value = ""></option>
+										<option value = "">--Select Item--</option>
 										<?php foreach($item_list AS $itm){ ?>
 										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->original_pn." - ".$itm->item_name;?></option>
 										<?php } ?>
@@ -75,8 +73,17 @@
 									<input type='hidden' name='unit' id='unit'>
 								</p>
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-2">							
 								<input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" style="width:100%">
+							</div>
+							<div class="col-lg-2">
+								<input type="text" class="form-control" name="selling" id="selling" placeholder="Selling Price" style="width:100%">
+							</div>
+							<div class="col-lg-2">
+								<input type="text" class="form-control" name="discount" id="discount" placeholder="Discount" style="width:100%">
+							</div>
+							<div class="col-lg-2">
+								<input type="text" class="form-control" name="shipping" id="shipping" placeholder="Shipping Fee" style="width:100%">
 							</div>
 							<div class="col-lg-1">
 								<div id='alrt' style="font-weight:bold"></div>
@@ -95,6 +102,9 @@
 										<th style='text-align: center;'>Item Description</th>
 										<th style='text-align: center;'>Qty</th>
 										<th style='text-align: center;'>UOM</th>
+										<th style='text-align: center;'>Selling Price</th>
+										<th style='text-align: center;'>Discount</th>
+										<th style='text-align: center;'>Shipping Fee</th>
 										<th style='text-align: center;' width="1%">Action</th>
 									</tr>
 									<?php 
@@ -113,6 +123,9 @@
 											<td><center><?php echo $det['item_name'];; ?></center></td>
 											<td><center><?php echo $det['qty'];; ?></center></td>
 											<td><center><?php echo $det['unit'];; ?></center></td>
+											<td><center><?php echo $det['selling_price'];; ?></center></td>
+											<td><center><?php echo $det['discount'];; ?></center></td>
+											<td><center><?php echo $det['shipping_fee'];; ?></center></td>
 											<td><center></center></td>
 										</tr>
 										<?php $x++; } ?>

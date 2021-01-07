@@ -104,7 +104,13 @@
 										<td><p><?php echo $det['barcode']?></p></td>
 										<td ><strong>Local/Manila:</strong></td>
 										<td ><p></p></td>
-									</tr>									
+									</tr>	
+									<tr>
+										<td><strong>Weight (Kg):</strong></td>
+										<td><p>2556</p></td>
+										<td ><strong></strong></td>
+										<td ><p></p></td>
+									</tr>								
 								</table>
 								<hr>
 								<table style="width:100%">

@@ -123,6 +123,9 @@ class Delivery extends CI_Controller {
                     "pn_no"=>$original_pn,
                     "unit"=>$unit,
                     "qty"=>$d->qty,
+                    "selling_price"=>$d->selling_price,
+                    "discount"=>$d->discount,
+                    "shipping_fee"=>$d->shipping_fee,
                 );
             }
         }
@@ -148,6 +151,7 @@ class Delivery extends CI_Controller {
         $pr_no=$this->input->post('pr_no');
         $buyer=$this->input->post('buyer');
         $po_date=$this->input->post('po_date');
+        $vat=$this->input->post('vat');
         $rows=$this->super_model->count_rows("delivery_head");
         if($rows==0){
             $dr_no = $location."-0001";
@@ -179,6 +183,7 @@ class Delivery extends CI_Controller {
             'dr_no'=>$dr_no,
             'pr_no'=>$pr_no,
             'buyer_id'=>$buyer,
+            'vat'=>$vat,
             'created_date'=>date('Y-m-d h:i:s'),
         );
         if($this->super_model->insert_into("delivery_head", $data)){
@@ -260,6 +265,9 @@ class Delivery extends CI_Controller {
                     "pn_no"=>$original_pn,
                     "unit"=>$unit,
                     "qty"=>$d->qty,
+                    "selling_price"=>$d->selling_price,
+                    "discount"=>$d->discount,
+                    "shipping_fee"=>$d->shipping_fee,
                 );
             }
         }
@@ -323,6 +331,9 @@ class Delivery extends CI_Controller {
             'unit_name'=>$unit,
             'itemid'=>$this->input->post('itemid'),
             'quantity'=>$this->input->post('quantity'),
+            'selling'=>$this->input->post('selling'),
+            'discount'=>$this->input->post('discount'),
+            'shipping'=>$this->input->post('shipping'),
             'item'=>$this->input->post('itemname'),
             'count'=>$this->input->post('count'),
         );
@@ -362,6 +373,9 @@ class Delivery extends CI_Controller {
                     "pn_no"=>$original_pn,
                     "unit"=>$unit,
                     "qty"=>$d->qty,
+                    "selling_price"=>$d->selling_price,
+                    "discount"=>$d->discount,
+                    "shipping_fee"=>$d->shipping_fee,
                 );
             }
         }
@@ -378,6 +392,9 @@ class Delivery extends CI_Controller {
                     'delivery_id'=>$this->input->post('delivery_id'),
                     'item_id'=>$this->input->post('item_id['.$a.']'),
                     'qty'=>$this->input->post('quantity['.$a.']'),
+                    'selling_price'=>$this->input->post('selling['.$a.']'),
+                    'discount'=>$this->input->post('discount['.$a.']'),
+                    'shipping_fee'=>$this->input->post('shipping['.$a.']'),
                     'unit_id'=>$this->input->post('unit_id['.$a.']'),
                     'pn_no'=>$this->input->post('original_pn['.$a.']'),
                 );
