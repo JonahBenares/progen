@@ -561,6 +561,7 @@ class Items extends CI_Controller {
                     'expiration'=>$det->expiration,
                     'minimum'=>$det->min_qty,
                     'selling_price'=>$det->selling_price,
+                    'weight'=>$det->weight,
                     'damage'=>$det->damage
                 );
             }
@@ -760,6 +761,7 @@ class Items extends CI_Controller {
                     'expiration' => $this->input->post('expiration'),
                     'damage' => $this->input->post('damage'),
                     'selling_price' => $this->input->post('selling'),
+                    'weight' => $this->input->post('weight'),
                     'min_qty' => $this->input->post('minimum'),
                     'bin_id' => $bin,
                     'picture1' => $filename1,
@@ -933,6 +935,7 @@ class Items extends CI_Controller {
                     'damage' => $this->input->post('damage'),
                     'min_qty' => $this->input->post('minimum'),
                     'selling_price' => $this->input->post('selling'),
+                    'weight' => $this->input->post('weight'),
              );
 
                 $act = "Updated item details of item_id ". $item_id;

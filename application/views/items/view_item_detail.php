@@ -107,7 +107,7 @@
 									</tr>	
 									<tr>
 										<td><strong>Weight (Kg):</strong></td>
-										<td><p>2556</p></td>
+										<td><p><?php echo $det['weight']?></p></td>
 										<td ><strong></strong></td>
 										<td ><p></p></td>
 									</tr>								
