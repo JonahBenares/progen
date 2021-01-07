@@ -17,6 +17,8 @@
    <!--  <td style="padding: 0px "><input type = "text" name = "inspected[]" style = "text-align:center;width:100%;border:0px transparent;" value = "<?php echo $list['inspected']; ?>" > -->
       <!--   <input type = "hidden" name = "inspected_name[]" style = "text-align:center;width:100%;border:0px transparent;" value = "<?php echo $list['inspected_name']; ?>" ></td> -->
     <td style="padding: 0px "><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:0px transparent;" value = "<?php echo $list['unit_name']; ?>" ></td>
+    <td style="padding: 0px "><input type = "text" name = "shipping_fee[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['shipping_fee']; ?>"></td>
+    <td style="padding: 0px "><input type = "text" name = "currency[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['currency']; ?>"></td>
     <td style="padding: 0px "><textarea rows="3" wrap="soft" name = "remarks[]"  style = "width:100%;border:1px transparent;" ><?php echo $list['remarks']; ?></textarea></td>
 
     <td><?php if($list['local_mnl'] == '1'){ ?>

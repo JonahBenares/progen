@@ -287,7 +287,7 @@
 								</div>
 								<div class="col-lg-2">
 									<p style="margin:0px"  for="">Currency:</p>
-									<input class="form-control" name='currency' id='currency' onkeypress="return isNumberKey(this, event)" >
+									<input class="form-control" name='currency' id='currency' >
 								</div>
 								<div class="col-lg-1">
 									<!-- <p  style="margin:0px" for="">Local:</p>
@@ -368,6 +368,8 @@
 												<td style="text-align: center"> <?php echo $ri['recqty']; ?></td>
 												<!-- <td style="text-align: center"> <?php //echo $ri['inspected']; ?></td> -->
 												<td style="text-align: center"> <?php echo $ri['unit']; ?></td>
+												<td style="text-align: center"> <?php echo $ri['shipping_fee']; ?></td>
+												<td style="text-align: center"> <?php echo $ri['currency']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['remarks']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['local_mnl']; ?></td>
 												<td style="text-align: center">  <a class="btn btn-danger table-remove btn-xs" onclick="removerecitem('<?php echo $ri['riid']; ?>','<?php echo base_url(); ?>')"><span class=" fa fa-times"></span></a></td>
