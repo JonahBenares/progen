@@ -271,7 +271,7 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<p  style="margin:0px" for="">Remarks:</p>
-									<textarea class="form-control" rows="1" name='remarks' id='remarks'></textarea>
+									<textarea class="form-control" rows="4" name='remarks' id='remarks'></textarea>
 								</div>
 								<div class="col-lg-2">
 									<p style="margin:0px"  for="">Expected Qty:</p>
@@ -281,6 +281,14 @@
 									<p  style="margin:0px" for="">Delivered/ Received:</p>
 									<input class="form-control" name='rec_qty' id='rec_qty' onkeypress="return isNumberKey(this, event)" >
 								</div>
+								<div class="col-lg-2">
+									<p style="margin:0px"  for="">Shipping Fee:</p>
+									<input class="form-control" name='shipping_fee' id='shipping_fee' onkeypress="return isNumberKey(this, event)" >
+								</div>
+								<div class="col-lg-2">
+									<p style="margin:0px"  for="">Currency:</p>
+									<input class="form-control" name='currency' id='currency' onkeypress="return isNumberKey(this, event)" >
+								</div>
 								<div class="col-lg-1">
 									<!-- <p  style="margin:0px" for="">Local:</p>
 									<input type = "radio" name='local_mnl' id='local_mnl' value = "1">
@@ -288,8 +296,10 @@
 									<input type = "radio" name='local_mnl1' id='local_mnl' value = "2"> -->
 									<!-- <input type="radio" name="local_mnl" value="1" id = "local_mnl">Local
 									<input type="radio" name="local_mnl1" value="2" id = "local_mnl1">Manila -->
+									<div class="" style="padding-top:15px">
 									<input type="radio" name="local_mnl" id = 'local' value="1"> Local<br>
   									<input type="radio" name="local_mnl" id = 'manila' value="2"> Manila<br>
+  									</div>
 								</div>
 								
 								<!-- <div class="col-lg-2">
@@ -327,6 +337,8 @@
 									<th class="tr-bottom" width="10%"><center>Del/Rec</center></th>
 									<!-- <th class="tr-bottom" width="10%"><center>Inspected By</center></th> -->
 									<th class="tr-bottom" width="5%"><center>UOM</center></th>
+									<th class="tr-bottom" width="5%"><center>Shipping Fee</center></th>
+									<th class="tr-bottom" width="5%"><center>Currency</center></th>
 									<th class="tr-bottom" width="15%"><center>Remarks</center></th>
 									<th class="tr-bottom" width="15%"><center>Loc</center></th>
 									<th class="tr-bottom" width="5%"><center>Action</center></th>
