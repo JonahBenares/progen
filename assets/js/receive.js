@@ -278,6 +278,8 @@ function add_item(){
     var expqty =parseFloat($('#exp_qty').val());
     var recqty =parseFloat($('#rec_qty').val());
     var remarks =$('#remarks').val();
+    var shipping_fee =parseFloat($('#shipping_fee').val());
+    var currency =$('#currency').val();
     if ($("input:radio[name=local_mnl]:checked").val() == '1') {
         var local_mnl = '1';
     } 
@@ -309,7 +311,7 @@ function add_item(){
     	  $.ajax({
     	 		type: "POST",
     	 		url:redirect,
-    	 		data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandname="+brandname+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&unitcost="+unitcost+"&catno="+catno+"&nkk="+nkk+"&semt="+semt+"&unit="+unit+"&expqty="+expqty+"&recqty="+recqty+"&remarks="+remarks+"&item="+item+"&count="+count+"&local_mnl="+local_mnl,
+    	 		data: "supplier="+supplier+"&supplierid="+supplierid+"&suppliername="+suppliername+"&itemid="+itemid+"&itemname="+itemname+"&brand="+brand+"&brandname="+brandname+"&brandid="+brandid+"&serial="+serial+"&serialid="+serialid+"&unitcost="+unitcost+"&catno="+catno+"&nkk="+nkk+"&semt="+semt+"&unit="+unit+"&expqty="+expqty+"&recqty="+recqty+"&remarks="+remarks+"&item="+item+"&count="+count+"&local_mnl="+local_mnl+"&shipping_fee="+shipping_fee+"&currency="+currency,
                 success: function(html){
                     //alert(html);
                 	$('#item_body').append(html);
@@ -330,6 +332,8 @@ function add_item(){
                     document.getElementById("item_id").value = '';
                     document.getElementById("item_name").value = '';
                     document.getElementById("unit").value = '';
+                    document.getElementById("shipping_fee").value = '';
+                    document.getElementById("currency").value = '';
                     document.getElementById("exp_qty").value = '';
                     document.getElementById("rec_qty").value = '';
                     document.getElementById("remarks").value = '';

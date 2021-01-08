@@ -326,7 +326,9 @@ class Receive extends CI_Controller {
                     'inspected_by'=>$inspected,
                     'remarks'=>$items->remarks,
                     'total'=>$total,
-                    'local_mnl'=>$items->local_mnl
+                    'local_mnl'=>$items->local_mnl,
+                    'shipping_fee'=>$items->shipping_fee,
+                    'currency'=>$items->currency,
                 );
             }
         }
@@ -401,7 +403,9 @@ class Receive extends CI_Controller {
                         'inspected'=>$inspected,
                         'total'=>$total,
                         'serial'=>$serial,
-                        'local_mnl'=>$rit->local_mnl
+                        'local_mnl'=>$rit->local_mnl,
+                        'shipping_fee'=>$rit->shipping_fee,
+                        'currency'=>$rit->currency,
                     );
             }
         } else {
@@ -734,6 +738,8 @@ class Receive extends CI_Controller {
             'expqty'=>$this->input->post('expqty'),
             'recqty'=>$this->input->post('recqty'),
             'remarks'=>$this->input->post('remarks'),
+            'shipping_fee'=>$this->input->post('shipping_fee'),
+            'currency'=>$this->input->post('currency'),
             /*'inspected_name'=>$inspected_name,
             'inspected'=>$inspected,*/
             'item'=>$this->input->post('itemname'),
@@ -857,6 +863,8 @@ class Receive extends CI_Controller {
                 'expected_qty'=> $this->input->post('expqty['.$a.']'),
                 'received_qty'=> $this->input->post('recqty['.$a.']'),
                 'remarks'=> $this->input->post('remarks['.$a.']'),
+                'shipping_fee'=> $this->input->post('shipping_fee['.$a.']'),
+                'currency'=> $this->input->post('currency['.$a.']'),
                 'local_mnl'=> $this->input->post('local_mnl['.$a.']')
                 /*'inspected_by'=> $this->input->post('inspected_name['.$a.']')*/
             );
@@ -920,7 +928,7 @@ class Receive extends CI_Controller {
                     'semt_no'=>$itm->semt_no,
                     'brand_id'=>$itm->brand_id,
                     'item_cost'=>$ave,
-                    'quantity'=>$itm->received_qty
+                    'quantity'=>$itm->received_qty,
                 );
 
                  $this->super_model->insert_into("supplier_items", $data);

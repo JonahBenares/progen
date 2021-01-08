@@ -51,6 +51,18 @@
 										</td>
 									</tr>
 									<tr>
+										<td width="10%"></td>
+										<td width="30%">
+											<br>
+											<select name="buyer" class="form-control select2">
+												<option value = "">-Select Buyer-</option>
+												<?php foreach($buyer_list AS $bu){ ?>
+													<option value = "<?php echo $bu->buyer_id; ?>"><?php echo $bu->buyer_name; ?></option>
+												<?php } ?>
+											</select>
+										</td>
+									</tr>
+									<tr>
 										<td></td>
 										<td></td>
 										<td>
@@ -65,7 +77,7 @@
 							</form>
 							<br>
 							<?php if(!empty($report)){ ?>
-							<a href = "<?php echo base_url(); ?>index.php/reports/export_delivery/<?php echo $from;?>/<?php echo $to;?>/<?php echo $item; ?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<a href = "<?php echo base_url(); ?>index.php/reports/export_delivery/<?php echo $from;?>/<?php echo $to;?>/<?php echo $item; ?>/<?php echo $buyer; ?>" class = "btn btn-primary pull-right">Export to Excel</a>
 							<button id="printReport" class="btn btn-info pull-right " onclick="printDiv('printableArea')">
 									<span  class="fa fa-print"></span>
 							</button>
@@ -85,10 +97,11 @@
 												<td align="center"><strong>Item Description</strong></td>
 												<td align="center"><strong>Qty</strong></td>
 												<td align="center"><strong>UoM</strong></td>
+												<td align="center"><strong>Buyer Name</strong></td>
 											</tr>
 										</thead>
 										<tbody>
-											<?php foreach($report AS $r){ ?>
+											<?php if(!empty($report)){ foreach($report AS $r){ ?>
 											<tr>
 												<td><?php echo $r['date'];?></td>
 												<td><?php echo $r['dr_no'];?></td>
@@ -98,8 +111,9 @@
 												<td><?php echo $r['item'];?></td>
 												<td><?php echo $r['qty'];?></td>
 												<td><?php echo $r['unit'];?></td>
+												<td><?php echo $r['buyer'];?></td>
 											</tr>
-											<?php } ?>
+											<?php } } ?>
 										</tbody>
 									</table>
 								</div>

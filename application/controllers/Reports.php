@@ -5024,8 +5024,13 @@ class Reports extends CI_Controller {
             } else {
                 $item = "null";
             } 
+            if(!empty($this->input->post('buyer'))){
+                $buyer = $this->input->post('buyer');
+            } else {
+                $buyer = "null";
+            } 
             ?>
-            <script>window.location.href ='<?php echo base_url(); ?>index.php/reports/delivery_report/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $item; ?>'</script> <?php
+            <script>window.location.href ='<?php echo base_url(); ?>index.php/reports/delivery_report/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $item; ?>/<?php echo $buyer; ?>'</script><?php
     }
 
     public function delivery_report(){
@@ -5034,9 +5039,12 @@ class Reports extends CI_Controller {
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
         $item=$this->uri->segment(5);
+        $buyer=$this->uri->segment(6);
         $data['from']=$this->uri->segment(3);
         $data['to']=$this->uri->segment(4);
         $data['item']=$this->uri->segment(5);
+        $data['buyer']=$this->uri->segment(6);
+        $data['buyer_list'] = $this->super_model->select_all_order_by('buyer', 'buyer_name', 'ASC');
         $data['item_list'] = $this->super_model->select_all_order_by('items', 'item_name', 'ASC');
         $data['item_name'] = $this->super_model->select_column_where('items', 'item_name', 'item_id', $item);
         $sql="";
@@ -5048,12 +5056,17 @@ class Reports extends CI_Controller {
             $sql.= " i.item_id = '$item' AND";
         }
 
+        if($buyer!='null'){
+            $sql.= " dh.buyer_id = '$buyer' AND";
+        }
+
         $query=substr($sql,0,-3);
         $count=$this->super_model->custom_query("SELECT dh.* FROM delivery_head dh INNER JOIN delivery_details di ON dh.delivery_id = di.delivery_id INNER JOIN items i ON di.item_id = i.item_id WHERE dh.saved='1' AND ".$query);
         if($count!=0){
             foreach($this->super_model->custom_query("SELECT dh.*,i.item_id,i.unit_id,di.qty,di.pn_no FROM delivery_head dh INNER JOIN delivery_details di ON dh.delivery_id = di.delivery_id INNER JOIN items i ON di.item_id = i.item_id WHERE dh.saved='1' AND ".$query. " ORDER BY dh.date DESC") AS $dh){
                 $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $dh->item_id);
                 $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $dh->unit_id);
+                $buyer = $this->super_model->select_column_where('buyer', 'buyer_name', 'buyer_id', $dh->buyer_id);
                 $data['report'][]=array(
                     "dr_no"=>$dh->dr_no,
                     "date"=>$dh->date,
@@ -5063,6 +5076,7 @@ class Reports extends CI_Controller {
                     "item"=>$item,
                     "qty"=>$dh->qty,
                     "unit"=>$unit,
+                    "buyer"=>$buyer,
                 );
             }
         }
@@ -5074,6 +5088,7 @@ class Reports extends CI_Controller {
         $from=$this->uri->segment(3);
         $to=$this->uri->segment(4);
         $item=$this->uri->segment(5);
+        $buyer=$this->uri->segment(6);
         $sql='';
         if($from!='null' && $to!='null'){
            $sql.= " dh.date BETWEEN '$from' AND '$to' AND";
@@ -5081,6 +5096,10 @@ class Reports extends CI_Controller {
 
         if($item!='null'){
             $sql.= " i.item_id = '$item' AND";
+        }
+
+        if($buyer!='null'){
+            $sql.= " dh.buyer_id = '$buyer' AND";
         }
 
         $query=substr($sql,0,-3);
@@ -5120,9 +5139,10 @@ class Reports extends CI_Controller {
                 )
             )
         );
+        $buyername=$this->super_model->select_column_where("buyer", "buyer_name", "buyer_id", $buyer);
         $itemname=$this->super_model->select_column_where("items", "item_name", "item_id", $item);
-        $catname=$this->super_model->select_column_where("item_categories", "cat_name", "cat_id", $cat);
-        $subcatname=$this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);
+        /*$catname=$this->super_model->select_column_where("item_categories", "cat_name", "cat_id", $cat);
+        $subcatname=$this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);*/
         foreach($this->super_model->select_custom_where("receive_head","receive_date BETWEEN '$from' AND '$to'") AS $head){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D5', $from);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H5', $to);
@@ -5141,9 +5161,11 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I10', "Item Description");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N10', "Qty");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O10', "UoM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P10', "Buyer Name");
         foreach($this->super_model->custom_query("SELECT dh.*,i.item_id,i.unit_id,di.qty,di.pn_no FROM delivery_head dh INNER JOIN delivery_details di ON dh.delivery_id = di.delivery_id INNER JOIN items i ON di.item_id = i.item_id WHERE dh.saved='1' AND ".$query. " ORDER BY dh.date DESC") AS $dh){
             $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $dh->item_id);
-            $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $dh->unit_id);    
+            $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $dh->unit_id);
+            $buyer = $this->super_model->select_column_where('buyer', 'buyer_name', 'buyer_id', $dh->buyer_id);    
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $dh->date);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $dh->dr_no);
@@ -5151,10 +5173,11 @@ class Reports extends CI_Controller {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $dh->pn_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $item);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $dh->qty); 
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$num, $unit); 
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$num, $unit);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $buyer); 
             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
-            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":O".$num)->applyFromArray($styleArray);
-            $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":O".$num,'admin');
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Q".$num)->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Q".$num,'admin');
             $objPHPExcel->getActiveSheet()->getStyle('N'.$num.":O".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $num++;
             $x++;
@@ -5166,8 +5189,10 @@ class Reports extends CI_Controller {
             $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
             $objPHPExcel->getActiveSheet()->mergeCells('I11:M11');
             $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":M".$num);
+            $objPHPExcel->getActiveSheet()->mergeCells('P11:Q11');
+            $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
             $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":G".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objPHPExcel->getActiveSheet()->getStyle('N'.$num.":O".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$num.":P".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
         /*$a = $num+2;
         $b = $num+5;
@@ -5187,22 +5212,23 @@ class Reports extends CI_Controller {
         $objPHPExcel->getActiveSheet()->mergeCells('E10:F10');
         $objPHPExcel->getActiveSheet()->mergeCells('G10:H10');
         $objPHPExcel->getActiveSheet()->mergeCells('I10:M10');
+        $objPHPExcel->getActiveSheet()->mergeCells('P10:Q10');
     
-        $objPHPExcel->getActiveSheet()->getStyle('A10:O10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A10:Q10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('A11:G11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle('N11:O11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('N11:Q11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       
-        $objPHPExcel->getActiveSheet()->getStyle('A10:O10')->applyFromArray($styleArray);
-        $objPHPExcel->getActiveSheet()->getStyle('A4:O4')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:O1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:O1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A2:O2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A3:O3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('A4:O4')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A10:Q10')->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle('A4:Q4')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A3:Q3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('A4:Q4')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('D5:E5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('H5:I5')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         //$objPHPExcel->getActiveSheet()->getStyle('H8:J8')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        //$objPHPExcel->getActiveSheet()->getStyle('M8:O8')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        //$objPHPExcel->getActiveSheet()->getStyle('M8:O8')->getBordQrs()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('C8:E8')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('C1')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('C2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
@@ -5212,11 +5238,11 @@ class Reports extends CI_Controller {
         $objPHPExcel->getActiveSheet()->getStyle('H2')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('H3')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getActiveSheet()->getStyle('H4')->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('O1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('O2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('O3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('O4')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getStyle('O2:T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('Q1')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('Q2')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('Q3')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('Q4')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getStyle('Q2:T2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
         $objPHPExcel->getActiveSheet()->getStyle('C5')->getFont()->setBold(true);
@@ -5224,7 +5250,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->getActiveSheet()->getStyle('H2')->getFont()->setBold(true);
        
         $objPHPExcel->getActiveSheet()->getStyle("J2")->getFont()->setBold(true)->setName('Arial Black');
-        $objPHPExcel->getActiveSheet()->getStyle("A10:O10")->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle("A10:Q10")->getFont()->setBold(true);
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         if (file_exists($exportfilename))
         unlink($exportfilename);

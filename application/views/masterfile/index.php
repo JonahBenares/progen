@@ -42,7 +42,7 @@
 						<strong> Back Order</strong>
 					</h3>
 				</center>
-				<div style="height: 200px;overflow-x: scroll;">
+				<div style="height: 350px;overflow-x: scroll;">
 					<table class="table table-bordered table-hover shadow-dash">
 						<thead>
 							<tr>
@@ -94,7 +94,7 @@
 						<strong> Borrow Report</strong>
 					</h3>
 				</center>
-				<div style="height: 200px;overflow-x: scroll;">
+				<div style="height: 400px;overflow-x: scroll;">
 					<table class="table table-bordered table-hover shadow-dash">
 						<thead>
 							<tr style="background-color: #4db1ff; font-weight: 600">

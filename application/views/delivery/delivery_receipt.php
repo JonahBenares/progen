@@ -253,19 +253,23 @@
                 <form method='POST' id='mreqfsign'>
                 <table width="100%">
                     <tr>
-                        <td width="10%"></td>
-                        <td width="35%">Prepared and Released by:</td>
-                        <td width="10%"></td>
-                        <td width="35%">Verified by:</td>
-                        <td width="10%"></td>
+                        <td width="30%">Prepared by:</td>
+                        <td width="5%"></td>
+                        <td width="30%">Released by:</td>
+                        <td width="5%"></td>
+                        <td width="30%">Verified by:</td>
                     </tr>
                     <tr>
-                        <td></td>
                         <td style="border-bottom:1px solid #000">
                             <input class="select" type="text" name='prepared_by' value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>" required>
                             <input type="hidden" name="user_id" value="<?php echo (!empty($det['user_id'])) ? $det['user_id'] : $_SESSION['user_id']; ?>">
                         </td>
                         <td></td>
+                        <td style="border-bottom:1px solid #000">
+                            <input class="select" type="text" name='released_by' value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>" required>
+                            <input type="hidden" name="user_id" value="<?php echo (!empty($det['user_id'])) ? $det['user_id'] : $_SESSION['user_id']; ?>">
+                        </td>
+                        <td></td>                
                         <td style="border-bottom:1px solid #000">
                             <select class="select" type="text" name='verified_by' required>
                                 <option></option>
@@ -274,16 +278,17 @@
                                 <?php } ?>
                             </select>
                         </td>
-                        <td></td>                
                     </tr>
                     <tr>
-                        <td></td>
                         <td><center>Warehouse Personnel</center></td>
                         <td></td>
-                        <td><center>Warehouse In-Charge</center></td>
+                        <td><center>Warehouse Personnel</center></td>
                         <td></td>                
+                        <td><center>Warehouse In-Charge</center></td>
                     </tr>
                 </table>
+                <br>
+                <br>
                 <br>
                 <table width="100%">
                     <tr>
