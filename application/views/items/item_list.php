@@ -286,6 +286,15 @@
 							<tr><td><br></td></tr>
 							<tr>
 								<td></td>
+								<td width="8%"><label class="contener">Without 0 Quantity:</label></td>
+								<td width="10%"><input style="width:25px" type="radio" class="form-control" name="qtyselect" id="withqty" value='1'></td>
+								<td width="5%"></td>
+								<td width="8%"><label class="contener">All Quantity:</label></td>
+								<td width="10%"><input style="width:25px" type="radio" name="qtyselect" class="form-control" id='withoutqty' value='0'></td>
+							</tr>
+							<tr><td><br></td></tr>
+							<tr>
+								<td></td>
 								<td width="8%"><label class="contener">Local:</label></td>
 								<td width="10%"><input style="width:25px" type="checkbox" class="form-control" name="local" id="local" value='1'></td>
 								<td width="5%"></td>

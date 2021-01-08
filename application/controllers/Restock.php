@@ -573,11 +573,13 @@ class Restock extends CI_Controller {
     public function insert_restock_head(){
         $date=date('Y-m-d');
         $year=date('Y-m');
-        $rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year%'");
+        $rows=$this->super_model->count_rows("restock_head");
+        //$rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year%'");
         if($rows==0){
              $mrwfno = "MRWF-".$year."-0001";
         } else {
-            $maxrecno=$this->super_model->get_max_where("restock_head", "mrwf_no","restock_date LIKE '$year%'");
+            $maxrecno=$this->super_model->get_max("restock_head", "mrwf_no");
+            //$maxrecno=$this->super_model->get_max_where("restock_head", "mrwf_no","restock_date LIKE '$year%'");
             $recno = explode('-',$maxrecno);
             $series = $recno[3]+1;
             if(strlen($series)==1){
@@ -625,11 +627,13 @@ class Restock extends CI_Controller {
         $catalog=$this->input->post('catalog_no');
         $stock_qty=$this->input->post('quantity');
         $year=date('Y-m');
-        $rows=$this->super_model->count_custom_where("restock","restock_date LIKE '$year%'");
+        $rows=$this->super_model->count_rows("restock");
+        //$rows=$this->super_model->count_custom_where("restock","restock_date LIKE '$year%'");
         if($rows==0){
              $mrwfno = "MRWF-".$year."-0001";
         } else {
-            $maxrecno=$this->super_model->get_max_where("restock", "mrwf_no","restock_date LIKE '$year%'");
+            $maxrecno=$this->super_model->get_max("restock", "mrwf_no");
+            //$maxrecno=$this->super_model->get_max_where("restock", "mrwf_no","restock_date LIKE '$year%'");
             $recno = explode('-',$maxrecno);
             $series = $recno[3]+1;
             if(strlen($series)==1){
