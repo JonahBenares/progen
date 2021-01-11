@@ -85,6 +85,13 @@ class Delivery extends CI_Controller {
         $this->load->view('template/print_head');
         $data['id']=$this->uri->segment(3);
         $id=$this->uri->segment(3);
+        foreach($this->super_model->select_row_where('delivery_head', 'delivery_id', $id) AS $us){
+            $data['username'][] = array( 
+                'positionrel'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->released_by),
+                'positionver'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->verified_by),
+                'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
+            );
+        }
         foreach($this->super_model->select_row_where("delivery_head","delivery_id",$id) AS $h){
             $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
             $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
@@ -92,6 +99,7 @@ class Delivery extends CI_Controller {
             $contact_no=$this->super_model->select_column_where("buyer","contact_no","buyer_id",$h->buyer_id);
             $verified_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->verified_by);
             $prepared_by=$this->super_model->select_column_where("users","fullname","user_id",$h->prepared_by);
+            $released_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->released_by);
             $noted_by=$this->super_model->select_column_where("employees","employee_name","employee_id",$h->noted_by);
             $data['heads'][]=array(
                 "delivery_id"=>$h->delivery_id,
@@ -107,11 +115,13 @@ class Delivery extends CI_Controller {
                 "waybill_no"=>$h->waybill_no,
                 "verified_by"=>$verified_by,
                 "prepared_by"=>$prepared_by,
+                "released_by"=>$released_by,
                 "noted_by"=>$noted_by,
                 "received_by"=>$h->received_by,
                 "user_id"=>$h->prepared_by,
                 "verified_id"=>$h->verified_by,
                 "noted_id"=>$h->noted_by,
+                "released_id"=>$h->released_by,
                 "remarks"=>$h->remarks,
             );
             foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
@@ -138,6 +148,13 @@ class Delivery extends CI_Controller {
 
         foreach($this->super_model->select_row_where("signatories", "noted", "1") AS $sign){
             $data['noted_emp'][] = array( 
+                'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $sign->employee_id),
+                'empid'=>$sign->employee_id
+            );
+        }
+
+        foreach($this->super_model->select_row_where("signatories", "released", "1") AS $sign){
+            $data['released_emp'][] = array( 
                 'empname'=>$this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $sign->employee_id),
                 'empid'=>$sign->employee_id
             );
@@ -471,6 +488,30 @@ class Delivery extends CI_Controller {
             }
         }
         echo "success";
+
+    }
+        public function getEmprel(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+        public function getEmpver(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
+    }
+
+        public function getEmpnote(){
+        $employee_id = $this->input->post('employee_id');
+        foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   
+            $return = array('position' => $emp->position); 
+            echo json_encode($return);   
+        }
     }
 
     public function printDR(){
@@ -480,6 +521,7 @@ class Delivery extends CI_Controller {
             "shipped_via"=>$this->input->post('shipped'),
             "waybill_no"=>$this->input->post('waybill_no'),
             "prepared_by"=>$this->input->post('user_id'),
+            "released_by"=>$this->input->post('released_by'),
             "verified_by"=>$this->input->post('verified_by'),
             "received_by"=>$this->input->post('received_by'),
             "noted_by"=>$this->input->post('noted_by'),

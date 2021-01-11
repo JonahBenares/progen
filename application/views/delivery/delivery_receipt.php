@@ -259,19 +259,25 @@
                         <td width="5%"></td>
                         <td width="30%">Verified by:</td>
                     </tr>
+                    <?php foreach($username AS $us) ?>
                     <tr>
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" type="text" name='prepared_by' value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>" required>
-                            <input type="hidden" name="user_id" value="<?php echo (!empty($det['user_id'])) ? $det['user_id'] : $_SESSION['user_id']; ?>">
-                        </td>
-                        <td></td>
+                            <input class="select" type="" name="" value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>">
+                        </td> 
+
+                        <td></td>  
                         <td style="border-bottom:1px solid #000">
-                            <input class="select" type="text" name='released_by' value="<?php echo (!empty($det['user_id'])) ? $det['prepared_by'] : $_SESSION['username']; ?>" required>
-                            <input type="hidden" name="user_id" value="<?php echo (!empty($det['user_id'])) ? $det['user_id'] : $_SESSION['user_id']; ?>">
-                        </td>
-                        <td></td>                
+                            <select class="select" type="text" name='released_by' id="released_by" onchange="chooseEmprel()" required>
+                                <option></option>
+                                <?php foreach($released_emp AS $rel){ ?>
+                                <option value = "<?php echo $rel['empid']; ?>"<?php echo (( $rel['empid'] == $det['released_id']) ?  ' selected' : ''); ?>><?php echo $rel['empname']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>    
+
+                        <td></td>            
                         <td style="border-bottom:1px solid #000">
-                            <select class="select" type="text" name='verified_by' required>
+                            <select class="select" type="text" name='verified_by' id="verified_by" onchange="chooseEmpver()" required>
                                 <option></option>
                                 <?php foreach($reviewed_emp AS $rev){ ?>
                                 <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_id']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
@@ -282,9 +288,17 @@
                     <tr>
                         <td><center>Warehouse Personnel</center></td>
                         <td></td>
-                        <td><center>Warehouse Personnel</center></td>
-                        <td></td>                
-                        <td><center>Warehouse In-Charge</center></td>
+                        <td>
+                            <center>
+                                <div id='alts' style="font-weight:bold"></div>
+                                <input id="positionrel" class="select" style="pointer-events:none" value="<?php echo $us['positionrel'];?>">    
+                            </center>
+                        </td>
+                        <td></td>
+                        <td><center>
+                                <div id='altss' style="font-weight:bold"></div>
+                                <input id="positionver" class="select" style="pointer-events:none" value="<?php echo $us['positionver'];?>">    
+                            </center></td>
                     </tr>
                 </table>
                 <br>
@@ -301,7 +315,7 @@
                     <tr>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
-                            <select class="select" type="text" name='noted_by' required>
+                            <select class="select" type="text" name='noted_by' id="noted_by" onchange="chooseEmpnote()" required>
                                 <option></option>
                                 <?php foreach($noted_emp AS $note){ ?>
                                 <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_id']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
@@ -316,7 +330,10 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td style="vertical-align: top"><center>Plant Director</center></td>
+                        <td style="vertical-align: top"><center>
+                                <div id='altsss' style="font-weight:bold"></div>
+                                <input id="positionnote" class="select" style="pointer-events:none" value="<?php echo $us['positionnote'];?>">    
+                            </center></td>
                         <td></td>
                         <td><center>Signature over Printed Name<br></center>Date/Time:</td>
                         <td></td>                
@@ -351,20 +368,71 @@
     </div>
 </body>
 <script type="text/javascript">
-function printDR(){
-    var sign = $("#drsign").serialize();
-    var loc= document.getElementById("baseurl").value;
-    var redirect = loc+'index.php/delivery/printDR';
-    $.ajax({
-        type: "POST",
-        url: redirect,
-        data: sign,
-        success: function(output){
-            if(output=='success'){
-                window.print();
+    function chooseEmprel(){
+        var loc= document.getElementById("baseurl").value;
+        var redirect = loc+'index.php/delivery/getEmprel';
+        var released_by = document.getElementById("released_by").value;
+        document.getElementById('alts').innerHTML='<b>Please wait, Loading data...</b>'; 
+        $.ajax({
+            type: 'POST',
+            url: redirect,
+            data: 'employee_id='+released_by,
+            dataType: 'json',
+            success: function(response){
+                $("#alts").hide();
+                $("#positionrel").val(response.position);
             }
-        }
-    });
-}
+        }); 
+    }
+
+        function chooseEmpver(){
+        var loc= document.getElementById("baseurl").value;
+        var redirect = loc+'index.php/delivery/getEmpver';
+        var verified_by = document.getElementById("verified_by").value;
+        document.getElementById('altss').innerHTML='<b>Please wait, Loading data...</b>'; 
+        $.ajax({
+            type: 'POST',
+            url: redirect,
+            data: 'employee_id='+verified_by,
+            dataType: 'json',
+            success: function(response){
+                $("#altss").hide();
+                $("#positionver").val(response.position);
+            }
+        }); 
+    }
+
+    function chooseEmpnote(){
+        var loc= document.getElementById("baseurl").value;
+        var redirect = loc+'index.php/delivery/getEmpnote';
+        var noted_by = document.getElementById("noted_by").value;
+        document.getElementById('altsss').innerHTML='<b>Please wait, Loading data...</b>'; 
+        $.ajax({
+            type: 'POST',
+            url: redirect,
+            data: 'employee_id='+noted_by,
+            dataType: 'json',
+            success: function(response){
+                $("#altsss").hide();
+                $("#positionnote").val(response.position);
+            }
+        }); 
+    }
+
+    function printDR(){
+        var sign = $("#drsign").serialize();
+        var loc= document.getElementById("baseurl").value;
+        var redirect = loc+'index.php/delivery/printDR';
+        $.ajax({
+            type: "POST",
+            url: redirect,
+            data: sign,
+            success: function(output){
+                if(output=='success'){
+                    window.print();
+                }
+            }
+        });
+    }
 </script>
 </html>
