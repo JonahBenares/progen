@@ -164,6 +164,7 @@ class Delivery extends CI_Controller {
 
     public function insert_delivery(){
         $location=LOCATION;
+        $year=date("Y");
         $date=$this->input->post('date');
         $pr_no=$this->input->post('pr_no');
         $buyer=$this->input->post('buyer');
@@ -177,13 +178,13 @@ class Delivery extends CI_Controller {
             $dr_nos = explode('-',$dr);
             $series = $dr_nos[1]+1;
             if(strlen($series)==1){
-                $dr_no = $location."-000".$series;
+                $dr_no = $location."-".$year."-000".$series;
             } else if(strlen($series)==2){
-                 $dr_no = $location."-00".$series;
+                 $dr_no = $location."-".$year."-00".$series;
             } else if(strlen($series)==3){
-                 $dr_no = $location."-0".$series;
+                 $dr_no = $location."-".$year."-0".$series;
             } else if(strlen($series)==4){
-                 $dr_no = $location."-".$series;
+                 $dr_no = $location."-".$year."-".$series;
             }
         }
         $head_rows = $this->super_model->count_rows("delivery_head");

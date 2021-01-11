@@ -57,6 +57,13 @@
 						?>
 						<table width="100%">
 							<tr>
+								<td ><p class="nomarg">Date:</p></td>
+								<td ><input type="date" name="receive_date" id="receive_date" value="<?php echo date('Y-m-d'); ?>"></td>
+								
+								<td width="15%">
+								</td>
+							</tr>
+							<tr>
 								<td ><p class="nomarg">Department:</p></td>
 								<td ><label class="labelStyle"><?php echo $hd['department']; ?></label></td>
 								

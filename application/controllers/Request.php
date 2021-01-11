@@ -59,11 +59,13 @@ class Request extends CI_Controller {
         $year=date('Y-m');
         $now=date('Y-m-d H:i:s');
        // echo $year ."<br>";
-        $rows=$this->super_model->count_custom_where("request_head","create_date LIKE '$year%'");
+        $rows=$this->super_model->count_rows("request_head");
+        //$rows=$this->super_model->count_custom_where("request_head","create_date LIKE '$year%'");
         if($rows==0){
              $newreq_no = "MreqF-".$year."-0001";
         } else {
-            $maxreqno=$this->super_model->get_max_where("request_head", "mreqf_no","create_date LIKE '$year%'");
+            $maxreqno=$this->super_model->get_max("request_head", "mreqf_no");
+            //$maxreqno=$this->super_model->get_max_where("request_head", "mreqf_no","create_date LIKE '$year%'");
             $reqno = explode('-',$maxreqno);
             $series = $reqno[3]+1;
             //echo $reqno[3];

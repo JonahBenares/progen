@@ -125,10 +125,10 @@
 												<td align="center"><?php echo $rec['pr']?></td>
 												<td align="center"><?php echo $rec['pn']?></td>
 												<td align="center"><?php echo $rec['item']?></td>
+												<td align="center"><?php echo $rec['qty']?></td>
 												<td align="center"><?php echo $rec['unit']?></td>
 												<td align="center"><?php echo $rec['unit_cost']?></td>
 												<td align="center"><?php echo number_format($rec['total_cost'],2); ?></td>
-												<td align="center"><?php echo $rec['qty']?></td>
 												<td align="center"><?php echo $rec['supplier']?></td>
 												<td align="center"><?php echo $rec['department']?></td>
 												<td align="center"><?php echo $rec['enduse']?></td>
