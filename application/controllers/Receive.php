@@ -153,9 +153,11 @@ class Receive extends CI_Controller {
         $data['heads'] = $this->super_model->select_row_where('receive_head', 'receive_id', $id);
         foreach($this->super_model->select_row_where('receive_head', 'receive_id', $id) AS $us){
             $data['username'][] = array( 
+                'user'=>$this->super_model->select_column_where("users","fullname","user_id",$us->user_id),
                 'positionrec'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->received_by),
                 'positionack'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->acknowledged_by),
                 'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
+                'user_id'=>$us->user_id
             );
         }
         foreach($this->super_model->select_row_where('receive_details', 'receive_id', $id) AS $d){
