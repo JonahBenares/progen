@@ -122,6 +122,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="modal fade" id="deliverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -169,10 +170,11 @@
 								<td width="85%"><input type = "text" name = "contact_no" id="contact_no" class = "form-control"><br></td>
 							</tr>
 							<tr>
-								<td width="15%"><label>VAT:</label></td>
-								<td width="1%"><input type = "radio" name = "vat" value="1"><br></td>
-								<td width="15%"><label>Non-VAT:</label></td>
-								<td width="15%"><input type = "radio" name = "vat" value="0"><br></td>
+								<td width="20%"></td>
+								<td width="80%">
+									<label style="margin-right:30px">VAT: <input type = "radio" name = "vat" value="1"></label>
+									<label>Non-VAT: <input type = "radio" name = "vat" value="0"></label>
+								</td>
 							</tr>
 						</table>
 						<div class="modal-footer">
@@ -186,6 +188,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="modal fade" id="requestModal" role="dialog" aria-labelledby="requestModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
