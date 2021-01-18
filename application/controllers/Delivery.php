@@ -133,6 +133,7 @@ class Delivery extends CI_Controller {
                     "pn_no"=>$original_pn,
                     "unit"=>$unit,
                     "qty"=>$d->qty,
+                    "serial_no"=>$d->serial_no,
                     "selling_price"=>$d->selling_price,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
@@ -346,6 +347,7 @@ class Delivery extends CI_Controller {
         $data['list'] = array(
             'original_pn'=>$this->input->post('original_pn'),
             'unit'=>$this->input->post('unit'),
+            'serial'=>$this->input->post('serial'),
             'unit_name'=>$unit,
             'itemid'=>$this->input->post('itemid'),
             'quantity'=>$this->input->post('quantity'),
@@ -409,6 +411,7 @@ class Delivery extends CI_Controller {
                 $data = array(
                     'delivery_id'=>$this->input->post('delivery_id'),
                     'item_id'=>$this->input->post('item_id['.$a.']'),
+                    'serial_no'=>$this->input->post('serial['.$a.']'),
                     'qty'=>$this->input->post('quantity['.$a.']'),
                     'selling_price'=>$this->input->post('selling['.$a.']'),
                     'discount'=>$this->input->post('discount['.$a.']'),

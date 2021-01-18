@@ -198,6 +198,7 @@
                         <td width="1%" align="center"><strong>#</strong></td>
                         <td width="20%" align="center"><strong>Part No.</strong></td>
                         <td width="30%" align="center"><strong>Item Description</strong></td>                    
+                        <td width="5%" align="center"><strong>Serial No.</strong></td>
                         <td width="5%" align="center"><strong>Qty</strong></td>
                         <td width="10%" align="center"><strong>U/M</strong></td>
                         <td width="5%" align="center"><strong>Selling Price</strong></td>
@@ -214,6 +215,7 @@
                             <td align="center"><?php echo $x; ?></td>
                             <td align="center"><?php echo $buyitm['pn_no']; ?></td>
                             <td><?php echo $buyitm['item_name']; ?></td>
+                            <td align="center"><?php echo $buyitm['serial_no']; ?></td>
                             <td align="center"><?php echo $buyitm['qty']; ?></td>
                             <td align="center">&nbsp;<?php echo $buyitm['unit']; ?></td>
                             <td align="center"><?php echo $buyitm['selling_price']; ?></td>
@@ -227,7 +229,7 @@
                         <?php } ?>
                     </tr>
                     <tr>
-                        <td colspan="8"><center>***nothing follows***</center></td>
+                        <td colspan="11"><center>***nothing follows***</center></td>
                     </tr>
                 </table>
                 <br>

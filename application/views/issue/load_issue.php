@@ -157,7 +157,7 @@
 															</td>
 
 															<td>
-																<textarea name='remarks[]' id='remarks[]'></textarea>
+																<textarea name='remarks[]' id='remarks[]'><?php echo nl2br($it['remarks']);?></textarea>
 															</td>
 															
 														</tr>

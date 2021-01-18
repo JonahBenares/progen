@@ -61,6 +61,7 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<p>
+									Item
 									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
 										<option value = "">--Select Item--</option>
 										<?php foreach($item_list AS $itm){ ?>
@@ -73,21 +74,30 @@
 									<input type='hidden' name='unit' id='unit'>
 								</p>
 							</div>
-							<div class="col-lg-2">							
+							<div class="col-lg-2">
+								Serial No.
+								<input type="text" class="form-control" name="serial" id="serial" placeholder="Serial No." style="width:100%">
+							</div>
+							<div class="col-lg-1">	
+								Quantity						
 								<input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" style="width:100%">
 							</div>
 							<div class="col-lg-2">
+								Selling Price
 								<input type="text" class="form-control" name="selling" id="selling" placeholder="Selling Price" style="width:100%">
 							</div>
-							<div class="col-lg-2">
+							<div class="col-lg-1">
+								Discount
 								<input type="text" class="form-control" name="discount" id="discount" placeholder="Discount" style="width:100%">
 							</div>
 							<div class="col-lg-2">
+								Shipping Fee
 								<input type="text" class="form-control" name="shipping" id="shipping" placeholder="Shipping Fee" style="width:100%">
 							</div>
 							<div class="col-lg-1">
 								<div id='alrt' style="font-weight:bold"></div>
 								<p>				
+									<br>
 									<a type="button" onclick='add_item()' id = "submit" class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
 								</p>
 							</div>
@@ -100,12 +110,13 @@
 										<th style='text-align: center;'>#</th>
 										<th style='text-align: center;'>Part No.</th>
 										<th style='text-align: center;'>Item Description</th>
+										<th style='text-align: center;'>Serial No.</th>
 										<th style='text-align: center;'>Qty</th>
 										<th style='text-align: center;'>UOM</th>
 										<th style='text-align: center;'>Selling Price</th>
 										<th style='text-align: center;'>Discount</th>
 										<th style='text-align: center;'>Shipping Fee</th>
-										<th style='text-align: center;' width="1%">Action</th>
+										<th style='text-align: center;' width="1%"><span class="fa fa-bars"></span></th>
 									</tr>
 									<?php 
 										if(!isset($details)){

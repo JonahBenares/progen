@@ -233,7 +233,8 @@ class Issue extends CI_Controller {
             foreach($this->super_model->select_row_where("request_items", "request_id", $id) AS $it){
                 //echo $it->rq_id;
                 //$issue_qty = $this->super_model->select_column_where("issuance_details", "quantity", "rq_id", $it->rq_id);
-                $remarks = $this->super_model->select_column_where("issuance_details", "remarks", "rq_id", $it->rq_id);
+                //$remarks = $this->super_model->select_column_where("issuance_details", "remarks", "rq_id", $it->rq_id);
+                $remarks = $this->super_model->select_column_where("request_head", "remarks", "request_id", $it->request_id);
                 $issueid = $this->super_model->select_column_where("issuance_details", "issuance_id", "rq_id", $it->rq_id);
                 $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
                 $issued_qty = $this->super_model->select_sum_join("quantity","issuance_head","issuance_details", "request_id = '$id' AND item_id ='$it->item_id' AND rq_id = '$it->rq_id'","issuance_id");
@@ -625,7 +626,7 @@ class Issue extends CI_Controller {
         if($rows==0){
              $mifno = "MIF-".$year."-0001";
         } else {
-            $maxrecno=$this->super_model->get_max_where("issuance_head", "mif_no");
+            $maxrecno=$this->super_model->get_max("issuance_head", "mif_no");
             //$maxrecno=$this->super_model->get_max_where("issuance_head", "mif_no","create_date LIKE '$year%'");
             $recno = explode('-',$maxrecno);
            

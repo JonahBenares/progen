@@ -3,6 +3,7 @@
     <td style="padding: 0px "><center><?php echo $list['count']; ?></center></td>
     <td style="padding: 0px "><input type = "text" name = "original_pn[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['original_pn']; ?>" ></td>
     <td style="padding: 0px "><textarea  rows="3" type = "text" name = "item[]" style = "text-align:center;width:100%;border:1px transparent;"><?php echo $list['item']; ?></textarea></td>
+     <td style="padding: 0px "><input type = "text" name = "serial[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['serial']; ?>"></td>
     <td style="padding: 0px "><input type = "text" name = "quantity[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['quantity']; ?>"></td>
     <td style="padding: 0px "><input type = "text" name = "unit[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['unit_name']; ?>"></td>
     <td style="padding: 0px "><input type = "text" name = "selling[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['selling']; ?>"></td>
