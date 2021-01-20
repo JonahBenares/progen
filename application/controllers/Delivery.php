@@ -80,6 +80,29 @@ class Delivery extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function edit_endpurp(){  
+        $this->load->view('template/header');
+        $data['id']=$this->input->post('id');
+        $id=$this->input->post('id');
+        foreach($this->super_model->select_row_where('delivery_head', 'delivery_id', $id) AS $i){
+            $data['delivery_list'][]=array(
+                'pr_no'=>$i->pr_no,
+            );
+        }
+        $this->load->view('delivery/edit_endpurp',$data);
+    }
+
+    public function update_purend(){
+        $data = array(
+            'pr_no'=>$this->input->post('pr_no'),
+        );
+        $delivery_id = $this->input->post('delivery_id');
+        if($this->super_model->update_where('delivery_head', $data, 'delivery_id', $delivery_id)){
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/delivery/delivery_list'; </script>";
+        }
+    }
+
     public function delivery_receipt(){        
         $this->load->view('template/header');
         $this->load->view('template/print_head');
@@ -177,7 +200,7 @@ class Delivery extends CI_Controller {
         } else {
             $dr=$this->super_model->get_max("delivery_head", "dr_no");
             $dr_nos = explode('-',$dr);
-            $series = $dr_nos[1]+1;
+            $series = $dr_nos[2]+1;
             if(strlen($series)==1){
                 $dr_no = $location."-".$year."-000".$series;
             } else if(strlen($series)==2){

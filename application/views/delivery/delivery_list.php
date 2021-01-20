@@ -40,6 +40,28 @@
 						</a>
 					</div>
 				</div>
+				<div class="modal fade" id="updatePR" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header modal-headback">
+								<h4 class="modal-title" id="myModalLabel">Update Delivery
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</h4>															
+							</div>
+							<form method="POST" action = "<?php echo base_url(); ?>/index.php/delivery/update_purend">
+								<div class="modal-body">
+									<div id = 'ep'></div>
+								</div>
+								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-primary btn-block">Save changes</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 				<div class="panel-body">
 					<div class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
@@ -80,6 +102,11 @@
 									<td style="padding:3px" align="center"><?php echo $h['waybill_no'];?></td>
 									<td style="padding:3px"><?php echo $h['pr_no'];?></td>
 									<td style="padding:3px" align="center">
+										<?php if($_SESSION['user_id'] == '5'){ ?>
+										<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updatePR" id = 'getD' data-id="<?php echo $h['delivery_id']; ?>" title="Update Restock">
+											<span class="fa fa-pencil"></span>
+										</a>	
+										<?php } ?>
 										<a  href="<?php echo base_url();?>index.php/delivery/delivery_receipt/<?php echo $h['delivery_id']; ?>" target = "_blank" class="btn btn-warning btn-xs" title="VIEW" alt='VIEW'><span class="fa fa-eye"></span></a>
 									</td>
 								</tr>

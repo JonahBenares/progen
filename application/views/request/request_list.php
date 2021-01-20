@@ -45,12 +45,12 @@
 				<div class="modal fade" id="updatePR" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLongTitle">Update Purpose & Enduse
+							<div class="modal-header modal-headback">
+								<h4 class="modal-title" id="myModalLabel">Update Purpose & Enduse
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span aria-hidden="true">&times;</span>
 									</button>
-								</h5>															
+								</h4>															
 							</div>
 							<form method="POST" action = "<?php echo base_url(); ?>/index.php/request/update_purend">
 								<div class="modal-body">

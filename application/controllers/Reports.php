@@ -2625,7 +2625,12 @@ class Reports extends CI_Controller {
 
                 $in_balance = $head->qty - $issueqty;
 
-                if(($restockqty==0 && $excessqty==0) && $issueqty ==0){
+                if($issueqty==0){
+                    $final_balance = $head->qty;
+                } else if($issueqty!=0){
+                    $final_balance = $head->qty-$issueqty;
+                }
+                /*if(($restockqty==0 && $excessqty==0) && $issueqty ==0){
                     $final_balance = $head->qty;
                 } else if($issueqty!=0 && $restockqty==0 && $excessqty==0){
                     $final_balance = $head->qty-$issueqty;
@@ -2633,7 +2638,7 @@ class Reports extends CI_Controller {
                     $final_balance =  $in_balance + $restockqty; 
                 } else if(($issueqty!=0 && $restockqty!=0 && $excessqty!=0) || ($issueqty==0 && ($restockqty!=0 || $excessqty!=0)) || ($issueqty!=0 && $restockqty==0 && $excessqty!=0)){
                     $final_balance =  $excessqty + $restockqty; 
-                }
+                }*/
 
                 $data['list'][] = array(
                     "prno"=>$head->pr_no,
