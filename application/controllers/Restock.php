@@ -147,6 +147,39 @@ class Restock extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function edit_endpurp(){  
+        $this->load->view('template/header');
+        $data['id']=$this->input->post('id');
+        $id=$this->input->post('id');
+        $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
+        $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
+        $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
+        $data['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
+        foreach($this->super_model->select_row_where('restock_head', 'rhead_id', $id) AS $i){
+            $data['restock_list'][]=array(
+                'from_pr'=>$i->from_pr,
+                'purpose_id'=>$i->purpose_id,
+                'enduse_id'=>$i->enduse_id,
+                'department_id'=>$i->department_id,
+            );
+        }
+        $this->load->view('restock/edit_endpurp',$data);
+    }
+
+    public function update_purend(){
+        $data = array(
+            'from_pr'=>$this->input->post('pr_no'),
+            'purpose_id'=>$this->input->post('purpose'),
+            'enduse_id'=>$this->input->post('enduse'),
+            'department_id'=>$this->input->post('department'),
+        );
+        $rhead_id = $this->input->post('rhead_id');
+        if($this->super_model->update_where('restock_head', $data, 'rhead_id', $rhead_id)){
+            echo "<script>alert('Successfully Updated!'); 
+                window.location ='".base_url()."index.php/restock/restock_list'; </script>";
+        }
+    }
+
     public function getIteminformation(){
         $item = $this->input->post('item');
         foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 

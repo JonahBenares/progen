@@ -6,6 +6,24 @@ function updateRestock(baseurl, id, resid) {
   
 }
 
+$(document).on('click', '#getR', function(e){
+    e.preventDefault();
+    var uid = $(this).data('id');    
+    var loc= document.getElementById("baseurl").value;
+    var redirect1=loc+'/index.php/restock/edit_endpurp';
+    $.ajax({
+          url: redirect1,
+          type: 'POST',
+          data: 'id='+uid,
+        beforeSend:function(){
+            $("#ep").html('Please wait ..');
+        },
+        success:function(data){
+           $("#ep").html(data);
+        },
+    })
+});
+
 $(document).ready(function(){
     var loc= document.getElementById("baseurl").value;
     var redirect=loc+'/index.php/restock/itemlist';
