@@ -355,6 +355,7 @@ class Assembly extends CI_Controller {
                 "uom"=>$unit,
                 "qty"=>$det->qty,
                 "unit_price"=>$det->unit_price,
+                "selling_price"=>$det->selling_price,
                 "item_id"=>$det->item_id,
                 "uom_id"=>$det->uom
             );
