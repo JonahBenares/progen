@@ -205,7 +205,7 @@
                         <td width="30%" align="center"><strong>Item Description</strong></td>                    
                         <td width="5%" align="center"><strong>Serial No.</strong></td>
                         <td width="5%" align="center"><strong>Qty</strong></td>
-                        <td width="10%" align="center"><strong>U/M</strong></td>
+                        <td width="10%" align="center"><strong>UOM</strong></td>
                         <td width="5%" align="center"><strong>Selling Price</strong></td>
                         <td width="5%" align="center"><strong>Discount</strong></td>
                         <td width="5%" align="center"><strong>Shipping Fee</strong></td>
