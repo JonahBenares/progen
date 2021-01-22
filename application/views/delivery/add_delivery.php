@@ -28,7 +28,7 @@
 					<?php foreach($heads AS $h){ ?>
 					<form id='Buyerfrm' method = "POST">
 					<div class="canvas-wrapper">
-						<table width="100%" class="table-boeasdardered">
+						<table width="100%" class="table-boesasadrdered">
 							<tr>
 								<td width="12%"><p class="nomarg">Buyer:</p></td>
 								<td width="40%"><label class="labelStyle"><?php echo $h['buyer_name']; ?></label></td>
