@@ -56,6 +56,10 @@
 								<td><p class="nomarg pull-right">PO Date:</p></td>
 								<td colspan="5"><h5 class="nomarg"><?php echo $h['po_date']; ?></h5></td>
 							</tr>
+							<tr>
+								<td><p class="nomarg">VAT:</p></td>
+								<td> <h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Yes' : 'No'; ?></h5></td>
+							</tr>
 						</table>
 						<hr>
 						<div class="row">
@@ -132,6 +136,7 @@
 											<td><center><?php echo $x; ?></center></td>
 											<td><center><?php echo $det['pn_no']; ?></center></td>
 											<td><center><?php echo $det['item_name'];; ?></center></td>
+											<td><center><?php echo $det['serial_no'];; ?></center></td>
 											<td><center><?php echo $det['qty'];; ?></center></td>
 											<td><center><?php echo $det['unit'];; ?></center></td>
 											<td><center><?php echo $det['selling_price'];; ?></center></td>

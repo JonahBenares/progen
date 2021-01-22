@@ -146,6 +146,7 @@ class Delivery extends CI_Controller {
                 "noted_id"=>$h->noted_by,
                 "released_id"=>$h->released_by,
                 "remarks"=>$h->remarks,
+                "vat"=>$h->vat,
             );
             foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
@@ -406,6 +407,7 @@ class Delivery extends CI_Controller {
                 "pr_no"=>$h->pr_no,
                 "dr_no"=>$h->dr_no,
                 "saved"=>$h->saved,
+                "vat"=>$h->vat,
             );
             foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
@@ -417,6 +419,7 @@ class Delivery extends CI_Controller {
                     "unit"=>$unit,
                     "qty"=>$d->qty,
                     "selling_price"=>$d->selling_price,
+                    "serial_no"=>$d->serial_no,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
                 );
