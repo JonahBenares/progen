@@ -59,7 +59,7 @@
                                     <tr>
                                         <td width="20%"><p class="p-b-2">Weight (Kg)</p></td>
                                         <td width="5%"><p class="p-b-2">:</p></td>
-                                        <td><p class="p-b-2"><input type="text" name = "weight" id="weight" class="form-control " value = "<?php echo $i['uom']; ?>"></p></td>
+                                        <td><p class="p-b-2"><input type="text" name = "weight" id="weight" class="form-control " value = "<?php echo $i['weight']; ?>"></p></td>
                                     </tr>
                                    
                                 </table>

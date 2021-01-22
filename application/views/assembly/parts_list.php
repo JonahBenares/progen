@@ -92,7 +92,7 @@
 
 												      	</h5>
 													</div>
-										        <span class="badge badge-info pull-right m-t-10">90 Kg</span>
+										        <span class="badge badge-info pull-right m-t-10"><?php echo number_format($as['weight'],2); ?> Kg</span>
 										        </button>
 												<?php if($as['locked'] == '1'){ ?>
 												 <a href="" class="btn btn-sm btn-danger" type="button" style="width:5%" title="Locked">
@@ -135,7 +135,7 @@
 												      	</h5>
 													</div>
 										        </a>
-										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>"  style="width:5%" title="Update Assembly">
+										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>" data-weight="<?php echo $as['weight']; ?>" style="width:5%" title="Update Assembly">
 													<div class="card-header">
 														<h5 class="mb-0">
 															<span class="fa fa-pencil text-white"></span>
@@ -178,7 +178,7 @@
 												      				<td><?php echo $i['qty']; ?></td>
 												      				<td><?php echo $i['unit_price']; ?></td>
 												      				<td><?php echo $i['selling_price']; ?></td>
-												      				<td>90</td>
+												      				<td><?php echo $i['weight']; ?></td>
 												      				<td align="center">
 												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
 												      					<a onclick="return confirm('Are you sure you want to delete it?')" title="Remove Item" href="<?php echo base_url(); ?>index.php/assembly/deleteitem/<?php echo $i['id']; ?>" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
@@ -251,7 +251,7 @@
 						<label>Assembly Name</label>
 						<input type = "text" name = "assembly_name" class = "form-control" autocomplete="off">
 						<label>Weight (Kg):</label>
-						<input type = "text" name = "assembly_name" class = "form-control" autocomplete="off">
+						<input type = "text" name = "weight" class = "form-control" autocomplete="off">
 					</div>
 					<div class="modal-footer"> 
 						<input type = "hidden" name = "engine_id" id='engine_id' class = "form-control">
@@ -307,7 +307,7 @@
 							</div>
 							<div class="col-lg-6">
 								<label>Weight (Kg)</label>
-								<input type = "text" name = "weight" id="uom" class = "form-control" >
+								<input type = "text" name = "weight" id="weight" class = "form-control" >
 							</div>
 						</div>
 						
@@ -359,7 +359,7 @@
 						<label>Assembly Name</label>
 						<input type = "text" name = "assemblyname" id="assemblyname" class = "form-control">
 						<label>Weight (Kg):</label>
-						<input type = "text" name = "assemblyname" id="assemblyname" class = "form-control">
+						<input type = "text" name = "weight" id="weights" class = "form-control">
 						<div class="modal-footer">
 							<input type="hidden" name="assemblyid" id="assemblyid" >
 							<button type="submit" class="btn btn-info btn-block">Save changes</button>
