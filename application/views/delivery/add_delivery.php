@@ -58,7 +58,7 @@
 							</tr>
 							<tr>
 								<td><p class="nomarg">VAT:</p></td>
-								<td> <h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Yes' : 'No'; ?></h5></td>
+								<td> <h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></h5></td>
 							</tr>
 						</table>
 						<hr>

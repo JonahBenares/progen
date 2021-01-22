@@ -191,7 +191,7 @@
                     </tr> 
                     <tr>
                         <td><strong><h6 class="nomarg">VAT</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label> <?php echo ($det['vat']==1) ? 'Yes' : 'No'; ?></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label> <?php echo ($det['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></td>
                         <td></td>
                     </tr>           
                 </table>
