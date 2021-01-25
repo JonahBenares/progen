@@ -28,11 +28,11 @@
 					<?php foreach($heads AS $h){ ?>
 					<form id='Buyerfrm' method = "POST">
 					<div class="canvas-wrapper">
-						<table width="100%" class="table-boerdered">
+						<table width="100%" class="table-bordersded">
 							<tr>
 								<td width="12%"><p class="nomarg">Buyer:</p></td>
 								<td width="40%"><label class="labelStyle"><?php echo $h['buyer_name']; ?></label></td>
-								<td width="5%"><p class="nomarg pull-right">DR No:</p></td>
+								<td width="7%"><p class="nomarg pull-right">DR No:</p></td>
 								<td width="30%" colspan="4"><label class="labelStyle">&nbsp <?php echo $h['dr_no']; ?></label></td>
 								
 							</tr>
@@ -54,7 +54,7 @@
 								<td><p class="nomarg">PR No./PO No.:</p></td>
 								<td> <h5 class="nomarg"><?php echo $h['pr_no']; ?></h5></td>
 								<td><p class="nomarg pull-right">PO Date:</p></td>
-								<td colspan="5"><h5 class="nomarg"><?php echo $h['po_date']; ?></h5></td>
+								<td colspan="4"><h5 class="nomarg">&nbsp<?php echo $h['po_date']; ?></h5></td>
 							</tr>
 							<tr>
 								<td><p class="nomarg">VAT:</p></td>
