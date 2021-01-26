@@ -139,7 +139,7 @@
 											<input style="text-align: right" class="form-control" value='<?php echo $i->selling_price; ?>' type="text" name="selling" id="selling">									
 										</div>
 										<div class="col-lg-3">		
-											<label for="pn">Minimun Order Quantity:</label>
+											<label for="pn">Minimum Order Quantity:</label>
 											<input style="text-align: right" class="form-control" value='<?php echo $i->min_qty; ?>' type="text" name="minimum" id="minimum">						
 										</div>
 									</div>

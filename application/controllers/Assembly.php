@@ -1372,12 +1372,13 @@ class Assembly extends CI_Controller {
         }
         $now = date('Y-m-d H:i:s');
         $month = date('Y-m');
+        $year = date('Y');
 
-        $count_receipt = $this->super_model->count_custom_where("assembly_receive_head","receipt_no LIKE '$month%'");
+        $count_receipt = $this->super_model->count_custom_where("assembly_receive_head","receipt_no LIKE '$year%'");
         if($count_receipt==0){
             $receipt_no = $month."-0001";
         } else {
-            $max = $this->super_model->get_max_where("assembly_receive_head", "receipt_no","receipt_no LIKE '$month%'");
+            $max = $this->super_model->get_max_where("assembly_receive_head", "receipt_no","receipt_no LIKE '$year%'");
             $rec = explode('-',$max);
             $series = $rec[2]+1;
             $receipt_no = $month."-000".$series;
