@@ -23,8 +23,10 @@ $(document).on("click", "#updateEngine_button", function () {
 $(document).on("click", "#updateAssembly_button", function () {
      var assemblyid = $(this).attr("data-id");
      var assemblyname = $(this).attr("data-trigger");
+     var weight = $(this).attr("data-weight");
      $("#assemblyid").val(assemblyid);
      $("#assemblyname").val(assemblyname);
+     $("#weights").val(weight);
 
 });
 

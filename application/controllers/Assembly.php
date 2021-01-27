@@ -247,6 +247,7 @@ class Assembly extends CI_Controller {
                 'assembly_id'=>$b->assembly_id,
                 'engine_id'=>$b->engine_id,
                 'assembly_name'=>$b->assembly_name,
+                'weight'=>$b->weight,
                 'bh_id'=>$b->bh_id,
                 'locked'=>$b->locked,
                 'bank_type'=>$bank_type,
@@ -264,6 +265,7 @@ class Assembly extends CI_Controller {
                 "uom"=>$unit,
                 "qty"=>$det->qty,
                 "unit_price"=>$det->unit_price,
+                "weight"=>$det->weight,
                 "selling_price"=>$det->selling_price
             );
         }
@@ -357,6 +359,7 @@ class Assembly extends CI_Controller {
                 "unit_price"=>$det->unit_price,
                 "selling_price"=>$det->selling_price,
                 "item_id"=>$det->item_id,
+                "weight"=>$det->weight,
                 "uom_id"=>$det->uom
             );
         }
@@ -399,6 +402,7 @@ class Assembly extends CI_Controller {
         $data = array(
             'engine_id'=>$this->input->post('engine_id'),
             'assembly_name'=>$this->input->post('assembly_name'),
+            'weight'=>$this->input->post('weight'),
         );
         if($this->super_model->insert_into("assembly_head", $data)){
            echo "<script>alert('Assembly successfully added!'); 
@@ -408,7 +412,8 @@ class Assembly extends CI_Controller {
 
      public function edit_assembly(){
         $data = array(
-            'assembly_name'=>$this->input->post('assemblyname')
+            'assembly_name'=>$this->input->post('assemblyname'),
+            'weight'=>$this->input->post('weight'),
         );
         $assemblyid = $this->input->post('assemblyid');
             if($this->super_model->update_where('assembly_head ', $data, 'assembly_id', $assemblyid)){
@@ -444,6 +449,7 @@ class Assembly extends CI_Controller {
             'unit_price'=>$this->input->post('unit_price'),
             'selling_price'=>$this->input->post('selling_price'),
             'uom'=>$this->input->post('uom_id'),
+            'weight'=>$this->input->post('weight'),
         );
         if($this->super_model->insert_into("assembly_details", $data)){
            echo "<script>alert('Assembly item successfully added!'); 
@@ -460,6 +466,7 @@ class Assembly extends CI_Controller {
             'unit_price'=>$this->input->post('unit_price'),
             'selling_price'=>$this->input->post('selling_price'),
             'uom'=>$this->input->post('uom_id'),
+            'weight'=>$this->input->post('weight'),
         );
         if($this->super_model->update_where("assembly_details", $data, 'ad_id', $id)){
            echo "<script>alert('Assembly item successfully updated!'); 
@@ -1365,12 +1372,13 @@ class Assembly extends CI_Controller {
         }
         $now = date('Y-m-d H:i:s');
         $month = date('Y-m');
+        $year = date('Y');
 
-        $count_receipt = $this->super_model->count_custom_where("assembly_receive_head","receipt_no LIKE '$month%'");
+        $count_receipt = $this->super_model->count_custom_where("assembly_receive_head","receipt_no LIKE '$year%'");
         if($count_receipt==0){
             $receipt_no = $month."-0001";
         } else {
-            $max = $this->super_model->get_max_where("assembly_receive_head", "receipt_no","receipt_no LIKE '$month%'");
+            $max = $this->super_model->get_max_where("assembly_receive_head", "receipt_no","receipt_no LIKE '$year%'");
             $rec = explode('-',$max);
             $series = $rec[2]+1;
             $receipt_no = $month."-000".$series;

@@ -89,10 +89,11 @@
 													<div class="card-header" id="headingOne">
 												      	<h5 class="mb-0 pull-left">
 													          <?php echo $as['assembly_name']; ?>
+
 												      	</h5>
 													</div>
+										        <span class="badge badge-info pull-right m-t-10"><?php echo number_format($as['weight'],2); ?> Kg</span>
 										        </button>
-										        
 												<?php if($as['locked'] == '1'){ ?>
 												 <a href="" class="btn btn-sm btn-danger" type="button" style="width:5%" title="Locked">
 													<div class="card-header">
@@ -134,7 +135,7 @@
 												      	</h5>
 													</div>
 										        </a>
-										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>"  style="width:5%" title="Update Assembly">
+										        <a class="btn btn-sm btn-info" type="button" data-toggle="modal" id="updateAssembly_button" data-target="#updateAssembly" data-id="<?php echo $as['assembly_id']; ?>" data-trigger="<?php echo $as['assembly_name']; ?>" data-weight="<?php echo $as['weight']; ?>" style="width:5%" title="Update Assembly">
 													<div class="card-header">
 														<h5 class="mb-0">
 															<span class="fa fa-pencil text-white"></span>
@@ -161,6 +162,7 @@
 											      				<th>Qty</th>
 											      				<th>Unit Price</th>
 											      				<th>Selling Price</th>
+											      				<th width="5%">Weight (Kg)</th>
 											      				<th width="10%"><center><span class="fa fa-bars"></span></center></th>
 											      			</tr>
 											      			<tbody>
@@ -176,6 +178,7 @@
 												      				<td><?php echo $i['qty']; ?></td>
 												      				<td><?php echo $i['unit_price']; ?></td>
 												      				<td><?php echo $i['selling_price']; ?></td>
+												      				<td><?php echo $i['weight']; ?></td>
 												      				<td align="center">
 												      					<a title="Update item" href="javascript:void(0)" class="btn btn-xs btn-info" onclick="updateItemAssem('<?php echo base_url(); ?>', '<?php echo $i['id']; ?>')" ><span class="fa fa-pencil"></span></a>
 												      					<a onclick="return confirm('Are you sure you want to delete it?')" title="Remove Item" href="<?php echo base_url(); ?>index.php/assembly/deleteitem/<?php echo $i['id']; ?>" class="btn btn-xs btn-danger"><span class="fa fa-times"></span></a>
@@ -247,6 +250,8 @@
 					<div class="modal-body">
 						<label>Assembly Name</label>
 						<input type = "text" name = "assembly_name" class = "form-control" autocomplete="off">
+						<label>Weight (Kg):</label>
+						<input type = "text" name = "weight" class = "form-control" autocomplete="off">
 					</div>
 					<div class="modal-footer"> 
 						<input type = "hidden" name = "engine_id" id='engine_id' class = "form-control">
@@ -272,8 +277,17 @@
 								<input type = "text" name = "item_name" id="item_name" class = "form-control" autocomplete="off">
 								<span id="suggestion-item"></span>
                                 
+								
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
 								<label>Part Number</label>
 								<input type = "text" name = "pn_no" id="pn_no" class = "form-control" style='pointer-events: none'>
+							</div>
+							<div class="col-lg-6">
+								<label>Quantity</label>
+								<input type = "Number" name = "qty" class = "form-control">
 							</div>
 						</div>
 						<div class="row">
@@ -292,8 +306,8 @@
 								<input type = "text" name = "uom" id="uom" class = "form-control" style='pointer-events: none'>
 							</div>
 							<div class="col-lg-6">
-								<label>Quantity</label>
-								<input type = "Number" name = "qty" class = "form-control">
+								<label>Weight (Kg)</label>
+								<input type = "text" name = "weight" id="weight" class = "form-control" >
 							</div>
 						</div>
 						
@@ -344,6 +358,8 @@
 					<form method="POST" action = "<?php echo base_url(); ?>/index.php/assembly/edit_assembly">
 						<label>Assembly Name</label>
 						<input type = "text" name = "assemblyname" id="assemblyname" class = "form-control">
+						<label>Weight (Kg):</label>
+						<input type = "text" name = "weight" id="weights" class = "form-control">
 						<div class="modal-footer">
 							<input type="hidden" name="assemblyid" id="assemblyid" >
 							<button type="submit" class="btn btn-info btn-block">Save changes</button>

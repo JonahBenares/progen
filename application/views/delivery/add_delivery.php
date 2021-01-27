@@ -28,19 +28,19 @@
 					<?php foreach($heads AS $h){ ?>
 					<form id='Buyerfrm' method = "POST">
 					<div class="canvas-wrapper">
-						<table width="100%" class="table-bsordered">
+						<table width="100%" class="table-bordersded">
 							<tr>
-								<td ><p class="nomarg">Buyer:</p></td>
-								<td ><label class="labelStyle"><?php echo $h['buyer_name']; ?></label></td>
-								<td ><p class="nomarg pull-right">DR No:</p></td>
-								<td colspan="3"><label class="labelStyle">&nbsp <?php echo $h['dr_no']; ?></label></td>
-								<td width="15%"></td>
+								<td width="12%"><p class="nomarg">Buyer:</p></td>
+								<td width="40%"><label class="labelStyle"><?php echo $h['buyer_name']; ?></label></td>
+								<td width="7%"><p class="nomarg pull-right">DR No:</p></td>
+								<td width="30%" colspan="4"><label class="labelStyle">&nbsp <?php echo $h['dr_no']; ?></label></td>
+								
 							</tr>
 							<tr>
-								<td width="10%"><p class="nomarg">Address:</p></td>
-								<td width="30%"> <h5 class="nomarg"><?php echo $h['address']; ?></h5></td>
-								<td width="10%"><p class="nomarg pull-right">Date:</p></td>
-								<td width="10%"><h5 class="nomarg">&nbsp <?php echo $h['date']; ?></h5></td>
+								<td><p class="nomarg">Address:</p></td>
+								<td > <h5 class="nomarg"><?php echo $h['address']; ?></h5></td>
+								<td><p class="nomarg pull-right">Date:</p></td>
+								<td><h5 class="nomarg">&nbsp <?php echo $h['date']; ?></h5></td>
 							</tr>
 							<tr>
 								<td><p class="nomarg">Contact Person:</p></td>
@@ -54,7 +54,11 @@
 								<td><p class="nomarg">PR No./PO No.:</p></td>
 								<td> <h5 class="nomarg"><?php echo $h['pr_no']; ?></h5></td>
 								<td><p class="nomarg pull-right">PO Date:</p></td>
-								<td colspan="5"><h5 class="nomarg"><?php echo $h['po_date']; ?></h5></td>
+								<td colspan="4"><h5 class="nomarg">&nbsp<?php echo $h['po_date']; ?></h5></td>
+							</tr>
+							<tr>
+								<td><p class="nomarg">VAT:</p></td>
+								<td> <h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></h5></td>
 							</tr>
 						</table>
 						<hr>
@@ -132,6 +136,7 @@
 											<td><center><?php echo $x; ?></center></td>
 											<td><center><?php echo $det['pn_no']; ?></center></td>
 											<td><center><?php echo $det['item_name'];; ?></center></td>
+											<td><center><?php echo $det['serial_no'];; ?></center></td>
 											<td><center><?php echo $det['qty'];; ?></center></td>
 											<td><center><?php echo $det['unit'];; ?></center></td>
 											<td><center><?php echo $det['selling_price'];; ?></center></td>

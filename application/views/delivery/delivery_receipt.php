@@ -188,6 +188,11 @@
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
                         <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['po_date']?></label></td>  
+                    </tr> 
+                    <tr>
+                        <td><strong><h6 class="nomarg">VAT</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label> <?php echo ($det['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></td>
+                        <td></td>
                     </tr>           
                 </table>
                 
@@ -200,7 +205,7 @@
                         <td width="30%" align="center"><strong>Item Description</strong></td>                    
                         <td width="5%" align="center"><strong>Serial No.</strong></td>
                         <td width="5%" align="center"><strong>Qty</strong></td>
-                        <td width="10%" align="center"><strong>U/M</strong></td>
+                        <td width="10%" align="center"><strong>UOM</strong></td>
                         <td width="5%" align="center"><strong>Selling Price</strong></td>
                         <td width="5%" align="center"><strong>Discount</strong></td>
                         <td width="5%" align="center"><strong>Shipping Fee</strong></td>

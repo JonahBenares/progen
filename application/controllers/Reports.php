@@ -2768,11 +2768,12 @@ class Reports extends CI_Controller {
         $update_receive = $this->super_model->update_custom_where("receive_items", $data, "rd_id = '$rdid' AND item_id = '$item_id'");*/
 
         $year=date('Y-m');
-        $rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year%'");
+        $year_series=date('Y');
+        $rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year_series%'");
         if($rows==0){
              $mrwfno = "MRWF-".$year."-0001";
         } else {
-            $maxrecno=$this->super_model->get_max_where("restock_head", "mrwf_no","restock_date LIKE '$year%'");
+            $maxrecno=$this->super_model->get_max_where("restock_head", "mrwf_no","restock_date LIKE '$year_series%'");
             $recno = explode('-',$maxrecno);
             $series = $recno[3]+1;
             if(strlen($series)==1){

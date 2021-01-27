@@ -30,6 +30,13 @@
                                         <td><p class="p-b-2"><input type="text" name = "pn_no" id="pn_no" class="form-control " value="<?php echo $i['pn']; ?>"></p></td>
                                     </tr>
                                     <tr>
+                                        <td width="20%"><p class="p-b-2">Qty</p></td>
+                                        <td width="5%"><p class="p-b-2">:</p></td>
+                                        <td>                                        
+                                            <p class="p-b-2"><input type="number" id = "qty" name = "qty" class="form-control " value="<?php echo $i['qty']; ?>"></p>                                     
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td width="20%"><p class="p-b-2">Unit Price</p></td>
                                         <td width="5%"><p class="p-b-2">:</p></td>
                                         <td>                                        
@@ -43,17 +50,16 @@
                                             <p class="p-b-2"><input type="text" id = "selling_price" name = "selling_price" class="form-control " value="<?php echo $i['selling_price']; ?>"></p>                                     
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td width="20%"><p class="p-b-2">Qty</p></td>
-                                        <td width="5%"><p class="p-b-2">:</p></td>
-                                        <td>                                        
-                                            <p class="p-b-2"><input type="number" id = "qty" name = "qty" class="form-control " value="<?php echo $i['qty']; ?>"></p>                                     
-                                        </td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td width="20%"><p class="p-b-2">UOM</p></td>
                                         <td width="5%"><p class="p-b-2">:</p></td>
                                         <td><p class="p-b-2"><input type="text" name = "uom" id="uom" class="form-control " value = "<?php echo $i['uom']; ?>"></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%"><p class="p-b-2">Weight (Kg)</p></td>
+                                        <td width="5%"><p class="p-b-2">:</p></td>
+                                        <td><p class="p-b-2"><input type="text" name = "weight" id="weight" class="form-control " value = "<?php echo $i['weight']; ?>"></p></td>
                                     </tr>
                                    
                                 </table>
