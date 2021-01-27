@@ -130,6 +130,8 @@
 											<th class="tr-bottom" width="10%"><center>Expected Qty</center></th>
 											<th class="tr-bottom" width="10%"><center>Delivered / Received</center></th>
 											<th class="tr-bottom" width="5%"><center>UOM</center></th>
+											<th class="tr-bottom" width="5%"><center>Shipping Fee</center></th>
+											<th class="tr-bottom" width="5%"><center>Currency</center></th>
 											<th class="tr-bottom" width="20%"><center>Remarks</center></th>
 											<th><a class="btn btn-default" ><span class="fa fa-pencil"></span></a></th>
 										</tr>
@@ -181,6 +183,8 @@
 											<td><center><?php echo $it['expqty']; ?></center></td>
 											<td><center><?php echo $it['recqty']; ?></center></td>
 											<td><center><?php echo $it['unit']; ?></center></td>
+											<td><center><?php echo $it['shipping_fee']; ?></center></td>
+											<td><center><?php echo $it['currency']; ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
 											<?php if($saved==0){ ?> 
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
