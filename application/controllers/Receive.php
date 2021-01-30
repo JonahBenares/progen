@@ -100,6 +100,8 @@ class Receive extends CI_Controller {
                     'expqty'=>$items->expected_qty,
                     'recqty'=>$items->received_qty,
                     'inspected'=>$inspected,
+                    'shipping_fee'=>$items->shipping_fee,
+                    'currency'=>$items->currency,
                     'remarks'=>$items->remarks,
                     'total'=>$total
                     
