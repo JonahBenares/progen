@@ -135,7 +135,7 @@
 						<table width="100%">
 							<tr>
 								<td width="15%"><label>Date:</label></td>
-								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" readonly><br></td>
+								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" <?php echo ($user_id==5) ? '' : 'readonly';?>><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>PO Date:</label></td>
