@@ -7,7 +7,7 @@ if(!empty($stockcard)){
 	}
 
 
-array_multisort($date, SORT_ASC, $series, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
+array_multisort($date, SORT_ASC, $series, SORT_ASC,  $cdate, SORT_DESC, $stockcard);
 }
 if(!empty($stockcard)){
 	foreach ($balance as $key => $row) {
