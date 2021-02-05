@@ -13,9 +13,10 @@ if(!empty($stockcard)){
 	foreach ($balance as $key => $row) {
 	    $date[$key]  = $row['date'];
 	    $series[$key] = $row['series'];
+	     $cdate[$key] = $row['create_date'];
 	}
 
-	array_multisort($date, SORT_ASC, $series, SORT_ASC, $balance);
+	array_multisort($date, SORT_ASC, $series, SORT_ASC, $cdate, SORT_DESC, $balance);
 
 	$total_bal=0;
 	foreach($balance AS $sc){

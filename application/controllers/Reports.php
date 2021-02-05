@@ -1837,6 +1837,7 @@ class Reports extends CI_Controller {
                 'method'=>'Beginning Balance',
                 'quantity'=>$begbal->quantity,
                 'date'=>'',
+                 'create_date'=>''
 
             );
         }
@@ -1862,7 +1863,8 @@ class Reports extends CI_Controller {
                 'series'=>'2',
                 'method'=>'Receive',
                 'quantity'=>$receive->received_qty,
-                'date'=>$receive->receive_date
+                'date'=>$receive->receive_date,
+                 'create_date'=>$receive->create_date
             );
         }
 
@@ -1889,7 +1891,8 @@ class Reports extends CI_Controller {
                 'series'=>'3',
                 'method'=>'Issuance',
                 'quantity'=>$issue->quantity,
-                'date'=>$issue->issue_date
+                'date'=>$issue->issue_date,
+                'create_date'=>$issue->create_date
             );
 
         }
@@ -1914,7 +1917,8 @@ class Reports extends CI_Controller {
                 'series'=>'4',
                 'method'=>'Restock',
                 'quantity'=>$restock->quantity,
-                'date'=>$restock->restock_date
+                'date'=>$restock->restock_date,
+                'create_date'=>$restock->restock_date
             );
 
         }
