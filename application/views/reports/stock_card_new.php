@@ -7,7 +7,7 @@ if(!empty($stockcard)){
 	}
 
 
-array_multisort($date, SORT_ASC, $series, SORT_ASC,  $cdate, SORT_DESC, $stockcard);
+array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
 }
 if(!empty($stockcard)){
 	foreach ($balance as $key => $row) {
@@ -16,7 +16,7 @@ if(!empty($stockcard)){
 	     $cdate[$key] = $row['create_date'];
 	}
 
-	array_multisort($date, SORT_ASC, $series, SORT_ASC, $cdate, SORT_DESC, $balance);
+	array_multisort($date, SORT_ASC, $cdate, SORT_ASC, $balance);
 
 	$total_bal=0;
 	foreach($balance AS $sc){
