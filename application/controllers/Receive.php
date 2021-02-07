@@ -198,6 +198,7 @@ class Receive extends CI_Controller {
                     'recqty'=>$items->received_qty,
                     'remarks'=>$items->remarks,
                     'catno'=>$items->catalog_no,
+                    'shipping_fee'=>$items->shipping_fee,
                     'nkk_no'=>$items->nkk_no,
                     'semt_no'=>$items->semt_no,
                     'brand'=>$brand,
