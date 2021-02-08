@@ -519,12 +519,14 @@
 							<span class="tooltiptext shadow">Import Items</span>
 						</a>
 					</li>
+					<?php if($_SESSION['user_id']==5){ ?>
 					<li class="user">
 						<a class="dropdown-toggle count-info" href="<?php echo base_url(); ?>index.php/masterfile/user_reslist">
 							<span class="fa fa-user-circle-o"></span>
 							<span class="tooltiptext shadow">User Restriction</span>
 						</a>
 					</li>
+					<?php } ?>
 					<li class="divider-side" ></li>
 					<li class="setting set">
 						<a class="dropdown-toggle count-info setting-hover" data-toggle="dropdown" href="#">
