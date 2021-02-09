@@ -1,5 +1,6 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/receive.js"></script>
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/Styles/bootstrap-select.min.css" />
 <style type="text/css">
 	body{
 		padding:0px;
@@ -77,7 +78,7 @@
 							<div class="col-lg-2 col-lg-offset-1">
 								<h5>
 									PR/JO#: 
-									<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
+									<select name="prno" id='prno' class="form-control selectpicker" data-live-search="true" onchange="choosePRrec()">
 										<option value = ""></option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
@@ -144,7 +145,7 @@
 								<div class="col-lg-2 col-lg-offset-1">
 									<h5>PR#:
 										<!--<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control">-->
-										<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
+										<select name="prno" id='prno' class="form-control selectpicker" data-live-search="true" onchange="choosePRrec()">
 											<option value = ""></option>
 											<?php foreach($pr_list AS $prs){ ?>
 											<option value = "<?php echo $prs->pr_no;?>" <?php echo (($det['prno'] == $prs->pr_no) ? ' selected' : ''); ?>><?php echo $prs->pr_no;?></option>
@@ -439,6 +440,7 @@
 			</div>
 		</div>
 	</div>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
 	$('#btnAdd').click(function() {
 	    $('#myModal').modal('hide');
