@@ -87,6 +87,7 @@ class Delivery extends CI_Controller {
         foreach($this->super_model->select_row_where('delivery_head', 'delivery_id', $id) AS $i){
             $data['delivery_list'][]=array(
                 'pr_no'=>$i->pr_no,
+                'date'=>$i->date,
             );
         }
         $this->load->view('delivery/edit_endpurp',$data);
@@ -95,6 +96,7 @@ class Delivery extends CI_Controller {
     public function update_purend(){
         $data = array(
             'pr_no'=>$this->input->post('pr_no'),
+            'date'=>$this->input->post('date'),
         );
         $delivery_id = $this->input->post('delivery_id');
         if($this->super_model->update_where('delivery_head', $data, 'delivery_id', $delivery_id)){

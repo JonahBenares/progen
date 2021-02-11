@@ -234,6 +234,7 @@
                                 <td class="main-tab" width="10%" align="center"><strong>Cat No. / NKK No. / SEMT No.</strong></td>
                                 <td class="main-tab" width="10%" align="center"><strong>Brand</strong></td>
                                 <td class="main-tab" width="8%" align="center"><strong>Cost</strong></td>
+                                <td class="main-tab" width="8%" align="center"><strong>Shipping Fee</strong></td>
                                 <td class="main-tab" width="10%" align="center"><strong>Total Cost</strong></td>
                                 <!-- <td class="main-tab" width="15%" align="center"><strong>Inspected By</strong></td> -->
                             </tr>
@@ -254,6 +255,7 @@
                                 <td class="main-tab" align="center"><?php echo $it['catno']." / ". $it['nkk_no']." / ". $it['semt_no'];?></td>
                                 <td class="main-tab" align="center"><?php echo $it['brand'];?></td>
                                 <td class="main-tab" align="center"><?php echo $it['unitcost'];?></td>
+                                <td class="main-tab" align="center"><?php echo $it['shipping_fee'];?></td>
                                 <td class="main-tab" align="center"><?php echo number_format($it['total'],2);?></td>
                                <!--  <td class="main-tab" align="center"><?php echo $it['inspected'];?></td> -->
                             </tr>
