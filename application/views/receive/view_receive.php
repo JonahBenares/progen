@@ -83,7 +83,7 @@
 									<div class="col-lg-2">
 										<div class="pull-right">
 											<?php if($_SESSION['user_id'] == '5'){ ?>
-												<a class="btn btn-info" data-toggle="modal" data-target="#updatePR" id = 'getEP' data-id="<?php echo $d['rdid']; ?>" title="Update Purpose & Enduse">
+												<a class="btn btn-info" data-toggle="modal" data-target="#updatePR" id = 'getEP1' data-id="<?php echo $d['rdid']; ?>" title="Update Purpose & Enduse">
 												<span class="fa fa-pencil"></span>
 												</a>
 												<input type='hidden' name='rec' id='rec' value="<?php echo $id; ?>">

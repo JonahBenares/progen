@@ -906,7 +906,7 @@ class Items extends CI_Controller {
 
             $pnformat=$this->input->post('pn_format');
 
-            if($pnformat==1){
+            if($pnformat==0){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
