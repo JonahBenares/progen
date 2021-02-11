@@ -17,7 +17,7 @@ function updateReceivePR(baseurl, id, rdid) {
 }
 
 
-$(document).on('click', '#getEP', function(e){
+$(document).on('click', '#getEP1', function(e){
     e.preventDefault();
     var uid = $(this).data('id');    
     var loc= document.getElementById("baseurl").value;

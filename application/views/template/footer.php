@@ -9,6 +9,11 @@
 	<script>
 	    $('.select2').select2();
 	</script>
+	<link href="<?php echo base_url(); ?>assets/Styles/select3.min.css" rel="stylesheet" />
+	<script src="<?php echo base_url(); ?>assets/js/select3.min.js"></script>
+	<script>
+	    $('.select3').select3();
+	</script>
 	<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.1.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/chart.min.js"></script>
