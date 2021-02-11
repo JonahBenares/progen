@@ -1,5 +1,9 @@
 <?php foreach($details AS $d){ ?>
 <div class="form-group">
+	<p style="margin: 0px">PR No.</p>
+	<input class="form-control" type="text" name="pr_no" value="<?php echo $d['pr_no']; ?>">
+</div>
+<div class="form-group">
 	<p style="margin: 0px">Department</p>
 	<select class = "form-control" id = "department" name = 'department'>
 		<option value = "">--Select Department--</option>

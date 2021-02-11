@@ -126,6 +126,7 @@ class Receive extends CI_Controller {
         $this->load->model('super_model');
         foreach($this->super_model->select_row_where('receive_details', 'rd_id', $id) AS $det){
             $data['details'][] = array(
+                'pr_no'=>$det->pr_no,
                 'department_id'=>$det->department_id,
                 'purpose_id'=>$det->purpose_id,
                 'enduse_id'=>$det->enduse_id,
@@ -136,6 +137,7 @@ class Receive extends CI_Controller {
 
     public function update_purend(){
         $data = array(
+            'pr_no'=>$this->input->post('pr_no'),
             'purpose_id'=>$this->input->post('purpose'),
             'enduse_id'=>$this->input->post('enduse'),
             'department_id'=>$this->input->post('department'),
