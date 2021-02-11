@@ -78,7 +78,7 @@
 							<div class="col-lg-2 col-lg-offset-1">
 								<h5>
 									PR/JO#: 
-									<select name="prno" id='prno' class="form-control selectpicker" data-live-search="true" onchange="choosePRrec()">
+									<select name="prno" id='prno' class="form-control select3" onchange="choosePRrec()">
 										<option value = ""></option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
@@ -145,7 +145,7 @@
 								<div class="col-lg-2 col-lg-offset-1">
 									<h5>PR#:
 										<!--<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control">-->
-										<select name="prno" id='prno' class="form-control selectpicker" data-live-search="true" onchange="choosePRrec()">
+										<select name="prno" id='prno' class="form-control select3" onchange="choosePRrec()">
 											<option value = ""></option>
 											<?php foreach($pr_list AS $prs){ ?>
 											<option value = "<?php echo $prs->pr_no;?>" <?php echo (($det['prno'] == $prs->pr_no) ? ' selected' : ''); ?>><?php echo $prs->pr_no;?></option>
