@@ -120,6 +120,7 @@ class Receive extends CI_Controller {
         $id=$this->input->post('id');
         $data['rec_id']=$this->input->post('recid');
         $rec_id=$this->input->post('recid');
+        $data['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
         $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
         $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
