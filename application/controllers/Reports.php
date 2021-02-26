@@ -2630,7 +2630,7 @@ class Reports extends CI_Controller {
         $id=$this->uri->segment(3);
         $data['itemdesc']=$this->super_model->select_column_where("items", "item_name", "item_id", $id);
         $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
-        foreach($this->super_model->custom_query("SELECT pr_no, SUM(received_qty) AS qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE ri.item_id = '$id' GROUP BY rd.pr_no") AS $head){
+        foreach($this->super_model->custom_query("SELECT enduse_id, pr_no, SUM(received_qty) AS qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE ri.item_id = '$id' GROUP BY rd.pr_no") AS $head){
                 $excess_flag = $this->super_model->custom_query_single("excess","SELECT rh.excess FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rh.from_pr = '$head->pr_no' AND rd.item_id = '$id'");
 
                 $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$id' AND pr_no='$head->pr_no'","issuance_id");
@@ -2657,7 +2657,7 @@ class Reports extends CI_Controller {
                 } else if(($issueqty!=0 && $restockqty!=0 && $excessqty!=0) || ($issueqty==0 && ($restockqty!=0 || $excessqty!=0)) || ($issueqty!=0 && $restockqty==0 && $excessqty!=0)){
                     $final_balance =  $excessqty + $restockqty; 
                 }*/
-
+                $enduse= $this->super_model->select_column_where("enduse","enduse_name","enduse_id",$head->enduse_id);
                 $data['list'][] = array(
                     "prno"=>$head->pr_no,
                     "recqty"=>$head->qty,
@@ -2665,6 +2665,7 @@ class Reports extends CI_Controller {
                     "restockqty"=>$restockqty,
                     "excessqty"=>$excessqty,
                     "in_balance"=>$in_balance,
+                    "enduse"=>$enduse,
                     "excess"=>$excess_flag,
                     "final_balance"=>$final_balance
                 );

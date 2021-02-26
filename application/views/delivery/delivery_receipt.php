@@ -274,26 +274,53 @@
 
                         <td></td>  
                         <td style="border-bottom:1px solid #000">
+                            <?php if($det['released_id']==0){ ?>
+                            <select class="select" type="text" name='released_by' id="released_by" onchange="chooseEmprel()" required>
+                                <option></option>
+                                <?php foreach($released_emp AS $rel){ ?>
+                                <option value = "<?php echo $rel['empid']; ?>"<?php echo (( $rel['empid'] == '64') ?  ' selected' : ''); ?>><?php echo $rel['empname']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <?php } else{ ?>
                             <select class="select" type="text" name='released_by' id="released_by" onchange="chooseEmprel()" required>
                                 <option></option>
                                 <?php foreach($released_emp AS $rel){ ?>
                                 <option value = "<?php echo $rel['empid']; ?>"<?php echo (( $rel['empid'] == $det['released_id']) ?  ' selected' : ''); ?>><?php echo $rel['empname']; ?></option>
                                 <?php } ?>
-                            </select>
+                            </select>  
+                            <?php } ?>
                         </td>    
 
                         <td></td>            
                         <td style="border-bottom:1px solid #000">
+                            <?php if($det['verified_id']==0){ ?>
                             <select class="select" type="text" name='verified_by' id="verified_by" onchange="chooseEmpver()" required>
                                 <option></option>
                                 <?php foreach($reviewed_emp AS $rev){ ?>
-                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_id']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
+                                <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == '103') ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
                                 <?php } ?>
                             </select>
+                            <?php } else { ?>
+                            <select class="select" type="text" name='verified_by' id="verified_by" onchange="chooseEmpver()" required>
+                            <option></option>
+                            <?php foreach($reviewed_emp AS $rev){ ?>
+                            <option value = "<?php echo $rev['empid']; ?>"<?php echo (( $rev['empid'] == $det['verified_id']) ?  ' selected' : ''); ?>><?php echo $rev['empname']; ?></option>
+                            <?php } ?>
+                            </select>
+                            <?php } ?>
                         </td>
                     </tr>
                     <tr>
-                        <td><center>Warehouse Personnel</center></td>
+                        <td>
+                            <center>
+                                <select class="select animated headShake">
+                                    <option value="">--Select Position--</option>
+                                    <?php foreach($position AS $p){ ?>
+                                    <option value="<?php echo $p->position; ?>"><?php echo $p->position; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </center>
+                        </td>
                         <td></td>
                         <td>
                             <center>
@@ -322,12 +349,21 @@
                     <tr>
                         <td></td>
                         <td style="border-bottom:1px solid #000">
+                            <?php if($det['noted_id']==0){ ?>
                             <select class="select" type="text" name='noted_by' id="noted_by" onchange="chooseEmpnote()" required>
                                 <option></option>
                                 <?php foreach($noted_emp AS $note){ ?>
-                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_id']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
+                                <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == '10') ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
                                 <?php } ?>
                             </select>
+                            <?php } else { ?>
+                            <select class="select" type="text" name='noted_by' id="noted_by" onchange="chooseEmpnote()" required>
+                            <option></option>
+                            <?php foreach($noted_emp AS $note){ ?>
+                            <option value = "<?php echo $note['empid']; ?>"<?php echo (( $note['empid'] == $det['noted_id']) ?  ' selected' : ''); ?>><?php echo $note['empname']; ?></option>
+                            <?php } ?>
+                            </select>
+                            <?php } ?>
                         </td>
                         <td></td>
                         <td style="border-bottom:1px solid #000">

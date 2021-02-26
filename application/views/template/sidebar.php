@@ -134,8 +134,8 @@
 					<form method="POST" action = "<?php echo base_url();?>index.php/delivery/insert_delivery">
 						<table width="100%">
 							<tr>
-								<td width="15%"><label >Date:</label></td>
-								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" <?php echo ($user_id==5) ? '' : 'style="pointer-events:none;" readonly';?>><br></td>
+								<td width="15%"><label >Date: </label></td>
+								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" <?php echo ($_SESSION['user_id']==5 || $_SESSION['user_id']==13) ? '' : 'style="pointer-events:none;" readonly';?>><br></td>
 							</tr>
 							<tr>
 								<td width="15%"><label>PO Date:</label></td>

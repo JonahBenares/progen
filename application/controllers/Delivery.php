@@ -117,6 +117,8 @@ class Delivery extends CI_Controller {
                 'positionnote'=>$this->super_model->select_column_where('employees', 'position', 'employee_id', $us->noted_by),
             );
         }
+
+        $data['position']=$this->super_model->custom_query("SELECT * FROM employees GROUP BY position ORDER BY position ASC ");
         foreach($this->super_model->select_row_where("delivery_head","delivery_id",$id) AS $h){
             $buyer_name=$this->super_model->select_column_where("buyer","buyer_name","buyer_id",$h->buyer_id);
             $address=$this->super_model->select_column_where("buyer","address","buyer_id",$h->buyer_id);
@@ -552,7 +554,7 @@ class Delivery extends CI_Controller {
             "remarks"=>$this->input->post('remarks'),
             "shipped_via"=>$this->input->post('shipped'),
             "waybill_no"=>$this->input->post('waybill_no'),
-            "prepared_by"=>$this->input->post('user_id'),
+            "prepared_by"=>$_SESSION['user_id'],
             "released_by"=>$this->input->post('released_by'),
             "verified_by"=>$this->input->post('verified_by'),
             "received_by"=>$this->input->post('received_by'),
