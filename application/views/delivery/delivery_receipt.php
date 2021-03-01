@@ -428,7 +428,7 @@
         }); 
     }
 
-        function chooseEmpver(){
+    function chooseEmpver(){
         var loc= document.getElementById("baseurl").value;
         var redirect = loc+'index.php/delivery/getEmpver';
         var verified_by = document.getElementById("verified_by").value;
@@ -462,6 +462,12 @@
         }); 
     }
 
+    window.onload = function(){
+       chooseEmprel();
+       chooseEmpver();
+       chooseEmpnote();
+    }
+    
     function printDR(){
         var sign = $("#drsign").serialize();
         var loc= document.getElementById("baseurl").value;
