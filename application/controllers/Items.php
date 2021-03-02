@@ -1136,9 +1136,10 @@ class Items extends CI_Controller {
             $location =$this->super_model->select_column_where("location","location_name", "location_id", $items->location_id);
             $bin =$this->super_model->select_column_where("bin","bin_name", "bin_id", $items->bin_id);
             $unit_price = $this->super_model->select_column_custom_where('receive_items', 'item_cost', "item_id='$items->item_id' ORDER BY receive_id DESC");
-            if($items->local_mnl=='1'){
+            $local_mnl = $this->super_model->select_column_custom_where('receive_items', 'local_mnl', "item_id='$items->item_id'");
+            if($local_mnl=='1'){
                 $sup = 'Local';
-            } else if($items->local_mnl=='2'){
+            } else if($local_mnl=='2'){
                  $sup = 'Manila';
             } else {
                 $sup='';
