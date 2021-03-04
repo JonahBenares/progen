@@ -238,7 +238,7 @@
 									<input type='hidden' name='serial_id' id='serial_id'>
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Unit Cost:</p>
+									<p style="margin:0px" for="">Net Cost/U:</p>
 									<input type="text" name="unit_cost" id="unit_cost" class="form-control">
 								</div>																						
 							</div>
@@ -283,7 +283,7 @@
 									<input class="form-control" name='rec_qty' id='rec_qty' onkeypress="return isNumberKey(this, event)" >
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px"  for="">Shipping Fee:</p>
+									<p style="margin:0px"  for="">Shipping/U & Other Related Cost:</p>
 									<input class="form-control" name='shipping_fee' id='shipping_fee' onkeypress="return isNumberKey(this, event)" >
 								</div>
 								<div class="col-lg-2">
@@ -333,14 +333,13 @@
 										<th style="text-align: center" class="tr-bottom" width="%">NKK No.</th>
 										<th style="text-align: center" class="tr-bottom" width="%">SEMT No.</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Serial No.</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Unit Cost</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Total Cost</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Net Cost/U</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Shipping/U & Other Related Cost</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Total Unit NET Cost</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Expt Qty</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Del/Rec</th>
 										<!-- <th style="text-align: center" class="tr-bottom" width="%">Inspected By</th> -->
 										<th style="text-align: center" class="tr-bottom" width="%">UOM</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Shipping Fee</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Currency</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Remarks</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Loc</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Action</th>
@@ -364,13 +363,13 @@
 												<td style="text-align: center"> <?php echo $ri['semt_no']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['serial']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['unit_cost']; ?></td>
+												<td style="text-align: center"> <?php echo $ri['shipping_fee']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['total']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['expqty']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['recqty']; ?></td>
 												<!-- <td style="text-align: center"> <?php //echo $ri['inspected']; ?></td> -->
 												<td style="text-align: center"> <?php echo $ri['unit']; ?></td>
-												<td style="text-align: center"> <?php echo $ri['shipping_fee']; ?></td>
-												<td style="text-align: center"> <?php echo $ri['currency']; ?></td>
+												<!-- <td style="text-align: center"> <?php echo $ri['currency']; ?></td> -->
 												<td style="text-align: center"> <?php echo $ri['remarks']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['local_mnl']; ?></td>
 												<td style="text-align: center">  <a class="btn btn-danger table-remove btn-xs" onclick="removerecitem('<?php echo $ri['riid']; ?>','<?php echo base_url(); ?>')"><span class=" fa fa-times"></span></a></td>

@@ -146,13 +146,13 @@
 											<th class="tr-bottom" width="5%"><center>Item No.</center></th>
 											<th class="tr-bottom" width="15%"><center>Supplier</center></th>
 											<th class="tr-bottom" width="15%"><center>Description</center></th>
-											<th class="tr-bottom" width="5%"><center>Unit Cost</center></th>
-											<th class="tr-bottom" width="5%"><center>Shipping Fee</center></th>
-											<th class="tr-bottom" width="5%"><center>Currency</center></th>
-											<th class="tr-bottom" width="5%"><center>Total Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Net Cost/U</center></th>
+											<th class="tr-bottom" width="5%"><center>Shipping/U & Other Related Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Unit NET Cost</center></th>
 											<th class="tr-bottom" width="10%"><center>Expected Qty</center></th>
 											<th class="tr-bottom" width="10%"><center>Delivered / Received</center></th>
 											<th class="tr-bottom" width="5%"><center>UOM</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Net Cost</center></th>
 											<th class="tr-bottom" width="20%"><center>Remarks</center></th>
 											<th><a class="btn btn-default" ><span class="fa fa-pencil"></span></a></th>
 										</tr>
@@ -201,11 +201,11 @@
 											<td><?php echo $it['item']; ?></td>
 											<td><?php echo $it['unit_cost']; ?></td>
 											<td><center><?php echo $it['shipping_fee']; ?></center></td>
-											<td><center><?php echo $it['currency']; ?></center></td>
 											<td><?php echo number_format($it['total'],2); ?></td>
 											<td><center><?php echo $it['expqty']; ?></center></td>
 											<td><center><?php echo $it['recqty']; ?></center></td>
 											<td><center><?php echo $it['unit']; ?></center></td>
+											<td><center><?php echo number_format($it['total_net_cost'],2); ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
 											<?php if($saved==0){ ?> 
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
