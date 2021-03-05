@@ -156,7 +156,7 @@ if(!empty($stockcard)){
 											<th style="text-align: center" width="30%">Supplier</th>
 											<th style="text-align: center" width="16%">Catalog No.</th>
 											<th style="text-align: center" width="16%">Brand</th>
-											<th style="text-align: center" width="6%">Total Cost</th>
+											<th style="text-align: center" width="6%">Total Unit Cost</th>
 											<th style="text-align: center" width="0%">Method</th>
 											<th style="text-align: center" width="0%">Quantity</th>
 											<th style="text-align: center" width="0%">Running Balance</th>
