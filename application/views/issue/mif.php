@@ -227,6 +227,8 @@
                     <td width="1%" align="center"><strong>#</strong></td>
                     <td width="5%" align="center"><strong>Qty</strong></td>
                     <td width="5%" align="center"><strong>U/M</strong></td>
+                    <td width="5%" align="center"><strong>Unit Cost</strong></td>
+                    <td width="5%" align="center"><strong>Total Cost</strong></td>
                     <td width="10%" align="center"><strong>Part No.</strong></td>
                     <td width="30%" align="center"><strong>Item Description</strong></td>                    
                     <td width="10%" align="center"><strong>Brand</strong></td>
@@ -240,6 +242,8 @@
                         <td class="main-tab" align="center"><?php echo $x;?></td>
                         <td class="main-tab" align="center"><?php echo $isu['qty']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['uom']?></td>
+                        <td class="main-tab" align="center"><?php echo $isu['unit_cost']?></td>
+                        <td class="main-tab" align="center"><?php echo $isu['total_cost']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['pn']?></td>
                         <td class="main-tab" align="left">&nbsp;<?php echo $isu['item']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['brand']?></td>
@@ -254,7 +258,7 @@
                     <?php }?>
                 </tr>
                 <tr>
-                    <td colspan="9"><center>***nothing follows***</center></td>
+                    <td colspan="11"><center>***nothing follows***</center></td>
                 </tr>
             </table>
             <br>

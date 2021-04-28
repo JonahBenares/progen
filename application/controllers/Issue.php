@@ -450,11 +450,15 @@ class Issue extends CI_Controller {
                 $serial = $this->super_model->select_column_where("serial_number", "serial_no", "serial_id", $rt->serial_id);
                 $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
                 $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
+                $unit_cost = $this->super_model->select_sum("request_items", "unit_cost", "rq_id", $rt->rq_id);
+                $total_cost = $this->super_model->select_sum("request_items", "total_cost", "rq_id", $rt->rq_id);
                 $data['issue_itm'][] = array(
                     'item'=>$item,
                     'qty'=>$rt->quantity,
                     'serial' => $serial,
                     'uom'=>$uom,
+                    'unit_cost'=>$unit_cost,
+                    'total_cost'=>$total_cost,
                     'pn'=>$rt->pn_no,
                     'invqty'=>$rec_qty,
                     'brand'=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $rt->brand_id),
