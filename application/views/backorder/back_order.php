@@ -59,8 +59,12 @@
 							<tr>
 								<td ><p class="nomarg">Date:</p></td>
 								<td ><input type="date" name="receive_date" id="receive_date" value="<?php echo date('Y-m-d'); ?>"></td>
-								
-								<td width="15%">
+								<td><p class="nomarg">SI/OR No.:</p></td>
+								<td> <input type="text" name="si_no" id="si_no"></td>
+								<td >
+									<a class="animated pulse infinite  clickable btn btn-warning shadow pull-right"  data-toggle="modal" data-target="#myModal" style="border:1px solid #d68a00">
+										<span class="fa fa-plus"></span> Add New Brand
+									</a>
 								</td>
 							</tr>
 							<tr>

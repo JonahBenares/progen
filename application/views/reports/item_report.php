@@ -57,6 +57,7 @@
 									<thead>
 										<tr>
 											<td align="center"><strong>PR No.</strong></td>
+											<td align="center"><strong>Enduse</strong></td>
 											<td align="center"><strong>Received Qty</strong></td>
 											<td align="center"><strong>Issued Qty</strong></td>
 											<td align="center"><strong>Initial Balance</strong></td>
@@ -71,6 +72,7 @@
 									foreach($list AS $li){ ?>							
 										<tr>
 											<td align="center"><strong><?php echo $li['prno']; ?></strong></td>
+											<td align="center"><strong><?php echo $li['enduse']; ?></strong></td>	
 											<td align="center"><strong><?php echo $li['recqty']; ?></strong></td>	
 											<td align="center"><strong><?php echo $li['issueqty']; ?></strong></td>		
 											<td align="center"><strong><?php echo abs($li['in_balance']); ?></strong></td>

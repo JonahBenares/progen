@@ -83,7 +83,7 @@
 									<div class="col-lg-2">
 										<div class="pull-right">
 											<?php if($_SESSION['user_id'] == '5'){ ?>
-												<a class="btn btn-info" data-toggle="modal" data-target="#updatePR" id = 'getEP' data-id="<?php echo $d['rdid']; ?>" title="Update Purpose & Enduse">
+												<a class="btn btn-info" data-toggle="modal" data-target="#updatePR" id = 'getEP1' data-id="<?php echo $d['rdid']; ?>" title="Update Purpose & Enduse">
 												<span class="fa fa-pencil"></span>
 												</a>
 												<input type='hidden' name='rec' id='rec' value="<?php echo $id; ?>">
@@ -120,18 +120,39 @@
 											</div>
 										</div>
 									</div>
+									<div class="modal fade" id="PRModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header modal-headback">
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													<h4 class="modal-title" id="myModalLabel">Add New PR No.</h4>
+												</div>
+												<div class="modal-body">
+													<form method="POST">
+														<label>PR No.</label>
+														<input type = "text" name = "pr_no" id="pr_no" class = "form-control option">
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															<input type="hidden" name="baseurl2" id="baseurl2" value="<?php echo base_url(); ?>">
+															<input type="button" id = "btnAddPR"  class="btn btn-warning" value = "Add" onclick = "addPR1()" />
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
 									<table width="100%" class="table table-bordered " >
 										<tr >
 											<th class="tr-bottom" width="5%"><center>Item No.</center></th>
 											<th class="tr-bottom" width="15%"><center>Supplier</center></th>
 											<th class="tr-bottom" width="15%"><center>Description</center></th>
-											<th class="tr-bottom" width="5%"><center>Unit Cost</center></th>
-											<th class="tr-bottom" width="5%"><center>Total Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Net Cost/U</center></th>
+											<th class="tr-bottom" width="5%"><center>Shipping/U & Other Related Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Unit NET Cost</center></th>
 											<th class="tr-bottom" width="10%"><center>Expected Qty</center></th>
 											<th class="tr-bottom" width="10%"><center>Delivered / Received</center></th>
 											<th class="tr-bottom" width="5%"><center>UOM</center></th>
-											<th class="tr-bottom" width="5%"><center>Shipping Fee</center></th>
-											<th class="tr-bottom" width="5%"><center>Currency</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Net Cost</center></th>
 											<th class="tr-bottom" width="20%"><center>Remarks</center></th>
 											<th><a class="btn btn-default" ><span class="fa fa-pencil"></span></a></th>
 										</tr>
@@ -179,12 +200,12 @@
 											<td><?php echo $it['supplier']; ?></td>
 											<td><?php echo $it['item']; ?></td>
 											<td><?php echo $it['unit_cost']; ?></td>
+											<td><center><?php echo $it['shipping_fee']; ?></center></td>
 											<td><?php echo number_format($it['total'],2); ?></td>
 											<td><center><?php echo $it['expqty']; ?></center></td>
 											<td><center><?php echo $it['recqty']; ?></center></td>
 											<td><center><?php echo $it['unit']; ?></center></td>
-											<td><center><?php echo $it['shipping_fee']; ?></center></td>
-											<td><center><?php echo $it['currency']; ?></center></td>
+											<td><center><?php echo number_format($it['total_net_cost'],2); ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
 											<?php if($saved==0){ ?> 
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>

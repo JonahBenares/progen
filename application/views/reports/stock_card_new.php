@@ -3,18 +3,20 @@ if(!empty($stockcard)){
 	foreach ($stockcard as $key => $row) {
 	    $date[$key]  = $row['date'];
 	    $series[$key] = $row['series'];
+	    $cdate[$key] = $row['create_date'];
 	}
 
 
-array_multisort($date, SORT_ASC, $series, SORT_ASC, $stockcard);
+array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
 }
 if(!empty($stockcard)){
 	foreach ($balance as $key => $row) {
 	    $date[$key]  = $row['date'];
 	    $series[$key] = $row['series'];
+	     $cdate[$key] = $row['create_date'];
 	}
 
-	array_multisort($date, SORT_ASC, $series, SORT_ASC, $balance);
+	array_multisort($date, SORT_ASC, $cdate, SORT_ASC, $balance);
 
 	$total_bal=0;
 	foreach($balance AS $sc){
@@ -154,7 +156,7 @@ if(!empty($stockcard)){
 											<th style="text-align: center" width="30%">Supplier</th>
 											<th style="text-align: center" width="16%">Catalog No.</th>
 											<th style="text-align: center" width="16%">Brand</th>
-											<th style="text-align: center" width="6%">Unit Cost</th>
+											<th style="text-align: center" width="6%">Total Unit Cost</th>
 											<th style="text-align: center" width="0%">Method</th>
 											<th style="text-align: center" width="0%">Quantity</th>
 											<th style="text-align: center" width="0%">Running Balance</th>
@@ -181,7 +183,7 @@ if(!empty($stockcard)){
 												<td><?php echo $stockcard[$x]['supplier']; ?></td>
 												<td><?php echo $stockcard[$x]['catalog_no']; ?></td>
 												<td><?php echo $stockcard[$x]['brand']; ?></td>
-												<td><?php echo $stockcard[$x]['unit_cost']; ?></td>
+												<td><?php echo number_format($stockcard[$x]['total_cost'],2); ?></td>
 												<td><?php echo $stockcard[$x]['method']; ?></td>
 												<td><?php echo (($stockcard[$x]['method']== 'Issuance') ? "-" : "") . $stockcard[$x]['quantity']; ?></td>
 												<td><?php echo $bal[$x]; ?></td>

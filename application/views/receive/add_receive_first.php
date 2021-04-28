@@ -110,14 +110,14 @@
 											<th class="tr-bottom" width="5%"><center>Item No.</center></th>
 											<th class="tr-bottom" width="15%"><center>Supplier</center></th>
 											<th class="tr-bottom" width="15%"><center>Description</center></th>
-											<th class="tr-bottom" width="5%"><center>Unit Cost</center></th>
-											<th class="tr-bottom" width="5%"><center>Total Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Net Cost/U</center></th>
+											<th class="tr-bottom" width="5%"><center>Shipping/U & Other Related Cost</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Unit NET Cost</center></th>
 											<th class="tr-bottom" width="10%"><center>Expected Qty</center></th>
 											<th class="tr-bottom" width="10%"><center>Delivered / Received</center></th>
 											<th class="tr-bottom" width="5%"><center>UOM</center></th>
 											<th class="tr-bottom" width="20%"><center>Local/Manila</center></th>
-											<th class="tr-bottom" width="20%"><center>Shipping fee</center></th>
-											<th class="tr-bottom" width="20%"><center>Currency</center></th>
+											<th class="tr-bottom" width="5%"><center>Total Net Cost</th>
 											<th class="tr-bottom" width="20%"><center>Remarks</center></th>
 										</tr>
 										<?php 
@@ -182,13 +182,13 @@
 											<td><?php echo $it['supplier']; ?></td>
 											<td><?php echo $it['item']; ?></td>
 											<td><?php echo $it['unit_cost']; ?></td>
+											<td><?php echo $it['shipping_fee']; ?></td>
 											<td><?php echo number_format($it['total'],2); ?></td>
 											<td><center><?php echo $it['expqty']; ?></center></td>
 											<td><center><?php echo $it['recqty']; ?></center></td>
 											<td><center><?php echo $it['unit']; ?></center></td>
 											<td><center><?php if($it['local_mnl'] == '1'){ echo 'Local';} else if($it['local_mnl'] == '2'){ echo 'Manila';} else { echo ''; } ?></center></td>
-											<td><?php echo $it['shipping_fee']; ?></td>
-											<td><?php echo $it['currency']; ?></td>
+											<td><center><?php echo number_format($it['total_net_cost'],2); ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
 										</tr>
 										<?php

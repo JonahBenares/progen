@@ -1519,6 +1519,10 @@ class Masterfile extends CI_Controller {
             $prefix = trim($objPHPExcel->getActiveSheet()->getCell('D'.$x)->getValue());
             $unit = trim($objPHPExcel->getActiveSheet()->getCell('E'.$x)->getValue());
             $pn = trim($objPHPExcel->getActiveSheet()->getCell('F'.$x)->getValue());
+            $rack_id = trim($objPHPExcel->getActiveSheet()->getCell('G'.$x)->getValue());
+            $group_id = trim($objPHPExcel->getActiveSheet()->getCell('H'.$x)->getValue());
+            $wh_id = trim($objPHPExcel->getActiveSheet()->getCell('I'.$x)->getValue());
+            $location_id = trim($objPHPExcel->getActiveSheet()->getCell('J'.$x)->getValue());
             //echo $desc . "<br>";
             if(empty($pn)){
                 $count=$this->super_model->count_rows_where("pn_series","subcat_prefix",$prefix);
@@ -1541,7 +1545,11 @@ class Masterfile extends CI_Controller {
                     'category_id'=>$cat_id,
                     'subcat_id'=>$subcat_id,
                     'unit_id'=>$unit,
-                    'original_pn'=>$orig_pn
+                    'original_pn'=>$orig_pn,
+                    'rack_id'=>$rack_id,
+                    'group_id'=>$group_id,
+                    'warehouse_id'=>$wh_id,
+                    'location_id'=>$location_id,
                 );
                 //print_r($data_items);//
                 $this->super_model->insert_into("items", $data_items);
@@ -1552,7 +1560,11 @@ class Masterfile extends CI_Controller {
                     'category_id'=>$cat_id,
                     'subcat_id'=>$subcat_id,
                     'unit_id'=>$unit,
-                    'original_pn'=>$pn
+                    'original_pn'=>$pn,
+                    'rack_id'=>$rack_id,
+                    'group_id'=>$group_id,
+                    'warehouse_id'=>$wh_id,
+                    'location_id'=>$location_id,
                 );
               //  print_r($data_items);//
                 $this->super_model->insert_into("items", $data_items);

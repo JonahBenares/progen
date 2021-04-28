@@ -102,7 +102,7 @@
 									<td style="padding:3px" align="center"><?php echo $h['waybill_no'];?></td>
 									<td style="padding:3px"><?php echo $h['pr_no'];?></td>
 									<td style="padding:3px" align="center">
-										<?php if($_SESSION['user_id'] == '5'){ ?>
+										<?php if($_SESSION['user_id'] == '5' || $_SESSION['user_id'] == '13'){ ?>
 										<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updatePR" id = 'getD' data-id="<?php echo $h['delivery_id']; ?>" title="Update Restock">
 											<span class="fa fa-pencil"></span>
 										</a>	

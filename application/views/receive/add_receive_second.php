@@ -1,5 +1,6 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/receive.js"></script>
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/Styles/bootstrap-select.min.css" />
 <style type="text/css">
 	body{
 		padding:0px;
@@ -77,7 +78,7 @@
 							<div class="col-lg-2 col-lg-offset-1">
 								<h5>
 									PR/JO#: 
-									<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
+									<select name="prno" id='prno' class="form-control select3" onchange="choosePRrec()">
 										<option value = ""></option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
@@ -144,7 +145,7 @@
 								<div class="col-lg-2 col-lg-offset-1">
 									<h5>PR#:
 										<!--<input type="text" name="prno" id='prno' value='<?php echo $det['prno']; ?>' class="form-control">-->
-										<select name="prno" id='prno' class="form-control select2" onchange="choosePRrec()">
+										<select name="prno" id='prno' class="form-control select3" onchange="choosePRrec()">
 											<option value = ""></option>
 											<?php foreach($pr_list AS $prs){ ?>
 											<option value = "<?php echo $prs->pr_no;?>" <?php echo (($det['prno'] == $prs->pr_no) ? ' selected' : ''); ?>><?php echo $prs->pr_no;?></option>
@@ -237,7 +238,7 @@
 									<input type='hidden' name='serial_id' id='serial_id'>
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px" for="">Unit Cost:</p>
+									<p style="margin:0px" for="">Net Cost/U:</p>
 									<input type="text" name="unit_cost" id="unit_cost" class="form-control">
 								</div>																						
 							</div>
@@ -282,7 +283,7 @@
 									<input class="form-control" name='rec_qty' id='rec_qty' onkeypress="return isNumberKey(this, event)" >
 								</div>
 								<div class="col-lg-2">
-									<p style="margin:0px"  for="">Shipping Fee:</p>
+									<p style="margin:0px"  for="">Shipping/U & Other Related Cost:</p>
 									<input class="form-control" name='shipping_fee' id='shipping_fee' onkeypress="return isNumberKey(this, event)" >
 								</div>
 								<div class="col-lg-2">
@@ -332,14 +333,13 @@
 										<th style="text-align: center" class="tr-bottom" width="%">NKK No.</th>
 										<th style="text-align: center" class="tr-bottom" width="%">SEMT No.</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Serial No.</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Unit Cost</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Total Cost</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Net Cost/U</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Shipping/U & Other Related Cost</th>
+										<th style="text-align: center" class="tr-bottom" width="%">Total Unit NET Cost</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Expt Qty</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Del/Rec</th>
 										<!-- <th style="text-align: center" class="tr-bottom" width="%">Inspected By</th> -->
 										<th style="text-align: center" class="tr-bottom" width="%">UOM</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Shipping Fee</th>
-										<th style="text-align: center" class="tr-bottom" width="%">Currency</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Remarks</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Loc</th>
 										<th style="text-align: center" class="tr-bottom" width="%">Action</th>
@@ -363,13 +363,13 @@
 												<td style="text-align: center"> <?php echo $ri['semt_no']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['serial']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['unit_cost']; ?></td>
+												<td style="text-align: center"> <?php echo $ri['shipping_fee']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['total']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['expqty']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['recqty']; ?></td>
 												<!-- <td style="text-align: center"> <?php //echo $ri['inspected']; ?></td> -->
 												<td style="text-align: center"> <?php echo $ri['unit']; ?></td>
-												<td style="text-align: center"> <?php echo $ri['shipping_fee']; ?></td>
-												<td style="text-align: center"> <?php echo $ri['currency']; ?></td>
+												<!-- <td style="text-align: center"> <?php echo $ri['currency']; ?></td> -->
 												<td style="text-align: center"> <?php echo $ri['remarks']; ?></td>
 												<td style="text-align: center"> <?php echo $ri['local_mnl']; ?></td>
 												<td style="text-align: center">  <a class="btn btn-danger table-remove btn-xs" onclick="removerecitem('<?php echo $ri['riid']; ?>','<?php echo base_url(); ?>')"><span class=" fa fa-times"></span></a></td>
@@ -439,6 +439,7 @@
 			</div>
 		</div>
 	</div>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
 	$('#btnAdd').click(function() {
 	    $('#myModal').modal('hide');

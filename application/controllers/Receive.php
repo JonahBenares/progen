@@ -84,7 +84,9 @@ class Receive extends CI_Controller {
                 $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $items->brand_id);
                 $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $items->inspected_by);
                 $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $items->serial_id);
-                $total = $items->received_qty * $items->item_cost;
+                //$total = $items->received_qty * $items->item_cost;
+                $total = $items->shipping_fee + $items->item_cost;
+                $total_net_cost = $items->received_qty * $total;
                 $data['items'][] = array(
                     'riid'=>$items->ri_id,
                     'rdid'=>$items->rd_id,
@@ -103,7 +105,8 @@ class Receive extends CI_Controller {
                     'shipping_fee'=>$items->shipping_fee,
                     'currency'=>$items->currency,
                     'remarks'=>$items->remarks,
-                    'total'=>$total
+                    'total'=>$total,
+                    'total_net_cost'=>$total_net_cost,
                     
                 );
             }
@@ -120,12 +123,14 @@ class Receive extends CI_Controller {
         $id=$this->input->post('id');
         $data['rec_id']=$this->input->post('recid');
         $rec_id=$this->input->post('recid');
+        $data['pr_list']=$this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
         $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
         $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
         $this->load->model('super_model');
         foreach($this->super_model->select_row_where('receive_details', 'rd_id', $id) AS $det){
             $data['details'][] = array(
+                'pr_no'=>$det->pr_no,
                 'department_id'=>$det->department_id,
                 'purpose_id'=>$det->purpose_id,
                 'enduse_id'=>$det->enduse_id,
@@ -136,6 +141,7 @@ class Receive extends CI_Controller {
 
     public function update_purend(){
         $data = array(
+            'pr_no'=>$this->input->post('pr_no'),
             'purpose_id'=>$this->input->post('purpose'),
             'enduse_id'=>$this->input->post('enduse'),
             'department_id'=>$this->input->post('department'),
@@ -198,6 +204,7 @@ class Receive extends CI_Controller {
                     'recqty'=>$items->received_qty,
                     'remarks'=>$items->remarks,
                     'catno'=>$items->catalog_no,
+                    'shipping_fee'=>$items->shipping_fee,
                     'nkk_no'=>$items->nkk_no,
                     'semt_no'=>$items->semt_no,
                     'brand'=>$brand,
@@ -311,7 +318,9 @@ class Receive extends CI_Controller {
                 $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $items->brand_id);  
                 $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $items->inspected_by);  
                 $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $items->serial_id);  
-                $total=$items->received_qty*$items->item_cost;
+                //$total=$items->received_qty*$items->item_cost;
+                $total=$items->item_cost+$items->shipping_fee;
+                $total_net_cost=$items->received_qty*$total;
                 $data['items'][] = array(
                     'rdid'=>$items->rd_id,
                     'supplier'=>$supplier,
@@ -328,6 +337,7 @@ class Receive extends CI_Controller {
                     'inspected_by'=>$inspected,
                     'remarks'=>$items->remarks,
                     'total'=>$total,
+                    'total_net_cost'=>$total_net_cost,
                     'local_mnl'=>$items->local_mnl,
                     'shipping_fee'=>$items->shipping_fee,
                     'currency'=>$items->currency,
@@ -386,7 +396,9 @@ class Receive extends CI_Controller {
                 /*$unit = $this->super_model->select_column_where('items', 'unit', 'item_id', $rit->item_id);*/
                 $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $rit->brand_id);
                 $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $rit->inspected_by);
-                $total=$rit->received_qty*$rit->item_cost;
+                //$total=$rit->received_qty*$rit->item_cost;
+                $total=$rit->item_cost+$rit->shipping_fee;
+                $total_net_cost=$rit->received_qty*$total;
                 $serial = $this->super_model->select_column_where('serial_number', 'serial_no', 'serial_id', $rit->serial_id);
                 $data['receive_items'][] = array(
                         'riid'=>$rit->ri_id,
@@ -404,6 +416,7 @@ class Receive extends CI_Controller {
                         'remarks'=>$rit->remarks,
                         'inspected'=>$inspected,
                         'total'=>$total,
+                        'total_net_cost'=>$total_net_cost,
                         'serial'=>$serial,
                         'local_mnl'=>$rit->local_mnl,
                         'shipping_fee'=>$rit->shipping_fee,
@@ -705,7 +718,9 @@ class Receive extends CI_Controller {
         foreach($this->super_model->select_row_where("items", "item_id", $this->input->post('itemid')) AS $ins){
             $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id",$ins->unit_id);
         }
-        $total=$this->input->post('unitcost')*$this->input->post('recqty');
+        //$total=$this->input->post('unitcost')*$this->input->post('recqty');
+        $total=$this->input->post('unitcost') + $this->input->post('shipping_fee');
+        $total_net_cost=$this->input->post('recqty') * $total;
         $serial =  $this->input->post('serialid');
         $item =  $this->input->post('itemid');
         $brandid =  $this->input->post('brandid');
@@ -746,7 +761,8 @@ class Receive extends CI_Controller {
             'item'=>$this->input->post('itemname'),
             'local_mnl'=>$this->input->post('local_mnl'),
             'count'=>$this->input->post('count'),
-            'total'=>$total
+            'total'=>$total,
+            'total_net_cost'=>$total_net_cost,
         );  
         $this->load->view('receive/row_item',$data);
         //}

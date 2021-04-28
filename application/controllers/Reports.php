@@ -1819,96 +1819,120 @@ class Reports extends CI_Controller {
         foreach($this->super_model->custom_query("SELECT * FROM supplier_items WHERE $query AND catalog_no = 'begbal' ") AS $begbal){
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $begbal->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $begbal->brand_id);
+             //$total_cost=$begbal->quantity * $begbal->item_cost;
+             $total_cost=$begbal->item_cost;
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>'begbal',
                 'brand'=>$brand,
                 'pr_no'=>'',
                 'unit_cost'=>$begbal->item_cost,
+                'total_cost'=>$total_cost,
                 'method'=>'Beginning Balance',
                 'quantity'=>$begbal->quantity,
                 'series'=>'1',
-                'date'=>''
+                'date'=>'',
+                'create_date'=>''
             );
 
             $data['balance'][] = array(
                 'series'=>'1',
                 'method'=>'Beginning Balance',
                 'quantity'=>$begbal->quantity,
-                'date'=>''
+                'date'=>'',
+                 'create_date'=>''
+
             );
         }
 
-        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'") AS $receive){
+        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'") AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
+             //$total_cost=$receive->received_qty * $receive->item_cost;
+             $total_cost=$receive->item_cost + $receive->shipping_fee;
             $data['stockcard'][] = array(
+                'ri_id'=>$receive->ri_id,
                 'supplier'=>$supplier,
                 'catalog_no'=>$receive->catalog_no,
                 'brand'=>$brand,
                 'pr_no'=>$pr_no,
                 'unit_cost'=>$receive->item_cost,
+                'total_cost'=>$total_cost,
                 'method'=>'Receive',
                 'series'=>'2',
                 'quantity'=>$receive->received_qty,
-                'date'=>$receive->receive_date
+                'date'=>$receive->receive_date,
+                'create_date'=>$receive->create_date
             );
              $data['balance'][] = array(
                 'series'=>'2',
                 'method'=>'Receive',
                 'quantity'=>$receive->received_qty,
-                'date'=>$receive->receive_date
+                'date'=>$receive->receive_date,
+                 'create_date'=>$receive->create_date
             );
         }
 
         //echo "****SELECT ih.issue_date, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query";
 
-        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query AND saved = '1'") AS $issue){
+        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query AND saved = '1'") AS $issue){
             $cost = $this->super_model->select_column_where("request_items", "unit_cost", "rq_id", $issue->rq_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $issue->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $issue->brand_id);
+             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$issue->item_id' AND pr_no='$issue->pr_no'","rd_id","DESC","1");
+             $total_cost=$cost + $shipping_fee;
+             //$total_cost=$issue->quantity * $cost;
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>$issue->catalog_no,
                 'brand'=>$brand,
                 'pr_no'=>$issue->pr_no,
                 'unit_cost'=>$cost,
+                'total_cost'=>$total_cost,
                 'method'=>'Issuance',
                 'series'=>'3',
                 'quantity'=>$issue->quantity,
-                'date'=>$issue->issue_date
+                'date'=>$issue->issue_date,
+                'create_date'=>$issue->create_date
             );
 
             $data['balance'][] = array(
                 'series'=>'3',
                 'method'=>'Issuance',
                 'quantity'=>$issue->quantity,
-                'date'=>$issue->issue_date
+                'date'=>$issue->issue_date,
+                'create_date'=>$issue->create_date
             );
 
         }
 
-         foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.quantity, ri.item_cost FROM restock_head rh INNER JOIN restock_details ri ON rh.rhead_id = ri.rhead_id WHERE $query AND saved = '1' AND excess='0'") AS $restock){
+         foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, ri.item_id, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.quantity, ri.item_cost FROM restock_head rh INNER JOIN restock_details ri ON rh.rhead_id = ri.rhead_id WHERE $query AND saved = '1' AND excess='0'") AS $restock){
             
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $restock->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $restock->brand_id);
+            $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$restock->item_id' AND pr_no='$restock->from_pr'","rd_id","DESC","1");
+            $total_cost= $restock->item_cost + $shipping_fee;
+            //$total_cost=$restock->quantity * $restock->item_cost;
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>$restock->catalog_no,
                 'brand'=>$brand,
                 'pr_no'=>$restock->from_pr,
                 'unit_cost'=>$restock->item_cost,
+                'total_cost'=>$total_cost,
                 'method'=>'Restock',
                 'series'=>'4',
                 'quantity'=>$restock->quantity,
-                'date'=>$restock->restock_date
+                'date'=>$restock->restock_date,
+                'create_date'=>$restock->restock_date
             );
             $data['balance'][] = array(
                 'series'=>'4',
                 'method'=>'Restock',
                 'quantity'=>$restock->quantity,
-                'date'=>$restock->restock_date
+                'date'=>$restock->restock_date,
+                'create_date'=>$restock->restock_date
             );
 
         }
@@ -2612,7 +2636,7 @@ class Reports extends CI_Controller {
         $id=$this->uri->segment(3);
         $data['itemdesc']=$this->super_model->select_column_where("items", "item_name", "item_id", $id);
         $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
-        foreach($this->super_model->custom_query("SELECT pr_no, SUM(received_qty) AS qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE ri.item_id = '$id' GROUP BY rd.pr_no") AS $head){
+        foreach($this->super_model->custom_query("SELECT enduse_id, pr_no, SUM(received_qty) AS qty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE ri.item_id = '$id' GROUP BY rd.pr_no") AS $head){
                 $excess_flag = $this->super_model->custom_query_single("excess","SELECT rh.excess FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rh.from_pr = '$head->pr_no' AND rd.item_id = '$id'");
 
                 $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$id' AND pr_no='$head->pr_no'","issuance_id");
@@ -2639,7 +2663,7 @@ class Reports extends CI_Controller {
                 } else if(($issueqty!=0 && $restockqty!=0 && $excessqty!=0) || ($issueqty==0 && ($restockqty!=0 || $excessqty!=0)) || ($issueqty!=0 && $restockqty==0 && $excessqty!=0)){
                     $final_balance =  $excessqty + $restockqty; 
                 }*/
-
+                $enduse= $this->super_model->select_column_where("enduse","enduse_name","enduse_id",$head->enduse_id);
                 $data['list'][] = array(
                     "prno"=>$head->pr_no,
                     "recqty"=>$head->qty,
@@ -2647,6 +2671,7 @@ class Reports extends CI_Controller {
                     "restockqty"=>$restockqty,
                     "excessqty"=>$excessqty,
                     "in_balance"=>$in_balance,
+                    "enduse"=>$enduse,
                     "excess"=>$excess_flag,
                     "final_balance"=>$final_balance
                 );
