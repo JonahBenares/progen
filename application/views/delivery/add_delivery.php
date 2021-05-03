@@ -76,6 +76,8 @@
 									<input type='hidden' name='item_name' id='item_name'>
 									<input type='hidden' name='original_pn' id='original_pn'>
 									<input type='hidden' name='unit' id='unit'>
+									<input type='hidden' name='invqty' id='invqty'>
+									<input type='hidden' name='reqpr' id='reqpr' value='<?php echo $h['pr_no']; ?>'>
 								</p>
 							</div>
 							<div class="col-lg-2">
@@ -85,6 +87,7 @@
 							<div class="col-lg-1">	
 								Quantity						
 								<input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" style="width:100%">
+								<input type='hidden' name='maxqty' id = "maxqty">
 							</div>
 							<div class="col-lg-2">
 								Selling Price

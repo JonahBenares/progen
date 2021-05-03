@@ -359,10 +359,20 @@ class Delivery extends CI_Controller {
         echo json_encode($return);
     }
 
+    public function inventory_balance($itemid){
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
+        $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND saved='1'","rhead_id");
+        $balance=($recqty+$begbal+$restockqty)-$issueqty;
+        return $balance;
+    }
+
     public function getIteminformation(){
         $item = $this->input->post('item');
         foreach($this->super_model->select_custom_where("items", "item_id='$item'") AS $itm){ 
-            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn); 
+            $rec_qty = $this->inventory_balance($itm->item_id);
+            $return = array('item_id' => $itm->item_id,'item_name' => $itm->item_name, 'unit' => $itm->unit_id, 'pn' => $itm->original_pn, 'recqty' => $rec_qty); 
             echo json_encode($return);   
         }
     }
@@ -387,6 +397,19 @@ class Delivery extends CI_Controller {
         );
             
         $this->load->view('delivery/row_item',$data);
+    }
+
+        public function checkpritem(){
+        $item = $this->input->post('item');
+        $pr = $this->input->post('pr');
+      
+        $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(ri.received_qty) AS sumqty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
+       
+
+        $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
+
+        $bal=($recqty-$issue_qty);
+        echo $bal;
     }
 
     public function add_delivery(){
@@ -417,6 +440,7 @@ class Delivery extends CI_Controller {
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
                 $data['details'][]=array(
                     "item_name"=>$item_name,
                     "pn_no"=>$original_pn,
@@ -426,6 +450,7 @@ class Delivery extends CI_Controller {
                     "serial_no"=>$d->serial_no,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
+                    'invqty'=>$rec_qty
                 );
             }
         }
