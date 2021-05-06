@@ -41,10 +41,41 @@ function chooseItem(){
             $("#item_name").val(response.item_name);
             $("#unit").val(response.unit);
             $("#original_pn").val(response.pn);
+            $("#invqty").val(response.recqty);
             crossreferencing();
             balancePRItem();
         }
     }); 
+}
+
+function balancePRItem(){
+    var itemid= document.getElementById("item_id").value;
+    var pr= document.getElementById("reqpr").value;
+    var loc= document.getElementById("baseurl").value;
+    var redirectcr=loc+'/index.php/delivery/checkpritem';
+    if(itemid!=""){
+         $.ajax({
+            type: "POST",
+            url: redirectcr,
+            data:'item='+itemid+'&pr='+pr,
+            success: function(output){
+                alert("Available Balance for this Item: " + output);
+                document.getElementById("maxqty").value = output;
+            }
+          });
+    } 
+}
+
+function selectItem(id,val,unit,original_pn,qty) {
+    $("#item_id").val(id);
+    $("#item").val(val);
+    $("#unit").val(unit);
+    $("#original_pn").val(original_pn);
+    $("#invqty").val(qty);
+   
+     crossreferencing();
+     balancePRItem();
+     $("#suggestion-item").hide();
 }
 
 function add_item(){
