@@ -54,6 +54,28 @@ class Delivery extends CI_Controller {
         }
     }
 
+
+    public function itemlist(){
+        $item=$this->input->post('item');
+
+        $original_pn=$this->input->post('original_pn');
+        $rows=$this->super_model->count_custom_where("items","item_name LIKE '%$item%'");
+        //count_join_where("items",", $where,$group_id);
+        if($rows!=0){
+             echo "<ul id='name-item'>";
+            foreach($this->super_model->select_custom_where("items", "item_name LIKE '%$item%'") AS $itm){ 
+                    $name = str_replace('"', '', $itm->item_name);
+                    //echo $name;
+                    $rec_qty = $this->inventory_balance($itm->item_id);
+                    ?>
+                    <li onClick="selectItem('<?php echo $itm->item_id; ?>','<?php echo $name; ?>','<?php echo $itm->unit_id; ?>','<?php echo $itm->original_pn;?>','<?php echo $rec_qty;?>')"><strong><?php echo $itm->original_pn;?> - </strong> <?php echo $name; ?></li> 
+                <?php 
+            }
+             echo "<ul>";
+        }
+        
+    }
+
     public function delivery_list(){
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
@@ -377,17 +399,90 @@ class Delivery extends CI_Controller {
         }
     }
 
+    public function getPRinformation(){
+        $prno = $this->input->post('pr_no');
+        foreach($this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE pr_no LIKE '%$prno%' AND saved='1' GROUP BY pr_no") AS $pr){ 
+            $return = array('pr_no' => $pr->pr_no,'enduse' => $pr->enduse_id, 'purpose' => $pr->purpose_id, 'department' => $pr->department_id); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function crossref_balance($itemid,$supplierid,$brandid,$catalogno){
+        //$recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno'");
+
+        //$issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = '$catalogno' AND saved='1'","issuance_id");
+        
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = 'begbal'");
+
+        //echo "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no = 'begbal'";
+
+         $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","receive_id");
+        
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","issuance_id");
+        
+         $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1' AND excess = '0'","rhead_id");
+        
+         $balance=($recqty+$begbal+$restockqty)-$issueqty;
+
+         //$balance=$recqty-$issueqty;
+         return $balance;
+    }
+
+    public function crossreflist(){
+        $item=$this->input->post('item');
+        $rows=$this->super_model->count_custom_where("supplier_items","item_id = '$item'");
+        if($rows!=0){
+            echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
+            echo "<option value=''>-Cross Reference-</option>";
+            foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){ 
+                    $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
+                    $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
+                    $balance=$this->crossref_balance($itm->item_id,$itm->supplier_id, $itm->brand_id, $itm->catalog_no);
+                    /*$unit = $this->super_model->select_column_where("items", "unit_id", "item_id", $itm->item_id);*/
+                    foreach($this->super_model->select_custom_where("items","item_id = '$item'") AS $it){
+                    $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
+                    if($balance!=0){
+                    ?>
+                    <option value="<?php echo $itm->si_id; ?>"><?php echo $supplier . " - " . $itm->catalog_no . " - ". $brand . " (".$balance.")" ." - ". $unit; ?></option>
+
+                <?php } ?>
+
+           <?php } } 
+            echo "</select>";
+        }
+        
+    }
+
     public function getitem(){
         $item_id=$this->input->post('itemid');
+        foreach($this->super_model->select_row_where("supplier_items", "si_id", $this->input->post('siid')) AS $si){
+             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $si->brand_id);
+             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $si->supplier_id);
+             $supplier_id = $si->supplier_id;
+             $brand_id=$si->brand_id;
+             $catalog_no = $si->catalog_no;
+             $nkk_no = $si->nkk_no;
+             $semt_no = $si->semt_no;
+             $invqty = $si->quantity;
         foreach($this->super_model->select_custom_where("items","item_id = '$item_id'") AS $it){
              $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
-        }
+            }
+         }
         $data['list'] = array(
             'original_pn'=>$this->input->post('original_pn'),
             'unit'=>$this->input->post('unit'),
             'serial'=>$this->input->post('serial'),
             'unit_name'=>$unit,
             'itemid'=>$this->input->post('itemid'),
+            'siid'=>$this->input->post('siid'),
+            'brand'=>$brand,
+            'brand_id'=>$brand_id,
+            'supplier_id'=>$supplier_id,
+            'supplier'=>$supplier,
+            'catalog_no'=>$catalog_no,
+            'nkk_no'=>$nkk_no,
+            'semt_no'=>$semt_no,
+            'invqty'=>$invqty,
             'quantity'=>$this->input->post('quantity'),
             'selling'=>$this->input->post('selling'),
             'discount'=>$this->input->post('discount'),
@@ -399,7 +494,7 @@ class Delivery extends CI_Controller {
         $this->load->view('delivery/row_item',$data);
     }
 
-        public function checkpritem(){
+    public function checkpritem(){
         $item = $this->input->post('item');
         $pr = $this->input->post('pr');
       
@@ -410,6 +505,29 @@ class Delivery extends CI_Controller {
 
         $bal=($recqty-$issue_qty);
         echo $bal;
+    }
+
+    public function getSIDetails(){
+        $siid=$this->input->post('siid');
+
+        $cost = $this->super_model->select_column_where("supplier_items", "item_cost", "si_id", $siid);
+        echo $cost;
+    }
+
+    public function getMaxqty(){
+        $siid=$this->input->post('siid');
+
+        $brand=$this->super_model->select_column_where("supplier_items", "brand_id", "si_id", $siid);
+        $supplier=$this->super_model->select_column_where("supplier_items", "supplier_id", "si_id", $siid);
+        $catalog=$this->super_model->select_column_where("supplier_items", "catalog_no", "si_id", $siid);
+        $itemid=$this->super_model->select_column_where("supplier_items", "item_id", "si_id", $siid);
+
+        $recqty= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id = '$itemid' AND supplier_id = '$supplier' AND brand_id = '$brand' AND catalog_no ='$catalog'");
+
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND supplier_id = '$supplier' AND brand_id = '$brand' AND catalog_no = '$catalog' AND saved='1'","issuance_id");
+
+        $maxqty = $recqty-$issueqty;
+        echo $maxqty;
     }
 
     public function add_delivery(){

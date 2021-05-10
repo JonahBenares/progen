@@ -123,7 +123,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="deliverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="deliverModal" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header modal-headback">
@@ -141,9 +141,21 @@
 								<td width="15%"><label>PO Date:</label></td>
 								<td width="85%"><input type = "date" name = "po_date" class = "form-control"><br></td>
 							</tr>
-							<tr>
+							<!--<tr>
 								<td width="15%"><label>PR#/PO#:</label></td>
 								<td width="85%"><input type = "text" name = "pr_no" class = "form-control"><br></td>
+							</tr>-->
+							<tr>
+								<td width="15%"><label>PR#/PO#:</label></td>		
+								<td width="85%" style ="padding-bottom: 5px;">
+									<select name="pr_no" id='prress' class="form-control select2" onchange="choosePRSSS();" style="margin:4px;width:100%">
+										<option value="">--Choose PR/PO--</option>
+										<?php foreach($pr_list AS $pr){ ?>
+										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
+										<?php } ?>
+									</select>
+									<br>
+								</td>
 							</tr>
 							<tr>
 								<td width="15%"><label>Buyer:</label></td>
