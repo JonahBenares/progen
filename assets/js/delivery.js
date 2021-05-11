@@ -21,6 +21,30 @@ function chooseBuyer(){
     }); 
 }
 
+function choosePRSSS(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/delivery/getPRinformation';
+    var prno = document.getElementById("prress").value;
+    document.getElementById('alert').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#proceed").hide(); 
+    setTimeout(function() {
+        document.getElementById('alert').innerHTML=''; 
+        $("#proceed").show(); 
+    },5000);
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'prno='+prno,
+        dataType: 'json',
+        success: function(response){
+            $("#prress").val(response.pr_no);
+            $("#endres").val(response.enduse);
+            $("#deptres").val(response.department);
+            $("#purres").val(response.purpose);
+        }
+    }); 
+}
+
 function chooseItem(){
     var loc= document.getElementById("baseurl").value;
     var redirect = loc+'index.php/delivery/getIteminformation';
@@ -47,6 +71,49 @@ function chooseItem(){
         }
     }); 
 }
+
+function crossreferencing(){
+    var itemid= document.getElementById("item_id").value;
+     var loc= document.getElementById("baseurl").value;
+    var redirectcr=loc+'/index.php/delivery/crossreflist';
+    if(itemid!=""){
+         $.ajax({
+            type: "POST",
+            url: redirectcr,
+            data:'item='+itemid,
+            success: function(data){
+                $("#crossreference_list").html(data);
+            }
+          });
+    } 
+}
+
+function getUnitCost(){
+    var siid= document.getElementById("siid").value;
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/request/getSIDetails';
+     $.ajax({
+            type: "POST",
+            url: redirect,
+            data: 'siid='+siid,
+            beforeSend: function(){
+                document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+                $("#submit").hide(); 
+            },
+            success: function(output){
+                $("#submit").show(); 
+                $('#alrt').hide();
+                document.getElementById("unit_cost").value = output;
+            }
+    });
+}
+
+$(document).ready(function(){
+    $("#quantity").keyup(function(){
+        var x = document.getElementById("quantity").value;
+        $('input[name="getmax"]').val(x);
+    });
+});
 
 function balancePRItem(){
     var itemid= document.getElementById("item_id").value;
@@ -90,6 +157,7 @@ function add_item(){
     var selling =parseFloat($('#selling').val());
     var discount =parseFloat($('#discount').val());
     var shipping =parseFloat($('#shipping').val());
+    var maxqty = parseFloat(document.getElementById("maxqty").value);
     
     var item =$('#item').val();
     var i = item.replace(/&/gi,"and");
