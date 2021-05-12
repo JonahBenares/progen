@@ -426,6 +426,8 @@ class Request extends CI_Controller {
        
 
         $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
+
+        $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
         /*foreach($this->super_model->select_row_where("request_head", "pr_no", $pr) AS $req){
          
                 foreach($this->super_model->select_custom_where("request_items", "request_id ='$req->request_id' AND item_id = '$item'") AS $ri){
@@ -434,7 +436,7 @@ class Request extends CI_Controller {
                 }
         }*/
 
-        $bal=($recqty-$issue_qty);
+        $bal=($recqty-$issue_qty-$deliveredqty);
         echo $bal;
     }
 
