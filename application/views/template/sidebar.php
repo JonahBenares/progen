@@ -792,6 +792,11 @@
 									<span class="fa fa-arrow-right">&nbsp;</span> Restock
 								</a>
 							</li>
+							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/pr_report_sales">
+									<span class="fa fa-arrow-right">&nbsp;</span> Sales
+								</a>
+							</li>
 						</ul>
 					</li>
 					<!-- <li>

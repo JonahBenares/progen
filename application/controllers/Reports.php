@@ -5293,5 +5293,12 @@ class Reports extends CI_Controller {
         header('Content-Disposition: attachment; filename="Delivery Report.xlsx"');
         readfile($exportfilename);
     }
+    public function pr_report_sales(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('reports/pr_report_sales');
+        $this->load->view('template/footer');
+    }
+
 }
 ?>
