@@ -5300,5 +5300,13 @@ class Reports extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+     public function tagged_as_excess(){
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('reports/tagged_as_excess');
+        $this->load->view('template/footer');
+        
+    }
+
 }
 ?>
