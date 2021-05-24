@@ -28,15 +28,16 @@
 				<div class="panel-body">
 					<div class="canvas-wrapper">
 						<div class="col-lg-12">
-							<form method="POST" action="<?php echo base_url(); ?>index.php/reports/generateAllPRReport">
+							<form method="POST" action="<?php echo base_url(); ?>index.php/reports/generateTagExcess">
 								<table width="100%">
 									<tr>
 										<td width="15%"><p class="pull-right">Search PR:</p></td>
 										<td width="60%">
-											<!-- <input type="text" name="pr" id="pr" class="form-control" autocomplete='off'>
-											<span id="suggestion-pr"></span> -->
-											<select name="pr" id='pr' class="form-control select2" onchange="choosePRS()" style="margin:4px;width:100%">
+											<select name="pr" id='pr' class="form-control select2" onchange="choosePRSS()" style="margin:4px;width:100%">
 												<option value = "">-Choose PR-</option>
+												<?php foreach($tag_pr AS $prss){ ?>
+												<option value = "<?php echo $prss->from_pr;?>"><?php echo $prss->from_pr;?></option>
+												<?php } ?>
 											</select>
 											<br>
 											<input type="hidden" name="prid" id="prid">
@@ -44,15 +45,18 @@
 										<td align="center"><div id='alrt' style="font-weight:bold"></div></td>
 										<td>
 											<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-											<input type="submit" name="search_inventory" id="submit" value='Generate Report' class="btn btn-warning" >
+											<input type="submit" name="search_tagexcess" id="submit" value='Generate Report' class="btn btn-warning" >
 										</td>
 									</tr>
 								</table>
 							</form>
 							<br>
+							<?php 
+							if(!empty($list)){ ?>
 							<div id="printableArea">
-								<p class="pname">PR-10101-0101<button id="printReport" class="btn btn-md btn-primary pull-right " onclick="printDiv('printableArea')">Print</button></p>
-								
+								<p class="pname"><?php echo $pr; ?><button id="printReport" class="btn btn-md btn-primary pull-right " onclick="printDiv('printableArea')">Print</button></p></div>
+								<p class="nomarg"><strong>End-Use: <?php echo $enduse; ?></strong></p>
+								<p ><strong>Purpose: <?php echo $purpose; ?></strong> </p>
 								<table class="table table-hover table-bordered">
 									<thead>
 										<tr>
@@ -62,22 +66,21 @@
 											<td align="center"><strong>Personnel</strong></td>
 										</tr>
 									</thead>
-									<tbody>								
+									<tbody>	
+									<?php 
+									foreach($list AS $li){ ?>							
 										<tr>
-											<td align="center"><strong></strong></td>
-											<td align="center"><strong></strong></td>		
-											<td align="center"><strong></strong></td>			
-											<td align="center"> </td>
+											<td align="center"><strong><?php echo $li['item']; ?></td>
+											<td align="center"><strong><strong><?php echo $li['excessqty']; ?></strong></td>		
+											<td align="center"><strong><strong><?php echo $li['date_tagged']; ?></strong></td>			
+											<td align="center"><strong><?php echo $tagged_by; ?></td>
 											
 										</tr>
+										<?php } ?>
 									</tbody>
 								</table>
-								<table width="100%" id="prntby">
-					                <tr>
-					                    <td style="font-size:12px">Printed By: <!-- <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?> --> </td>
-					                </tr>
-					            </table> 
 							</div>
+							<?php } ?>
 						</div>
 					</div>
 				</div>

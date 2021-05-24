@@ -2500,6 +2500,14 @@ class Reports extends CI_Controller {
             window.location.href ='<?php echo base_url(); ?>index.php/reports/all_pr_report/<?php echo $p; ?>'</script> <?php
     }
 
+    public function generateTagExcess(){
+           $prt= $this->input->post('pr'); 
+           $t= rawurlencode($this->slash_replace($prt));
+           ?>
+           <script>
+            window.location.href ='<?php echo base_url(); ?>index.php/reports/tagged_as_excess/<?php echo $t; ?>'</script> <?php
+    }
+
 
     public function generateStkcrd(){
         /*$catno=$this->input->post('catalog_no');
@@ -2735,7 +2743,7 @@ class Reports extends CI_Controller {
 
     public function all_pr_report(){
         $pr=$this->uri->segment(3);
-        $data['pr']=$pr;
+        $data['pr']=$this->slash_unreplace(rawurldecode($pr));
         $pr=$this->slash_unreplace(rawurldecode($pr));
         $data['pr_rep']=$this->super_model->custom_query("SELECT * FROM receive_details GROUP BY pr_no");
         foreach($this->super_model->custom_query("SELECT item_id, SUM(received_qty) AS qty, ri.ri_id,rd.purpose_id,rd.enduse_id FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE rd.pr_no = '$pr' GROUP BY  ri.item_id") AS $head){
@@ -2790,6 +2798,14 @@ class Reports extends CI_Controller {
         $pr = $this->input->post('pr');
         foreach($this->super_model->select_custom_where("receive_details", "pr_no LIKE '%$pr%' GROUP BY pr_no") AS $pr){  
             $return = array('receive_id' => $pr->receive_id,'pr_no' => $pr->pr_no); 
+            echo json_encode($return);   
+        }
+    }
+
+    public function getTaginformation(){
+        $prt = $this->input->post('pr');
+        foreach($this->super_model->select_custom_where("restock", "pr_no LIKE '%$pr%' GROUP BY pr_no") AS $prt){  
+            $return = array('restock_id' => $prt->restock_id,'pr_no' => $prt->pr_no); 
             echo json_encode($return);   
         }
     }
@@ -5344,12 +5360,32 @@ class Reports extends CI_Controller {
         $this->load->view('template/footer');
     }
 
-     public function tagged_as_excess(){
+    public function tagged_as_excess(){
+        $pr=$this->uri->segment(3);
+        $data['pr']=$this->slash_unreplace(rawurldecode($pr));
+        $pr_no=$this->slash_unreplace(rawurldecode($pr));
+        $data['tag_pr']=$this->super_model->custom_query("SELECT * FROM restock_head GROUP BY from_pr");
+        foreach($this->super_model->custom_query("SELECT rd.item_id, SUM(quantity) AS qty, rh.rhead_id,rh.restock_date,rh.purpose_id,rh.enduse_id FROM restock_details rd INNER JOIN restock_head rh ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id WHERE rh.saved='1' AND rh.excess='1' AND rh.from_pr = '$pr_no' GROUP BY  rd.item_id") AS $head){
+
+                $data['enduse']= $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $head->enduse_id);
+                $data['purpose'] = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $head->purpose_id);
+
+              
+                $data['list'][] = array(
+                    "rhead_id"=>$head->rhead_id,
+                    "item"=>$this->super_model->select_column_where("items", "item_name", "item_id", $head->item_id),
+                    "item_id"=>$head->item_id,
+                    "excessqty"=>$head->qty,
+                    "date_tagged"=>$head->restock_date,
+
+                );
+            
+        }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('reports/tagged_as_excess');
+        $data['tagged_by']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+        $this->load->view('reports/tagged_as_excess',$data);
         $this->load->view('template/footer');
-        
     }
 
 }

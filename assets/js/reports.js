@@ -177,6 +177,29 @@ function choosePRS(){
     }); 
 }
 
+function choosePRSS(){
+    var loc= document.getElementById("baseurl").value;
+    var redirect = loc+'index.php/reports/getTaginformation';
+    var prno = document.getElementById("pr").value;
+    document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#submit").hide(); 
+    setTimeout(function() {
+        document.getElementById('alrt').innerHTML=''; 
+        $("#submit").show(); 
+    },5000);
+
+    $.ajax({
+        type: 'POST',
+        url: redirect,
+        data: 'pr='+prno,
+        dataType: 'json',
+        success: function(response){
+            $("#prid").val(response.restock_id);
+            $("#pr_no").val(response.pr_no);
+        }
+    }); 
+}
+
 function chooseItem(){
     var loc= document.getElementById("baseurl").value;
     var redirect = loc+'index.php/reports/getIteminformation';
