@@ -54,7 +54,8 @@
 							<?php if(!empty($list)){ ?>
 							<div id="printableArea">
 								<p class="pname"><?php echo $pr; ?><button id="printReport" class="btn btn-md btn-primary pull-right " onclick="printDiv('printableArea')">Print</button></p>
-								
+								<p class="nomarg"><strong>End-Use: <?php echo $enduse; ?></strong></p>
+								<p ><strong>Purpose: <?php echo $purpose; ?></strong> </p>
 								<table class="table table-hover table-bordered">
 									<thead>
 										<tr>

@@ -469,11 +469,11 @@ class Items extends CI_Controller {
          $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1' AND receive_date <='$end_date'","receive_id");
          //return $recqty;
         $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1' AND issue_date <='$end_date'","issuance_id");
-        $deliveryqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1' AND issue_date <='$end_date'","delivery_id");
+        $deliveryqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1' AND po_date <='$end_date'","delivery_id");
         //return $issueqty;
          $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND excess = '0' AND saved='1' AND restock_date <='$end_date'","rhead_id");
           //return $restockqty;
-          $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
+          $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliveryqty;
          return $balance;
     }
 
