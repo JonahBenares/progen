@@ -78,14 +78,24 @@
 									</tr>
 									<tr>
 										<td></td>
-										<td></td>
+										<td>
+											<br>
+											<select name="category" class="form-control" id="category" onChange="chooseCategory();">
+												<option value="" selected="">-PR Number-</option>
+													<option value=""></option>
+											</select>
+										</td>
+										<td>
+											<br>
+											<select name="enduse" class="form-control">
+												<option value="" selected="">-Purpose-</option>
+													<option value=""></option>
+											</select>
+										</td>
 										<td>
 											<br>
 											<input type="submit" name="search_inventory" value='Generate' class="btn btn-warning btn-block" >
 										</td>
-										<td></td>
-										<td></td>
-										<td></td>
 									</tr>
 								</table>
 							</form>
