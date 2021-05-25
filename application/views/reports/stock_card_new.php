@@ -22,7 +22,7 @@ if(!empty($stockcard)){
 	foreach($balance AS $sc){
 		if($sc['method']== 'Beginning Balance' || $sc['method'] == 'Receive' || $sc['method'] == 'Restock'){ 
 				$total_bal += $sc['quantity'];
-		} else if($sc['method'] == 'Issuance') {
+		} else if($sc['method'] == 'Issuance' || $sc['method'] == 'Delivered') {
 				$total_bal -= $sc['quantity'];
 		} 
 	}
@@ -139,7 +139,7 @@ if(!empty($stockcard)){
 									foreach($balance AS $s){
 											if($s['method'] == 'Beginning Balance' || $s['method'] == 'Receive' || $s['method'] == 'Restock'){ 
 														$run_bal += $s['quantity'];
-												} else if($s['method'] == 'Issuance') {
+												} else if($s['method'] == 'Issuance' || $s['method'] == 'Delivered') {
 														$run_bal -= $s['quantity'];
 												} 
 

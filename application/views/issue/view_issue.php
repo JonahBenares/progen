@@ -31,14 +31,85 @@
 			<div class="panel panel-default shadow">
 				<div class="panel-heading">
 					Issuance List
-					<!-- <div class="pull-right">
+					<div class="pull-right">
 						<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#search">
 							<span class="fa fa-search"></span>
 						</a>
-						<a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#requestModal">
+						<!-- <a class="clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#requestModal">
 							<span class="fa fa-plus"></span></span>
-						</a>
-					</div> -->
+						</a> -->
+					</div>
+				</div>
+				<div class="modal fade" id="search" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+					<div class="modal-dialog" role="document">
+						<div class="modal-content modbod">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel" style="color:black!important">Search</h4>
+							</div>
+							<form method="POST" action = "<?php echo base_url(); ?>index.php/receive/search_receive" role="search">
+								<div class="modal-body">
+
+									<table style="width:100%">
+										<tr>
+											<td class="td-sclass" width="35%"><label for="rdate">Issue Date:</label></td>
+											<td class="td-sclass">
+												<input type="date" name="rdate" class="form-control">
+											</td>
+										</tr>
+										<tr>
+											<td class="td-sclass"><label for="dr">MIF No.:</label></td>
+											<td class="td-sclass">
+												<input type="text" name="dr" class="form-control">
+											</td>
+										</tr>
+										<tr>
+											<td class="td-sclass"><label for="po">MReqF No.:</label></td>
+											<td class="td-sclass">
+												<input type="text" name="po" class="form-control">
+											</td>
+										</tr>
+										
+										<tr>
+											<td class="td-sclass"><label for="pr">PR/Warehouse Stock:</label></td>
+											<td class="td-sclass">
+												<select class="form-control">
+													<option>Purchse Request</option>
+													<option>Warehouse Stock</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-sclass"><label for="jo"></label></td>
+											<td class="td-sclass">
+												<input type="text" name="jo" class="form-control" placeholder="Enter PR Number">
+											</td>
+										</tr>
+										<tr>
+											<td class="td-sclass"><label for="enduse">End Use:</label></td>
+											<td class="td-sclass">
+												<select name="enduse" class="form-control">
+													<option value='' selected>-Choose End Use-</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-sclass"><label for="purpose">Purpose:</label></td>
+											<td class="td-sclass">
+												<select name="purpose" class="form-control">
+													<option value='' selected>-Choose Purpose-</option>
+												</select>
+											</td>
+										</tr>
+									</table>					
+								</div>
+								<div class="modal-footer">
+									<input type="submit" name="searchbtn" class="search-btn btn btn-default shadow" value="Search">
+								</div>
+								<input type="hidden" name="baseurl" id="baseurl" value="">
+							</form>
+						</div>
+					</div>
 				</div>
 				
 				<div class="panel-body">
