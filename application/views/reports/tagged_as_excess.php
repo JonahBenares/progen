@@ -3,6 +3,12 @@
 
 <style type="text/css">
 	    #name-item li {width: 50%}
+
+	    @media print {
+    #printbtn {
+        display :  none;
+    }
+}
 </style>	
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 	<div class="row">
@@ -54,7 +60,9 @@
 							<?php 
 							if(!empty($list)){ ?>
 							<div id="printableArea">
-								<p class="pname"><?php echo $pr; ?><button id="printReport" class="btn btn-md btn-primary pull-right " onclick="printDiv('printableArea')">Print</button></p>
+								<p class="pname"><?php echo $pr; ?>
+								<button id="printbtn" class="btn btn-md btn-primary pull-right " onclick="printDiv1('printableArea')">Print</button>
+								</p>
 								<p class="nomarg"><strong>End-Use: <?php echo $enduse; ?></strong></p>
 								<p ><strong>Purpose: <?php echo $purpose; ?></strong> </p>
 								<table class="table table-hover table-bordered">
@@ -73,7 +81,7 @@
 											<td align="center"><strong><?php echo $li['item']; ?></td>
 											<td align="center"><strong><strong><?php echo $li['excessqty']; ?></strong></td>		
 											<td align="center"><strong><strong><?php echo $li['date_tagged']; ?></strong></td>			
-											<td align="center"><strong><?php echo $tagged_by; ?></td>
+											<td align="center"><strong><?php echo $li['tagged_by']; ?></td>
 											
 										</tr>
 										<?php } ?>
@@ -88,3 +96,14 @@
 			</div>
 		</div>
 	</div>
+		<script type="text/javascript">
+		function printDiv1(divName) {
+	    	var printContents = document.getElementById(divName).innerHTML;
+	     	var originalContents = document.body.innerHTML;
+	     	document.body.innerHTML = printContents;
+	    	var printButton = document.getElementById("printbtn");
+        	printButton.style.visibility = 'hidden';
+	     	window.print();
+	     	document.body.innerHTML = originalContents;
+	}
+	</script>

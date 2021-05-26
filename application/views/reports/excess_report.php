@@ -80,23 +80,26 @@
 										<td></td>
 										<td>
 											<br>
-											<select name="category" class="form-control" id="category" onChange="chooseCategory();">
+											<select name="category" class="form-control select2">
 												<option value="" selected="">-PR Number-</option>
-													<option value=""></option>
+													<?php foreach($pr_excess_list AS $pr){ ?>
+													<option value="<?php echo $pr->from_pr; ?>"><?php echo $pr->from_pr; ?></option>
+												<?php } ?>
 											</select>
 										</td>
 										<td>
 											<br>
-											<select name="enduse" class="form-control">
+											<select name="enduse" class="form-control select2 ">
 												<option value="" selected="">-Purpose-</option>
-													<option value=""></option>
+													<?php foreach($purpose AS $p){ ?>
+													<option value="<?php echo $p->purpose_id; ?>"><?php echo $p->purpose_desc; ?></option>
+												<?php } ?>
 											</select>
 										</td>
 										<td>
 											<br>
 											<input type="submit" name="search_inventory" value='Generate' class="btn btn-warning btn-block" >
 										</td>
-									</tr>></td>
 									</tr>
 								</table>
 							</form>
