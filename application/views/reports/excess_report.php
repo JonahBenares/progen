@@ -80,7 +80,7 @@
 										<td></td>
 										<td>
 											<br>
-											<select name="category" class="form-control select2">
+											<select name="from_pr" class="form-control select2">
 												<option value="" selected="">-PR Number-</option>
 													<?php foreach($pr_excess_list AS $pr){ ?>
 													<option value="<?php echo $pr->from_pr; ?>"><?php echo $pr->from_pr; ?></option>
@@ -89,7 +89,7 @@
 										</td>
 										<td>
 											<br>
-											<select name="enduse" class="form-control select2 ">
+											<select name="purpose" class="form-control select2 ">
 												<option value="" selected="">-Purpose-</option>
 													<?php foreach($purpose AS $p){ ?>
 													<option value="<?php echo $p->purpose_id; ?>"><?php echo $p->purpose_desc; ?></option>

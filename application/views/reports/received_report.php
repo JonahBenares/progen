@@ -78,7 +78,7 @@
 										<td></td>
 										<td>
 											<br>
-											<select name="category" class="form-control select2">
+											<select name="pr_no" class="form-control select2">
 												<option value="" selected="">-PR Number-</option>
 													<?php foreach($pr_list AS $pr){ ?>
 													<option value="<?php echo $pr->pr_no; ?>"><?php echo $pr->pr_no; ?></option>
