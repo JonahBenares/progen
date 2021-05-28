@@ -824,6 +824,95 @@ class Issue extends CI_Controller {
         echo "success";
     }
 
+    public function search_issue(){
+        $idate=$this->input->post('idate');
+        $mif_no=$this->input->post('mif_no');
+        $mreqf_no=$this->input->post('mreqf_no');
+        $pr=$this->input->post('pr');
+        $enduse=$this->input->post('enduse');
+        $purpose=$this->input->post('purpose');
+        $type=$this->input->post('type');
+        $this->load->model('super_model');
+        $data['issue_head'] = $this->super_model->select_all('issuance_head');
+        $data['issue_details'] = $this->super_model->select_all('issuance_details');
+        $data['enduse'] = $this->super_model->select_all('enduse');
+        $data['purpose'] = $this->super_model->select_all('purpose');
+        $sql="";
+        $filter ="";
+        if(!empty($idate)){
+            $sql.= " ih.issue_date LIKE '%$idate%' AND";
+            $filter.="Issue Date = ".$idate.", ";
+        }
+
+        if(!empty($mif_no)){
+            $sql.= " ih.mif_no LIKE '%$mif_no%' AND";
+            $filter.="MIF No. = " .$mif_no. ", ";
+        }
+
+        if(!empty($mreqf_no)){
+            $sql.= " ih.mreqf_no LIKE '%$mreqf_no%' AND";
+            $filter.="MReqF No. = " .$mreqf_no. ", ";
+        }
+
+        if(!empty($pr)){
+            $sql.= " ih.pr_no LIKE '%$pr%' AND";
+            $filter.="PR No. = " .$pr. ", ";
+        }
+
+        if(!empty($enduse)){
+            $sql.= " ih.enduse_id = '$enduse' AND";
+            $filter.="End-Use = " . $this->super_model->select_column_where('enduse', 'enduse_name', 
+                        'enduse_id', $enduse). ", ";
+        }
+
+        if(!empty($purpose)){
+            $sql.= " ih.purpose_id = '$purpose' AND";
+            $filter.="Purpose = " . $this->super_model->select_column_where('purpose', 'purpose_desc', 
+                        'purpose_id', $purpose). ", ";
+        }
+
+        if(!empty($type)){
+            $sql.= " rh.type LIKE '%$type%' AND";
+            $filter.="Type = ".$type. ", ";
+        }
+
+        $query=substr($sql,0,-3);
+        $filter=substr($filter,0,-2);
+        $count=$this->super_model->count_custom_query("SELECT * FROM issuance_head ih LEFT JOIN request_head rh ON ih.request_id=rh.request_id WHERE ".$query);
+       
+        $data['filter']=$filter;
+        if($count!=0){
+            $data['count_query'] = 1;
+            foreach ($this->super_model->custom_query("SELECT * FROM issuance_head ih LEFT JOIN request_head rh ON ih.request_id=rh.request_id WHERE ".$query) AS $issue){
+            //foreach ($this->super_model->select_join_where("issuance_head", "issuance_details", $query, "issuance_id") AS $itm){
+                $department = $this->super_model->select_column_where("department", "department_name", "department_id", $issue->department_id);
+                $purpose = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $issue->purpose_id);
+                $enduse = $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $issue->enduse_id);
+                $type=  $this->super_model->select_column_where("request_head", "type", "mreqf_no", $issue->mreqf_no);
+                $data['issue_list'][] = array(
+                    'issuance_id'=>$issue->issuance_id,
+                    'mifno'=>$issue->mif_no,
+                    'mreqf'=>$issue->mreqf_no,
+                    'prno'=>$issue->pr_no,
+                    'date'=>$issue->issue_date,
+                    'time'=>$issue->issue_time,
+                    'type'=>$type,
+                    'department'=>$department,
+                    'purpose'=>$purpose,
+                    'enduse'=>$enduse
+                );
+            } 
+
+        }else {
+                $data['count_query'] = 0;
+                $data['issue_list']=array();
+            }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('issue/view_issue',$data);
+        $this->load->view('template/footer');
+    }
+
     public function getEmprel(){
         $employee_id = $this->input->post('employee_id');
         foreach($this->super_model->custom_query("SELECT employee_id, position, employee_name FROM employees WHERE employee_id='$employee_id'") AS $emp){   

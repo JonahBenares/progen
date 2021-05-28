@@ -80,16 +80,21 @@
 										<td></td>
 										<td>
 											<br>
-											<select name="category" class="form-control" id="category" onChange="chooseCategory();">
+											<select name="pr_no" class="form-control select2">
 												<option value="" selected="">-PR Number-</option>
-													<option value=""></option>
+													<?php foreach($pr_restock_list AS $pr){ ?>
+													<option value="<?php echo $pr->pr_no; ?>"><?php echo $pr->pr_no; ?></option>
+												<?php } ?>
 											</select>
 										</td>
 										<td>
 											<br>
-											<select name="enduse" class="form-control">
+											<select name="purpose" class="form-control select2 ">
 												<option value="" selected="">-Purpose-</option>
-													<option value=""></option>
+													<?php foreach($purpose AS $p){ ?>
+													<option value="<?php echo $p->purpose_id; ?>"><?php echo $p->purpose_desc; ?></option>
+												<?php } ?>
+
 											</select>
 										</td>
 										<td>
@@ -101,8 +106,8 @@
 							</form>
 							<br>
 							<?php if(!empty($restock)){ ?>
-								<a href = "<?php echo base_url(); ?>index.php/reports/export_restock/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
-								<a href = "<?php echo base_url(); ?>index.php/reports/restock_report_print/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>" class = "btn btn-primary pull-right">
+								<a href = "<?php echo base_url(); ?>index.php/reports/export_restock/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>/<?php echo $purpose1;?>/<?php echo $pr_no1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+								<a href = "<?php echo base_url(); ?>index.php/reports/restock_report_print/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>/<?php echo $purpose1;?>/<?php echo $pr_no1;?>" class = "btn btn-primary pull-right">
 									<span  class="fa fa-print"></span>
 								</a>
 								<br>

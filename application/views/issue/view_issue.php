@@ -47,42 +47,43 @@
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								<h4 class="modal-title" id="myModalLabel" style="color:black!important">Search</h4>
 							</div>
-							<form method="POST" action = "<?php echo base_url(); ?>index.php/receive/search_receive" role="search">
+														<form method="POST" action = "<?php echo base_url(); ?>index.php/issue/search_issue" role="search">
 								<div class="modal-body">
 
 									<table style="width:100%">
 										<tr>
-											<td class="td-sclass" width="35%"><label for="rdate">Issue Date:</label></td>
+											<td class="td-sclass" width="35%"><label for="idate">Issue Date:</label></td>
 											<td class="td-sclass">
-												<input type="date" name="rdate" class="form-control">
+												<input type="date" name="idate" class="form-control">
 											</td>
 										</tr>
 										<tr>
-											<td class="td-sclass"><label for="dr">MIF No.:</label></td>
+											<td class="td-sclass"><label for="mif_no">MIF No.:</label></td>
 											<td class="td-sclass">
-												<input type="text" name="dr" class="form-control">
+												<input type="text" name="mif_no" class="form-control">
 											</td>
 										</tr>
 										<tr>
-											<td class="td-sclass"><label for="po">MReqF No.:</label></td>
+											<td class="td-sclass"><label for="mreqf_no">MReqF No.:</label></td>
 											<td class="td-sclass">
-												<input type="text" name="po" class="form-control">
+												<input type="text" name="mreqf_no" class="form-control">
 											</td>
 										</tr>
 										
 										<tr>
 											<td class="td-sclass"><label for="pr">PR/Warehouse Stock:</label></td>
 											<td class="td-sclass">
-												<select class="form-control">
-													<option>Purchse Request</option>
-													<option>Warehouse Stock</option>
+												<select class="form-control" name="type">
+													<option value="">--Select Type--</option>
+													<option value="JO / PR">JO / PR</option>
+													<option value="Warehouse Stocks">Warehouse Stocks</option>
 												</select>
 											</td>
 										</tr>
 										<tr>
-											<td class="td-sclass"><label for="jo"></label></td>
+											<td class="td-sclass"><label for="pr">PR No:</label></td>
 											<td class="td-sclass">
-												<input type="text" name="jo" class="form-control" placeholder="Enter PR Number">
+												<input type="text" name="pr" class="form-control">
 											</td>
 										</tr>
 										<tr>
@@ -90,17 +91,27 @@
 											<td class="td-sclass">
 												<select name="enduse" class="form-control">
 													<option value='' selected>-Choose End Use-</option>
+											<?php 
+											foreach($enduse AS $end){
+											?>
+													<option value = "<?php echo $end->enduse_id;?>"><?php echo $end->enduse_name;?></option>
+											<?php } ?>
 												</select>
 											</td>
 										</tr>
 										<tr>
-											<td class="td-sclass"><label for="purpose">Purpose:</label></td>
-											<td class="td-sclass">
-												<select name="purpose" class="form-control">
-													<option value='' selected>-Choose Purpose-</option>
-												</select>
-											</td>
-										</tr>
+								<td class="td-sclass"><label for="purpose">Purpose:</label></td>
+								<td class="td-sclass">
+									<select name="purpose" class="form-control">
+										<option value='' selected>-Choose Purpose-</option>
+										<?php 
+											foreach($purpose AS $pur){
+										?>
+										<option value = "<?php echo $pur->purpose_id?>"><?php echo $pur->purpose_desc?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr>
 									</table>					
 								</div>
 								<div class="modal-footer">
@@ -115,6 +126,19 @@
 				<div class="panel-body">
 					<div class="canvas-wrapper">
 						<div class="row" style="padding:0px 10px 0px 10px">
+							<?php 
+								if(!empty($_POST)){
+								
+									?>
+									
+									<div class='alert alert-warning alert-shake'>
+										<center>
+											<strong>Filters applied:</strong> <?php echo  $filter; ?>.
+											<a href='<?php echo base_url(); ?>index.php/issue/view_issue' class='remove_filter alert-link'>Remove Filters</a>. 
+										</center>
+									</div>
+							<?php  }?>
+						</div>
 						</div>
 						<table class="table-bordered table-hover" id="received" width="100%" style="font-size: 15px">
 							<thead>
