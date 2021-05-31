@@ -2764,6 +2764,39 @@ class Reports extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function borrowing_print(){         
+        $count=$this->super_model->select_count_join_inner("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id");
+
+        if($count!=0){
+            foreach($this->super_model->select_inner_join("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id") AS $itms){
+                $data['list'][]=array(
+                    'rqid'=>$itms->rq_id,
+                    'mreqf_no'=>$this->super_model->select_column_where("request_head", "mreqf_no", "request_id", $itms->request_id),
+                    'request_date'=>$this->super_model->select_column_where("request_head", "request_date", "request_id", $itms->request_id),
+                    'request_time'=>$this->super_model->select_column_where("request_head", "request_time", "request_id", $itms->request_id),
+                    'original_pr'=>$this->super_model->select_column_where("request_head", "pr_no", "request_id", $itms->request_id),
+                    'borrowfrom'=>$itms->borrowfrom_pr,
+                    'quantity'=>$itms->quantity,
+                    'remarks'=>$this->super_model->select_column_where("request_head", "remarks", "request_id", $itms->request_id),
+                    'supplier'=>$this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itms->supplier_id),
+                    'item'=>$this->super_model->select_column_where("items", "item_name", "item_id", $itms->item_id),
+                    'brand'=>$this->super_model->select_column_where("brand", "brand_name", "brand_id", $itms->brand_id),
+                    'catalog'=>$itms->catalog_no,
+                    'nkk'=>$itms->nkk_no,
+                    'semt'=>$itms->semt_no
+
+
+                );
+            } 
+        } else {
+            $data['list']=array();
+        }
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar',$this->dropdown);
+        $this->load->view('reports/borrowing_print',$data);
+        $this->load->view('template/footer');
+    }
+
     public function replenishborrow(){
         $id=$this->input->post('id');
 

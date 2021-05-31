@@ -29,6 +29,10 @@
 				<div class="panel-body">
 					<div class="canvas-wrapper" style="	overflow-x: scroll;">
 						<div class="col-lg-12">
+							<a href="<?php echo base_url(); ?>index.php/reports/borrowing_print" target="_blank" class="btn btn-info pull-right ">
+									<span  class="fa fa-print"></span>
+							</a>
+							<br><br>
 							<table class="table table-hover table-bordered" id="item_table" >
 								<thead>
 									<tr>	
