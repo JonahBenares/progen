@@ -34,7 +34,7 @@
 							</button>
 							<br><br> -->
 							<div id="printableArea">
-								<table class="table table-hover table-bordered" id="item_table" >
+								<table class="table table-hover table-bordered">
 									<thead>
 										<tr>	
 											<td align="center"><strong>MReqF#</strong></td>
