@@ -127,7 +127,7 @@
 													<th>Serial</th>
 													<th>Unit Cost</th>
 													<th>Quantity</th>
-													<th><center><span class="fa fa-times"></span></center></th>
+													<!-- <th><center><span class="fa fa-times"></span></center></th> -->
 													<!-- <th><center><span class="fa fa-pencil"></span></center></th> -->
 												</tr>
 											</thead>
@@ -168,7 +168,7 @@
 													<td><?php echo substr($si['serial'],0,-2); ?></td>
 													<td><?php echo $si['item_cost']; ?></td>
 													<td><?php echo $si['quantity']; ?></td>
-													<td><center><a href="<?php echo base_url(); ?>index.php/items/delete_supp_item/<?php echo $si['si_id'] ."/". $id; ?>" onclick="return confirm('Are you sure you want to delete this item?')" style="color:red;" title='Delete'><span class="fa fa-times"></span></a></center></td>
+													<!-- <td><center><a href="<?php echo base_url(); ?>index.php/items/delete_supp_item/<?php echo $si['si_id'] ."/". $id; ?>" onclick="return confirm('Are you sure you want to delete this item?')" style="color:red;" title='Delete'><span class="fa fa-times"></span></a></center></td> -->
 													<!--<td><center>
 														<a href="javascript:void(0)" onclick="updateBrand('<?php //echo base_url();?>','<?php //echo $si['si_id'] ?>','<?php //echo $id;?>')" >
 															<!--<span class="fa fa-pencil"></span>
