@@ -1892,6 +1892,7 @@ class Reports extends CI_Controller {
                 'catalog_no'=>'begbal',
                 'brand'=>$brand,
                 'pr_no'=>'',
+                'po_no'=>'',
                 'unit_cost'=>$begbal->item_cost,
                 'total_cost'=>$total_cost,
                 'method'=>'Beginning Balance',
