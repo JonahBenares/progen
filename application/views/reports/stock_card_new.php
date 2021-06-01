@@ -153,6 +153,7 @@ if(!empty($stockcard)){
 										<tr>
 											<th style="text-align: center" width="12%">Date</th>
 											<th style="text-align: center" width="12%">PR #</th>
+											<th style="text-align: center" width="12%">PO #</th>
 											<th style="text-align: center" width="30%">Supplier</th>
 											<th style="text-align: center" width="16%">Catalog No.</th>
 											<th style="text-align: center" width="16%">Brand</th>
@@ -180,6 +181,7 @@ if(!empty($stockcard)){
 											 <tr>
 												<td><?php echo (!empty($stockcard[$x]['date']) ? date('Y-m-d', strtotime($stockcard[$x]['date'])) : ''); ?></td>
 												<td><?php echo $stockcard[$x]['pr_no']; ?></td>
+												<td><?php echo $stockcard[$x]['po_no']; ?></td>
 												<td><?php echo $stockcard[$x]['supplier']; ?></td>
 												<td><?php echo $stockcard[$x]['catalog_no']; ?></td>
 												<td><?php echo $stockcard[$x]['brand']; ?></td>
