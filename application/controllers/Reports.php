@@ -480,7 +480,7 @@ class Reports extends CI_Controller {
     }
 
     public function begbal($item, $enddate){
-        $beginning= ($this->qty_receive_date($item,$enddate) + $this->qty_restocked_date($item,$enddate)) - $this->qty_issued_date($item,$enddate);
+        $beginning= ($this->qty_receive_date($item,$enddate) + $this->qty_restocked_date($item,$enddate)) - ($this->qty_issued_date($item,$enddate) + $this->qty_delivery_date($item,$enddate));
         return $beginning;
        // echo $this->qty_receive_date($item,$enddate) . "<br>";
     }
@@ -522,6 +522,16 @@ class Reports extends CI_Controller {
         }*/
           $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$item' AND saved='1' AND issue_date BETWEEN '$start' AND '$enddate'","issuance_id");
           return $issueqty;
+    }
+
+    public function qty_delivery_date($item,$enddate){
+          
+        $start = $this->first_transaction();
+        /*  foreach($this->super_model->custom_query("SELECT SUM(id.quantity) AS qty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE ih.issue_date BETWEEN '$start' AND '$enddate' AND id.item_id='$item' AND excess='0' AND saved='1'") AS $r){
+            return $r->qty;
+        }*/
+          $deliverqty= $this->super_model->select_sum_join("qty","delivery_details", "delivery_head", "item_id='$item' AND saved='1' AND date BETWEEN '$start' AND '$enddate'","delivery_id");
+          return $deliverqty;
     }
     
      public function stock_card_preview(){
@@ -5544,7 +5554,7 @@ class Reports extends CI_Controller {
         $data['pr']=$this->slash_unreplace(rawurldecode($pr));
         $pr_no=$this->slash_unreplace(rawurldecode($pr));
         $data['tag_pr']=$this->super_model->custom_query("SELECT * FROM restock_head GROUP BY from_pr");
-        foreach($this->super_model->custom_query("SELECT rd.item_id, SUM(quantity) AS qty, rh.rhead_id,rh.restock_date,rh.purpose_id,rh.enduse_id,rh.received_by FROM restock_details rd INNER JOIN restock_head rh ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id WHERE rh.saved='1' AND rh.excess='1' AND rh.from_pr = '$pr_no' GROUP BY  rd.item_id") AS $head){
+        foreach($this->super_model->custom_query("SELECT rd.item_id, SUM(quantity) AS qty, rh.rhead_id,rh.restock_date,rh.purpose_id,rh.enduse_id,rh.received_by,rh.from_pr FROM restock_details rd INNER JOIN restock_head rh ON rh.rhead_id = rd.rhead_id INNER JOIN items i ON rd.item_id = i.item_id WHERE rh.saved='1' AND rh.excess='1' AND rh.from_pr = '$pr_no' GROUP BY  rd.item_id") AS $head){
 
                 $data['enduse']= $this->super_model->select_column_where("enduse", "enduse_name", "enduse_id", $head->enduse_id);
                 $data['purpose'] = $this->super_model->select_column_where("purpose", "purpose_desc", "purpose_id", $head->purpose_id);
@@ -5556,6 +5566,7 @@ class Reports extends CI_Controller {
                     "tagged_by"=>$this->super_model->select_column_where("users", "fullname", "user_id", $head->received_by),
                     "item_id"=>$head->item_id,
                     "excessqty"=>$head->qty,
+                    "from_pr"=>$head->from_pr,
                     "date_tagged"=>$head->restock_date,
 
 
