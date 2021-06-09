@@ -1845,50 +1845,100 @@ class Reports extends CI_Controller {
         $data['itemdesc'] = $this->super_model->select_column_where("items", "item_name", "item_id", $id);
         $sql="";
         $sql1="";
+        $sql2="";
+        $sql3="";
+        $sql4="";
         if($id!='null'){
-            $sql.= " item_id = '$id' AND";
+            $sql.= " supplier_items.item_id = '$id' AND";
+            $sql1.= " ri.item_id = '$id' AND";
+            $sql2.= " id.item_id = '$id' AND";
+            $sql3.= " rd.item_id = '$id' AND";
+            $sql4.= " dd.item_id = '$id' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($sup!='null'){
-            $sql.= " supplier_id = '$sup' AND";
+            $sql.= " supplier_items.supplier_id = '$sup' AND";
+            $sql1.= " ri.supplier_id = '$sup' AND";
+            $sql2.= " id.supplier_id = '$sup' AND";
+            $sql3.= " rd.supplier_id = '$sup' AND";
+            $sql4.= " rid.supplier_id = '$sup' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($cat!='null'){
-            $sql.= " catalog_no = '$cat' AND";
+            $sql.= " supplier_items.catalog_no = '$cat' AND";
+            $sql1.= " ri.catalog_no = '$cat' AND";
+            $sql2.= " id.catalog_no = '$cat' AND";
+            $sql3.= " rd.catalog_no = '$cat' AND";
+            $sql4.= " rid.catalog_no = '$cat' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($nkk!='null'){
-            $sql.= " nkk_no = '$nkk' AND";
+            $sql.= " supplier_items.nkk_no = '$nkk' AND";
+            $sql1.= " ri.nkk_no = '$nkk' AND";
+            $sql2.= " id.nkk_no = '$nkk' AND";
+            $sql3.= " rd.nkk_no = '$nkk' AND";
+            $sql4.= " rid.nkk_no = '$nkk' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($semt!='null'){
-            $sql.= " semt_no = '$semt' AND";
+            $sql.= " supplier_items.semt_no = '$semt' AND";
+            $sql1.= " ri.semt_no = '$semt' AND";
+            $sql2.= " id.semt_no = '$semt' AND";
+            $sql3.= " rd.semt_no = '$semt' AND";
+            $sql4.= " rid.semt_no = '$semt' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($brand!='null'){
-            $sql.= " brand_id = '$brand' AND";
+            $sql.= " supplier_items.brand_id = '$brand' AND";
+            $sql1.= " ri.brand_id = '$brand' AND";
+            $sql2.= " id.brand_id = '$brand' AND";
+            $sql3.= " rd.brand_id = '$brand' AND";
+            $sql4.= " rid.brand_id = '$brand' AND";
         }else {
             $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
-        if($id!='null'){
-            $sql1.= " item_id = '$id' AND";
-        }else {
-            $sql1.= "";
-        }
 
         $query=substr($sql,0,-3);
         $query1=substr($sql1,0,-3);
+        $query2=substr($sql2,0,-3);
+        $query3=substr($sql3,0,-3);
+        $query4=substr($sql4,0,-3);
+
 
         //echo $query;
 
@@ -1905,6 +1955,8 @@ class Reports extends CI_Controller {
                 'supplier'=>$supplier,
                 'catalog_no'=>'begbal',
                 'brand'=>$brand,
+                'nkk_no'=>$begbal->nkk_no,
+                'semt_no'=>$begbal->semt_no,
                 'pr_no'=>'',
                 'po_no'=>'',
                 'unit_cost'=>$begbal->item_cost,
@@ -1926,7 +1978,7 @@ class Reports extends CI_Controller {
             );
         }
         //echo "SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'";
-        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'") AS $receive){
+        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query1 AND saved = '1'") AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
@@ -1936,6 +1988,8 @@ class Reports extends CI_Controller {
                 'ri_id'=>$receive->ri_id,
                 'supplier'=>$supplier,
                 'catalog_no'=>$receive->catalog_no,
+                'nkk_no'=>$receive->nkk_no,
+                'semt_no'=>$receive->semt_no,
                 'brand'=>$brand,
                 'pr_no'=>$pr_no,
                 'po_no'=>$receive->po_no,
@@ -1958,7 +2012,7 @@ class Reports extends CI_Controller {
 
         //echo "****SELECT ih.issue_date, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query";
 
-        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query AND saved = '1'") AS $issue){
+        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query2 AND saved = '1'") AS $issue){
             $cost = $this->super_model->select_column_where("request_items", "unit_cost", "rq_id", $issue->rq_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $issue->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $issue->brand_id);
@@ -1970,6 +2024,8 @@ class Reports extends CI_Controller {
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>$issue->catalog_no,
+                'nkk_no'=>$issue->nkk_no,
+                'semt_no'=>$issue->semt_no,
                 'brand'=>$brand,
                 'pr_no'=>$issue->pr_no,
                 'po_no'=>$po_no,
@@ -1992,7 +2048,7 @@ class Reports extends CI_Controller {
 
         }
 
-         foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, ri.item_id, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.quantity, ri.item_cost FROM restock_head rh INNER JOIN restock_details ri ON rh.rhead_id = ri.rhead_id WHERE $query AND saved = '1' AND excess='0'") AS $restock){
+         foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE $query3 AND saved = '1' AND excess='0'") AS $restock){
             
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $restock->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $restock->brand_id);
@@ -2004,6 +2060,8 @@ class Reports extends CI_Controller {
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>$restock->catalog_no,
+                'nkk_no'=>$restock->nkk_no,
+                'semt_no'=>$restock->semt_no,
                 'brand'=>$brand,
                 'pr_no'=>$restock->from_pr,
                 'po_no'=>$po_no,
@@ -2025,13 +2083,15 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT dh.po_date, dh.pr_no, dd.item_id, dd.qty, dh.created_date, dd.selling_price FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE $query1 AND saved = '1'") AS $del){
+        foreach($this->super_model->custom_query("SELECT dh.po_date, dh.pr_no, dd.item_id, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN receive_items rid ON rid.item_id = dd.item_id WHERE $query4 AND saved = '1'") AS $del){
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
             $data['stockcard'][] = array(
                 'supplier'=>'',
                 'catalog_no'=>'',
+                'nkk_no'=>'',
+                'semt_no'=>'',
                 'brand'=>$brand,
                 'pr_no'=>$del->pr_no,
                 'po_no'=>$po_no,
