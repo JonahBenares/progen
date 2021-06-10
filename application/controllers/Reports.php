@@ -2087,6 +2087,7 @@ class Reports extends CI_Controller {
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
+            //$total_cost= $del->item_cost + $shipping_fee;
             $data['stockcard'][] = array(
                 'supplier'=>'',
                 'catalog_no'=>'',
