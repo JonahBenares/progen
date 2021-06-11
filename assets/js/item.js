@@ -470,7 +470,7 @@ function readPic1(input) {
 
 
     var pnformat =document.getElementById('pn_format').value;
-    frm.append('pnformat', pn_format);
+    frm.append('pnformat', pnformat);
 
     var img1 = document.getElementById('img1');
     frm.append('img1', img1.files[0]);
@@ -507,6 +507,7 @@ function readPic1(input) {
                 $("#next").hide(); 
             },
             success: function(output){
+            //  alert(output);
                var output= output.trim();
           
                if(output=='ext'){

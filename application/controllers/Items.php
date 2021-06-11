@@ -516,15 +516,15 @@ class Items extends CI_Controller {
             $data['total_qty']=$this->inventory_balance($id);
 
             foreach($this->super_model->select_row_where('supplier_items','item_id', $id) AS $sup){
-                $count = $this->super_model->count_custom_where("supplier_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id'");
+                $count = $this->super_model->count_custom_where("supplier_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'");
                
                 if($count!=0){
                         $row=$this->super_model->count_rows("items");
                         unset($daterec);
                        // echo "item_id = ".$sup->item_id." AND supplier_id = ".$sup->supplier_id. "AND catalog_no = ".$sup->catalog_no." AND brand_id = ".$sup->brand_id;
-                        $count_ri = $this->super_model->count_custom_where("receive_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id'");
+                        $count_ri = $this->super_model->count_custom_where("receive_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'");
                         if($count_ri!=0){
-                            foreach($this->super_model->select_custom_where("receive_items","item_id = '$sup->item_id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id'") AS $rec){
+                            foreach($this->super_model->select_custom_where("receive_items","item_id = '$sup->item_id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'") AS $rec){
                                 $receivedate=$this->super_model->select_column_where("receive_head", "receive_date", "receive_id", $rec->receive_id);
                                 $daterec[]=$receivedate;
                             }
@@ -907,8 +907,8 @@ class Items extends CI_Controller {
                 $pnformat=0;
             }*/
 
-            $pnformat=$this->input->post('pn_format');
-
+            $pnformat=$this->input->post('pnformat');
+           // echo $pnformat;
             if($pnformat==0){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
@@ -948,7 +948,7 @@ class Items extends CI_Controller {
             }   
 
 
-              $data = array(
+             $data = array(
                     'category_id' => $this->input->post('cat'),
                     'subcat_id' => $this->input->post('subcat'),
                     'original_pn' => $pn_no,
