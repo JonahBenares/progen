@@ -4645,7 +4645,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q10', "UoM");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R10', "Unit Cost");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S10', "Total Cost");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T10', "Total Cost");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T10', "Supplier");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W10', "Department");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Y10', "Purpose");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AA10', "End Use");
