@@ -518,7 +518,8 @@ class Request extends CI_Controller {
              $catalog_no = $si->catalog_no;
              $nkk_no = $si->nkk_no;
              $semt_no = $si->semt_no;
-             $invqty = $si->quantity;
+            // $invqty = $si->quantity;
+            $invqty = $this->inventory_balance($si->item_id);
              foreach($this->super_model->select_custom_where("items","item_id = '$si->item_id'") AS $it){
                  $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
             }
