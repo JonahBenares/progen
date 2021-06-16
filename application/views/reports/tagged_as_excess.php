@@ -68,6 +68,7 @@
 								<table class="table table-hover table-bordered">
 									<thead>
 										<tr>
+											<td align="center"><strong>PO No</strong></td>
 											<td align="center"><strong>Item</strong></td>
 											<td align="center"><strong>Excess Qty</strong></td>
 											<td align="center"><strong>Date Tagged</strong></td>
@@ -78,6 +79,7 @@
 									<?php 
 									foreach($list AS $li){ ?>							
 										<tr>
+											<td align="center"><strong><?php echo $li['po_no']; ?></td>
 											<td align="center"><strong><?php echo $li['item']; ?></td>
 											<td align="center"><strong><strong><?php echo $li['excessqty']; ?></strong></td>		
 											<td align="center"><strong><strong><?php echo $li['date_tagged']; ?></strong></td>			
