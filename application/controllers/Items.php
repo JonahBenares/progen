@@ -907,8 +907,8 @@ class Items extends CI_Controller {
                 $pnformat=0;
             }*/
 
-            $pnformat=$this->input->post('pn_format');
-
+            $pnformat=$this->input->post('pnformat');
+           // echo $pnformat;
             if($pnformat==0){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
@@ -948,7 +948,7 @@ class Items extends CI_Controller {
             }   
 
 
-              $data = array(
+             $data = array(
                     'category_id' => $this->input->post('cat'),
                     'subcat_id' => $this->input->post('subcat'),
                     'original_pn' => $pn_no,
