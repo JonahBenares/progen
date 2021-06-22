@@ -92,6 +92,7 @@
 												<td align="center"><strong>DR Date</strong></td>
 												<td align="center"><strong>DR No.</strong></td>
 												<td align="center"><strong>PR#/PO#</strong></td>
+												<td align="center"><strong>Sales PR#</strong></td>
 												<td align="center"><strong>PO Date</strong></td>
 												<td align="center"><strong>Part No.</strong></td>
 												<td align="center"><strong>Item Description</strong></td>
@@ -106,6 +107,7 @@
 												<td><?php echo $r['date'];?></td>
 												<td><?php echo $r['dr_no'];?></td>
 												<td><?php echo $r['pr_no'];?></td>
+												<td><?php echo $r['sales_pr'];?></td>
 												<td><?php echo $r['po_date'];?></td>
 												<td><?php echo $r['pn_no'];?></td>
 												<td><?php echo $r['item'];?></td>
