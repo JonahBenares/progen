@@ -5429,6 +5429,7 @@ class Reports extends CI_Controller {
                     "dr_no"=>$dh->dr_no,
                     "date"=>$dh->date,
                     "pr_no"=>$dh->pr_no,
+                    "sales_pr"=>$dh->sales_pr,
                     "pn_no"=>$dh->pn_no,
                     "po_date"=>$dh->po_date,
                     "item"=>$item,
@@ -5515,11 +5516,12 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B10', "DR Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D10', "DR No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E10', "PR No. / PO No.");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G10', "Part No.");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I10', "Item Description");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N10', "Qty");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O10', "UoM");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P10', "Buyer Name");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G10', "Sales PR No.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I10', "Part No.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N10', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O10', "Qty");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P10', "UoM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q10', "Buyer Name");
         foreach($this->super_model->custom_query("SELECT dh.*,i.item_id,i.unit_id,di.qty,di.pn_no FROM delivery_head dh INNER JOIN delivery_details di ON dh.delivery_id = di.delivery_id INNER JOIN items i ON di.item_id = i.item_id WHERE dh.saved='1' AND ".$query. " ORDER BY dh.date DESC") AS $dh){
             $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $dh->item_id);
             $unit = $this->super_model->select_column_where('uom', 'unit_name', 'unit_id', $dh->unit_id);
@@ -5528,11 +5530,12 @@ class Reports extends CI_Controller {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $dh->date);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $dh->dr_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $dh->pr_no);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $dh->pn_no);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $item);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $dh->qty); 
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$num, $unit);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $buyer); 
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $dh->sales_pr);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $dh->pn_no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $item);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$num, $dh->qty); 
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$num, $buyer); 
             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);    
             $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Q".$num)->applyFromArray($styleArray);
             $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Q".$num,'admin');
