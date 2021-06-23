@@ -59,9 +59,9 @@
 								<table width="100%" class="table-borddered">
 									
 									<tr>
-										<td width="10%"><p class="nomarg">Buyer:</p></td>
-										<td width="30%"> <h5 class="nomarg"><?php echo $h['buyer_name']; ?></h5></td>
-										<td ><p class="nomarg">DR No.:</p></td>
+										<td width="15%"><p class="nomarg">Buyer:</p></td>
+										<td width="40%"> <h5 class="nomarg"><?php echo $h['buyer_name']; ?></h5></td>
+										<td width="10%"><p class="nomarg">DR No.:</p></td>
 										<td ><h5 class="nomarg"><?php echo $h['dr_no']; ?></h5></td>
 										
 									</tr>
