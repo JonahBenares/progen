@@ -451,7 +451,8 @@ class Issue extends CI_Controller {
                 $uom = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $rt->unit_id);
                 $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
                 $unit_cost = $this->super_model->select_sum("request_items", "unit_cost", "rq_id", $rt->rq_id);
-                $total_cost = $this->super_model->select_sum("request_items", "total_cost", "rq_id", $rt->rq_id);
+                //$total_cost = $this->super_model->select_sum("request_items", "total_cost", "rq_id", $rt->rq_id);
+                $total_cost = $rt->quantity * $unit_cost;
                 $data['issue_itm'][] = array(
                     'item'=>$item,
                     'qty'=>$rt->quantity,

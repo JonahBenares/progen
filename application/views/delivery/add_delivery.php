@@ -57,8 +57,10 @@
 								<td colspan="4"><h5 class="nomarg">&nbsp<?php echo $h['po_date']; ?></h5></td>
 							</tr>
 							<tr>
-								<td><p class="nomarg">VAT:</p></td>
-								<td> <h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></h5></td>
+								<td><p class="nomarg">Sales PR No:</p></td>
+								<td> <h5 class="nomarg"><?php echo $h['sales_pr']; ?></h5></td>
+								<td><p class="nomarg pull-right">VAT:</p></td>
+								<td colspan="4"><h5 class="nomarg"><?php echo ($h['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></h5></td>
 							</tr>
 						</table>
 						<hr>
