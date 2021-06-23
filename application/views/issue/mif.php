@@ -243,7 +243,7 @@
                         <td class="main-tab" align="center"><?php echo $isu['qty']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['uom']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['unit_cost']?></td>
-                        <td class="main-tab" align="center"><?php echo $isu['total_cost']?></td>
+                        <td class="main-tab" align="center"><?php echo number_format($isu['total_cost'],2);?></td>
                         <td class="main-tab" align="center"><?php echo $isu['pn']?></td>
                         <td class="main-tab" align="left">&nbsp;<?php echo $isu['item']?></td>
                         <td class="main-tab" align="center"><?php echo $isu['brand']?></td>
