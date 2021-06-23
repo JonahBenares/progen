@@ -158,6 +158,10 @@
 								</td>
 							</tr>
 							<tr>
+								<td width="15%"><label>Sales PR#:</label></td>
+								<td width="85%"><input type = "text" name = "sales_pr" id="sales_pr" class = "form-control"><br></td>
+							</tr>
+							<tr>
 								<td width="15%"><label>Buyer:</label></td>
 								<td width="85%">
 									<select name = "buyer" id="buyer" class = "form-control" onchange="chooseBuyer();">

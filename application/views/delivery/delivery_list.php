@@ -87,7 +87,8 @@
 									<td align="center"><strong>Address</strong></td>
 									<td align="center"><strong>Shipped Via</strong></td>
 									<td width="20%" align="center"><strong>Waybill No.</strong></td>									
-									<td width="20%" align="center"><strong>PR# / PO#</strong></td>									
+									<td width="20%" align="center"><strong>PR# / PO#</strong></td>
+									<td width="20%" align="center"><strong>Sales PR#</strong></td>									
 									<td width="5%" align="center" ><strong>Action</strong></td>
 								</tr>
 							</thead>
@@ -101,6 +102,7 @@
 									<td style="padding:3px" align="center"><?php echo $h['shipped_via'];?></td>
 									<td style="padding:3px" align="center"><?php echo $h['waybill_no'];?></td>
 									<td style="padding:3px"><?php echo $h['pr_no'];?></td>
+									<td style="padding:3px"><?php echo $h['sales_pr'];?></td>
 									<td style="padding:3px" align="center">
 										<?php if($_SESSION['user_id'] == '5' || $_SESSION['user_id'] == '13'){ ?>
 										<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updatePR" id = 'getD' data-id="<?php echo $h['delivery_id']; ?>" title="Update Restock">
