@@ -190,7 +190,10 @@
                         <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['po_date']?></label></td>  
                     </tr> 
                     <tr>
-                        <td><strong><h6 class="nomarg">VAT</h6></strong></td>
+                        <td><strong><h6 class="nomarg">Sales PR No</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['sales_pr']?></label></td>
+                        <td></td>
+                        <td><strong><h6 class="nomarg pull-right">VAT</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label> <?php echo ($det['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></td>
                         <td></td>
                     </tr>           

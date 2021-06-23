@@ -2817,6 +2817,17 @@ class Reports extends CI_Controller {
     <?php
     }  
 
+
+     public function generatePrDelivered(){
+        $prno=$this->input->post('pr');
+        $p= rawurlencode($this->slash_replace($prno));
+        ?>
+        <script>
+            window.location.href ='<?php echo base_url(); ?>index.php/reports/pr_report_sales/<?php echo $p;?>'
+        </script> 
+    <?php
+    }
+
     public function borrowing_report(){         
         $count=$this->super_model->select_count_join_inner("request_items","issuance_head", "request_items.borrowfrom_pr !='' AND replenished='0'","request_id");
 
@@ -5624,9 +5635,58 @@ class Reports extends CI_Controller {
         readfile($exportfilename);
     }
     public function pr_report_sales(){
+        $prno=$this->uri->segment(3);
+        $pr=$this->slash_unreplace(rawurldecode($prno));
+        $data['pr_rep']=$this->super_model->custom_query("SELECT * FROM delivery_head GROUP BY pr_no");
+        if(empty($prno)){
+            $data['head']=array();
+        }
+        $counter = $this->super_model->count_custom_where("delivery_head","pr_no = '$pr'");
+         if($counter!=0){
+            foreach($this->super_model->select_row_where("delivery_head", "pr_no",$pr) AS $head){
+              //  foreach($this->super_model->select_row_where("issuance_", "receive_id",$det1->receive_id) AS $head)
+                $address = $this->super_model->select_column_where("buyer", "buyer_name", "buyer_id", $head->buyer_id);
+                $contact_person = $this->super_model->select_column_where("buyer", "contact_person", "buyer_id", $head->buyer_id);
+                $contact_no = $this->super_model->select_column_where("buyer", "contact_no", "buyer_id", $head->buyer_id);
+                $buyer_name = $this->super_model->select_column_where("buyer", "buyer_name", "buyer_id", $head->buyer_id);
+                $data['head'][]=array(
+                    "delivery_id"=>$head->delivery_id,
+                    "po_date"=>$head->po_date,
+                    "date"=>$head->date,
+                    "vat"=>$head->vat,
+                    "pr_no"=>$head->pr_no,
+                    "dr_no"=>$head->dr_no,
+                    "address"=>$address,
+                    "contact_person"=>$contact_person,
+                    "contact_no"=>$contact_no,
+                    "buyer_name"=>$buyer_name,
+                    "sales_pr"=>$head->sales_pr,
+                );
+
+                foreach($this->super_model->select_custom_where("delivery_details", "delivery_id = '$head->delivery_id'") AS $det){
+                    $item_name=$this->super_model->select_column_where("items","item_name","item_id",$det->item_id);
+                    $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$det->item_id);
+                    $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$det->unit_id);
+                    $data['details'][]=array(
+                        "delivery_id"=>$det->delivery_id,
+                        'item'=>$item_name,
+                        'pn_no'=>$original_pn,
+                        'serial'=>$det->serial_no,
+                        'unit'=>$unit,
+                        'qty'=>$det->qty,
+                        "selling_price"=>$det->selling_price,
+                        "discount"=>$det->discount,
+                        "shipping_fee"=>$det->shipping_fee,
+                    );
+                }
+            } 
+        }else {
+            $data['head'] = array();
+        }
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('reports/pr_report_sales');
+        $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
+        $this->load->view('reports/pr_report_sales',$data);
         $this->load->view('template/footer');
     }
 
