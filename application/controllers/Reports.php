@@ -5636,8 +5636,7 @@ class Reports extends CI_Controller {
         readfile($exportfilename);
     }
     public function pr_report_sales(){
-        $id=$this->uri->segment(3);
-        $prno=$this->uri->segment(4);
+        $prno=$this->uri->segment(3);
         $pr=$this->slash_unreplace(rawurldecode($prno));
         $data['pr_rep']=$this->super_model->custom_query("SELECT * FROM delivery_head GROUP BY pr_no");
         if(empty($prno)){

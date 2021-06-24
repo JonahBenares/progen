@@ -45,6 +45,7 @@
 				</div>
 			</div>
 		</div>
+		<?php if(!empty($head) && !empty($details)){ ?>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default shadow">
@@ -123,15 +124,16 @@
 												</tr>	
 												<?php } $x++; } ?>					
 										</table>
+										</table>
 									</div>
 								</div>
 							</div>
-							<?php } ?>
 							<table width="100%" id="prntby">
 				                <tr>
 				                    <td style="font-size:12px">Printed By: <?php echo $printed.' / '. date("Y-m-d"). ' / '. date("h:i:sa")?></td>
 				                </tr>
 				            </table> 
+				            <?php } ?>
 						</div>
 						<!-- end loop -->
 					</div>
@@ -139,3 +141,4 @@
 			</div>
 		</div>
 	</div>
+<?php } ?>
