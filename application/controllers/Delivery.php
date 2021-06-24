@@ -159,6 +159,7 @@ class Delivery extends CI_Controller {
                 "contact_no"=>$contact_no,
                 "date"=>$h->date,
                 "po_date"=>$h->po_date,
+                "sales_pr"=>$h->sales_pr,
                 "pr_no"=>$h->pr_no,
                 "dr_no"=>$h->dr_no,
                 "shipped_via"=>$h->shipped_via,
