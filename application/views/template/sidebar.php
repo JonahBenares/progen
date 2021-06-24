@@ -862,7 +862,7 @@
 							</li>
 							<li>
 								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/delivery_report">
-									<span class="fa fa-arrow-right">&nbsp;</span> Delivered
+									<span class="fa fa-arrow-right">&nbsp;</span> Sales
 								</a>
 							</li>
 							<li>

@@ -2083,7 +2083,7 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT dh.po_date, dh.pr_no, dd.item_id, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN receive_items rid ON rid.item_id = dd.item_id WHERE $query4 AND saved = '1'") AS $del){
+        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN receive_items rid ON rid.item_id = dd.item_id WHERE $query4 AND saved = '1'") AS $del){
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
@@ -2101,7 +2101,7 @@ class Reports extends CI_Controller {
                 'method'=>'Delivered',
                 'series'=>'5',
                 'quantity'=>$del->qty,
-                'date'=>$del->po_date,
+                'date'=>$del->date,
                 'create_date'=>$del->created_date
             );
 
@@ -2109,13 +2109,13 @@ class Reports extends CI_Controller {
                 'series'=>'5',
                 'method'=>'Delivered',
                 'quantity'=>$del->qty,
-                'date'=>$del->po_date,
+                'date'=>$del->date,
                 'create_date'=>$del->created_date
             );
 
         }
 
-         $this->load->view('template/header');
+        $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
         $this->load->view('reports/stock_card_new', $data);
