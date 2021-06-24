@@ -2083,16 +2083,17 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN receive_items rid ON rid.item_id = dd.item_id WHERE $query4 AND saved = '1'") AS $del){
+        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, rid.supplier_id, rid.brand_id, rid.catalog_no, rid.nkk_no,  rid.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN receive_items rid ON rid.item_id = dd.item_id WHERE $query4 AND saved = '1'") AS $del){
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $del->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
             //$total_cost= $del->item_cost + $shipping_fee;
             $data['stockcard'][] = array(
-                'supplier'=>'',
-                'catalog_no'=>'',
-                'nkk_no'=>'',
-                'semt_no'=>'',
+                'supplier'=>$supplier,
+                'catalog_no'=>$del->catalog_no,
+                'nkk_no'=>$del->nkk_no,
+                'semt_no'=>$del->semt_no,
                 'brand'=>$brand,
                 'pr_no'=>$del->pr_no,
                 'po_no'=>$po_no,
