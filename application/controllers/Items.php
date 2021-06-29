@@ -455,7 +455,7 @@ class Items extends CI_Controller {
         $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1'","delivery_id");
         $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
 
-        echo "rec = " . $recqty . ", begbal = " .$begbal . ", restock = ". $restockqty. ", issue = ".$issueqty . ", delivery = ". $deliverqty;
+        //echo "rec = " . $recqty . ", begbal = " .$begbal . ", restock = ". $restockqty. ", issue = ".$issueqty . ", delivery = ". $deliverqty;
         return $balance;
 
         //$recqty= $this->super_model->select_sum("supplier_items", "quantity", "item_id", $itemid);
