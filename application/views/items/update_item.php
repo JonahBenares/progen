@@ -204,7 +204,7 @@
 									</div>
 									<input type="hidden" name="category_id" id="category_id" value="<?php echo $i->category_id; ?>">
 									<input type="hidden" name="binid" id="binid" value="<?php echo $i->bin_id; ?>">
-									<input type="text" name="pn_format" id="pn_format" value="<?php echo $pn_format; ?>">
+									<input type="hidden" name="pn_format" id="pn_format" value="<?php echo $pn_format; ?>">
 									<input type="hidden" name="itemid" id="itemid" value="<?php echo $id; ?>">
 									<?php } ?>
 									<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">

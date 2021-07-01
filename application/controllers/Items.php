@@ -405,7 +405,7 @@ class Items extends CI_Controller {
             $series=$pn_details[1];
         }
         $row_count = $this->super_model->count_custom_where("pn_series","subcat_prefix='$prefix' AND series = '$series'");
-        if($row_count==1){
+        if($row_count!=0){
             $data['pn_format']=1;
         } else {
             $data['pn_format']=0;
@@ -454,6 +454,8 @@ class Items extends CI_Controller {
         $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND excess = '0' AND saved='1'","rhead_id");
         $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1'","delivery_id");
         $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
+
+        //echo "rec = " . $recqty . ", begbal = " .$begbal . ", restock = ". $restockqty. ", issue = ".$issueqty . ", delivery = ". $deliverqty;
         return $balance;
 
         //$recqty= $this->super_model->select_sum("supplier_items", "quantity", "item_id", $itemid);

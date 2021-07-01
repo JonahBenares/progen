@@ -90,6 +90,7 @@ class Delivery extends CI_Controller {
                     "address"=>$address,
                     "date"=>$h->date,
                     "pr_no"=>$h->pr_no,
+                    "sales_pr"=>$h->sales_pr,
                     "dr_no"=>$h->dr_no,
                     "shipped_via"=>$h->shipped_via,
                     "waybill_no"=>$h->waybill_no,
@@ -158,6 +159,7 @@ class Delivery extends CI_Controller {
                 "contact_no"=>$contact_no,
                 "date"=>$h->date,
                 "po_date"=>$h->po_date,
+                "sales_pr"=>$h->sales_pr,
                 "pr_no"=>$h->pr_no,
                 "dr_no"=>$h->dr_no,
                 "shipped_via"=>$h->shipped_via,
@@ -221,6 +223,7 @@ class Delivery extends CI_Controller {
         $buyer=$this->input->post('buyer');
         $po_date=$this->input->post('po_date');
         $vat=$this->input->post('vat');
+        $sales_pr=$this->input->post('sales_pr');
         $rows=$this->super_model->count_rows("delivery_head");
         if($rows==0){
             $dr_no = $location."-0001";
@@ -253,6 +256,7 @@ class Delivery extends CI_Controller {
             'pr_no'=>$pr_no,
             'buyer_id'=>$buyer,
             'vat'=>$vat,
+            'sales_pr'=>$sales_pr,
             'created_date'=>date('Y-m-d h:i:s'),
         );
         if($this->super_model->insert_into("delivery_head", $data)){
@@ -484,6 +488,8 @@ class Delivery extends CI_Controller {
 
         $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
 
+         /* $sales_qty = $this->super_model->custom_query_single("salesqty","SELECT SUM(qty) AS salesqty FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");*/
+
         $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
 
         $bal=($recqty-$issue_qty-$deliveredqty);
@@ -536,6 +542,7 @@ class Delivery extends CI_Controller {
                 "dr_no"=>$h->dr_no,
                 "saved"=>$h->saved,
                 "vat"=>$h->vat,
+                "sales_pr"=>$h->sales_pr,
             );
             foreach($this->super_model->select_row_where("delivery_details","delivery_id",$h->delivery_id) AS $d){
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
