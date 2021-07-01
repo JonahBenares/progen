@@ -421,13 +421,19 @@ class Request extends CI_Controller {
     public function checkpritem(){
         $item = $this->input->post('item');
         $pr = $this->input->post('pr');
-      
-        $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(ri.received_qty) AS sumqty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
-       
+        if($pr!=''){
+            $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(ri.received_qty) AS sumqty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
+           
 
-        $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
+            $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
 
-        $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
+            $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
+        }else{
+            $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(quantity) as sumqty FROM supplier_items WHERE item_id = '$item' AND catalog_no = 'begbal'");
+
+            $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item' AND catalog_no = 'begbal'");
+            $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
+        }
         /*foreach($this->super_model->select_row_where("request_head", "pr_no", $pr) AS $req){
          
                 foreach($this->super_model->select_custom_where("request_items", "request_id ='$req->request_id' AND item_id = '$item'") AS $ri){
@@ -484,13 +490,14 @@ class Request extends CI_Controller {
 
     public function crossreflist(){
         $item=$this->input->post('item');
-         $prno=$this->input->post('prno');
+        $prno=$this->input->post('prno');
         $rows=$this->super_model->count_custom_where("supplier_items","item_id = '$item'");
-        if($rows!=0){
-            ?>
-              <select name='siid' id='siid' class='form-control' onchange="getUnitCost('<?php echo $prno; ?>','<?php echo $item; ?>')" >
-           <option value=''>-Cross Reference-</option>
-            <?php 
+        if($rows!=0){ ?>
+            <select name='siid' id='siid' class='form-control' onchange="getUnitCost('<?php echo $prno; ?>','<?php echo $item; ?>')" >
+            <option value=''>-Cross Reference-</option>
+            <?php
+            /*echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
+            echo "<option value=''>-Cross Reference-</option>";*/
             foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){ 
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
@@ -582,10 +589,14 @@ class Request extends CI_Controller {
         echo $cost;
     }
 
-      public function getReceiveCost(){
+    public function getReceiveCost(){
         $itemid=$this->input->post('itemid');
         $prno=$this->input->post('prno');
-        $cost = $this->super_model->custom_query_single("item_cost","SELECT item_cost FROM receive_head rh INNER JOIN receive_details rd ON rh.receive_id = rd.receive_id INNER JOIN receive_items ri ON rd.rd_id = ri.rd_id WHERE rd.pr_no = '$prno' AND item_id = '$itemid'");
+        if($prno!=''){
+            $cost = $this->super_model->custom_query_single("item_cost","SELECT item_cost FROM receive_head rh INNER JOIN receive_details rd ON rh.receive_id = rd.receive_id INNER JOIN receive_items ri ON rd.rd_id = ri.rd_id WHERE rd.pr_no = '$prno' AND item_id = '$itemid'");
+        }else{
+            $cost = $this->super_model->custom_query_single("item_cost","SELECT item_cost FROM supplier_items WHERE item_id = '$itemid' AND catalog_no='begbal'");
+        }
        
         echo $cost;
     }

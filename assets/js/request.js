@@ -266,6 +266,34 @@ function printMReqF(){
 }
 
 function getUnitCost(prno,itemid){
+<<<<<<< HEAD
+   
+    //var siid= document.getElementById("siid").value;
+    var loc= document.getElementById("baseurl").value;
+    //var redirect = loc+'index.php/request/getSIDetails';
+    var redirect = loc+'index.php/request/getReceiveCost';
+     $.ajax({
+            type: "POST",
+            url: redirect,
+            data: 'prno='+prno+'&itemid='+itemid,
+            beforeSend: function(){
+                document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
+                $("#submit").hide(); 
+            },
+            success: function(output){
+                document.getElementById("unit_cost").value = output;
+                if(output != ''){
+                    $("#submit").show(); 
+                    $('#alrt').hide();
+                }
+                
+            }
+    });
+}
+
+/*function getUnitCost(){
+=======
+>>>>>>> 281d0c59a4c358aa7babde4f49d24c74f1190ff6
     var siid= document.getElementById("siid").value;
     var loc= document.getElementById("baseurl").value;
     //var redirect = loc+'index.php/request/getSIDetails';
@@ -285,7 +313,7 @@ function getUnitCost(prno,itemid){
                 document.getElementById("unit_cost").value = output;
             }
     });
-}
+}*/
 
 $(document).ready(function(){
     $("#quantity").keyup(function(){
@@ -302,7 +330,7 @@ function chooseItem(prno){
     $("#submit").hide(); 
     setTimeout(function() {
         document.getElementById('alrt').innerHTML=''; 
-        $("#submit").show(); 
+        //$("#submit").show(); 
     },5000);
     $.ajax({
         type: 'POST',
@@ -315,8 +343,8 @@ function chooseItem(prno){
             $("#unit").val(response.unit);
             $("#original_pn").val(response.pn);
             $("#invqty").val(response.recqty);
-            crossreferencing(prno);
             balancePRItem();
+            crossreferencing(prno);
         }
     }); 
 }
