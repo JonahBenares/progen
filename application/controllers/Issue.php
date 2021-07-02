@@ -181,6 +181,17 @@ class Issue extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function inventory_balance($itemid){
+        $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
+        $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
+        $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND saved='1'","rhead_id");
+        $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1'","delivery_id");
+        $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
+        //$balance=($recqty+$begbal+$restockqty)-$issueqty;
+        return $balance;
+    }
+
     public function load_issue(){
         $id=$this->uri->segment(3);
         $data['id']=$id;
@@ -238,6 +249,7 @@ class Issue extends CI_Controller {
                 $issued_qty = $this->super_model->select_sum_join("quantity","issuance_head","issuance_details", "request_id = '$id' AND item_id ='$it->item_id' AND rq_id = '$it->rq_id'","issuance_id");
 
                 $rem_qty = $it->quantity - $issued_qty;
+                $inv_qty =$this->inventory_balance($it->item_id);
                 $data['items'][] = array(
                     "rqid"=>$it->rq_id,
                     "nkk_no"=>$it->nkk_no,
@@ -255,6 +267,7 @@ class Issue extends CI_Controller {
                     "supplier_id"=>$it->supplier_id,
                     "brand_id"=>$it->brand_id,
                     "issue_qty"=>$issued_qty,
+                    "inv_qty"=>$inv_qty,
                     "remarks"=>$remarks,
                     "issueid"=>$issueid
 
