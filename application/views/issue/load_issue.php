@@ -104,6 +104,7 @@
 													<tr>
 														<th style='text-align: center;'>Issue Qty</th>
 														<th style='text-align: center;'>Req Qty </th>
+														<th style='text-align: center;'>PR Balance </th>
 														<th style='text-align: center;'>UOM</th>
 														<th style='text-align: center;'>Part No.</th>
 														<th style='text-align: center;'>Cat No.</th>
@@ -137,10 +138,11 @@
 															
 															<td>
 																<?php if($it['quantity']!=0){ ?>
-																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['rem_quantity']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['rem_quantity']; ?>">
+																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['inv_qty']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['inv_qty']; ?>">
 																<?php } ?>
 															</td>
 															<td><center><?php echo $it['quantity']; ?></center></td>
+															<td><center><?php echo $it['inv_qty']; ?></center></td>
 															<td><?php echo $it['uom']; ?></td>
 															<td><?php echo $it['pn_no']; ?></td>
 															<td><?php echo $it['catalog_no']; ?></td>

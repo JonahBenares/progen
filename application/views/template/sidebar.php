@@ -284,7 +284,7 @@
 							<div id='alerts' style="font-weight:bold;text-align: center"></div>
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							<input type='submit' class="btn btn-warning" id = "proceeds" value='Proceed '> 
-							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
+							<input type="hidden" name="baseurl" id="baseurl12" value="<?php echo base_url(); ?>">
 							<input type='hidden' name='userid' value="<?php echo $_SESSION['user_id']; ?>">							
 						</div>
 					</form>
@@ -892,3 +892,27 @@
 		</ul>
 	</div>
 	<!-- --SIDE NAVBAR--- -->
+<script type="text/javascript">
+	function choosePR(){
+    var loc= document.getElementById("baseurl12").value;
+    var redirect = loc+'index.php/request/getPR';
+    var prno = document.getElementById("prno").value;
+    document.getElementById('alerts').innerHTML='<b>Please wait, Loading data...</b>'; 
+    $("#proceeds").hide(); 
+    setTimeout(function() {
+        document.getElementById('alerts').innerHTML=''; 
+        $("#proceeds").show(); 
+    },5000);
+    $.ajax({
+            type: 'POST',
+            url: redirect,
+            data: 'prno='+prno,
+            dataType: 'json',
+            success: function(response){
+               document.getElementById("department").value  = response.dept;
+               document.getElementById("purpose").value  = response.pur;
+               document.getElementById("enduse").value  = response.end;
+           }
+    }); 
+}
+</script>
