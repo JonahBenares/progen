@@ -118,7 +118,7 @@
 												<th align="center"><strong>Receive Date</strong></th>
 												<th align="center"><strong>PO No.</strong></th>
 												<th align="center"><strong>Dr No.</strong></th>
-												<th align="center"><strong>MRECF No.</strong></th>
+												<th align="center"><strong>MRIF No.</strong></th>
 												<th align="center"><strong>PR No.</strong></th>
 												<th align="center"><strong>Item Part No.</strong></th>
 												<th align="center"><strong>Item Description</strong></th>
