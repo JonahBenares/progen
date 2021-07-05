@@ -1,8 +1,8 @@
  
  <tr id='item_row<?php echo $list['count']; ?>'>  
     <td style="padding: 0px; width:50px; "><input type = "text" name = "quantity[]" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['quantity']; ?>" readonly></td>
-    <td style="padding: 0px; width:80px;"><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['unit_name']?>" readonly></td>
-     <td style="padding: 0px "><input type = "text" name = "original_pn[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['original_pn']; ?>" readonly></td>
+     <td style="padding: 0px; width:80px;"><input type = "hidden"  name = "unit[]" value="<?php echo $list['unit']; ?>"><input type = "text" style = "text-align:center;width:100%;border:1px transparent;" value = "<?php echo $list['unit_name']?>" readonly></td>
+    <td style="padding: 0px "><input type = "text" name = "original_pn[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['original_pn']; ?>" readonly></td>
     <td style="padding: 0px "><textarea  rows="3" type = "text" name = "item[]" style = "text-align:center;width:100%;border:1px transparent;" readonly><?php echo $list['item']; ?></textarea></td>
    <td style="padding: 0px "><textarea  rows="3" type = "text" name = "crossref[]" style = "text-align:center;width:100%;border:1px transparent;" readonly><?php echo $list['supplier'] . " - " . $list['catalog_no'] . " - " . $list['brand']; ?></textarea></td>
     <td style="padding: 0px; width:100px; "><input type = "text" name = "unitcost[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['unit_cost']; ?>" readonly></td>
