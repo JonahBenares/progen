@@ -3860,8 +3860,8 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "SUMMARY OF RESTOCK MATERIALS");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
@@ -4075,7 +4075,7 @@ class Reports extends CI_Controller {
         if($from_pr!='null'){
             $sql.= " rh.from_pr = '$from_pr' AND";
         }
-
+        //echo $from_pr;
         $query=substr($sql,0,-3);
 
         require_once(APPPATH.'../assets/js/phpexcel/Classes/PHPExcel/IOFactory.php');
@@ -4118,8 +4118,8 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "SUMMARY OF EXCESS MATERIALS");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
@@ -4135,7 +4135,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C8', $catname);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H8', $subcatname);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M8', $itemname);
-        
+        echo $query;
         
         $x = 1;
        
@@ -4364,7 +4364,7 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B10', "Received Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D10', "PO No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E10', "DR No.");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F10', "MRECF No.");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F10', "MRIF No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H10', "PR No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J10', "Item Part No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L10', "Item Description");
@@ -4380,8 +4380,8 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N2', "SUMMARY OF RECIEVED MATERIALS");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
@@ -4626,8 +4626,8 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O2', "SUMMARY OF ISSUED MATERIALS");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
@@ -5500,8 +5500,8 @@ class Reports extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C2', "Purok San Jose, Brgy. Calumangan, Bago City");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', "Negros Occidental, Philippines 6101");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Tel. No. 476 - 7382");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "TO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', "FROM");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G5', "TO");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J2', "SUMMARY OF DELIVERY");
         //$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F8', "Sub-Category");
         //$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L8', "Item Name");
