@@ -332,7 +332,9 @@ class Request extends CI_Controller {
         if($row1!=0){
             foreach($this->super_model->select_row_where('request_items','request_id', $id) AS $rt){
                 $item = $this->super_model->select_column_where("items", "item_name", "item_id", $rt->item_id);
-                $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
+                $rec_qty = $this->inventory_balance($rt->item_id);
+                //$rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $rt->item_id);
+                
                 foreach($this->super_model->select_custom_where("supplier_items","item_id = '$rt->item_id' AND quantity != '0'") AS $itm){
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $rt->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $rt->supplier_id);
@@ -413,7 +415,7 @@ class Request extends CI_Controller {
         $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
         $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
         $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
-        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND saved='1'","rhead_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND excess = '0' AND saved='1'","rhead_id");
         $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1'","delivery_id");
         $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
         //$balance=($recqty+$begbal+$restockqty)-$issueqty;
