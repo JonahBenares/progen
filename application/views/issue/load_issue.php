@@ -183,7 +183,7 @@
 												</table>
 												<center><div id='alt' style="font-weight:bold"></div></center>
 												<input type="hidden" name="count" id="count" value="<?php echo $ct; ?>">
-												<input type="hidden" name="y" id="y" value="<?php echo $y - 1; ?>">
+												<input type="hidden" name="y" id="y" value="<?php echo $y; ?>">
 											<!-- 	<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>"> -->
 												<input type="hidden" name="userid" id="userid" value="<?php echo $_SESSION['user_id']; ?>">
 												<!-- <?php if($saved==0){ ?> -->
@@ -212,9 +212,9 @@
 <script type="text/javascript">
 	$( window ).on( "load", function() {
 		var y = document.getElementById("y").value;
-		for(var x=1;x<=y;x++){
-			var check_qty = document.getElementById("check_qty"+x).value;
-			var inv_qty = document.getElementById("inv_qty"+x).value;
+		for(var x=1;x<y;x++){
+			var check_qty = parseInt(document.getElementById("check_qty"+x).value);
+			var inv_qty = parseInt(document.getElementById("inv_qty"+x).value);
 			if(check_qty>inv_qty){
 	            alert('Error: Issued quantity is greater than remaining balance of item.');
 	             $('input[type="button"]').attr('disabled','disabled');
