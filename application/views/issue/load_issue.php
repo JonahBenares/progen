@@ -139,7 +139,7 @@
 															
 															<td>
 																<?php if($it['quantity']!=0){ ?>
-																<input type='text' id="check_qty<?php echo $y; ?>" onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['inv_qty']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['inv_qty']; ?>">
+																<input type='text' id="check_qty<?php echo $y; ?>" onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['rem_quantity']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['inv_qty']; ?>">
 																<?php } ?>
 															</td>
 															<td><center><?php echo $it['quantity']; ?></center></td>
