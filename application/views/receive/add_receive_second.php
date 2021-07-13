@@ -387,7 +387,7 @@
 						</div>
 						<br>
 						<center><div id='alt' style="font-weight:bold"></div></center>
-						<input type='text' name='receiveid' id='receiveid' value='<?php echo $receiveid; ?>'>
+						<input type='hidden' name='receiveid' id='receiveid' value='<?php echo $receiveid; ?>'>
 						<input type='hidden' name='counter' id='counter'>
 						<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 						<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='savereceive_PR()' style="width:100%;background: #ff5d00" value='Save'>
