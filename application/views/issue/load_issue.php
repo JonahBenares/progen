@@ -104,6 +104,7 @@
 													<tr>
 														<th style='text-align: center;'>Issue Qty</th>
 														<th style='text-align: center;'>Req Qty </th>
+														<th style='text-align: center;'>PR Balance </th>
 														<th style='text-align: center;'>UOM</th>
 														<th style='text-align: center;'>Part No.</th>
 														<th style='text-align: center;'>Cat No.</th>
@@ -118,6 +119,7 @@
 														<?php 
 														
 														$ct=0;
+														$y=1;
 														// /print_r($items);
 														if(!empty($items)){
 															//echo $items[$x]['quantity'];
@@ -137,10 +139,11 @@
 															
 															<td>
 																<?php if($it['quantity']!=0){ ?>
-																<input type='text' onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['rem_quantity']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['rem_quantity']; ?>">
+																<input type='text' id="check_qty<?php echo $y; ?>" onkeypress="return isNumberKey(event)" name='quantity[]' class='iss_qty' data-id='<?php echo $it['rem_quantity']; ?>' value="<?php echo $it['rem_quantity']; ?>"style='width:50px' max="<?php echo $it['inv_qty']; ?>">
 																<?php } ?>
 															</td>
 															<td><center><?php echo $it['quantity']; ?></center></td>
+															<td><center><?php echo $it['inv_qty']; ?></center></td>
 															<td><?php echo $it['uom']; ?></td>
 															<td><?php echo $it['pn_no']; ?></td>
 															<td><?php echo $it['catalog_no']; ?></td>
@@ -161,6 +164,7 @@
 															</td>
 															
 														</tr>
+														 <input type='hidden' name='inv_qty<?php echo $y; ?>' id="inv_qty<?php echo $y; ?>" value="<?php echo $it['inv_qty']; ?>">
 														 <input type='hidden' name='rqid[]' value="<?php echo $it['rqid']; ?>">
 														<!--<input type='hidden' name='uom[]' value="<?php echo $it['uom']; ?>">
 														<input type='hidden' name='itemid[]' value="<?php echo $it['item_id']; ?>">
@@ -170,6 +174,7 @@
 														<input type='hidden' name='catalog_no[]' value="<?php echo $it['catalog_no']; ?>">  -->
 														<?php 
 														$ct++;
+														$y++;
 														//}
 														}
 													//} 
@@ -178,6 +183,7 @@
 												</table>
 												<center><div id='alt' style="font-weight:bold"></div></center>
 												<input type="hidden" name="count" id="count" value="<?php echo $ct; ?>">
+												<input type="hidden" name="y" id="y" value="<?php echo $y; ?>">
 											<!-- 	<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>"> -->
 												<input type="hidden" name="userid" id="userid" value="<?php echo $_SESSION['user_id']; ?>">
 												<!-- <?php if($saved==0){ ?> -->
@@ -203,3 +209,18 @@
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+	$( window ).on( "load", function() {
+		var y = document.getElementById("y").value;
+		for(var x=1;x<y;x++){
+			var check_qty = parseInt(document.getElementById("check_qty"+x).value);
+			var inv_qty = parseInt(document.getElementById("inv_qty"+x).value);
+			if(check_qty>inv_qty){
+	            alert('Error: Issued quantity is greater than remaining balance of item.');
+	             $('input[type="button"]').attr('disabled','disabled');
+	        } else {
+	             $('input[type="button"]').removeAttr('disabled');
+	        }
+		}
+    });
+</script>

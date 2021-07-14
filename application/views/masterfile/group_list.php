@@ -43,9 +43,9 @@
 										<td>
 											<?php if($access['masterfile_edit'] == 1){ ?>
 											<a href = "<?php echo base_url(); ?>index.php/masterfile/update_group/<?php echo $grp->group_id;?>" class = "btn btn-primary btn-sm" title="UPDATE"><span class="fa fa-pencil-square-o"></span></a>
-											<?php } if($access['masterfile_delete'] == 1){ ?>
-											<a href="<?php echo base_url(); ?>index.php/masterfile/delete_group/<?php echo $grp->group_id;?>" onclick="confirmationDelete(this);return false;" class="btn btn-danger btn-sm" title="DELETE" title="DELETE" alt='DELETE'><span class="fa fa-trash-o"></span></a>
-											<?php } ?>
+											<?php } //if($access['masterfile_delete'] == 1){ ?>
+											<!-- <a href="<?php echo base_url(); ?>index.php/masterfile/delete_group/<?php echo $grp->group_id;?>" onclick="confirmationDelete(this);return false;" class="btn btn-danger btn-sm" title="DELETE" title="DELETE" alt='DELETE'><span class="fa fa-trash-o"></span></a> -->
+											<?php //} ?>
 										</td>
 									</tr>
 									<?php } ?>

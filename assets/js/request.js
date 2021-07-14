@@ -1,5 +1,5 @@
-function choosePR(){
-    var loc= document.getElementById("baseurl").value;
+/*function choosePR(){
+    var loc= document.getElementById("baseurl12").value;
     var redirect = loc+'index.php/request/getPR';
     var prno = document.getElementById("prno").value;
     document.getElementById('alerts').innerHTML='<b>Please wait, Loading data...</b>'; 
@@ -19,7 +19,7 @@ function choosePR(){
                document.getElementById("enduse").value  = response.end;
            }
     }); 
-}
+}*/
 
 $(document).on('click', '#getEP', function(e){
     e.preventDefault();
@@ -183,6 +183,7 @@ function add_item(){
                 	$('#item_body').append(html);
                 	$('#itemtable').show();
                 	$('#savebutton').show();
+                    $('.select2-selection__rendered').empty();
                 	document.getElementById("item_id").value = '';
                     document.getElementById("item_name").value = '';
                     document.getElementById("original_pn").value = '';
@@ -266,7 +267,6 @@ function printMReqF(){
 }
 
 function getUnitCost(prno,itemid){
-<<<<<<< HEAD
    
     //var siid= document.getElementById("siid").value;
     var loc= document.getElementById("baseurl").value;
@@ -292,8 +292,6 @@ function getUnitCost(prno,itemid){
 }
 
 /*function getUnitCost(){
-=======
->>>>>>> 281d0c59a4c358aa7babde4f49d24c74f1190ff6
     var siid= document.getElementById("siid").value;
     var loc= document.getElementById("baseurl").value;
     //var redirect = loc+'index.php/request/getSIDetails';
