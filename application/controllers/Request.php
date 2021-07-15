@@ -509,7 +509,7 @@ class Request extends CI_Controller {
                     /*$unit = $this->super_model->select_column_where("items", "unit_id", "item_id", $itm->item_id);*/
                     foreach($this->super_model->select_custom_where("items","item_id = '$item'") AS $it){
                     $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
-                    if($balance!=0){
+                    if($balance>0){
                     ?>
                     <option value="<?php echo $itm->si_id; ?>"><?php echo $supplier . " - " . $itm->catalog_no . " - ". $brand . " (".$balance.")" ." - ". $unit; ?></option>
 
