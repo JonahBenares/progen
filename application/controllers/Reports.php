@@ -1867,7 +1867,7 @@ class Reports extends CI_Controller {
             $sql1.= " ri.supplier_id = '$sup' AND";
             $sql2.= " id.supplier_id = '$sup' AND";
             $sql3.= " rd.supplier_id = '$sup' AND";
-            $sql4.= " si.supplier_id = '$sup' AND";
+            $sql4.= " dd.supplier_id = '$sup' AND";
         }else {
             $sql.= "";
             $sql1.= "";
@@ -1881,7 +1881,7 @@ class Reports extends CI_Controller {
             $sql1.= " ri.catalog_no = '$cat' AND";
             $sql2.= " id.catalog_no = '$cat' AND";
             $sql3.= " rd.catalog_no = '$cat' AND";
-            $sql4.= " si.catalog_no = '$cat' AND";
+            $sql4.= " dd.catalog_no = '$cat' AND";
         }else {
             $sql.= "";
             $sql1.= "";
@@ -1895,7 +1895,7 @@ class Reports extends CI_Controller {
             $sql1.= " ri.nkk_no = '$nkk' AND";
             $sql2.= " id.nkk_no = '$nkk' AND";
             $sql3.= " rd.nkk_no = '$nkk' AND";
-            $sql4.= " si.nkk_no = '$nkk' AND";
+            $sql4.= " dd.nkk_no = '$nkk' AND";
         }else {
             $sql.= "";
             $sql1.= "";
@@ -1909,7 +1909,7 @@ class Reports extends CI_Controller {
             $sql1.= " ri.semt_no = '$semt' AND";
             $sql2.= " id.semt_no = '$semt' AND";
             $sql3.= " rd.semt_no = '$semt' AND";
-            $sql4.= " si.semt_no = '$semt' AND";
+            $sql4.= " dd.semt_no = '$semt' AND";
         }else {
             $sql.= "";
             $sql1.= "";
@@ -1923,7 +1923,7 @@ class Reports extends CI_Controller {
             $sql1.= " ri.brand_id = '$brand' AND";
             $sql2.= " id.brand_id = '$brand' AND";
             $sql3.= " rd.brand_id = '$brand' AND";
-            $sql4.= " si.brand_id = '$brand' AND";
+            $sql4.= " dd.brand_id = '$brand' AND";
         }else {
             $sql.= "";
             $sql1.= "";
@@ -2085,13 +2085,15 @@ class Reports extends CI_Controller {
 
        
 
-        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, si.supplier_id, si.brand_id, si.catalog_no, si.nkk_no,  si.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN supplier_items si ON si.item_id = dd.item_id WHERE $query4 AND saved = '1' GROUP BY created_date") AS $del){
+        /*foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, si.supplier_id, si.brand_id, si.catalog_no, si.nkk_no,  si.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN supplier_items si ON si.item_id = dd.item_id WHERE $query4 AND saved = '1' GROUP BY created_date") AS $del){*/
+        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE $query4 AND saved = '1' GROUP BY created_date") AS $del){
 
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $del->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $del->supplier_id);
             $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
-            //$total_cost= $del->item_cost + $shipping_fee;
+            $total_cost= $del->selling_price + $shipping_fee;
             $data['stockcard'][] = array(
                 'supplier'=>$supplier,
                 'catalog_no'=>$del->catalog_no,
