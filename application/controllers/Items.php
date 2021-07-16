@@ -519,7 +519,7 @@ class Items extends CI_Controller {
 
             foreach($this->super_model->select_row_where('supplier_items','item_id', $id) AS $sup){
                 $count = $this->super_model->count_custom_where("supplier_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'");
-               
+            
                 if($count!=0){
                         $row=$this->super_model->count_rows("items");
                         unset($daterec);
@@ -911,7 +911,7 @@ class Items extends CI_Controller {
 
             $pnformat=$this->input->post('pnformat');
            // echo $pnformat;
-            if($pnformat==0){
+            if($pnformat==1){
                 /*$pndetails=explode("_", $this->input->post('pn'));
                 $subcat_prefix=$pndetails[0];
                 $series = $pndetails[1];
@@ -930,21 +930,22 @@ class Items extends CI_Controller {
                     $next= "1001";
                     $pn_no= $subcat_prefix."_1001";
                 } else {
-                    $series = $this->super_model->get_max_where("pn_series", "series","subcat_prefix = '$subcat_prefix'");
+                     $pn_no=$this->input->post('pn');
+                   /* $series = $this->super_model->get_max_where("pn_series", "series","subcat_prefix = '$subcat_prefix'");
                     $next=$series+1;
-                    $pn_no = $subcat_prefix."_".$next;
+                    $pn_no = $subcat_prefix."_".$next;*/
                 }
 
                 
-                $pn_data= array(
+             /*   $pn_data= array(
                     'subcat_prefix'=>$subcat_prefix,
                     'series'=>$next
                 );
-                //print_r($pn_data);
+             
                 $row_count = $this->super_model->count_custom_where("pn_series","subcat_prefix='$subcat_prefix' AND series = '$next'");
                 if($row_count==0){
                     $this->super_model->insert_into("pn_series", $pn_data);
-                }
+                }*/
             }else {
                 $pn_no=$this->input->post('pn');
             }   
