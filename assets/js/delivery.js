@@ -22,7 +22,7 @@ function chooseBuyer(){
 }
 
 function choosePRSSS(){
-    var loc= document.getElementById("baseurl").value;
+    var loc= document.getElementById("baseurl11").value;
     var redirect = loc+'index.php/delivery/getPRinformation';
     var prno = document.getElementById("prress").value;
     document.getElementById('alert').innerHTML='<b>Please wait, Loading data...</b>'; 
