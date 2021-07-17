@@ -53,7 +53,7 @@ function chooseItem(){
     $("#submit").hide(); 
     setTimeout(function() {
         document.getElementById('alrt').innerHTML=''; 
-        $("#submit").show(); 
+        //$("#submit").show(); 
     },5000);
     $.ajax({
         type: 'POST',
@@ -108,6 +108,7 @@ function getUnitCost(){
     });
 }
 
+
 $(document).ready(function(){
     $("#quantity").keyup(function(){
         var x = document.getElementById("quantity").value;
@@ -158,6 +159,7 @@ function add_item(){
     var discount =parseFloat($('#discount').val());
     var shipping =parseFloat($('#shipping').val());
     var maxqty = parseFloat(document.getElementById("maxqty").value);
+    var siid =$('#siid').val();
     
     var item =$('#item').val();
     var i = item.replace(/&/gi,"and");
@@ -166,19 +168,24 @@ function add_item(){
 
     if(itemid==''){
          alert('Item must not be empty. Please choose/click from the suggested item list.');
+    } else if(siid==''){
+         alert('Cross Reference must not be empty.');
     }else if(quantity==''){
          alert('Quantity must not be empty.');
+    }else if(quantity>invqty){
+         alert('Cannot request more than existing quantity!');
     } else {
 		var rowCount = $('#item_body tr').length;
 		count=rowCount+1;
 		$.ajax({
 				type: "POST",
 				url:redirect,
-				data: "itemid="+itemid+"&itemname="+itemname+"&original_pn="+original_pn+"&unit="+unit+"&quantity="+quantity+"&item="+item+"&count="+count+"&selling="+selling+"&discount="+discount+"&shipping="+shipping+"&serial="+serial,
+				data: "itemid="+itemid+"&itemname="+itemname+"&siid="+siid+"&original_pn="+original_pn+"&unit="+unit+"&quantity="+quantity+"&item="+item+"&count="+count+"&selling="+selling+"&discount="+discount+"&shipping="+shipping+"&serial="+serial,
 		    	success: function(html){
 		    	$('#item_body').append(html);
 		    	$('#itemtable').show();
 		    	$('#savebutton').show();
+                $('.select2-selection__rendered').empty();
 		    	document.getElementById("item_id").value = '';
 		        document.getElementById("item_name").value = '';
 		        document.getElementById("original_pn").value = '';
@@ -189,6 +196,7 @@ function add_item(){
                 document.getElementById("discount").value = '';
 		        document.getElementById("shipping").value = '';
 		        document.getElementById("item").value = '';
+                document.getElementById("siid").value = '';
 		        document.getElementById("counter").value = count;
 		    }
 		});

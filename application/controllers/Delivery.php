@@ -434,10 +434,14 @@ class Delivery extends CI_Controller {
 
     public function crossreflist(){
         $item=$this->input->post('item');
+        $prno=$this->input->post('prno');
         $rows=$this->super_model->count_custom_where("supplier_items","item_id = '$item'");
-        if($rows!=0){
-            echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
-            echo "<option value=''>-Cross Reference-</option>";
+        if($rows!=0){ ?>
+            <select name='siid' id='siid' class='form-control' onchange="getUnitCost('<?php echo $prno; ?>','<?php echo $item; ?>')" >
+            <option value=''>-Cross Reference-</option>
+            <?php
+            /*echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
+            echo "<option value=''>-Cross Reference-</option>";*/
             foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){ 
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
@@ -445,7 +449,7 @@ class Delivery extends CI_Controller {
                     /*$unit = $this->super_model->select_column_where("items", "unit_id", "item_id", $itm->item_id);*/
                     foreach($this->super_model->select_custom_where("items","item_id = '$item'") AS $it){
                     $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
-                    if($balance!=0){
+                    if($balance>0){
                     ?>
                     <option value="<?php echo $itm->si_id; ?>"><?php echo $supplier . " - " . $itm->catalog_no . " - ". $brand . " (".$balance.")" ." - ". $unit; ?></option>
 
@@ -458,16 +462,34 @@ class Delivery extends CI_Controller {
     }
 
     public function getitem(){
+        foreach($this->super_model->select_row_where("supplier_items", "si_id", $this->input->post('siid')) AS $si){
+             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $si->brand_id);
+             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $si->supplier_id);
+             $supplier_id = $si->supplier_id;
+             $brand_id=$si->brand_id;
+             $catalog_no = $si->catalog_no;
+             $nkk_no = $si->nkk_no;
+             $semt_no = $si->semt_no;
+
         $item_id=$this->input->post('itemid');
         foreach($this->super_model->select_custom_where("items","item_id = '$item_id'") AS $it){
              $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
             }
+        }
         $data['list'] = array(
             'original_pn'=>$this->input->post('original_pn'),
             'unit'=>$this->input->post('unit'),
             'serial'=>$this->input->post('serial'),
             'unit_name'=>$unit,
             'itemid'=>$this->input->post('itemid'),
+            'siid'=>$this->input->post('siid'),
+            'brand'=>$brand,
+            'brand_id'=>$brand_id,
+            'supplier_id'=>$supplier_id,
+            'supplier'=>$supplier,
+            'catalog_no'=>$catalog_no,
+            'nkk_no'=>$nkk_no,
+            'semt_no'=>$semt_no,
             'quantity'=>$this->input->post('quantity'),
             'selling'=>$this->input->post('selling'),
             'discount'=>$this->input->post('discount'),
@@ -549,6 +571,13 @@ class Delivery extends CI_Controller {
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
                 $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $d->item_id);
+
+                foreach($this->super_model->select_custom_where("supplier_items","item_id = '$d->item_id' AND quantity != '0'") AS $itm){
+                    $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $d->brand_id);
+                    $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $d->supplier_id);
+                    $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $d->unit_id);
+                    $cross = $supplier ." - ". $itm->catalog_no ." - ". $brand . " (".$itm->quantity.")";
+                }
                 $data['details'][]=array(
                     "item_name"=>$item_name,
                     "pn_no"=>$original_pn,
@@ -558,13 +587,14 @@ class Delivery extends CI_Controller {
                     "serial_no"=>$d->serial_no,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
-                    'invqty'=>$rec_qty
+                    'invqty'=>$rec_qty,
+                    'cross'=>$cross,
                 );
             }
-        }
         $this->load->view('delivery/add_delivery',$data);
         $this->load->view('template/footer');
     }
+}
 
     public function insertBuyer(){
         $counter = $this->input->post('counter');
@@ -581,6 +611,12 @@ class Delivery extends CI_Controller {
                     'shipping_fee'=>$this->input->post('shipping['.$a.']'),
                     'unit_id'=>$this->input->post('unit_id['.$a.']'),
                     'pn_no'=>$this->input->post('original_pn['.$a.']'),
+                    'si_id'=>$this->input->post('siid['.$a.']'),
+                    'supplier_id'=>$this->input->post('supplier_id['.$a.']'),
+                    'catalog_no'=>$this->input->post('catalog_no['.$a.']'),
+                    'nkk_no'=>$this->input->post('nkk_no['.$a.']'),
+                    'semt_no'=>$this->input->post('semt_no['.$a.']'),
+                    'brand_id'=>$this->input->post('brand_id['.$a.']'),
                 );
                 $this->super_model->insert_into("delivery_details", $data); 
             }
