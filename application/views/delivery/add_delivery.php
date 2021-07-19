@@ -145,9 +145,9 @@
 										?>	
 										<tr>
 											<td><center><?php echo $x; ?></center></td>
-											<td><center><?php echo $rq['pn_no'];?></center></td>
-											<td><center><?php echo $rq['item_name'];?></center></td>
-											<td><center><?php echo $rq['cross']; ?></center></td>
+											<td><center><?php echo $det['pn_no'];?></center></td>
+											<td><center><?php echo $det['item_name'];?></center></td>
+											<td><center><?php echo $det['cross']; ?></center></td>
 											<td><center><?php echo $det['serial_no'];; ?></center></td>
 											<td><center><?php echo $det['qty'];; ?></center></td>
 											<td><center><?php echo $det['unit'];; ?></center></td>

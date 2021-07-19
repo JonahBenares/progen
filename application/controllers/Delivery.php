@@ -611,7 +611,6 @@ class Delivery extends CI_Controller {
                     'shipping_fee'=>$this->input->post('shipping['.$a.']'),
                     'unit_id'=>$this->input->post('unit_id['.$a.']'),
                     'pn_no'=>$this->input->post('original_pn['.$a.']'),
-                    'si_id'=>$this->input->post('siid['.$a.']'),
                     'supplier_id'=>$this->input->post('supplier_id['.$a.']'),
                     'catalog_no'=>$this->input->post('catalog_no['.$a.']'),
                     'nkk_no'=>$this->input->post('nkk_no['.$a.']'),
