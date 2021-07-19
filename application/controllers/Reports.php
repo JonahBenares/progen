@@ -1307,8 +1307,8 @@ class Reports extends CI_Controller {
         }
 
         $query=substr($sql,0,-3);
-        $count=$this->super_model->custom_query("SELECT DISTINCT rh.* FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id WHERE rh.saved='1' AND ".$query." GROUP BY item_name ORDER BY i.item_name ASC");
-        if($count!=0){
+       // $count=$this->super_model->custom_query("SELECT DISTINCT rh.* FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id WHERE rh.saved='1' AND ".$query." GROUP BY item_name ORDER BY i.item_name ASC");
+       // if($count!=0){
             foreach($this->super_model->custom_query("SELECT DISTINCT rh.*,i.item_id  FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id WHERE rh.saved='1' AND ".$query." GROUP BY item_name ORDER BY i.item_name ASC") AS $head){
                 $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $head->item_id);
                 $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $head->item_id);
@@ -1319,7 +1319,18 @@ class Reports extends CI_Controller {
                     'total'=>$totalqty
                 );          
             }
-        } 
+
+            foreach($this->super_model->custom_query("SELECT * FROM supplier_items WHERE catalog_no ='begbal'") AS $si) {
+                $item = $this->super_model->select_column_where('items', 'item_name', 'item_id', $si->item_id);
+                $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $si->item_id);
+                $totalqty=$this->inventory_balance($si->item_id);   
+                $data['head'][] = array(
+                    'item'=>$item,
+                    'pn'=>$pn,
+                    'total'=>$totalqty
+                );     
+            }
+       // } 
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $data['printed']=$this->super_model->select_column_where('users', 'fullname', 'user_id', $_SESSION['user_id']);
