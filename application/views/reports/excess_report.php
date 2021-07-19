@@ -105,7 +105,7 @@
 							</form>
 							<br>
 							<?php if(!empty($excess)){ ?>
-							<a href = "<?php echo base_url(); ?>index.php/reports/export_excess/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>" class = "btn btn-primary pull-right">Export to Excel</a>
+							<a href = "<?php echo base_url(); ?>index.php/reports/export_excess/<?php echo $from;?>/<?php echo $to;?>/<?php echo $catt1;?>/<?php echo $subcat2;?>/<?php echo $item1;?>/<?php echo $enduse1;?>/<?php echo $purpose1; ?>/<?php echo $from_pr1; ?>" class = "btn btn-primary pull-right">Export to Excel</a>
 							<br>
 							<div id="printableArea">
 								<p class="pname"> <?php echo $items; ?>- <small class="main_cat"><?php echo $c; ?></small></p>

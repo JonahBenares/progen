@@ -45,7 +45,7 @@
 										<td>
 											<a href = "" class = "btn btn-success btn-sm" title="ADD NEW SUB CATEGORY" data-toggle="modal" data-target="#addSubCat"><span class="fa fa-plus"></span></a>
 											<a href = "" class = "btn btn-primary btn-sm" title="UPDATE"><span class="fa fa-pencil-square-o"></span></a>
-											<a href = "" class = "btn btn-danger btn-sm" title="DELETE"><span class="fa fa-trash"></span></a>
+											<!-- <a href = "" class = "btn btn-danger btn-sm" title="DELETE"><span class="fa fa-trash"></span></a> -->
 										</td>
 									</tr>
 									<?php } ?>

@@ -185,7 +185,7 @@ class Issue extends CI_Controller {
         $begbal= $this->super_model->select_sum_where("supplier_items", "quantity", "item_id='$itemid' AND catalog_no = 'begbal'");
         $recqty= $this->super_model->select_sum_join("received_qty","receive_items","receive_head", "item_id='$itemid' AND saved='1'","receive_id");
         $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id='$itemid' AND saved='1'","issuance_id");
-        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND saved='1'","rhead_id");
+        $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$itemid' AND excess = '0' AND saved='1'","rhead_id");
         $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND saved='1'","delivery_id");
         $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
         //$balance=($recqty+$begbal+$restockqty)-$issueqty;

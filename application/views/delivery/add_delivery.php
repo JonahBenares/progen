@@ -65,7 +65,7 @@
 						</table>
 						<hr>
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<p>
 									Item
 									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
@@ -83,6 +83,12 @@
 								</p>
 							</div>
 							<div class="col-lg-2">
+								<p>				
+									<span id='crossreference_list'>Please choose item.</span>
+									<input type="hidden" name="unit_cost" id="unit_cost" >
+								</p>
+							</div>
+							<div class="col-lg-1">
 								Serial No.
 								<input type="text" class="form-control" name="serial" id="serial" placeholder="Serial No." style="width:100%">
 							</div>
@@ -106,7 +112,6 @@
 							<div class="col-lg-1">
 								<div id='alrt' style="font-weight:bold"></div>
 								<p>				
-									<br>
 									<a type="button" onclick='add_item()' id = "submit" class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
 								</p>
 							</div>
@@ -119,6 +124,7 @@
 										<th style='text-align: center;'>#</th>
 										<th style='text-align: center;'>Part No.</th>
 										<th style='text-align: center;'>Item Description</th>
+										<th style='text-align: center;'>Cross Reference</th>
 										<th style='text-align: center;'>Serial No.</th>
 										<th style='text-align: center;'>Qty</th>
 										<th style='text-align: center;'>UOM</th>
@@ -139,8 +145,9 @@
 										?>	
 										<tr>
 											<td><center><?php echo $x; ?></center></td>
-											<td><center><?php echo $det['pn_no']; ?></center></td>
-											<td><center><?php echo $det['item_name'];; ?></center></td>
+											<td><center><?php echo $det['pn_no'];?></center></td>
+											<td><center><?php echo $det['item_name'];?></center></td>
+											<td><center><?php echo $det['cross']; ?></center></td>
 											<td><center><?php echo $det['serial_no'];; ?></center></td>
 											<td><center><?php echo $det['qty'];; ?></center></td>
 											<td><center><?php echo $det['unit'];; ?></center></td>
