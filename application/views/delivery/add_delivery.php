@@ -89,7 +89,7 @@
 								</p>
 							</div>
 							<div class="col-lg-1">
-								Serial No.
+								Serial #
 								<input type="text" class="form-control" name="serial" id="serial" placeholder="Serial No." style="width:100%">
 							</div>
 							<div class="col-lg-1">	
