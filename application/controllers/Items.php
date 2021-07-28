@@ -1128,11 +1128,13 @@ class Items extends CI_Controller {
         /*foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){*/
         if(!empty($sql)){
              $q=" WHERE " .$sql . " " . $query2;
-              $sql_query = "SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id LEFT JOIN restock_details rd ON rd.item_id = i.item_id LEFT JOIN restock_head r ON rd.rhead_id = r.rhead_id " .$q." GROUP BY i.item_id ORDER BY i.original_pn ASC";
+             $sql_query = "SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id LEFT JOIN supplier_items si ON si.item_id = i.item_id LEFT JOIN restock_details rd ON rd.item_id = i.item_id LEFT JOIN restock_head r ON rd.rhead_id = r.rhead_id " .$q." GROUP BY i.item_id ORDER BY i.original_pn ASC";
 
              $sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details)";
 
              $sql_notransact = "SELECT * FROM items WHERE item_id NOT IN (SELECT item_id FROM receive_items) AND item_id NOT IN (SELECT item_id FROM restock_details) AND item_id NOT IN (SELECT item_id FROM supplier_items)";
+
+             $sql_notransact_wsi = "SELECT * FROM items i INNER JOIN supplier_items si ON i.item_id = si.item_id WHERE i.item_id NOT IN (SELECT item_id FROM receive_items) AND i.item_id NOT IN (SELECT item_id FROM restock_details) AND si.catalog_no !='begbal' GROUP BY si.item_id";
         } else {
            // $q=$sql . " " . $query2;
              $sql_query = "SELECT * from items";
@@ -1216,7 +1218,8 @@ class Items extends CI_Controller {
                 $x++;
             }
         }
-          foreach($this->super_model->custom_query($sql_begbal) AS $begbal){
+
+        foreach($this->super_model->custom_query($sql_begbal) AS $begbal){
 
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $begbal->unit_id);
             $rack =$this->super_model->select_column_where("rack","rack_name", "rack_id", $begbal->rack_id);
@@ -1293,6 +1296,59 @@ class Items extends CI_Controller {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $not->original_pn);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $not->item_name);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+            
+                $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
+                $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
+                $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
+                $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                $num++;
+                $x++;
+         }
+
+        foreach($this->super_model->custom_query($sql_notransact_wsi) AS $si){
+
+            $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $si->unit_id);
+            $rack =$this->super_model->select_column_where("rack","rack_name", "rack_id", $si->rack_id);
+            $group =$this->super_model->select_column_where("group","group_name", "group_id", $si->group_id);
+            $wh =$this->super_model->select_column_where("warehouse","warehouse_name", "warehouse_id", $si->warehouse_id);
+            $location =$this->super_model->select_column_where("location","location_name", "location_id", $si->location_id);
+            $bin =$this->super_model->select_column_where("bin","bin_name", "bin_id", $si->bin_id);
+            $nominal=$this->super_model->select_ave("supplier_items", "item_cost", "item_id", $si->item_id);
+            $unit_price = 0;
+             $local_mnl = 1;
+            if($local_mnl=='1'){
+                $sup = 'Local';
+            } else if($local_mnl=='2'){
+                 $sup = 'Manila';
+            } else {
+                $sup='';
+            }
+            $totalqty=$this->inventory_balance_date($si->item_id,$date);
+         
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $si->original_pn);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $si->item_name);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
