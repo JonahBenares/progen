@@ -1218,7 +1218,7 @@ class Items extends CI_Controller {
                 $x++;
             }
         }
-        
+
         foreach($this->super_model->custom_query($sql_begbal) AS $begbal){
 
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $begbal->unit_id);
