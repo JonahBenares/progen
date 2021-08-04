@@ -268,14 +268,14 @@ function printMReqF(){
 
 function getUnitCost(prno,itemid){
    
-    //var siid= document.getElementById("siid").value;
+    var siid= document.getElementById("siid").value;
     var loc= document.getElementById("baseurl").value;
-    //var redirect = loc+'index.php/request/getSIDetails';
-    var redirect = loc+'index.php/request/getReceiveCost';
+    var redirect = loc+'index.php/request/getSIDetails';
+    //var redirect = loc+'index.php/request/getReceiveCost';
      $.ajax({
             type: "POST",
             url: redirect,
-            data: 'prno='+prno+'&itemid='+itemid,
+            data: 'prno='+prno+'&itemid='+itemid+'&siid='+siid,
             beforeSend: function(){
                 document.getElementById('alrt').innerHTML='<b>Please wait, Loading data...</b>'; 
                 $("#submit").hide(); 

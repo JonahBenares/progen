@@ -3,7 +3,7 @@
 	<p style="margin: 0px">Date</p>
 	<input type = "date" name = "date" class = "form-control" value="<?php echo $list['date']; ?>">
 	<p style="margin: 0px">Sales PR #</p>
-	<input type = "text" name = "pr_no" class = "form-control" value="<?php echo $list['pr_no']; ?>">
+	<input type = "text" name = "sales_pr" class = "form-control" value="<?php echo $list['sales_pr']; ?>">
 	<input class="form-control" name = "delivery_id" type = "hidden" value = "<?php echo $id;?>"/>
 </div>
 <?php } ?>
