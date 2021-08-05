@@ -486,6 +486,7 @@ class Delivery extends CI_Controller {
             'serial'=>$this->input->post('serial'),
             'unit_name'=>$unit,
             'itemid'=>$this->input->post('itemid'),
+            'deliveryid'=>$this->input->post('deliveryid'),
             'siid'=>$this->input->post('siid'),
             'brand'=>$brand,
             'brand_id'=>$brand_id,
@@ -494,6 +495,7 @@ class Delivery extends CI_Controller {
             'catalog_no'=>$catalog_no,
             'nkk_no'=>$nkk_no,
             'semt_no'=>$semt_no,
+            'total'=>$this->input->post('total'),
             'quantity'=>$this->input->post('quantity'),
             'selling'=>$this->input->post('selling'),
             'discount'=>$this->input->post('discount'),
@@ -575,7 +577,7 @@ class Delivery extends CI_Controller {
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
                 $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $d->item_id);
-                $total_price = ($d->selling_price * $d->qty)-$d->discount;
+                $total = ($d->selling_price * $d->qty)-$d->discount;
 
                 foreach($this->super_model->select_custom_where("supplier_items","item_id = '$d->item_id' AND quantity != '0'") AS $itm){
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $d->brand_id);
@@ -594,7 +596,7 @@ class Delivery extends CI_Controller {
                     "shipping_fee"=>$d->shipping_fee,
                     'invqty'=>$rec_qty,
                     'cross'=>$cross,
-                    'total_price'=>$total_price,
+                    'total'=>$total,
                 );
             }
         $this->load->view('delivery/add_delivery',$data);
@@ -604,6 +606,7 @@ class Delivery extends CI_Controller {
 
     public function insertBuyer(){
         $counter = $this->input->post('counter');
+        $total = $this->input->post('total');
         $id=$this->input->post('delivery_id');
         for($a=0;$a<$counter;$a++){
             if(!empty($this->input->post('item_id['.$a.']'))){

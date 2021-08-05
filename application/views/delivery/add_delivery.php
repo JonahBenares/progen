@@ -131,6 +131,7 @@
 										<th style='text-align: center;'>Selling Price</th>
 										<th style='text-align: center;'>Discount</th>
 										<th style='text-align: center;'>Shipping Fee</th>
+										<th style='text-align: center;'>Total Cost</th>
 										<th style='text-align: center;' width="1%"><span class="fa fa-bars"></span></th>
 									</tr>
 									<?php 
@@ -154,6 +155,7 @@
 											<td><center><?php echo $det['selling_price'];; ?></center></td>
 											<td><center><?php echo $det['discount'];; ?></center></td>
 											<td><center><?php echo $det['shipping_fee'];; ?></center></td>
+											<td><center><?php echo $det['total'];; ?></center></td>
 											<td><center></center></td>
 										</tr>
 										<?php $x++; } ?>
@@ -163,6 +165,7 @@
 								<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 								<input type='hidden' name='delivery_id' id='delivery_id' value='<?php echo $id; ?>'>
 								<input type='hidden' name='counter' id='counter'>
+								<input type='hidden' name='total' id='total'>
 								<center><div id='alt' style="font-weight:bold"></div></center>
 								<?php if($h['saved']==0){ ?>
 								<input type='button' class="btn btn-md btn-warning" id='savebutton' onclick='saveBuyer()' style="width:100%;background: #ff5d00" value='Save and Print'>
