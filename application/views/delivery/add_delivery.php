@@ -110,6 +110,7 @@
 								Shipping Fee
 								<input type="text" class="form-control" name="shipping" id="shipping" placeholder="Shipping Fee" style="width:100%">
 							</div>
+							<br>
 							<div class="col-lg-1">
 								<div id='alrt' style="font-weight:bold"></div>
 								<p>				
