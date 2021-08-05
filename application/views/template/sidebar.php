@@ -138,7 +138,7 @@
 								<td width="85%"><input type = "date" name = "date" class = "form-control" value="<?php echo date("Y-m-d");?>" <?php echo ($_SESSION['user_id']==5 || $_SESSION['user_id']==13) ? '' : 'style="pointer-events:none;" readonly';?>><br></td>
 							</tr>
 							<tr>
-								<td width="15%"><label>PO Date:</label></td>
+								<td width="15%"><label>PR/ PO Date:</label></td>
 								<td width="85%"><input type = "date" name = "po_date" class = "form-control"><br></td>
 							</tr>
 							<!--<tr>
@@ -146,10 +146,10 @@
 								<td width="85%"><input type = "text" name = "pr_no" class = "form-control"><br></td>
 							</tr>-->
 							<tr>
-								<td width="15%"><label>PR#/PO#:</label></td>		
+								<td width="15%"><label>Source PR No:</label></td>		
 								<td width="85%" style ="padding-bottom: 5px;">
 									<select name="pr_no" id='prress' class="form-control select2" onchange="choosePRSSS();" style="margin:4px;width:100%">
-										<option value="">--Choose PR/PO--</option>
+										<option value="">--Choose Source PR No--</option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
 										<?php } ?>
@@ -158,7 +158,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td width="15%"><label>Sales PR#:</label></td>
+								<td width="15%"><label>PGC PR No/ PO No:</label></td>
 								<td width="85%"><input type = "text" name = "sales_pr" id="sales_pr" class = "form-control"><br></td>
 							</tr>
 							<tr>

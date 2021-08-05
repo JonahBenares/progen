@@ -180,6 +180,7 @@ class Delivery extends CI_Controller {
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $total_price = ($d->selling_price * $d->qty)-$d->discount;
                 $data['details'][]=array(
                     "item_name"=>$item_name,
                     "pn_no"=>$original_pn,
@@ -189,6 +190,7 @@ class Delivery extends CI_Controller {
                     "selling_price"=>$d->selling_price,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
+                    "total_price"=>$total_price,
                 );
             }
         }
@@ -333,6 +335,7 @@ class Delivery extends CI_Controller {
                 $item_name=$this->super_model->select_column_where("items","item_name","item_id",$d->item_id);
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
+                $total_price = ($d->selling_price * $d->qty)-$d->discount;
                 $data['details'][]=array(
                     "item_name"=>$item_name,
                     "pn_no"=>$original_pn,
@@ -341,6 +344,7 @@ class Delivery extends CI_Controller {
                     "selling_price"=>$d->selling_price,
                     "discount"=>$d->discount,
                     "shipping_fee"=>$d->shipping_fee,
+                    "total_price"=>$total_price,
                 );
             }
         }
@@ -571,6 +575,7 @@ class Delivery extends CI_Controller {
                 $original_pn=$this->super_model->select_column_where("items","original_pn","item_id",$d->item_id);
                 $unit=$this->super_model->select_column_where("uom","unit_name","unit_id",$d->unit_id);
                 $rec_qty = $this->super_model->select_sum("supplier_items", "quantity", "item_id", $d->item_id);
+                $total_price = ($d->selling_price * $d->qty)-$d->discount;
 
                 foreach($this->super_model->select_custom_where("supplier_items","item_id = '$d->item_id' AND quantity != '0'") AS $itm){
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $d->brand_id);
@@ -589,6 +594,7 @@ class Delivery extends CI_Controller {
                     "shipping_fee"=>$d->shipping_fee,
                     'invqty'=>$rec_qty,
                     'cross'=>$cross,
+                    'total_price'=>$total_price,
                 );
             }
         $this->load->view('delivery/add_delivery',$data);

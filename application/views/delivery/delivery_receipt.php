@@ -181,16 +181,16 @@
                         <td><strong><h6 class="nomarg">Contact Number</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label><?php echo $det['contact_no']; ?></td>
                         <td></td>
-                    </tr>    
-                    <tr>
-                        <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
+                    </tr>
+                    <tr>   
+                        <td><strong><h6 class="nomarg">Source PR No</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['pr_no']; ?></label></td>
                         <td></td>
-                        <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
+                        <td><strong><h6 class="nomarg">PR/ PO Date &nbsp</h6></strong></td>
                         <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['po_date']?></label></td>  
-                    </tr> 
+                    </tr>
                     <tr>
-                        <td><strong><h6 class="nomarg">Sales PR No</h6></strong></td>
+                        <td><strong><h6 class="nomarg">PGC PR No /PO No</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['sales_pr']?></label></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">VAT</h6></strong></td>
@@ -212,6 +212,7 @@
                         <td width="5%" align="center"><strong>Selling Price</strong></td>
                         <td width="5%" align="center"><strong>Discount</strong></td>
                         <td width="5%" align="center"><strong>Shipping Fee</strong></td>
+                        <td width="5%" align="center"><strong>Total Price</strong></td>
                     </tr>
                     <tr>
                         <?php 
@@ -229,6 +230,7 @@
                             <td align="center"><?php echo $buyitm['selling_price']; ?></td>
                             <td align="center"><?php echo $buyitm['discount']; ?></td>
                             <td align="center"><?php echo $buyitm['shipping_fee']; ?></td>
+                            <td align="center"><?php echo number_format($buyitm['total_price'],2); ?></td>
                         </tr>
                         <?php $x++; } }else {?>
                         <tr>
@@ -237,7 +239,7 @@
                         <?php } ?>
                     </tr>
                     <tr>
-                        <td colspan="11"><center>***nothing follows***</center></td>
+                        <td colspan="12"><center>***nothing follows***</center></td>
                     </tr>
                 </table>
                 <br>
