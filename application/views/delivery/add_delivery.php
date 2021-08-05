@@ -84,6 +84,7 @@
 							</div>
 							<div class="col-lg-2">
 								<p>				
+									<br>
 									<span id='crossreference_list'>Please choose item.</span>
 									<input type="hidden" name="unit_cost" id="unit_cost" >
 								</p>

@@ -183,15 +183,17 @@
                         <td></td>
                     </tr>
                     <tr>   
-                        <td><strong><h6 class="nomarg">Source PR No</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['pr_no']; ?></label></td>
+                        <td><strong><h6 class="nomarg">PGC PR No /PO No</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['sales_pr']?></label></td>
                         <td></td>
                         <td><strong><h6 class="nomarg">PR/ PO Date &nbsp</h6></strong></td>
                         <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['po_date']?></label></td>  
+                        <!-- <td><strong><h6 class="nomarg">Source PR No</h6></strong></td>
+                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['pr_no']; ?></label></td> -->
                     </tr>
                     <tr>
-                        <td><strong><h6 class="nomarg">PGC PR No /PO No</h6></strong></td>
-                        <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $det['sales_pr']?></label></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td><strong><h6 class="nomarg pull-right">VAT</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: </label> <?php echo ($det['vat']==1) ? 'Vatable' : 'Non-Vatable'; ?></td>
