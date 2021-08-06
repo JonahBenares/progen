@@ -10,7 +10,7 @@
     <td style="padding: 0px "><input type = "text" name = "selling[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['selling']; ?>"></td>
     <td style="padding: 0px "><input type = "text" name = "discount[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['discount']; ?>"></td>
     <td style="padding: 0px "><input type = "text" name = "shipping[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['shipping']; ?>"></td>
-    <td style="padding: 0px "><input type = "text" name = "total[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['total']; ?>"></td>
+    <td style="padding: 0px "><input rows="3" type = "text" name = "total[]" style = "text-align:center;width:100%;border:1px transparent;" value="<?php echo $list['total']; ?>" readonly></td>
     <td>
         <center>
         <a class="btn btn-danger table-remove btn-xs" onclick="remove_item(<?php echo $list['count']; ?>)"><span class=" fa fa-times"></span></a></center>    
