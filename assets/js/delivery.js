@@ -196,7 +196,7 @@ function add_item(){
                 document.getElementById("selling").value = '';
                 document.getElementById("discount").value = '';
 		        document.getElementById("shipping").value = '';
-                document.getElementById("total").value = '';
+                document.getElementById("total_cost").value = '';
 		        document.getElementById("item").value = '';
                 document.getElementById("siid").value = '';
 		        document.getElementById("counter").value = count;
@@ -204,6 +204,14 @@ function add_item(){
 		});
     }     
 }
+
+function checktotal_cost(){
+    var quantity =parseFloat($('#qty').val());
+    var selling =parseFloat($('#selling').val());
+    var discount =parseFloat($('#discount').val());
+    var total1 =  (parseFloat(selling) * parseFloat(quantity)) - parseFloat(discount);
+    document.getElementById("total_cost").value  = total1.toFixed(2);
+} 
 
 function remove_item(i){
     $('#item_row'+i).remove();

@@ -98,17 +98,21 @@
 								<input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" style="width:100%">
 								<input type='hidden' name='maxqty' id = "maxqty">
 							</div>
-							<div class="col-lg-2">
+							<div class="col-lg-1">
 								Selling Price
-								<input type="text" class="form-control" name="selling" id="selling" placeholder="Selling Price" style="width:100%">
+								<input type="text" class="form-control" name="selling" id="selling" onchange='checktotal_cost();'  placeholder="Selling Price" style="width:100%">
 							</div>
 							<div class="col-lg-1">
 								Discount
-								<input type="text" class="form-control" name="discount" id="discount" placeholder="Discount" style="width:100%">
+								<input type="text" class="form-control" name="discount" id="discount" onchange='checktotal_cost();' placeholder="Discount" style="width:100%">
 							</div>
 							<div class="col-lg-2">
 								Shipping Fee
 								<input type="text" class="form-control" name="shipping" id="shipping" placeholder="Shipping Fee" style="width:100%">
+							</div>
+							<div class="col-lg-1">
+								Total Cost
+								<input type="text" class="form-control" name="total_cost" id="total_cost" placeholder="Total Cost" style="width:100%" disabled>
 							</div>
 							<br>
 							<div class="col-lg-1">
@@ -137,7 +141,7 @@
 										<th style='text-align: center;' width="1%"><span class="fa fa-bars"></span></th>
 									</tr>
 									<?php 
-										if(!isset($details)){
+										if(empty($details)){
 									?>
 									<tbody id="item_body"></tbody>
 									<?php } else { ?>
