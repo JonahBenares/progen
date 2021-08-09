@@ -65,6 +65,67 @@
 						</table>
 						<hr>
 						<div class="row">
+							<div class="col-lg-5">
+								<p>
+									Item
+									<select name="item" id='item' class="form-control select2" onchange="chooseItem()">
+										<option value = "">--Select Item--</option>
+										<?php foreach($item_list AS $itm){ ?>
+										<option value = "<?php echo $itm->item_id;?>"><?php echo $itm->original_pn." - ".$itm->item_name;?></option>
+										<?php } ?>
+									</select>
+									<input type='hidden' name='item_id' id='item_id'>
+									<input type='hidden' name='item_name' id='item_name'>
+									<input type='hidden' name='original_pn' id='original_pn'>
+									<input type='hidden' name='unit' id='unit'>
+									<input type='hidden' name='invqty' id='invqty'>
+									<input type='hidden' name='reqpr' id='reqpr' value='<?php echo $h['pr_no']; ?>'>
+								</p>
+							</div>
+							<div class="col-lg-5">
+								<p>				
+									<br>
+									<span id='crossreference_list'>Please choose item.</span>
+									<input type="hidden" name="unit_cost" id="unit_cost" >
+								</p>
+							</div>
+							<div class="col-lg-2">
+								Serial #
+								<input type="text" class="form-control" name="serial" id="serial" placeholder="Serial No." style="width:100%">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-2">
+								Quantity						
+								<input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" style="width:100%">
+								<input type='hidden' name='maxqty' id = "maxqty">
+							</div>
+							<div class="col-lg-2">
+								Selling Price
+								<input type="text" class="form-control" name="selling" id="selling" onchange='checktotal_cost();'  placeholder="Selling Price" style="width:100%">
+							</div>
+							<div class="col-lg-2">
+								Discount
+								<input type="text" class="form-control" name="discount" id="discount" onchange='checktotal_cost();' placeholder="Discount" style="width:100%">
+							</div>
+							<div class="col-lg-2">
+								Shipping Fee
+								<input type="text" class="form-control" name="shipping" id="shipping" placeholder="Shipping Fee" style="width:100%">
+							</div>
+							<div class="col-lg-3">
+								Total Cost
+								<input type="text" class="form-control" name="total_cost" id="total_cost" placeholder="Total Cost" style="width:100%" disabled>
+							</div>
+							<div class="col-lg-1">
+								<div id='alrt' style="font-weight:bold"></div>
+								<p>				
+									<br>
+									<a type="button" onclick='add_item()' id = "submit" class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
+								</p>
+							</div>	
+							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">						
+						</div>
+						<!-- <div class="row">
 							<div class="col-lg-2">
 								<p>
 									Item
@@ -121,8 +182,8 @@
 									<a type="button" onclick='add_item()' id = "submit" class="btn btn-warning btn-md"><span class="fa fa-plus"></span></a>
 								</p>
 							</div>
-							<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
-						</div>
+							
+						</div> -->
 						<div class="row">
 							<div class="col-lg-12">
 								<table class="table table-bordered table-hover">
