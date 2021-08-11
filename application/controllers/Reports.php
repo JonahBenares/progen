@@ -3100,19 +3100,19 @@ class Reports extends CI_Controller {
         $year_series=date('Y');
         $rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year_series%'");
         if($rows==0){
-             $mrwfno = "MRWF-".$year."-0001";
+             $mrwfno = "MRWF-".$year."-0001"."_exc";
         } else {
             $maxrecno=$this->super_model->get_max_where("restock_head", "mrwf_no","restock_date LIKE '$year_series%'");
             $recno = explode('-',$maxrecno);
             $series = $recno[3]+1;
             if(strlen($series)==1){
-                $mrwfno = "MRWF-".$year."-000".$series;
+                $mrwfno = "MRWF-".$year."-000".$series."_exc";
             } else if(strlen($series)==2){
-                 $mrwfno = "MRWF-".$year."-00".$series;
+                 $mrwfno = "MRWF-".$year."-00".$series."_exc";
             } else if(strlen($series)==3){
-                 $mrwfno = "MRWF-".$year."-0".$series;
+                 $mrwfno = "MRWF-".$year."-0".$series."_exc";
             } else if(strlen($series)==4){
-                 $mrwfno = "MRWF-".$year."-".$series;
+                 $mrwfno = "MRWF-".$year."-".$series."_exc";
             }
         }
 
