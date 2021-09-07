@@ -1,4 +1,13 @@
 <?php foreach($request_list AS $list){ ?>
+	<div class="form-group">
+	<p style="margin: 0px">PR No</p>
+	<select class = "form-control" id = "pr_no" name = 'pr_no'>
+		<option value = "">--Select PR No--</option>
+		<?php foreach($pr AS $p){ ?>
+		<option value = "<?php echo $p->pr_no?>" <?php echo (($list['pr_no'] == $p->pr_no) ? ' selected' : '');?>><?php echo $p->pr_no?></option>
+		<?php } ?>
+	</select>
+</div>
 <div class="form-group">
 	<p style="margin: 0px">Department</p>
 	<select class = "form-control" id = "department" name = 'department'>

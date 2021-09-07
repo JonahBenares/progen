@@ -227,6 +227,7 @@
 										<option value="" selected="">-Select Request Type-</option>
 										<option value = "JO / PR">JO / PR</option>
 										<option value = "Warehouse Stocks">Warehouse Stocks</option>
+										<option value = "Damage Items">Damage Items</option>
 									</select>
 								</td>
 							</tr>
@@ -654,6 +655,26 @@
 				</ul>
 			</li>
 			<li class="parent ">
+				<a data-toggle="collapse" href="#sub-damage">
+					<span class="fa fa-chain-broken">&nbsp;</span> Damage Items 
+					<span data-toggle="collapse" href="#sub-damage" class="icon pull-right">
+						<em class="fa fa-plus"></em>
+					</span>
+				</a>
+				<ul class="children collapse" id="sub-damage">
+					<li>
+						<a href="<?php echo base_url(); ?>index.php/damage/add_dmg_item" class="">
+							<span class="fa fa-arrow-right">&nbsp;</span> Add New
+						</a>
+					</li>
+					<li>
+						<a class="" href="<?php echo base_url(); ?>index.php/damage/damage_list">
+							<span class="fa fa-arrow-right">&nbsp;</span> View List
+						</a>
+					</li>
+				</ul>
+			</li>	
+			<li class="parent ">
 				<a data-toggle="collapse" href="#sub-item-1">
 					<em class="fa fa-navicon">&nbsp;</em> Transactions 
 					<span data-toggle="collapse" href="#sub-item-1" class="icon pull-right">
@@ -760,7 +781,7 @@
 					<li><a href="<?php echo base_url(); ?>index.php/backorder/back_order"><em class="fa fa-retweet">&nbsp;</em> Back Order</a></li>	
 					<?php } ?>
 				</ul>
-			</li>			
+			</li>		
 			<li class="parent ">
 				<a data-toggle="collapse" href="#sub-item-2">
 					<em class="fa fa-navicon">&nbsp;</em> Report 
