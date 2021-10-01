@@ -189,10 +189,10 @@
                         <td></td>
                     </tr>    
                     <tr>
-                        <td><strong><h6 class="nomarg">PR# /PO#</h6></strong></td>
+                        <td><strong><h6 class="nomarg">Source PR No</h6></strong></td>
                         <td style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['pr_no']; ?></label></td>
                         <td></td>
-                        <td><strong><h6 class="nomarg pull-right">PO Date &nbsp</h6></strong></td>
+                        <td><strong><h6 class="nomarg pull-right">PR/ PO Date &nbsp</h6></strong></td>
                         <td colspan="3" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $hs['po_date']; ?></label></td>  
                     </tr>           
                 </table>
@@ -209,6 +209,7 @@
                         <td width="5%" align="center"><strong>Selling Price</strong></td>
                         <td width="5%" align="center"><strong>Discount</strong></td>
                         <td width="5%" align="center"><strong>Shipping Fee</strong></td>
+                        <td width="5%" align="center"><strong>Total Price</strong></td>
                     </tr>
                     <tr>
                         <?php $x=1; if(!empty($details)){ foreach($details AS $d){ ?>
@@ -220,7 +221,8 @@
                             <td align="center">&nbsp;<?php echo $d['unit']; ?></td>
                             <td align="center"><?php echo $d['selling_price']; ?></td>
                             <td align="center"><?php echo $d['discount']; ?></td>
-                            <td align="center"><?php echo $d['shipping_fee']; ?></td>
+                            <td align="center"><?php echo $buyitm['shipping_fee']; ?></td>
+                            <td align="center"><?php echo number_format($d['total_price'],2); ?></td>
                         </tr>
                         <?php $x++; } }else { ?>
                         <tr>
@@ -229,7 +231,7 @@
                         <?php } ?>
                     </tr>
                     <tr>
-                        <td colspan="8"><center>***nothing follows***</center></td>
+                        <td colspan="9"><center>***nothing follows***</center></td>
                     </tr>
                 </table>
                 <br>

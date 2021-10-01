@@ -87,8 +87,8 @@
 									<td align="center"><strong>Address</strong></td>
 									<td align="center"><strong>Shipped Via</strong></td>
 									<td width="20%" align="center"><strong>Waybill No.</strong></td>									
-									<td width="20%" align="center"><strong>PR# / PO#</strong></td>
-									<td width="20%" align="center"><strong>Sales PR#</strong></td>									
+									<td width="20%" align="center"><strong>Source PR No.</strong></td>
+									<td width="20%" align="center"><strong>PGC PR No. /PO No.</strong></td>									
 									<td width="5%" align="center" ><strong>Action</strong></td>
 								</tr>
 							</thead>

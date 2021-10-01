@@ -160,6 +160,7 @@ class Request extends CI_Controller {
         $this->load->view('template/header');
         $data['id']=$this->input->post('id');
         $id=$this->input->post('id');
+        $data['pr'] = $this->super_model->custom_query("SELECT pr_no, enduse_id, purpose_id,department_id FROM receive_head INNER JOIN receive_details WHERE saved='1' GROUP BY pr_no");
         $data['end'] = $this->super_model->select_all_order_by('enduse', 'enduse_name', 'ASC');
         $data['purp'] = $this->super_model->select_all_order_by('purpose', 'purpose_desc', 'ASC');
         $data['dept'] = $this->super_model->select_all_order_by('department', 'department_name', 'ASC');
@@ -168,6 +169,7 @@ class Request extends CI_Controller {
                 'purpose_id'=>$i->purpose_id,
                 'enduse_id'=>$i->enduse_id,
                 'department_id'=>$i->department_id,
+                'pr_no'=>$i->pr_no,
             );
         }
         $this->load->view('request/edit_endpurp',$data);
@@ -178,6 +180,7 @@ class Request extends CI_Controller {
             'purpose_id'=>$this->input->post('purpose'),
             'enduse_id'=>$this->input->post('enduse'),
             'department_id'=>$this->input->post('department'),
+            'pr_no'=>$this->input->post('pr_no'),
         );
         $request_id = $this->input->post('request_id');
         if($this->super_model->update_where('request_head', $data, 'request_id', $request_id)){
@@ -485,8 +488,10 @@ class Request extends CI_Controller {
         $issueqty= $this->super_model->select_sum_join("quantity","issuance_details","issuance_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","issuance_id");
         
          $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id = '$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1' AND excess = '0'","rhead_id");
-        
-         $balance=($recqty+$begbal+$restockqty)-$issueqty;
+            
+         $deliverqty= $this->super_model->select_sum_join("qty","delivery_details","delivery_head", "item_id='$itemid' AND supplier_id = '$supplierid' AND brand_id = '$brandid' AND catalog_no ='$catalogno' AND saved='1'","delivery_id");
+
+         $balance=($recqty+$begbal+$restockqty)-$issueqty-$deliverqty;
 
          //$balance=$recqty-$issueqty;
          return $balance;
