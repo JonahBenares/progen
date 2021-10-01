@@ -1134,7 +1134,7 @@ class Items extends CI_Controller {
         );
         //echo "SELECT i.*, ri.local_mnl FROM items i INNER JOIN receive_items ri ON i.item_id = ri.item_id WHERE " .$q." ORDER BY i.item_name ASC";
         /*foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){*/
-        if(!empty($sql)){
+        if(!empty($sql) || !empty($sql1)){
              $q=" WHERE " .$sql . " " . $query2;
              $sql_query = "SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id LEFT JOIN restock_details rd ON rd.item_id = i.item_id LEFT JOIN restock_head r ON rd.rhead_id = r.rhead_id " .$q." GROUP BY i.item_id ORDER BY i.original_pn ASC";
 
