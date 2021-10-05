@@ -125,7 +125,7 @@ function balancePRItem(){
          $.ajax({
             type: "POST",
             url: redirectcr,
-            data:'item='+itemid+'&pr='+pr,
+            data:'item='+itemid+'&pr='+encodeURIComponent(pr),
             success: function(output){
                 alert("Available Balance for this Item: " + output);
                 document.getElementById("maxqty").value = output;
