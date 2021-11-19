@@ -71,6 +71,7 @@ class Restock extends CI_Controller {
                 /*$received_by = $this->super_model->select_column_where("employees", "employee_name", "employee_id", $res->received_by);*/
                 $data['restock'][] = array(
                     'rhead_id'=>$res->rhead_id,
+                    'mrwf_no'=>$res->mrwf_no,
                     'date'=>$res->restock_date,
                     'prno'=>$res->from_pr,
                     'department'=>$department,
