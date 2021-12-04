@@ -763,13 +763,13 @@
 							<span class="fa fa-truck">&nbsp;</span> Sales 
 						</a>
 						<ul class="children collapse" id="sub-deliver">
-							
+							<?php if($_SESSION['user_id']==5 || $_SESSION['user_id']==11 || $_SESSION['user_id']==13){ ?>
 							<li>
 								<a style="padding-left:60px"  data-toggle="modal" data-target="#deliverModal" >
 									<span class="fa fa-arrow-right">&nbsp;</span> Add New
 								</a>
 							</li>
-							
+							<?php } ?>
 							<li>
 								<a style="padding-left:60px" class="" href="<?php echo base_url(); ?>index.php/delivery/delivery_list">
 									<span class="fa fa-arrow-right">&nbsp;</span> View List
