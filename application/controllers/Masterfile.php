@@ -234,6 +234,7 @@ class Masterfile extends CI_Controller {
     }
 
     public function supplier_list(){
+        $data['password']=$this->uri->segment(3);
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
         $data['list'] = $this->super_model->select_all('supplier');
@@ -2085,6 +2086,23 @@ class Masterfile extends CI_Controller {
         if($this->super_model->delete_where('buyer', 'buyer_id', $id)){
             echo "<script>alert('Succesfully Deleted'); 
                 window.location ='".base_url()."index.php/masterfile/buyer_list'; </script>";
+        }
+    }
+
+    public function view_supplier(){
+        $username=$this->input->post('username');
+        $password=$this->input->post('password');
+        $count=$this->super_model->login_user($username,$password);
+        if($count>0){   
+            $password1 =md5($this->input->post('password'));
+            $fetch=$this->super_model->select_custom_where("users", "username = '$username' AND (password = '$password' OR password = '$password1')");
+            foreach($fetch AS $d){
+                $password = $d->password;
+            }
+            redirect(base_url().'index.php/masterfile/supplier_list/'.$password);
+        }
+        else{
+            echo "<script>alert('Wrong password! Please try again.');window.location ='".base_url()."index.php/masterfile/supplier_list';</script>";    
         }
     }
 
