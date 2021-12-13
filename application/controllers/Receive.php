@@ -468,6 +468,7 @@ class Receive extends CI_Controller {
             'po_no'=>$this->input->post('po_no'),
             'si_no'=>$this->input->post('si_no'),
             'pcf'=>$this->input->post('pcf'),
+            'overall_remarks'=>$this->input->post('overall_remarks'),
         );
         $id = $this->input->post('id');
         $receiveid = $this->super_model->select_column_where("receive_head", "receive_id", "receive_id", $id);

@@ -509,7 +509,7 @@ function update_prcmrk(id,baseurl) {
 }
 
 function update_head(id,baseurl) {
-    var myWindow = window.open(baseurl+"index.php/receive/update_headr/"+id, "", "top=100,left=450,width=550,height=400");
+    var myWindow = window.open(baseurl+"index.php/receive/update_headr/"+id, "", "top=100,left=450,width=550,height=450");
 }
 
 
