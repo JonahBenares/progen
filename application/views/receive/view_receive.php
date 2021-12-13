@@ -62,9 +62,20 @@
 								<td> <h5 class="nomarg"><?php echo $h->si_no; ?></h5></td>								
 								<td><p class="nomarg">PCF:</p></td>
 								<td> <h5 class="nomarg"><?php if($h->pcf == '1'){ echo "Yes"; }else { echo ""; } ?></h5></td>
-							</tr>
-							<?php } ?>
+							</tr>							
 						</table>
+						<table width="100%">
+							<tr>
+								<td width="5%"></td>
+								<td width="13%">Overall Remarks:</td>
+								<td colspan="3"> sample</td>
+							</tr>
+							<tr>
+								<td colspan="5"><br></td>
+							</tr>
+						</table>
+						<?php } ?>
+						
 						<div class="col-lg-12">
 							<?php
 							 if(!empty($details)){ ?>
