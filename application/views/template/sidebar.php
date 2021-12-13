@@ -112,7 +112,7 @@
 							</tr>
 							<tr>
 								<td style="vertical-align: text-top;"><label>Overall Remarks:</label></td>
-								<td><textarea class="form-control" rows="3"></textarea></td>
+								<td><textarea class="form-control" name="overall_remarks" rows="3"></textarea></td>
 							</tr>
 						</table>
 						<div class="modal-footer">

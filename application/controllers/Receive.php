@@ -491,6 +491,7 @@ class Receive extends CI_Controller {
         /*$jono=$this->input->post('jo_no');*/
         $sino=$this->input->post('si_no');
         $userid=$this->input->post('userid');
+        $overall_remarks=$this->input->post('overall_remarks');
 
         $year=date('Y-m');
         $year_series=date('Y');
@@ -530,7 +531,8 @@ class Receive extends CI_Controller {
            /*'jo_no'=> $jono,*/
            'po_no'=> $pono,
            'si_no'=> $sino,
-           'user_id'=> $userid
+           'user_id'=> $userid,
+           'overall_remarks'=>$overall_remarks,
         );
         if($this->super_model->insert_into("receive_head", $data)){
              redirect(base_url().'index.php/receive/add_receive_first/'.$receiveid);

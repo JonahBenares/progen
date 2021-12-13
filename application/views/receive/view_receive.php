@@ -67,8 +67,8 @@
 						<table width="100%">
 							<tr>
 								<td width="5%"></td>
-								<td width="13%">Overall Remarks:</td>
-								<td colspan="3"> sample</td>
+								<td width="13%"><p class="nomarg">Overall Remarks:</p></td>
+								<td colspan="3"><h5 class="nomarg"><?php echo $h->overall_remarks; ?></h5></td>
 							</tr>
 							<tr>
 								<td colspan="5"><br></td>
