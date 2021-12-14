@@ -431,13 +431,14 @@ class Request extends CI_Controller {
         if($pr!=''){
             $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(ri.received_qty) AS sumqty FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved = '1' AND rd.pr_no = '$pr' AND ri.item_id = '$item'");
            
+            $restockqty = $this->super_model->custom_query_single("resqty","SELECT SUM(rd.quantity) AS resqty FROM restock_details rd INNER JOIN restock_head rh ON rd.rhead_id = rh.rhead_id WHERE rh.saved = '1' AND rh.excess='0' AND rh.from_pr = '$pr' AND rd.item_id = '$item'");
 
             $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item'");
 
             $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
         }else{
             $recqty = $this->super_model->custom_query_single("sumqty","SELECT SUM(quantity) as sumqty FROM supplier_items WHERE item_id = '$item' AND catalog_no = 'begbal'");
-
+            $restockqty = $this->super_model->custom_query_single("resqty","SELECT SUM(rd.quantity) AS resqty FROM restock_details rd INNER JOIN restock_head rh ON rd.rhead_id = rh.rhead_id WHERE rh.saved = '1' AND rh.excess='0' AND rh.from_pr = '$pr' AND rd.item_id = '$item'");
             $issue_qty = $this->super_model->custom_query_single("issueqty","SELECT SUM(quantity) AS issueqty FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE pr_no= '$pr' AND item_id='$item' AND catalog_no = 'begbal'");
             $deliveredqty = $this->super_model->custom_query_single("deliveredqty","SELECT SUM(qty) AS deliveredqty FROM delivery_head ih INNER JOIN delivery_details id ON ih.delivery_id = id.delivery_id WHERE pr_no= '$pr' AND item_id='$item'");
         }
@@ -449,7 +450,7 @@ class Request extends CI_Controller {
                 }
         }*/
 
-        $bal=($recqty-$issue_qty-$deliveredqty);
+        $bal=($recqty+$restockqty)-$issue_qty-$deliveredqty;
         echo $bal;
     }
 
