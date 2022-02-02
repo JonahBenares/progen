@@ -83,7 +83,7 @@
 			<div class="modal-content modbod">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel" style="color:#000">Search</h4>
+					<h4 id="myModalLabel" style="color:#000">Search</h4>
 				</div>
 				<form method="POST" action = "<?php echo base_url(); ?>index.php/items/search_item" role="search">
 					<div class="modal-body">
@@ -105,11 +105,11 @@
 								<td class="td-sclass"><input class="form-control" ></td>
 							</tr>
 							<tr>
-								<td class="td-sclass"><label for="pn">Transaction Type.:</label></td>
+								<td class="td-sclass"><label for="pn">Transaction Type:</label></td>
 								<td class="td-sclass"><input class="form-control" name="pn"></td>
 							</tr>
 							<tr>
-								<td class="td-sclass"><label for="pn">Transaction Type.:</label></td>
+								<td class="td-sclass"><label for="pn">Transaction No.:</label></td>
 								<td class="td-sclass"><input class="form-control" name="pn"></td>
 							</tr>
 							<tr>
