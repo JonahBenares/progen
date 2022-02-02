@@ -1859,175 +1859,88 @@ class Reports extends CI_Controller {
         $sql2="";
         $sql3="";
         $sql4="";
+        if($id!='null'){
+            $sql.= " supplier_items.item_id = '$id' AND";
+            $sql1.= " ri.item_id = '$id' AND";
+            $sql2.= " id.item_id = '$id' AND";
+            $sql3.= " rd.item_id = '$id' AND";
+            $sql4.= " dd.item_id = '$id' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
+        }
 
-        if($id!='null' && $sup=='null' && $cat=='null' && $nkk=='null' && $semt=='null' && $brand=='null'){
-            if($id!='null'){
-                $sql.= " supplier_items.item_id = '$id' AND";
-                $sql1.= " ri.item_id = '$id' AND";
-                $sql2.= " id.item_id = '$id' AND";
-                $sql3.= " rd.item_id = '$id' AND";
-                $sql4.= " dd.item_id = '$id' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
+        if($sup!='null'){
+            $sql.= " supplier_items.supplier_id = '$sup' AND";
+            $sql1.= " ri.supplier_id = '$sup' AND";
+            $sql2.= " id.supplier_id = '$sup' AND";
+            $sql3.= " rd.supplier_id = '$sup' AND";
+            $sql4.= " dd.supplier_id = '$sup' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
+        }
 
-            if($sup!='null'){
-                $sql.= " supplier_items.supplier_id = '$sup' AND";
-                $sql1.= " ri.supplier_id = '$sup' AND";
-                $sql2.= " id.supplier_id = '$sup' AND";
-                $sql3.= " rd.supplier_id = '$sup' AND";
-                $sql4.= " dd.supplier_id = '$sup' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
+        if($cat!='null'){
+            $sql.= " supplier_items.catalog_no = '$cat' AND";
+            $sql1.= " ri.catalog_no = '$cat' AND";
+            $sql2.= " id.catalog_no = '$cat' AND";
+            $sql3.= " rd.catalog_no = '$cat' AND";
+            $sql4.= " dd.catalog_no = '$cat' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
+        }
 
-            if($cat!='null'){
-                $sql.= " supplier_items.catalog_no = '$cat' AND";
-                $sql1.= " ri.catalog_no = '$cat' AND";
-                $sql2.= " id.catalog_no = '$cat' AND";
-                $sql3.= " rd.catalog_no = '$cat' AND";
-                $sql4.= " dd.catalog_no = '$cat' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
+        if($nkk!='null'){
+            $sql.= " supplier_items.nkk_no = '$nkk' AND";
+            $sql1.= " ri.nkk_no = '$nkk' AND";
+            $sql2.= " id.nkk_no = '$nkk' AND";
+            $sql3.= " rd.nkk_no = '$nkk' AND";
+            $sql4.= " dd.nkk_no = '$nkk' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
+        }
 
-            if($nkk!='null'){
-                $sql.= " supplier_items.nkk_no = '$nkk' AND";
-                $sql1.= " ri.nkk_no = '$nkk' AND";
-                $sql2.= " id.nkk_no = '$nkk' AND";
-                $sql3.= " rd.nkk_no = '$nkk' AND";
-                $sql4.= " dd.nkk_no = '$nkk' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
+        if($semt!='null'){
+            $sql.= " supplier_items.semt_no = '$semt' AND";
+            $sql1.= " ri.semt_no = '$semt' AND";
+            $sql2.= " id.semt_no = '$semt' AND";
+            $sql3.= " rd.semt_no = '$semt' AND";
+            $sql4.= " dd.semt_no = '$semt' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
+        }
 
-            if($semt!='null'){
-                $sql.= " supplier_items.semt_no = '$semt' AND";
-                $sql1.= " ri.semt_no = '$semt' AND";
-                $sql2.= " id.semt_no = '$semt' AND";
-                $sql3.= " rd.semt_no = '$semt' AND";
-                $sql4.= " dd.semt_no = '$semt' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
-
-            if($brand!='null'){
-                $sql.= " supplier_items.brand_id = '$brand' AND";
-                $sql1.= " ri.brand_id = '$brand' AND";
-                $sql2.= " id.brand_id = '$brand' AND";
-                $sql3.= " rd.brand_id = '$brand' AND";
-                $sql4.= " dd.brand_id = '$brand' AND";
-            }else {
-                $sql.= "";
-                $sql1.= "";
-                $sql2.= "";
-                $sql3.= "";
-                $sql4.= "";
-            }
-        }else{
-            if($id!='null'){
-                $sql.= " supplier_items.item_id = '$id' AND";
-                $sql1.= " ri.item_id = '$id' AND";
-                $sql2.= " id.item_id = '$id' AND";
-                $sql3.= " rd.item_id = '$id' AND";
-                $sql4.= " dd.item_id = '$id' AND";
-            }else {
-                $sql.= " supplier_items.item_id = '0' AND";
-                $sql1.= " ri.item_id = '0' AND";
-                $sql2.= " id.item_id = '0' AND";
-                $sql3.= " rd.item_id = '0' AND";
-                $sql4.= " dd.item_id = '0' AND";
-            }
-
-            if($sup!='null'){
-                $sql.= " supplier_items.supplier_id = '$sup' AND";
-                $sql1.= " ri.supplier_id = '$sup' AND";
-                $sql2.= " id.supplier_id = '$sup' AND";
-                $sql3.= " rd.supplier_id = '$sup' AND";
-                $sql4.= " dd.supplier_id = '$sup' AND";
-            }else {
-                $sql.= " supplier_items.supplier_id = '0' AND";
-                $sql1.= " ri.supplier_id = '0' AND";
-                $sql2.= " id.supplier_id = '0' AND";
-                $sql3.= " rd.supplier_id = '0' AND";
-                $sql4.= " dd.supplier_id = '0' AND";
-            }
-
-            if($cat!='null'){
-                $sql.= " supplier_items.catalog_no = '$cat' AND";
-                $sql1.= " ri.catalog_no = '$cat' AND";
-                $sql2.= " id.catalog_no = '$cat' AND";
-                $sql3.= " rd.catalog_no = '$cat' AND";
-                $sql4.= " dd.catalog_no = '$cat' AND";
-            }else {
-                $sql.= " supplier_items.catalog_no = '' AND";
-                $sql1.= " ri.catalog_no = '' AND";
-                $sql2.= " id.catalog_no = '' AND";
-                $sql3.= " rd.catalog_no = '' AND";
-                $sql4.= " dd.catalog_no = '' AND";
-            }
-
-            if($nkk!='null'){
-                $sql.= " supplier_items.nkk_no = '$nkk' AND";
-                $sql1.= " ri.nkk_no = '$nkk' AND";
-                $sql2.= " id.nkk_no = '$nkk' AND";
-                $sql3.= " rd.nkk_no = '$nkk' AND";
-                $sql4.= " dd.nkk_no = '$nkk' AND";
-            }else {
-                $sql.= " supplier_items.nkk_no = '' AND";
-                $sql1.= " ri.nkk_no = '' AND";
-                $sql2.= " id.nkk_no = '' AND";
-                $sql3.= " rd.nkk_no = '' AND";
-                $sql4.= " dd.nkk_no = '' AND";
-            }
-
-            if($semt!='null'){
-                $sql.= " supplier_items.semt_no = '$semt' AND";
-                $sql1.= " ri.semt_no = '$semt' AND";
-                $sql2.= " id.semt_no = '$semt' AND";
-                $sql3.= " rd.semt_no = '$semt' AND";
-                $sql4.= " dd.semt_no = '$semt' AND";
-            }else {
-                $sql.= " supplier_items.semt_no = '' AND";
-                $sql1.= " ri.semt_no = '' AND";
-                $sql2.= " id.semt_no = '' AND";
-                $sql3.= " rd.semt_no = '' AND";
-                $sql4.= " dd.semt_no = '' AND";
-            }
-
-            if($brand!='null'){
-                $sql.= " supplier_items.brand_id = '$brand' AND";
-                $sql1.= " ri.brand_id = '$brand' AND";
-                $sql2.= " id.brand_id = '$brand' AND";
-                $sql3.= " rd.brand_id = '$brand' AND";
-                $sql4.= " dd.brand_id = '$brand' AND";
-            }else {
-                $sql.= " supplier_items.brand_id = '0' AND";
-                $sql1.= " ri.brand_id = '0' AND";
-                $sql2.= " id.brand_id = '0' AND";
-                $sql3.= " rd.brand_id = '0' AND";
-                $sql4.= " dd.brand_id = '0' AND";
-            }
+        if($brand!='null'){
+            $sql.= " supplier_items.brand_id = '$brand' AND";
+            $sql1.= " ri.brand_id = '$brand' AND";
+            $sql2.= " id.brand_id = '$brand' AND";
+            $sql3.= " rd.brand_id = '$brand' AND";
+            $sql4.= " dd.brand_id = '$brand' AND";
+        }else {
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
 
