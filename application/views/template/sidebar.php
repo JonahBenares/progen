@@ -912,9 +912,17 @@
 							<span class="fa fa-arrow-right">&nbsp;</span> Borrowing Report
 						</a>
 					</li>
+					<li>
+						<a class="" href="<?php echo base_url(); ?>index.php/reports/whstock_tracking">
+							<span class="fa fa-arrow-right">&nbsp;</span> WH Stock Tracking
+						</a>
+					</li>
 				</ul>
 			</li>		
 		</ul>
+		<br>
+		<br>
+		<br>
 	</div>
 	<!-- --SIDE NAVBAR--- -->
 <script type="text/javascript">
