@@ -62,9 +62,20 @@
 								<td> <h5 class="nomarg"><?php echo $h->si_no; ?></h5></td>								
 								<td><p class="nomarg">PCF:</p></td>
 								<td> <h5 class="nomarg"><?php if($h->pcf == '1'){ echo "Yes"; }else { echo ""; } ?></h5></td>
-							</tr>
-							<?php } ?>
+							</tr>							
 						</table>
+						<table width="100%">
+							<tr>
+								<td width="5%"></td>
+								<td width="13%"><p class="nomarg">Overall Remarks:</p></td>
+								<td colspan="3"><h5 class="nomarg"><?php echo $h->overall_remarks; ?></h5></td>
+							</tr>
+							<tr>
+								<td colspan="5"><br></td>
+							</tr>
+						</table>
+						<?php } ?>
+						
 						<div class="col-lg-12">
 							<?php
 							 if(!empty($details)){ ?>
@@ -209,7 +220,7 @@
 											<td><?php echo $it['remarks']; ?></td>
 											<?php if($saved==0){ ?> 
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
-											<?php } else if($_SESSION['user_id']==5 && $saved==1) { ?>
+											<?php } else if($_SESSION['user_id']==5 OR $_SESSION['user_id']==13 && $saved==1) { ?>
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
 											<?php } else { ?>
 											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info " style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>

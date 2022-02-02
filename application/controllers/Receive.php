@@ -357,7 +357,7 @@ class Receive extends CI_Controller {
         $data['receiveid']=$id;
         $data['rdid']=$rdid;
         $data['supplier'] = $this->super_model->select_all_order_by("supplier", "supplier_name", "ASC");
-        $data['brand'] = $this->super_model->select_custom_where("brand", "brand_name!='' ORDER BY brand_name ASC");
+        $data['brand'] = $this->super_model->select_custom_where("brand", "brand_name!='' GROUP BY brand_name ORDER BY brand_name ASC");
         $data['items'] = $this->super_model->select_all_order_by("items", "item_name", "ASC");
         $data['pr_list'] = $this->super_model->custom_query("SELECT pr_no, department_id, enduse_id, purpose_id FROM receive_details rd INNER JOIN receive_head rh ON rd.receive_id = rh.receive_id WHERE rh.saved='1' AND rd.closed='0' GROUP BY rd.pr_no");
         foreach($this->super_model->select_row_where("receive_details", "rd_id", $rdid) AS $d){
@@ -468,6 +468,7 @@ class Receive extends CI_Controller {
             'po_no'=>$this->input->post('po_no'),
             'si_no'=>$this->input->post('si_no'),
             'pcf'=>$this->input->post('pcf'),
+            'overall_remarks'=>$this->input->post('overall_remarks'),
         );
         $id = $this->input->post('id');
         $receiveid = $this->super_model->select_column_where("receive_head", "receive_id", "receive_id", $id);
@@ -491,6 +492,7 @@ class Receive extends CI_Controller {
         /*$jono=$this->input->post('jo_no');*/
         $sino=$this->input->post('si_no');
         $userid=$this->input->post('userid');
+        $overall_remarks=$this->input->post('overall_remarks');
 
         $year=date('Y-m');
         $year_series=date('Y');
@@ -530,7 +532,8 @@ class Receive extends CI_Controller {
            /*'jo_no'=> $jono,*/
            'po_no'=> $pono,
            'si_no'=> $sino,
-           'user_id'=> $userid
+           'user_id'=> $userid,
+           'overall_remarks'=>$overall_remarks,
         );
         if($this->super_model->insert_into("receive_head", $data)){
              redirect(base_url().'index.php/receive/add_receive_first/'.$receiveid);
@@ -832,7 +835,7 @@ class Receive extends CI_Controller {
         $pono=$this->super_model->select_column_where("receive_head", "po_no", "receive_id", $this->input->post('receiveid'));
         for($a=0;$a<$counter;$a++){
 
-            if(empty($this->input->post('brand_id['.$a.']'))){
+            if(!empty($this->input->post('brand['.$a.']'))){
 
                $maxid=$this->super_model->get_max("brand", "brand_id");
                $bid=$maxid+1;

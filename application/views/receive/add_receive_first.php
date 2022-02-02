@@ -62,6 +62,13 @@
 								<td><p class="nomarg">PCF:</p></td>
 								<td> <h5 class="nomarg"><?php if($li->pcf == '1'){ echo "Yes"; }else { echo ""; } ?></h5></td>
 							</tr>
+						</table>
+						<table width="100%">
+							<tr>
+								<td width="5%"></td>
+								<td width="13%"><p class="nomarg">Overall Remarks:</p></td>
+								<td colspan="3"><h5 class="nomarg"><?php echo $li->overall_remarks; ?></h5></td>
+							</tr>
 							<?php if($li->saved==0){ ?>
 							<tr>								
 								<td></td>
@@ -73,6 +80,9 @@
 							</tr>
 							<?php }
 							 } ?>
+							<tr>
+								<td colspan="5"><br></td>
+							</tr>
 						</table>
 						<div class="col-lg-12">
 							<?php

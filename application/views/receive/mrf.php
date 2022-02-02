@@ -175,6 +175,7 @@
                     $received= $hd->received_by;
                     $acknowledged= $hd->acknowledged_by;
                     $noted= $hd->noted_by;
+                    $overall_remarks= $hd->overall_remarks;
                }
             ?>
             <table width="100%">
@@ -283,7 +284,7 @@
                                     ?>
                                     <?php if($rem['remarks'] == ''){ ?>   
                                     <?php } else { ?>
-                                        <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
+                                        <?php if($overall_remarks!=''){ ?><b>Overall Remarks</b> - <?php echo $overall_remarks; ?>, <?php }  ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php }?>
                                     <?php  
                                         break;

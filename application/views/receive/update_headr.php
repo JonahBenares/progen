@@ -6,28 +6,32 @@
 				<table>
 				<?php foreach($head AS $h){ ?>
 					<tr>
-						<td width="10%"><label>Date:</label></td>
-						<td width="90%"><input type = "date" disabled="" name = "receive_date" class = "form-control" value ="<?php echo $h->receive_date; ?>"><br></td>
+						<td width="15%"><label>Date:</label></td>
+						<td width="85%"><input type = "date" disabled="" name = "receive_date" class = "form-control" value ="<?php echo $h->receive_date; ?>"><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>DR#:</label></td>
-						<td width="90%"><input type = "text" name = "dr_no" class = "form-control" value = "<?php echo $h->dr_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>DR#:</label></td>
+						<td width="85%"><input type = "text" name = "dr_no" class = "form-control" value = "<?php echo $h->dr_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>PO#:</label></td>
-						<td width="90%"><input type = "text" name = "po_no" class = "form-control" value = "<?php echo $h->po_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>PO#:</label></td>
+						<td width="85%"><input type = "text" name = "po_no" class = "form-control" value = "<?php echo $h->po_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
-						<td width="10%"><label>SI#/OR#:</label></td>
-						<td width="90%"><input type = "text" name = "si_no" class = "form-control" value = "<?php echo $h->si_no;?>" autocomplete='off'><br></td>
+						<td width="15%"><label>SI#/OR#:</label></td>
+						<td width="85%"><input type = "text" name = "si_no" class = "form-control" value = "<?php echo $h->si_no;?>" autocomplete='off'><br></td>
 					</tr>
 					<tr>
 						<td><label>PCF:</label></td>
 						<?php if($h->pcf == '0'){ ?>
-						<td><input type = "checkbox" name = "pcf" value = "1" class = "form-control " style="width:30px"></td>
+						<td><input type = "checkbox" name = "pcf" value = "1" class = "form-control " style="width:30px"><br></td>
 						<?php } else{ ?>
-						<td><input style="width:30px" type="checkbox" name="pcf" value = "1" <?php echo ((strpos($h->pcf, "1") !== false) ? ' checked' : '');?> class="form-control" ></td>
+						<td><input style="width:30px" type="checkbox" name="pcf" value = "1" <?php echo ((strpos($h->pcf, "1") !== false) ? ' checked' : '');?> class="form-control" ><br></td>
 						<?php } ?>
+					</tr>
+					<tr>
+						<td style="vertical-align: text-top;"><label>Overall Remarks:</label></td>
+						<td><textarea class="form-control" name="overall_remarks" rows="3"><?php echo $h->overall_remarks;?></textarea></td>
 					</tr>
 				<?php } ?>
 				</table>

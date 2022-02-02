@@ -91,24 +91,28 @@
 					<form method="POST" action = "<?php echo base_url();?>index.php/Receive/insert_receive_head">
 						<table width="100%">
 							<tr>
-								<td width="10%"><label>Date:</label></td>
-								<td width="90%"><input type = "date" name = "receive_date" class = "form-control" id="e"><br></td>
+								<td width="15%"><label>Date:</label></td>
+								<td width="85%"><input type = "date" name = "receive_date" class = "form-control" id="e"><br></td>
 							</tr>
 							<tr>
-								<td width="10%"><label>DR#:</label></td>
-								<td width="90%"><input type = "text" name = "dr_no" class = "form-control" autocomplete='off'><br></td>
+								<td><label>DR#:</label></td>
+								<td><input type = "text" name = "dr_no" class = "form-control" autocomplete='off'><br></td>
 							</tr>
 							<tr>
-								<td width="10%"><label>PO#:</label></td>
-								<td width="90%"><input type = "text" name = "po_no" class = "form-control" autocomplete='off'><br></td>
+								<td><label>PO#:</label></td>
+								<td><input type = "text" name = "po_no" class = "form-control" autocomplete='off'><br></td>
 							</tr>
 							<tr>
-								<td width="10%"><label>SI#/OR#:</label></td>
-								<td width="90%"><input type = "text" name = "si_no" class = "form-control" autocomplete='off'><br></td>
+								<td><label>SI#/OR#:</label></td>
+								<td><input type = "text" name = "si_no" class = "form-control" autocomplete='off'><br></td>
 							</tr>
 							<tr>
 								<td><label>PCF:</label></td>
-								<td><input type = "checkbox" name = "pcf" value = "1" class = "form-control " style="width:30px"></td>
+								<td><input type = "checkbox" name = "pcf" value = "1" class = "form-control " style="width:30px"><br></td>
+							</tr>
+							<tr>
+								<td style="vertical-align: text-top;"><label>Overall Remarks:</label></td>
+								<td><textarea class="form-control" name="overall_remarks" rows="3"></textarea></td>
 							</tr>
 						</table>
 						<div class="modal-footer">
@@ -763,13 +767,13 @@
 							<span class="fa fa-truck">&nbsp;</span> Sales 
 						</a>
 						<ul class="children collapse" id="sub-deliver">
-							
+							<?php if($_SESSION['user_id']==5 || $_SESSION['user_id']==11 || $_SESSION['user_id']==13){ ?>
 							<li>
 								<a style="padding-left:60px"  data-toggle="modal" data-target="#deliverModal" >
 									<span class="fa fa-arrow-right">&nbsp;</span> Add New
 								</a>
 							</li>
-							
+							<?php } ?>
 							<li>
 								<a style="padding-left:60px" class="" href="<?php echo base_url(); ?>index.php/delivery/delivery_list">
 									<span class="fa fa-arrow-right">&nbsp;</span> View List
@@ -908,9 +912,17 @@
 							<span class="fa fa-arrow-right">&nbsp;</span> Borrowing Report
 						</a>
 					</li>
+					<li>
+						<a class="" href="<?php echo base_url(); ?>index.php/reports/whstock_tracking">
+							<span class="fa fa-arrow-right">&nbsp;</span> WH Stock Tracking
+						</a>
+					</li>
 				</ul>
 			</li>		
 		</ul>
+		<br>
+		<br>
+		<br>
 	</div>
 	<!-- --SIDE NAVBAR--- -->
 <script type="text/javascript">

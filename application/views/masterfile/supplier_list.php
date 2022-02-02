@@ -25,6 +25,9 @@
 								<span class="fa fa-plus"></span>
 							</a>
 							<?php } ?>
+							<a class=" clickable panel-toggle panel-button-tab-right shadow"  data-toggle="modal" data-target="#viewSupplier">
+								<span class="fa fa-lock"></span>
+							</a>
 						</div>
 					</div>
 					<div class="panel-body">
@@ -43,16 +46,21 @@
 								</thead>
 								<tbody>
 									<?php 
-
 										foreach($list AS $li) {
 									
 									?>
 									<tr>
 										<td><?php echo $li->supplier_code; ?></td>
 										<td><?php echo $li->supplier_name; ?></td>
-										<td><?php echo $li->address; ?></td>
-										<td><?php echo $li->contact_number; ?></td>
-										<td><?php echo $li->terms; ?></td>
+										<?php if(!empty($password)){?>
+										<td><span class="restrict"><?php echo $li->address; ?></span></td>
+										<td><span class="restrict"><?php echo $li->contact_number; ?></span></td>
+										<td><span class="restrict"><?php echo $li->terms; ?></span></td>
+										<?php } else { ?>
+										<td><span style="color:red; font-size: 11px;">Unavailable Content</span></td>
+										<td><span style="color:red; font-size: 11px;">Unavailable Content</span></td>
+										<td><span style="color:red; font-size: 11px;">Unavailable Content</span></td>
+										<?php } ?>
 										<?php if($li->active == '1') { ?>
 										<td><?php echo '<span class = "label label-success label-xs">Active</span>'; ?></td>
 										<?php } else { ?>
@@ -106,6 +114,29 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button type="submit" class="btn btn-warning">Save changes</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="viewSupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header modal-headback">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">View Supplier</h4>
+					</div>
+					<div class="modal-body">
+						<form method="POST" action = "<?php echo base_url();?>index.php/masterfile/view_supplier">
+							<input type = "hidden" name = "username" id="username" class = "form-control" value="<?php echo $_SESSION['username'];?>">
+							<label>Password</label>
+							<input type = "password" name = "password" id="password" class = "form-control">
+							<div class="modal-footer">
+								<input type = "hidden" name = "baseurl" id="baseurl" class = "form-control" value="<?php echo base_url();?>">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-warning" id="save">Submit</button>
 							</div>
 						</form>
 					</div>
