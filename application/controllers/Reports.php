@@ -5757,10 +5757,257 @@ class Reports extends CI_Controller {
         $this->load->view('template/footer');
     }
 
+    public function generateWstock(){
+           $id= $this->input->post('item_id'); 
+           ?>
+           <script>
+            window.location.href ='<?php echo base_url(); ?>index.php/reports/whstock_tracking/<?php echo $id; ?>'</script> <?php
+    }
+
     public function whstock_tracking(){
+        $item_id=$this->uri->segment(3);
+        $data['itemdesc']=$this->super_model->select_column_where("items", "item_name", "item_id", $item_id);
         $this->load->view('template/header');
         $this->load->view('template/sidebar',$this->dropdown);
-        $this->load->view('reports/whstock_tracking');
+        $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
+        $data['stockcard']=array();
+        $data['balance']=array();
+        foreach($this->super_model->custom_query("SELECT * FROM supplier_items WHERE item_id = '$item_id' AND catalog_no = 'begbal' ") AS $begbal){
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $begbal->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $begbal->brand_id);
+            $total_cost=$begbal->item_cost;
+            $data['stockcard'][] = array(
+                'supplier'=>$supplier,
+                'catalog_no'=>'begbal',
+                'brand'=>$brand,
+                'nkk_no'=>$begbal->nkk_no,
+                'semt_no'=>$begbal->semt_no,
+                'pr_no'=>'',
+                'po_no'=>'',
+                'unit_cost'=>$begbal->item_cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Beginning Balance',
+                'quantity'=>$begbal->quantity,
+                'series'=>'1',
+                'date'=>'',
+                'create_date'=>'',
+                'transaction_no'=>''
+            );
+
+            $data['balance'][] = array(
+                'series'=>'1',
+                'method'=>'Beginning Balance',
+                'quantity'=>$begbal->quantity,
+                'date'=>'',
+                 'create_date'=>''
+
+            );
+        }
+
+        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rh.receive_id = rd.receive_id WHERE ri.item_id = '$item_id' AND rd.pr_no = 'begbal' AND saved = '1'") AS $receive){
+            $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
+            $total_cost=$receive->item_cost + $receive->shipping_fee;
+            $data['stockcard'][] = array(
+                'ri_id'=>$receive->ri_id,
+                'supplier'=>$supplier,
+                'catalog_no'=>$receive->catalog_no,
+                'nkk_no'=>$receive->nkk_no,
+                'semt_no'=>$receive->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$pr_no,
+                'po_no'=>$receive->po_no,
+                'unit_cost'=>$receive->item_cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Beginning Balance',
+                'series'=>'2',
+                'quantity'=>$receive->received_qty,
+                'date'=>$receive->receive_date,
+                'create_date'=>$receive->create_date,
+                'transaction_no'=>$receive->mrecf_no
+            );
+             $data['balance'][] = array(
+                'series'=>'2',
+                'method'=>'Beginning Balance',
+                'quantity'=>$receive->received_qty,
+                'date'=>$receive->receive_date,
+                'create_date'=>$receive->create_date
+            );
+        }
+
+        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE ri.item_id = '$item_id' AND saved = '1'") AS $receive){
+            $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
+            $total_cost=$receive->item_cost + $receive->shipping_fee;
+            $data['stockcard'][] = array(
+                'ri_id'=>$receive->ri_id,
+                'supplier'=>$supplier,
+                'catalog_no'=>$receive->catalog_no,
+                'nkk_no'=>$receive->nkk_no,
+                'semt_no'=>$receive->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$pr_no,
+                'po_no'=>$receive->po_no,
+                'unit_cost'=>$receive->item_cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Receive',
+                'series'=>'3',
+                'quantity'=>$receive->received_qty,
+                'date'=>$receive->receive_date,
+                'create_date'=>$receive->create_date,
+                'transaction_no'=>$receive->mrecf_no
+            );
+             $data['balance'][] = array(
+                'series'=>'3',
+                'method'=>'Receive',
+                'quantity'=>$receive->received_qty,
+                'date'=>$receive->receive_date,
+                'create_date'=>$receive->create_date
+            );
+        }
+
+        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date, ih.mif_no FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE id.item_id = '$item_id' AND saved = '1'") AS $issue){
+            $cost = $this->super_model->select_column_where("request_items", "unit_cost", "rq_id", $issue->rq_id);
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $issue->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $issue->brand_id);
+            $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$issue->item_id' AND pr_no='$issue->pr_no'","rd_id","DESC","1");
+            $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$issue->item_id' AND pr_no='$issue->pr_no'","rd_id","DESC","1");
+            $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
+            $total_cost=$cost + $shipping_fee;
+            $data['stockcard'][] = array(
+                'supplier'=>$supplier,
+                'catalog_no'=>$issue->catalog_no,
+                'nkk_no'=>$issue->nkk_no,
+                'semt_no'=>$issue->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$issue->pr_no,
+                'po_no'=>$po_no,
+                'unit_cost'=>$cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Issuance',
+                'series'=>'4',
+                'quantity'=>$issue->quantity,
+                'date'=>$issue->issue_date,
+                'create_date'=>$issue->create_date,
+                'transaction_no'=>$issue->mif_no
+            );
+
+            $data['balance'][] = array(
+                'series'=>'4',
+                'method'=>'Issuance',
+                'quantity'=>$issue->quantity,
+                'date'=>$issue->issue_date,
+                'create_date'=>$issue->create_date
+            );
+
+        }
+
+        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND excess='0'") AS $restock){
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $restock->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $restock->brand_id);
+            $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$restock->item_id' AND pr_no='$restock->from_pr'","rd_id","DESC","1");
+            $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$restock->item_id' AND pr_no='$restock->from_pr'","rd_id","DESC","1");
+            $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
+            $total_cost= $restock->item_cost + $shipping_fee;
+            $data['stockcard'][] = array(
+                'supplier'=>$supplier,
+                'catalog_no'=>$restock->catalog_no,
+                'nkk_no'=>$restock->nkk_no,
+                'semt_no'=>$restock->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$restock->from_pr,
+                'po_no'=>$po_no,
+                'unit_cost'=>$restock->item_cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Restock',
+                'series'=>'5',
+                'quantity'=>$restock->quantity,
+                'date'=>$restock->restock_date,
+                'create_date'=>$restock->restock_date,
+                'transaction_no'=>$restock->mrwf_no
+            );
+            $data['balance'][] = array(
+                'series'=>'5',
+                'method'=>'Restock',
+                'quantity'=>$restock->quantity,
+                'date'=>$restock->restock_date,
+                'create_date'=>$restock->restock_date
+            );
+
+        }
+
+        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND excess='1'") AS $excess){
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $excess->supplier_id);
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $excess->brand_id);
+            $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$excess->item_id' AND pr_no='$excess->from_pr'","rd_id","DESC","1");
+            $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$excess->item_id' AND pr_no='$excess->from_pr'","rd_id","DESC","1");
+            $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
+            $total_cost= $excess->item_cost + $shipping_fee;
+            $data['stockcard'][] = array(
+                'supplier'=>$supplier,
+                'catalog_no'=>$excess->catalog_no,
+                'nkk_no'=>$excess->nkk_no,
+                'semt_no'=>$excess->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$excess->from_pr,
+                'po_no'=>$po_no,
+                'unit_cost'=>$excess->item_cost,
+                'total_cost'=>$total_cost,
+                'method'=>'Excess',
+                'series'=>'6',
+                'quantity'=>$excess->quantity,
+                'date'=>$excess->restock_date,
+                'create_date'=>$excess->restock_date,
+                'transaction_no'=>$excess->mrwf_no
+            );
+            $data['balance'][] = array(
+                'series'=>'6',
+                'method'=>'Excess',
+                'quantity'=>$excess->quantity,
+                'date'=>$excess->restock_date,
+                'create_date'=>$excess->restock_date
+            );
+
+        }
+
+        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id,dh.dr_no FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE dd.item_id = '$item_id' AND saved = '1' GROUP BY created_date") AS $del){
+
+            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $del->brand_id);
+            $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
+            $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
+            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $del->supplier_id);
+            $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id);
+            $total_cost= $del->selling_price + $shipping_fee;
+            $data['stockcard'][] = array(
+                'supplier'=>$supplier,
+                'catalog_no'=>$del->catalog_no,
+                'nkk_no'=>$del->nkk_no,
+                'semt_no'=>$del->semt_no,
+                'brand'=>$brand,
+                'pr_no'=>$del->pr_no,
+                'po_no'=>$po_no,
+                'unit_cost'=>$del->selling_price,
+                'total_cost'=>$total_cost,
+                'method'=>'Delivered',
+                'series'=>'7',
+                'quantity'=>$del->qty,
+                'date'=>$del->date,
+                'create_date'=>$del->created_date,
+                'transaction_no'=>$del->dr_no
+            );
+
+            $data['balance'][] = array(
+                'series'=>'7',
+                'method'=>'Delivered',
+                'quantity'=>$del->qty,
+                'date'=>$del->date,
+                'create_date'=>$del->created_date
+            );
+
+        }
+        $this->load->view('reports/whstock_tracking',$data);
         $this->load->view('template/footer');
     }
 
