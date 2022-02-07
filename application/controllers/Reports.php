@@ -1366,7 +1366,7 @@ class Reports extends CI_Controller {
         $data['items'] = $this->super_model->select_column_where("items", "item_name", "item_id", $item);
         $sql="";
         if($from!='null' && $to!='null'){
-           $sql.= " rh.restock_date BETWEEN '$from' AND '$to' AND";
+           $sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";
         }
 
         if($cat!='null'){
@@ -1459,7 +1459,7 @@ class Reports extends CI_Controller {
         $data['s'] = $this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);
         $sql="";
         if($from!='null' && $to!='null'){
-           $sql.= " rh.restock_date BETWEEN '$from' AND '$to' AND";
+           $sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";
         }
 
         if($cat!='null'){
@@ -5806,38 +5806,6 @@ class Reports extends CI_Controller {
             );
         }
 
-        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rh.receive_id = rd.receive_id WHERE ri.item_id = '$item_id' AND rd.pr_no = 'begbal' AND saved = '1'") AS $receive){
-            $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
-            $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
-            $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
-            $total_cost=$receive->item_cost + $receive->shipping_fee;
-            $data['stockcard'][] = array(
-                'ri_id'=>$receive->ri_id,
-                'supplier'=>$supplier,
-                'catalog_no'=>$receive->catalog_no,
-                'nkk_no'=>$receive->nkk_no,
-                'semt_no'=>$receive->semt_no,
-                'brand'=>$brand,
-                'pr_no'=>$pr_no,
-                'po_no'=>$receive->po_no,
-                'unit_cost'=>$receive->item_cost,
-                'total_cost'=>$total_cost,
-                'method'=>'Beginning Balance',
-                'series'=>'2',
-                'quantity'=>$receive->received_qty,
-                'date'=>$receive->receive_date,
-                'create_date'=>$receive->create_date,
-                'transaction_no'=>$receive->mrecf_no
-            );
-             $data['balance'][] = array(
-                'series'=>'2',
-                'method'=>'Beginning Balance',
-                'quantity'=>$receive->received_qty,
-                'date'=>$receive->receive_date,
-                'create_date'=>$receive->create_date
-            );
-        }
-
         foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE ri.item_id = '$item_id' AND saved = '1'") AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
@@ -5855,14 +5823,14 @@ class Reports extends CI_Controller {
                 'unit_cost'=>$receive->item_cost,
                 'total_cost'=>$total_cost,
                 'method'=>'Receive',
-                'series'=>'3',
+                'series'=>'2',
                 'quantity'=>$receive->received_qty,
                 'date'=>$receive->receive_date,
                 'create_date'=>$receive->create_date,
                 'transaction_no'=>$receive->mrecf_no
             );
              $data['balance'][] = array(
-                'series'=>'3',
+                'series'=>'2',
                 'method'=>'Receive',
                 'quantity'=>$receive->received_qty,
                 'date'=>$receive->receive_date,
@@ -5889,7 +5857,7 @@ class Reports extends CI_Controller {
                 'unit_cost'=>$cost,
                 'total_cost'=>$total_cost,
                 'method'=>'Issuance',
-                'series'=>'4',
+                'series'=>'3',
                 'quantity'=>$issue->quantity,
                 'date'=>$issue->issue_date,
                 'create_date'=>$issue->create_date,
@@ -5897,7 +5865,7 @@ class Reports extends CI_Controller {
             );
 
             $data['balance'][] = array(
-                'series'=>'4',
+                'series'=>'3',
                 'method'=>'Issuance',
                 'quantity'=>$issue->quantity,
                 'date'=>$issue->issue_date,
@@ -5924,14 +5892,14 @@ class Reports extends CI_Controller {
                 'unit_cost'=>$restock->item_cost,
                 'total_cost'=>$total_cost,
                 'method'=>'Restock',
-                'series'=>'5',
+                'series'=>'4',
                 'quantity'=>$restock->quantity,
                 'date'=>$restock->restock_date,
                 'create_date'=>$restock->restock_date,
                 'transaction_no'=>$restock->mrwf_no
             );
             $data['balance'][] = array(
-                'series'=>'5',
+                'series'=>'4',
                 'method'=>'Restock',
                 'quantity'=>$restock->quantity,
                 'date'=>$restock->restock_date,
@@ -5958,14 +5926,14 @@ class Reports extends CI_Controller {
                 'unit_cost'=>$excess->item_cost,
                 'total_cost'=>$total_cost,
                 'method'=>'Excess',
-                'series'=>'6',
+                'series'=>'5',
                 'quantity'=>$excess->quantity,
                 'date'=>$excess->restock_date,
                 'create_date'=>$excess->restock_date,
                 'transaction_no'=>$excess->mrwf_no
             );
             $data['balance'][] = array(
-                'series'=>'6',
+                'series'=>'5',
                 'method'=>'Excess',
                 'quantity'=>$excess->quantity,
                 'date'=>$excess->restock_date,
@@ -5993,7 +5961,7 @@ class Reports extends CI_Controller {
                 'unit_cost'=>$del->selling_price,
                 'total_cost'=>$total_cost,
                 'method'=>'Delivered',
-                'series'=>'7',
+                'series'=>'6',
                 'quantity'=>$del->qty,
                 'date'=>$del->date,
                 'create_date'=>$del->created_date,
@@ -6001,7 +5969,7 @@ class Reports extends CI_Controller {
             );
 
             $data['balance'][] = array(
-                'series'=>'7',
+                'series'=>'6',
                 'method'=>'Delivered',
                 'quantity'=>$del->qty,
                 'date'=>$del->date,

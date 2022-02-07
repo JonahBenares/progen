@@ -441,8 +441,8 @@ function chooseSupplier(){
     }); 
 }
 
-function choosePRSS(){
-    var loc= document.getElementById("baseurl").value;
+function choosePRSSR(){
+    var loc= document.getElementById("baseurl1").value;
     var redirect = loc+'index.php/restock/getPRinformation';
     var prno = document.getElementById("prres").value;
     document.getElementById('alert').innerHTML='<b>Please wait, Loading data...</b>'; 

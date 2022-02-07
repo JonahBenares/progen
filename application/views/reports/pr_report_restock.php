@@ -64,7 +64,7 @@
 								<table width="100%">
 									<tr>
 										<td width="10%"><p class="nomarg">Date:</p></td>
-										<td width="20%"><h5 class="nomarg"><?php echo $h['restock_date']; ?></h5></td>
+										<td width="20%"><h5 class="nomarg"><?php echo date("Y-m-d",strtotime($h['restock_date'])); ?></h5></td>
 										<td width="10%"><p class="nomarg">PR/JO #:</p></td>
 										<td > <h5 class="nomarg labelStyle"><?php echo $h['prno']; ?></h5></td>
 										<!--  <td width = "5%">

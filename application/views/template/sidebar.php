@@ -344,7 +344,7 @@
 								<td style ="padding-bottom: 5px;padding-left: 4px;">
 									<!-- <input type = "text" name = "prno" id="prres" class = "form-control" style="margin:4px" autocomplete="off">
 									<span id="suggestion-pr1"></span> -->
-									<select name="prno" id='prres' class="form-control select2" onchange="choosePRSS()" style="margin:4px;width:100%">
+									<select name="prno" id='prres' class="form-control select2" onchange="choosePRSSR()" style="margin:4px;width:100%">
 										<option value = "">-Choose PR-</option>
 										<?php foreach($pr_list AS $pr){ ?>
 										<option value = "<?php echo $pr->pr_no;?>"><?php echo $pr->pr_no;?></option>
