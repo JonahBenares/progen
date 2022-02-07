@@ -88,7 +88,7 @@
 								<tbody>
 									<?php foreach($restock AS $res){ ?>
 									<tr>
-										<td align="center"><?php echo $res['date'];?></td>
+										<td align="center"><?php echo date("Y-m-d",strtotime($res['date']));?></td>
 										<td align="center"><?php echo $res['prno'];?></td>
 										<td align="center"><?php echo $res['mrwf_no'];?></td>
 										<td align="center"><?php echo $res['department'];?></td>

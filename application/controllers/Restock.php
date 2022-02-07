@@ -605,7 +605,7 @@ class Restock extends CI_Controller {
     }
 
     public function insert_restock_head(){
-        $date=date('Y-m-d');
+        $date=date('Y-m-d H:i:s');
         $year=date('Y-m');
         $year_series=date('Y');
         $rows=$this->super_model->count_custom_where("restock_head","restock_date LIKE '$year_series%'");

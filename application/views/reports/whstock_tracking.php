@@ -6,16 +6,17 @@ if(!empty($stockcard)){
 	    $cdate[$key] = $row['create_date'];
 	}
 
+	array_multisort(array_map('strtotime',array_column($stockcard,'create_date')),SORT_ASC, $stockcard);
+	//array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
 
-	array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
-
-	foreach ($balance as $key => $row) {
-	    $dates[$key]  = $row['date'];
-	    $series[$key] = $row['series'];
-	    $cdates[$key] = $row['create_date'];
+	foreach ($balance as $key => $rows) {
+	    $dates[$key]  = $rows['date'];
+	    $series[$key] = $rows['series'];
+	    $cdates[$key] = $rows['create_date'];
 	}
 
-	array_multisort($dates, SORT_ASC, $cdates, SORT_ASC, $balance);
+	array_multisort(array_map('strtotime',array_column($balance,'create_date')),SORT_ASC, $balance);
+	//array_multisort($dates, SORT_ASC, $cdates, SORT_ASC, $balance);
 }
 
 if(!empty($stockcard)){
