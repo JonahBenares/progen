@@ -5804,7 +5804,7 @@ class Reports extends CI_Controller {
             );
         }
 
-        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE ri.item_id = '$item_id' AND saved = '1'") AS $receive){
+        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no, rh.mrecf_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rh.receive_id = rd.receive_id WHERE ri.item_id = '$item_id' AND rd.pr_no LIKE '%begbal%' AND saved = '1'") AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
@@ -5836,7 +5836,7 @@ class Reports extends CI_Controller {
             );
         }
 
-        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date, ih.mif_no FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE id.item_id = '$item_id' AND saved = '1'") AS $issue){
+        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date, ih.mif_no FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE id.item_id = '$item_id' AND ih.pr_no LIKE '%begbal%' AND saved = '1'") AS $issue){
             $cost = $this->super_model->select_column_where("request_items", "unit_cost", "rq_id", $issue->rq_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $issue->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $issue->brand_id);
@@ -5872,7 +5872,7 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND excess='0'") AS $restock){
+        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND rh.from_pr LIKE '%begbal%' AND excess='0'") AS $restock){
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $restock->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $restock->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$restock->item_id' AND pr_no='$restock->from_pr'","rd_id","DESC","1");
@@ -5906,7 +5906,7 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND excess='1'") AS $excess){
+        foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost, rh.mrwf_no FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE rd.item_id = '$item_id' AND saved = '1' AND rh.from_pr LIKE '%begbal%' AND excess='1'") AS $excess){
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $excess->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $excess->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$excess->item_id' AND pr_no='$excess->from_pr'","rd_id","DESC","1");
@@ -5940,7 +5940,7 @@ class Reports extends CI_Controller {
 
         }
 
-        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id,dh.dr_no FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE dd.item_id = '$item_id' AND saved = '1' GROUP BY created_date") AS $del){
+        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id,dh.dr_no FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE dd.item_id = '$item_id' AND saved = '1' AND dh.pr_no LIKE '%begbal%' GROUP BY created_date") AS $del){
 
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $del->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
