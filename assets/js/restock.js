@@ -294,7 +294,7 @@ function add_item(){
     var nkkno =$('#nkk_no').val();
     var semtno =$('#semt_no').val();
     var reason =$('#reason').val();
-    var remarks =$('#remarks').val();
+    var remarks =encodeURIComponent($('#remarks').val());
     var quantity =parseFloat($('#quantity').val());
     /*var inspected =$('#inspected').val();*/
   
