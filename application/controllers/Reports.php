@@ -2934,17 +2934,25 @@ class Reports extends CI_Controller {
 
                 $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$id' AND from_pr='$head->pr_no' AND excess = '0'","rhead_id");
                 $total=($head->qty+$restockqty)-$issueqty;
-
-                $restockqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$id' AND from_pr='$head->pr_no' AND excess='0'","rhead_id");
                 $excessqty= $this->super_model->select_sum_join("quantity","restock_details","restock_head", "item_id='$id' AND from_pr='$head->pr_no' AND excess='1'","rhead_id");
 
                 $in_balance = $head->qty - $issueqty;
 
-                if($issueqty==0){
+                if(($restockqty==0 && $excessqty==0) && $issueqty ==0){
+                    
+                    $final_balance = $head->qty;
+                } else if($issueqty!=0 && $restockqty==0 && $excessqty==0){
+                    $final_balance = $head->qty - $issueqty;
+                } else if($issueqty!=0 && $restockqty!=0 && $excessqty==0){
+                    $final_balance =  $in_balance + $restockqty; 
+                } else if(($issueqty!=0 && $restockqty!=0 && $excessqty!=0) || ($issueqty==0 && ($restockqty!=0 || $excessqty!=0)) || ($issueqty!=0 && $restockqty==0 && $excessqty!=0)){
+                    $final_balance =  $excessqty + $restockqty; 
+                }
+                /*if($issueqty==0){
                     $final_balance = $head->qty;
                 } else if($issueqty!=0){
                     $final_balance = $head->qty-$issueqty;
-                }
+                }*/
                 /*if(($restockqty==0 && $excessqty==0) && $issueqty ==0){
                     $final_balance = $head->qty;
                 } else if($issueqty!=0 && $restockqty==0 && $excessqty==0){
