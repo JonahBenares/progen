@@ -2990,6 +2990,8 @@ class Reports extends CI_Controller {
         $data['pr_disp']=$this->slash_unreplace(rawurldecode($pr));
         $data['pr']=$this->slash_replace(rawurldecode($pr));
         $pr=$this->slash_unreplace(rawurldecode($pr));
+        
+
         $data['pr_rep']=$this->super_model->custom_query("SELECT * FROM receive_details GROUP BY pr_no");
         foreach($this->super_model->custom_query("SELECT item_id, SUM(received_qty) AS qty, ri.ri_id,ri.po_no,rd.purpose_id,rd.enduse_id FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE rd.pr_no = '$pr' GROUP BY  ri.item_id") AS $head){
            // echo 
