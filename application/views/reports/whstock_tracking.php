@@ -76,8 +76,8 @@ if(!empty($stockcard)){
 											<input type="hidden" name="item_id" id="item_id">
 											<input type="hidden" name="baseurl" id="baseurl" value="<?php echo base_url(); ?>">
 										</td>
-										<td align="center"><div id='alrt' style="font-weight:bold"></div></td>
 										<td>
+											<div id='alrt' style="font-weight:bold"></div>
 											<input type="submit" name="search_inventory" id ="submit" value='Generate Report' class="btn btn-warning" >
 										</td>
 									</tr>
