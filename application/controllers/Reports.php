@@ -1989,8 +1989,6 @@ class Reports extends CI_Controller {
             );
         }
         //echo "SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'";
-     
-
         foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query1 AND saved = '1'") AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
@@ -2998,8 +2996,6 @@ class Reports extends CI_Controller {
         $data['pr_disp']=$this->slash_unreplace(rawurldecode($pr));
         $data['pr']=$this->slash_replace(rawurldecode($pr));
         $pr=$this->slash_unreplace(rawurldecode($pr));
-        
-
         $data['pr_rep']=$this->super_model->custom_query("SELECT * FROM receive_details GROUP BY pr_no");
         foreach($this->super_model->custom_query("SELECT item_id, SUM(received_qty) AS qty, ri.ri_id,ri.po_no,rd.purpose_id,rd.enduse_id FROM receive_items ri INNER JOIN receive_details rd ON ri.rd_id = rd.rd_id WHERE rd.pr_no = '$pr' GROUP BY  ri.item_id") AS $head){
            // echo 
