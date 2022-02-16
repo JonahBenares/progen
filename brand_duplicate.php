@@ -6,7 +6,7 @@ $con_brand=mysqli_connect("localhost","root","","db_progen");
 $brands =  $con_brand->query("SELECT distinct brand_name FROM brand");
 while($row = $brands->fetch_assoc()){
 
-	//$insert = $con_brand->query("INSERT INTO brand_2 (brand_name) VALUES ('$row[brand_name]')");
+	$insert = $con_brand->query("INSERT INTO brand_2 (brand_name) VALUES ('$row[brand_name]')");
 }
 
 $select_brand = $con_brand->query("SELECT * FROM brand_2");
