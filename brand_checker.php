@@ -33,7 +33,7 @@ $brands = substr($brands,0,-2);
         $get_items = $con_brand->query("SELECT brand_id, supplier_id, item_id, catalog_no, nkk_no, semt_no FROM supplier_items WHERE brand_id IN ($brands)");
   
         while($fetch_items = $get_items->fetch_assoc()){
-            //echo $fetch_items['item_id'] . " - " .$fetch_items['brand_id'] . " - ".$fetch_items['catalog_no'] . " - ". $fetch_items['supplier_id'] . "<br>";
+        
 
             $all_items[] = array(
                 'item_id'=>$fetch_items['item_id'],
