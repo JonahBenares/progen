@@ -410,7 +410,7 @@ function readPic1(input) {
     var frm = new FormData();
 
     var subcat =document.getElementById('subcat').value;
-        frm.append('subcat', subcat);
+    frm.append('subcat', subcat);
 
     var cat =document.getElementById('category_id').value;
     frm.append('cat', cat);
