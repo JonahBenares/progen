@@ -12,9 +12,9 @@ if($rows_serial != 0) {
 
         $update_receive =$con_serial->query("UPDATE receive_items SET serial_id='0' WHERE serial_id='$row[serial_id]'");
 
-        $update_restock =$con_serial->query("UPDATE restock_details SET serial_id='0' WHERE serial_id='$row[brand_id]'");
+        $update_restock =$con_serial->query("UPDATE restock_details SET serial_id='0' WHERE serial_id='$row[serial_id]'");
 
-
+        $delete = $con_serial->query("DELETE FROM serial_number WHERE serial_id='$row[serial_id]'");
     
 
     	}
