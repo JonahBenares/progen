@@ -57,9 +57,21 @@ $brands = substr($brands,0,-2);
 
         $fetch_sum = $get_sum->fetch_assoc();
 
-      /* echo $fetch_sum['item_id'] ." - " .$fetch_sum['catalog_no'] . " - ". $fetch_sum['supplier_id'] . " - " . $fetch_sum['qty'] . " - " . $fetch_sum['cost'] . "<br>";*/
+    /*    $old_siid = $fetch_sum['si_id'];
 
+        $check_rows = $con_brand->query("SELECT * FROM supplier_items_2");
+        $rows_s2 = $check_rows->num_rows;
+        if($rows_s2==0){
+            $new_siid = 1;
+        } else {
+          $latest = $con_brand->query("SELECT MAX(si_id) AS max FROM supplier_items_2");
+          $fetch_latest = $latest->fetch_assoc();
+          $new_siid = $fetch_latest['max']+1;
+
+        }*/
       $insert =  $con_brand->query("INSERT INTO supplier_items_2 (item_id, supplier_id, catalog_no, nkk_no, semt_no, brand_id, serial_id, item_cost, quantity) VALUES ('$fetch_sum[item_id]','$fetch_sum[supplier_id]','$fetch_sum[catalog_no]','$fetch_sum[nkk_no]','$fetch_sum[semt_no]','0','$fetch_sum[serial_id]','$fetch_sum[cost]','$fetch_sum[qty]')");
+
+         //$update_serial = $con_brand->query("UPDATE serial_number SET si_id = '$new_siid' WHERE si_id = '$old_siid'");
       
      }
 
@@ -70,9 +82,24 @@ $brands = substr($brands,0,-2);
 
   
         while($fetch_with_brand = $get_with_brand->fetch_assoc()){
+       /*  $old_siid1 = $fetch_with_brand['si_id'];
 
+          $check_rows1 = $con_brand->query("SELECT * FROM supplier_items_2");
+        $rows_s21 = $check_rows1->num_rows;
+        if($rows_s21==0){
+            $new_siid1 = 1;
+        } else {
+          $latest1 = $con_brand->query("SELECT MAX(si_id) AS max FROM supplier_items_2");
+          $fetch_latest1 = $latest1->fetch_assoc();
+          $new_siid1 = $fetch_latest1['max']+1;
+
+        }*/
       
       $insert =  $con_brand->query("INSERT INTO supplier_items_2 (item_id, supplier_id, catalog_no, nkk_no, semt_no, brand_id, serial_id, item_cost, quantity) VALUES ('$fetch_with_brand[item_id]','$fetch_with_brand[supplier_id]','$fetch_with_brand[catalog_no]','$fetch_with_brand[nkk_no]','$fetch_with_brand[semt_no]','$fetch_with_brand[brand_id]','$fetch_with_brand[serial_id]','$fetch_with_brand[item_cost]','$fetch_with_brand[quantity]')");
+
+   /*      $update_serial = $con_brand->query("UPDATE serial_number SET si_id = '$new_siid1' WHERE si_id = '$old_siid1'");
+*/
+
         
      }
 
