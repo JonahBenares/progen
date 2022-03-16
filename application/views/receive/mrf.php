@@ -282,7 +282,8 @@
                                         switch($rem){
                                             case($det['rdid'] == $rem['rdid']):
                                     ?>
-                                    <?php if($rem['remarks'] == ''){ ?>   
+                                    <?php if($rem['remarks'] != '' && $overall_remarks==''){ ?>   
+                                        <?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php } else { ?>
                                         <?php if($overall_remarks!=''){ ?><b>Overall Remarks</b> - <?php echo $overall_remarks; ?>, <?php }  ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php }?>
