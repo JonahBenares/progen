@@ -278,6 +278,11 @@
                                 <td width="10%">Remarks:</td>                    
                                 <td style="border-bottom: 1px solid #999">
                                     <?php 
+                                        if($overall_remarks!=''){
+                                            echo "<b>Overall Remarks</b> -".$overall_remarks; 
+                                        }
+                                    ?>
+                                    <?php
                                     foreach($remarks_it AS $rem){ 
                                         switch($rem){
                                             case($det['rdid'] == $rem['rdid']):
@@ -285,7 +290,7 @@
                                     <?php if($rem['remarks'] != '' && $overall_remarks==''){ ?>   
                                         <?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php } else { ?>
-                                        <?php if($overall_remarks!=''){ ?><b>Overall Remarks</b> - <?php echo $overall_remarks; ?>, <?php }  ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
+                                        <?php if($overall_remarks!=''){ ?>, <?php }  ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php }?>
                                     <?php  
                                         break;
