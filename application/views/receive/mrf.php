@@ -279,7 +279,7 @@
                                 <td style="border-bottom: 1px solid #999">
                                     <?php 
                                         if($overall_remarks!=''){
-                                            echo "<b>Overall Remarks</b> -".$overall_remarks; 
+                                            echo "<b>Overall Remarks</b> -".$overall_remarks.", "; 
                                         }
                                     ?>
                                     <?php
@@ -290,7 +290,7 @@
                                     <?php if($rem['remarks'] != '' && $overall_remarks==''){ ?>   
                                         <?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
                                     <?php } else { ?>
-                                        <?php if($overall_remarks!=''){ ?>, <?php }  ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> ,
+                                        <?php if($rem['remarks'] != ''){ ?> <b><?php echo $rem['item']; ?></b> - <?php echo $rem['remarks']; ?> <?php }  ?>
                                     <?php }?>
                                     <?php  
                                         break;
