@@ -1366,7 +1366,8 @@ class Reports extends CI_Controller {
         $data['items'] = $this->super_model->select_column_where("items", "item_name", "item_id", $item);
         $sql="";
         if($from!='null' && $to!='null'){
-           $sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";
+           /*$sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";*/
+           $sql.= " (DATE(rh.restock_date) BETWEEN '$from' AND '$to') AND";
         }
 
         if($cat!='null'){
@@ -1459,7 +1460,8 @@ class Reports extends CI_Controller {
         $data['s'] = $this->super_model->select_column_where("item_subcat", "subcat_name", "subcat_id", $subcat);
         $sql="";
         if($from!='null' && $to!='null'){
-           $sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";
+           //$sql.= " (rh.restock_date BETWEEN '$from ".'00:00:01'."' AND '$to ".'23:59:59'."') OR (rh.restock_date BETWEEN '$from' AND '$to') AND";
+           $sql.= " (DATE(rh.restock_date) BETWEEN '$from' AND '$to') AND";
         }
 
         if($cat!='null'){
