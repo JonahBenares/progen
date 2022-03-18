@@ -4447,7 +4447,7 @@ class Reports extends CI_Controller {
      
 
             /*foreach($this->super_model->custom_query("SELECT rh.*,i.item_id, sr.supplier_id,dt.department_id,pr.purpose_id,e.enduse_id, ri.ri_id, rd.rd_id FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rd.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = ri.supplier_id INNER JOIN department dt ON dt.department_id = rd.department_id INNER JOIN purpose pr ON pr.purpose_id = rd.purpose_id INNER JOIN enduse e ON e.enduse_id = rd.enduse_id WHERE rh.saved='1' AND ri.rd_id = rd.rd_id AND ".$query."ORDER BY rh.receive_date DESC") AS $itm)*/
-        foreach($this->super_model->custom_query("SELECT rh.*,i.item_id, sr.supplier_id,dt.department_id,pr.purpose_id,e.enduse_id, ri.ri_id, rd.rd_id,ri.item_cost,rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rd.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = ri.supplier_id INNER JOIN department dt ON dt.department_id = rd.department_id INNER JOIN purpose pr ON pr.purpose_id = rd.purpose_id INNER JOIN enduse e ON e.enduse_id = rd.enduse_id WHERE rh.saved='1' AND ri.rd_id = rd.rd_id AND ".$query."ORDER BY rh.mrecf_no DESC") AS $itm) {
+        foreach($this->super_model->custom_query("SELECT rh.*,i.item_id, sr.supplier_id,dt.department_id,pr.purpose_id,e.enduse_id, ri.ri_id, rd.rd_id,ri.item_cost,rh.po_no, rd.pr_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id INNER JOIN receive_details rd ON rd.receive_id = ri.receive_id INNER JOIN items i ON ri.item_id = i.item_id INNER JOIN supplier sr ON sr.supplier_id = ri.supplier_id INNER JOIN department dt ON dt.department_id = rd.department_id INNER JOIN purpose pr ON pr.purpose_id = rd.purpose_id INNER JOIN enduse e ON e.enduse_id = rd.enduse_id WHERE rh.saved='1' AND ri.rd_id = rd.rd_id AND ".$query."ORDER BY rh.mrecf_no DESC") AS $itm) {
             $supplier = $this->super_model->select_column_where('supplier', 'supplier_name', 'supplier_id', $itm->supplier_id);
             $recqty = $this->super_model->select_column_where('receive_items', 'received_qty', 'ri_id', $itm->ri_id); 
             $pn = $this->super_model->select_column_where('items', 'original_pn', 'item_id', $itm->item_id);
@@ -4466,7 +4466,7 @@ class Reports extends CI_Controller {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$num, $itm->po_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $itm->dr_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$num, $itm->mrecf_no);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $pr);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$num, $itm->pr_no);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$num, $pn);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $item); 
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $recqty); 
