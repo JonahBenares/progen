@@ -219,19 +219,20 @@ class Delivery extends CI_Controller {
 
     public function insert_delivery(){
         $location=LOCATION;
-        $year=date("Y");
+        //$year=date("Y");
         $date=$this->input->post('date');
         $pr_no=$this->input->post('pr_no');
         $buyer=$this->input->post('buyer');
         $po_date=$this->input->post('po_date');
+        $year=date("Y",strtotime($po_date));
         $vat=$this->input->post('vat');
         $sales_pr=$this->input->post('sales_pr');
-        $rows=$this->super_model->count_custom_where("delivery_head","date LIKE '%$year%'");
+        $rows=$this->super_model->count_custom_where("delivery_head","po_date LIKE '%$year%'");
         if($rows==0){
             $dr_no = $location."-".$year."-0001";
         } else {
             //$dr=$this->super_model->get_max("delivery_head", "dr_no");
-            $dr=$this->super_model->get_max_where("delivery_head", "dr_no","date LIKE '%$year%'");
+            $dr=$this->super_model->get_max_where("delivery_head", "dr_no","po_date LIKE '%$year%'");
             $dr_nos = explode('-',$dr);
             $series = $dr_nos[2]+1;
             if(strlen($series)==1){
