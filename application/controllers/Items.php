@@ -519,7 +519,7 @@ class Items extends CI_Controller {
 
             foreach($this->super_model->select_row_where('supplier_items','item_id', $id) AS $sup){
                 $count = $this->super_model->count_custom_where("supplier_items","item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'");
-                echo "item_id = '$id' AND supplier_id = '$sup->supplier_id' AND catalog_no = '$sup->catalog_no' AND brand_id = '$sup->brand_id' AND nkk_no = '$sup->nkk_no' AND semt_no = '$sup->semt_no'";
+              
                 if($count!=0){
                         $row=$this->super_model->count_rows("items");
                         unset($daterec);
