@@ -1162,8 +1162,11 @@ class Items extends CI_Controller {
 
              $sql_notransact_wsi = "SELECT * FROM items i INNER JOIN supplier_items si ON i.item_id = si.item_id WHERE i.item_id NOT IN (SELECT item_id FROM receive_items) AND i.item_id NOT IN (SELECT item_id FROM restock_details) AND si.catalog_no !='begbal' AND ".$sql1." GROUP BY si.item_id";
             } else {
-                $sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details)";
-
+                if($qtyselect==1){
+                    $sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.quantity!='0' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details)";
+                }else{
+                    $sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details)";
+                }
                  $sql_notransact = "SELECT * FROM items WHERE item_id NOT IN (SELECT item_id FROM receive_items) AND item_id NOT IN (SELECT item_id FROM restock_details) AND item_id NOT IN (SELECT item_id FROM supplier_items)";
 
                  $sql_notransact_wsi = "SELECT * FROM items i INNER JOIN supplier_items si ON i.item_id = si.item_id WHERE i.item_id NOT IN (SELECT item_id FROM receive_items) AND i.item_id NOT IN (SELECT item_id FROM restock_details) AND si.catalog_no !='begbal' GROUP BY si.item_id";
@@ -1258,6 +1261,7 @@ class Items extends CI_Controller {
             }
         }
         $beg_item_id=array();
+
         foreach($this->super_model->custom_query($sql_begbal) AS $begbal){
             $beg_item_id[]=$begbal->item_id;
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $begbal->unit_id);
@@ -1277,35 +1281,33 @@ class Items extends CI_Controller {
                 $sup='';
             }
             $totalqty=$this->inventory_balance_date($begbal->item_id,$date);
-            if($item_id===$beg_item_id){ 
+            //if($item_id===$beg_item_id){ 
                 if($totalqty!=0 && $qtyselect==1){
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $begbal->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $begbal->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
@@ -1315,35 +1317,33 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $begbal->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $begbal->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
                     $x++;
                 }
-            }
+            //}
          }
          $not_item_id=array();
           foreach($this->super_model->custom_query($sql_notransact) AS $not){
@@ -1365,35 +1365,33 @@ class Items extends CI_Controller {
                 $sup='';
             }
             $totalqty=$this->inventory_balance_date($not->item_id,$date);
-            if($item_id===$not_item_id){ 
+            //if($item_id===$not_item_id){ 
                 if($totalqty!=0 && $qtyselect==1){
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $not->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $not->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
@@ -1403,35 +1401,33 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $not->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $not->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
                     $x++;
                 }
-            }
+            //}
          }
          $wsi_item_id = array();
         foreach($this->super_model->custom_query($sql_notransact_wsi) AS $si){
@@ -1453,35 +1449,33 @@ class Items extends CI_Controller {
                 $sup='';
             }
             $totalqty=$this->inventory_balance_date($si->item_id,$date);
-            if($item_id===$wsi_item_id){
+            //if($item_id===$wsi_item_id){
                 if($totalqty!=0 && $qtyselect==1){
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $si->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $si->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
@@ -1491,35 +1485,33 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $si->original_pn);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $si->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('V'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Z'.$num, $bin);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":Z".$num,'admin');
+                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('R'.$num.":S".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('T'.$num.":U".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('V'.$num.":W".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('X'.$num.":Y".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":Z".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":Q".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $num++;
                     $x++;
                 }
-            }
+            //}
          }
         $a = $num+2;
         $b = $num+5;
