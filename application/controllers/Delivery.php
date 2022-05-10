@@ -267,6 +267,7 @@ class Delivery extends CI_Controller {
             echo "<script>alert('Successfully Added!'); 
                 window.location ='".base_url()."index.php/delivery/add_delivery/$delivery_id'; </script>";
         }
+        
     }
 
     public function gatepass(){
