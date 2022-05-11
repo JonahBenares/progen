@@ -1977,7 +1977,7 @@ class Reports extends CI_Controller {
                 'method'=>'Beginning Balance',
                 'quantity'=>$begbal->quantity,
                 'series'=>'1',
-                'date'=>'',
+                'date'=>$begbal->begbal_date,
                 'create_date'=>''
             );
 
