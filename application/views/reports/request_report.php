@@ -44,7 +44,7 @@
 											<select name="item" class="form-control select2" >
 												<option value="" selected="">-Item-</option>
 												<?php foreach($item AS $it){ ?>
-													<option value="<?php echo $it->item_id; ?>"><?php echo $it->item_name; ?></option>
+													<option value="<?php echo $it->item_id; ?>"><?php echo $it->item_name." - ".$it->original_pn; ?></option>
 												<?php } ?>
 											</select>
 										</td>
