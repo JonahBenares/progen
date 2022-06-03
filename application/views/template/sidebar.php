@@ -881,6 +881,11 @@
 								</a>
 							</li>
 							<li>
+								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/request_report">
+									<span class="fa fa-arrow-right">&nbsp;</span> Request
+								</a>
+							</li>
+							<li>
 								<a style="padding-left:60px" href="<?php echo base_url(); ?>index.php/reports/issued_report">
 									<span class="fa fa-arrow-right">&nbsp;</span> Issued
 								</a>
