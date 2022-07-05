@@ -219,6 +219,8 @@ class Delivery extends CI_Controller {
 
     public function insert_delivery(){
         $location=LOCATION;
+
+        
         //$year=date("Y");
         $date=$this->input->post('date');
         $pr_no=$this->input->post('pr_no');
