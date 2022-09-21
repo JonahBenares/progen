@@ -509,7 +509,7 @@ class Request extends CI_Controller {
             /*echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
             echo "<option value=''>-Cross Reference-</option>";*/
             foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){
-                    $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$item' AND pr_no='$prno'","rd_id","DESC","1");
+                    $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$item' AND supplier_id = '$itm->supplier_id'","rd_id","DESC","1");
                     $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id); 
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
