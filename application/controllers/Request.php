@@ -508,7 +508,9 @@ class Request extends CI_Controller {
             <?php
             /*echo "<select name='siid' id='siid' class='form-control' onchange='getUnitCost()'>";
             echo "<option value=''>-Cross Reference-</option>";*/
-            foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){ 
+            foreach($this->super_model->select_custom_where("supplier_items","item_id = '$item' AND quantity != '0'") AS $itm){
+                    $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$item' AND pr_no='$prno'","rd_id","DESC","1");
+                    $po_no = $this->super_model->select_column_where("receive_head", "po_no","receive_id", $receive_id); 
                     $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $itm->brand_id);
                     $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $itm->supplier_id);
                     $balance=$this->crossref_balance($itm->item_id,$itm->supplier_id, $itm->brand_id, $itm->catalog_no);
@@ -517,7 +519,7 @@ class Request extends CI_Controller {
                     $unit = $this->super_model->select_column_where("uom", "unit_name", "unit_id", $it->unit_id);
                     if($balance>0){
                     ?>
-                    <option value="<?php echo $itm->si_id; ?>"><?php echo $supplier . " - " . $itm->catalog_no . " - ". $brand . " (".$balance.")" ." - ". $unit; ?></option>
+                    <option value="<?php echo $itm->si_id; ?>"><?php echo $supplier . " - " . $itm->catalog_no . " - ". $brand . " (".$balance." - ".number_format($itm->item_cost,2).")" ." - ". $unit." - ". $po_no;; ?></option>
 
                 <?php } ?>
 
