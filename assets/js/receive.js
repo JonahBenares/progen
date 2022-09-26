@@ -504,8 +504,8 @@ function printMRF(){
     });
 }
 
-function update_prcmrk(id,baseurl) {
-    var myWindow = window.open(baseurl+"index.php/receive/update_prc_mrk/"+id, "", "top=100,left=450,width=500,height=350");
+function update_prcmrk(id,prno,baseurl) {
+    var myWindow = window.open(baseurl+"index.php/receive/update_prc_mrk/"+id+"/"+prno, "", "top=100,left=450,width=500,height=350");
 }
 
 function update_head(id,baseurl) {

@@ -19,6 +19,7 @@
 		</div>
 	</div>
 	<input type='hidden' name='id' value='<?php echo $id;?>'>
+	<input type='hidden' name='pr_no' value='<?php echo $pr_no;?>'>
 	<input class="btn btn-primary btn-md" type="submit" name="add_item" value="Submit">
 <?php } ?>
 </form>

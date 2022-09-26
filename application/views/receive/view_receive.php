@@ -219,11 +219,11 @@
 											<td><center><?php echo number_format($it['total_net_cost'],2); ?></center></td>
 											<td><?php echo $it['remarks']; ?></td>
 											<?php if($saved==0){ ?> 
-											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo $it['prno'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
 											<?php } else if($_SESSION['user_id']==5 OR $_SESSION['user_id']==13 && $saved==1) { ?>
-											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo $it['prno'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info "><span class="fa fa-pencil"></span></a></td>
 											<?php } else { ?>
-											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info " style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>
+											<td><a onclick="update_prcmrk('<?php echo $it['riid'];?>','<?php echo $it['prno'];?>','<?php echo base_url();?>')" title="Update Price & Remarks" class="btn btn-info " style ="pointer-events: none" disabled><span class="fa fa-pencil"></span></a></td>
 											<?php } ?>
 										</tr>
 										<?php
