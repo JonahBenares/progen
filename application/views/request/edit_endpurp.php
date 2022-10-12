@@ -38,6 +38,7 @@
 		<?php } ?>
 	</select>
 </div>
+<input type='hidden' name='old_pr' id='old_pr'  value="<?php echo (!empty($list['pr_no']) ? $list['pr_no'] : ''); ?>">
 <?php } ?>
 <script src="<?php echo base_url(); ?>assets/js/select3.min.js"></script>
 <script>

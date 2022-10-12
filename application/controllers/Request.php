@@ -54,6 +54,17 @@ class Request extends CI_Controller {
         }
     }
 
+    public function activity_log($activity){
+        $timestamp = date('Y-m-d H:i:s');
+        $data = array(
+            "activity_time"=>$timestamp,
+            "activity_name"=>$activity,
+            "user_id"=>$_SESSION['user_id']
+        );
+
+        $this->super_model->insert_into("activity_logs", $data);
+    }
+
     public function insert_request_head(){
 
         $year=date('Y-m');
@@ -176,11 +187,14 @@ class Request extends CI_Controller {
     }
 
     public function update_purend(){
+        $pr_no=$this->input->post('pr_no');
+        $old_pr=$this->input->post('old_pr');
         $data = array(
             'purpose_id'=>$this->input->post('purpose'),
             'enduse_id'=>$this->input->post('enduse'),
             'department_id'=>$this->input->post('department'),
-            'pr_no'=>$this->input->post('pr_no'),
+            //'pr_no'=>$this->input->post('pr_no'),
+            'pr_no'=>$pr_no,
         );
         $request_id = $this->input->post('request_id');
         if($this->super_model->update_where('request_head', $data, 'request_id', $request_id)){
@@ -188,6 +202,9 @@ class Request extends CI_Controller {
             echo "<script>alert('Successfully Updated!'); 
                 window.location ='".base_url()."index.php/request/request_list'; </script>";
         }
+
+        $act = "Update PR No from ".$old_pr." to ".$pr_no;
+                $this->activity_log($act);
     }
 
     public function view_request(){
