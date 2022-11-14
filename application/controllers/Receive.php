@@ -191,7 +191,7 @@ class Receive extends CI_Controller {
                 /*$unit = $this->super_model->select_column_where('items', 'unit', 'item_id', $items->item_id);*/
                 $brand = $this->super_model->select_column_where('brand', 'brand_name', 'brand_id', $items->brand_id);
               /*  $inspected = $this->super_model->select_column_where('employees', 'employee_name', 'employee_id', $items->inspected_by);*/
-                $total=$items->received_qty*$items->item_cost;
+                $total=$items->received_qty*($items->item_cost + $items->shipping_fee);
                 //$count1 = $this->super_model->select_column_where('receive_details', 'pr_no', 'rd_id', $d->rd_id);
                 //$count2 = $this->super_model->count_custom_where("receive_items","rd_id = '$d->rd_id'");
                 $data['items'][] = array(
