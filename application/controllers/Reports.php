@@ -1930,11 +1930,10 @@ class Reports extends CI_Controller {
             $sql3.= " rd.item_id = '$id' AND";
             $sql4.= " dd.item_id = '$id' AND";
         }else {
-            $sql.= " supplier_items.item_id = '' AND";
-            $sql1.= " ri.item_id = '' AND";
-            $sql2.= " id.item_id = '' AND";
-            $sql3.= " rd.item_id = '' AND";
-            $sql4.= " dd.item_id = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
         }
 
         if($sup!='null'){
@@ -1944,11 +1943,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.supplier_id = '$sup' AND";
             $sql4.= " dd.supplier_id = '$sup' AND";
         }else {
-            $sql.= " supplier_items.supplier_id = '' AND";
-            $sql1.= " ri.supplier_id = '' AND";
-            $sql2.= " id.supplier_id = '' AND";
-            $sql3.= " rd.supplier_id = '' AND";
-            $sql4.= " dd.supplier_id = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($cat!='null'){
@@ -1958,11 +1957,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.catalog_no = '$cat' AND";
             $sql4.= " dd.catalog_no = '$cat' AND";
         }else {
-            $sql.= " supplier_items.catalog_no = '' AND";
-            $sql1.= " ri.catalog_no = '' AND";
-            $sql2.= " id.catalog_no = '' AND";
-            $sql3.= " rd.catalog_no = '' AND";
-            $sql4.= " dd.catalog_no = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($nkk!='null'){
@@ -1972,11 +1971,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.nkk_no = '$nkk' AND";
             $sql4.= " dd.nkk_no = '$nkk' AND";
         }else {
-            $sql.= " supplier_items.nkk_no = '' AND";
-            $sql1.= " ri.nkk_no = '' AND";
-            $sql2.= " id.nkk_no = '' AND";
-            $sql3.= " rd.nkk_no = '' AND";
-            $sql4.= " dd.nkk_no = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($semt!='null'){
@@ -1986,11 +1985,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.semt_no = '$semt' AND";
             $sql4.= " dd.semt_no = '$semt' AND";
         }else {
-            $sql.= " supplier_items.semt_no = '' AND";
-            $sql1.= " ri.semt_no = '' AND";
-            $sql2.= " id.semt_no = '' AND";
-            $sql3.= " rd.semt_no = '' AND";
-            $sql4.= " dd.semt_no = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($brand!='null'){
@@ -2000,11 +1999,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.brand_id = '$brand' AND";
             $sql4.= " dd.brand_id = '$brand' AND";
         }else {
-             $sql.= " supplier_items.brand_id = '' AND";
-            $sql1.= " ri.brand_id = '' AND";
-            $sql2.= " id.brand_id = '' AND";
-            $sql3.= " rd.brand_id = '' AND";
-            $sql4.= " dd.brand_id = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
 
@@ -2021,7 +2020,13 @@ class Reports extends CI_Controller {
         $data['balance']=array();
         $data['item_list']=$this->super_model->select_all_order_by("items","item_name","ASC");
         $data['supplier_list']=$this->super_model->select_all_order_by("supplier", "supplier_name","ASC");
-        foreach($this->super_model->custom_query("SELECT * FROM supplier_items WHERE $query AND catalog_no = 'begbal' ") AS $begbal){
+        if(empty($query)){
+            $que_si = "SELECT * FROM supplier_items WHERE catalog_no = 'begbal'";
+        } else {
+            $que_si = "SELECT * FROM supplier_items WHERE $query AND catalog_no = 'begbal'";
+        }
+        foreach($this->super_model->custom_query($que_si) AS $begbal){
+        //foreach($this->super_model->custom_query("SELECT * FROM supplier_items WHERE $query AND catalog_no = 'begbal' ") AS $begbal){
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $begbal->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $begbal->brand_id);
              //$total_cost=$begbal->quantity * $begbal->item_cost;
@@ -2053,7 +2058,12 @@ class Reports extends CI_Controller {
             );
         }
         //echo "SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query AND saved = '1'";
-        foreach($this->super_model->custom_query("SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query1 AND saved = '1'") AS $receive){
+        if(empty($query1)){
+            $que_re = "SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE saved = '1'";
+        }else{
+            $que_re = "SELECT rh.receive_id,rh.receive_date, ri.supplier_id, ri.brand_id, ri.catalog_no, ri.nkk_no, ri.semt_no, ri.received_qty, ri.item_cost, ri.rd_id, ri.ri_id, rh.create_date, ri.shipping_fee, rh.po_no FROM receive_head rh INNER JOIN receive_items ri ON rh.receive_id = ri.receive_id WHERE $query1 AND saved = '1'";
+        }
+        foreach($this->super_model->custom_query($que_re) AS $receive){
             $pr_no = $this->super_model->select_column_where("receive_details", "pr_no", "rd_id", $receive->rd_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $receive->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $receive->brand_id);
@@ -2086,8 +2096,12 @@ class Reports extends CI_Controller {
         }
 
         //echo "****SELECT ih.issue_date, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.quantity FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query";
-
-        foreach($this->super_model->custom_query("SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query2 AND saved = '1'") AS $issue){
+        if(empty($query2)){
+            $que_is = "SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE saved = '1'";
+        }else{
+            $que_is = "SELECT ih.issue_date, ih.pr_no, id.item_id, id.supplier_id, id.rq_id, id.supplier_id, id.brand_id, id.catalog_no, id.nkk_no, id.semt_no, id.quantity, ih.create_date FROM issuance_head ih INNER JOIN issuance_details id ON ih.issuance_id = id.issuance_id WHERE $query2 AND saved = '1'";
+        }
+        foreach($this->super_model->custom_query($que_is) AS $issue){
             $cost = $this->super_model->select_column_where("request_items", "unit_cost", "rq_id", $issue->rq_id);
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $issue->supplier_id);
              $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $issue->brand_id);
@@ -2123,8 +2137,12 @@ class Reports extends CI_Controller {
 
         }
 
-         foreach($this->super_model->custom_query("SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE $query3 AND saved = '1' AND excess='0'") AS $restock){
-            
+        if(empty($query3)){
+         $que_rs = "SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE saved = '1' AND excess='0'";
+        }else{
+         $que_rs = "SELECT rh.restock_date, rh.from_pr, rd.item_id, rd.supplier_id, rd.brand_id, rd.catalog_no, rd.nkk_no, rd.semt_no, rd.quantity, rd.item_cost FROM restock_head rh INNER JOIN restock_details rd ON rh.rhead_id = rd.rhead_id WHERE $query3 AND saved = '1' AND excess='0'";
+        }
+        foreach($this->super_model->custom_query($que_rs) AS $restock){
             $supplier = $this->super_model->select_column_where("supplier", "supplier_name", "supplier_id", $restock->supplier_id);
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $restock->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$restock->item_id' AND pr_no='$restock->from_pr'","rd_id","DESC","1");
@@ -2161,8 +2179,12 @@ class Reports extends CI_Controller {
        
 
         /*foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, si.supplier_id, si.brand_id, si.catalog_no, si.nkk_no,  si.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id INNER JOIN supplier_items si ON si.item_id = dd.item_id WHERE $query4 AND saved = '1' GROUP BY created_date") AS $del){*/
-        foreach($this->super_model->custom_query("SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE $query4 AND saved = '1' GROUP BY created_date") AS $del){
-
+        if(empty($query4)){
+            $que_del = "SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE saved = '1' GROUP BY created_date";
+        }else{
+            $que_del = "SELECT dh.date, dh.pr_no, dd.item_id, dd.supplier_id, dd.brand_id, dd.catalog_no, dd.nkk_no,  dd.semt_no, dd.qty, dh.created_date, dd.selling_price,dd.item_id FROM delivery_head dh INNER JOIN delivery_details dd ON dh.delivery_id = dd.delivery_id WHERE $query4 AND saved = '1' GROUP BY created_date";
+        }
+        foreach($this->super_model->custom_query($que_del) AS $restock){
             $brand = $this->super_model->select_column_where("brand", "brand_name", "brand_id", $del->brand_id);
             $shipping_fee = $this->super_model->select_column_join_where_order_limit("shipping_fee", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
             $receive_id = $this->super_model->select_column_join_where_order_limit("receive_id", "receive_items","receive_details", "item_id='$del->item_id' AND pr_no='$del->pr_no'","rd_id","DESC","1");
