@@ -351,9 +351,17 @@
                     <td><!-- <input class="select animated headShake" type="" name="" placeholder="Type Designation Here.." > -->
                         <select class="select animated headShake" type="text"  style="white-space: break-spaces;">
                             <option value = "">Select Your Designation Here..</option>
-                            <?php foreach($designation AS $d){ ?>
+                            <!-- <?php foreach($designation AS $d){ ?>
                             <option value = ""><?php echo $d->position; ?></option>
-                            <?php } ?>
+                            <?php } ?> -->
+                            <option value = "">Accounting Staff</option>
+                            <option value = "">Asset and Warehouse Manager</option>
+                            <option value = "">Commercial Asst. & Parts Analyst</option>
+                            <option value = "">Material Receiving - Asset and Warehouse Manager</option>
+                            <option value = "">Parts Inventory Assistant</option>
+                            <option value = "">Projects and Asset Management Assistant</option>
+                            <option value = "">Warehouse Assistant</option>
+                            <option value = "">Warehouse Supervisor</option>
                             <!-- <option value = "">Accounting Staff</option>
                             <option value = "">Asset and Warehouse Manager</option>
                             <option value = "">Parts Inventory Assistant</option>
