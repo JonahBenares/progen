@@ -237,7 +237,13 @@
                     <td width="10%" align="center"><strong>Inv. Balance</strong></td>
                 </tr>
                 <tr>
-                    <?php  $x =1; if(!empty($issue_itm)){foreach ($issue_itm as $isu) {?>
+                    <?php  
+                        $x =1; 
+                        $total_cost=array();
+                        if(!empty($issue_itm)){
+                            foreach ($issue_itm as $isu) {
+                                $total_cost[]=$isu['total_cost'];
+                    ?>
                     <tr>
                         <td class="main-tab" align="center"><?php echo $x;?></td>
                         <td class="main-tab" align="center"><?php echo $isu['qty']?></td>
@@ -256,6 +262,11 @@
                         <td align="center" colspan='9'><center>No Data Available.</center></td>
                     </tr>
                     <?php }?>
+                </tr>
+                <tr>
+                    <td colspan='9' align='right'><b>Total: </b></td>
+                    <td colspan='1' align='center'><b><?php echo number_format(array_sum($total_cost),2); ?></b></td>
+                    <td colspan='1' align='right'></td>
                 </tr>
                 <tr>
                     <td colspan="11"><center>***nothing follows***</center></td>

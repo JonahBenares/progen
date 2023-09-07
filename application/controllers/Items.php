@@ -341,6 +341,12 @@ class Items extends CI_Controller {
             $subcat='null';
         }
 
+        if(!empty($this->input->post('group_name'))){
+            $group_name = $this->input->post('group_name');
+        } else {
+            $group_name='null';
+        }
+
         if(!empty($this->input->post('rack'))){
             $rack = $this->input->post('rack');
         } else {
@@ -379,7 +385,7 @@ class Items extends CI_Controller {
 
          ?>
        <script>
-        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>/<?php echo $rack; ?>/<?php echo $date; ?>/<?php echo $qtyselect; ?>'</script> <?php
+        window.location.href ='<?php echo base_url(); ?>index.php/items/export_item/<?php echo $cat; ?>/<?php echo $subcat; ?>/<?php echo $local; ?>/<?php echo $manila; ?>/<?php echo $rack; ?>/<?php echo $date; ?>/<?php echo $qtyselect; ?>/<?php echo $group_name; ?>'</script> <?php
     }
     public function update_item(){
         $data['id']=$this->uri->segment(3);
@@ -1027,6 +1033,7 @@ class Items extends CI_Controller {
         $rack=$this->uri->segment(7);
         $date=$this->uri->segment(8);
         $qtyselect=$this->uri->segment(9);
+        $group_name=$this->uri->segment(10);
 
          $sql="";
          $sql1="";
@@ -1034,6 +1041,11 @@ class Items extends CI_Controller {
            $sql.= " category_id = '$cat' AND";
            $sql1.= " category_id = '$cat' AND";
         }
+
+        if($group_name!='null'){
+            $sql.= " group_id = '$group_name' AND";
+            $sql1.= " group_id = '$group_name' AND";
+         }
 
         if($subcat!='null'){
             $sql.= " subcat_id = '$subcat' AND";
@@ -1124,7 +1136,8 @@ class Items extends CI_Controller {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A10', "No.");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B10', "Local/Manila");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E10', "Item Part No.");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G10', "Item Description");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G10', "Group Name");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I10', "Item Description");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L10', "Qty");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N10', "Price");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P10', "Selling Price");
@@ -1188,6 +1201,7 @@ class Items extends CI_Controller {
             $bin =$this->super_model->select_column_where("bin","bin_name", "bin_id", $items->bin_id);
             $unit_price = $this->super_model->select_column_custom_where('receive_items', 'item_cost', "item_id='$items->item_id' ORDER BY receive_id DESC");
             $local_mnl = $this->super_model->select_column_custom_where('receive_items', 'local_mnl', "item_id='$items->item_id'");
+            $groupname=$this->super_model->select_column_where("group", "group_name", "group_id", $items->group_id);
             if($local_mnl=='1'){
                 $sup = 'Local';
             } else if($local_mnl=='2'){
@@ -1201,7 +1215,8 @@ class Items extends CI_Controller {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $items->original_pn);
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $items->item_name);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $items->item_name);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $unit_price);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $items->selling_price);
@@ -1215,7 +1230,8 @@ class Items extends CI_Controller {
                 $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                 $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1230,7 +1246,8 @@ class Items extends CI_Controller {
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $items->original_pn);
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $items->item_name);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $items->item_name);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $unit_price);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $items->selling_price);
@@ -1244,7 +1261,8 @@ class Items extends CI_Controller {
                 $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                 $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                 $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1268,6 +1286,7 @@ class Items extends CI_Controller {
             $location =$this->super_model->select_column_where("location","location_name", "location_id", $begbal->location_id);
             $bin =$this->super_model->select_column_where("bin","bin_name", "bin_id", $begbal->bin_id);
             $nominal=$this->super_model->select_ave("supplier_items", "item_cost", "item_id", $begbal->item_id);
+            $groupname=$this->super_model->select_column_where("group", "group_name", "group_id", $begbal->group_id);
             $unit_price = 0;
              $local_mnl = 1;
             if($local_mnl=='1'){
@@ -1283,7 +1302,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $begbal->original_pn);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $begbal->item_name);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $begbal->item_name);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
@@ -1297,7 +1317,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1313,7 +1334,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $begbal->original_pn);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $begbal->item_name);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $begbal->item_name);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
@@ -1327,7 +1349,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1436,6 +1459,7 @@ class Items extends CI_Controller {
             $location =$this->super_model->select_column_where("location","location_name", "location_id", $si->location_id);
             $bin =$this->super_model->select_column_where("bin","bin_name", "bin_id", $si->bin_id);
             $nominal=$this->super_model->select_ave("supplier_items", "item_cost", "item_id", $si->item_id);
+            $groupname=$this->super_model->select_column_where("group", "group_name", "group_id", $si->group_id);
             $unit_price = 0;
              $local_mnl = 1;
             if($local_mnl=='1'){
@@ -1451,7 +1475,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $si->original_pn);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $si->item_name);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $si->item_name);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
@@ -1465,7 +1490,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1481,7 +1507,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $si->original_pn);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $si->item_name);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $si->item_name);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
@@ -1495,7 +1522,8 @@ class Items extends CI_Controller {
                     $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
                     $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+                    $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
                     $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
@@ -1523,7 +1551,8 @@ class Items extends CI_Controller {
         $objPHPExcel->getActiveSheet()->protectCells('A'.$c.":X".$c,'admin');
         $objPHPExcel->getActiveSheet()->mergeCells('B10:D10');
         $objPHPExcel->getActiveSheet()->mergeCells('E10:F10');
-        $objPHPExcel->getActiveSheet()->mergeCells('G10:K10');
+        $objPHPExcel->getActiveSheet()->mergeCells('G10:H10');
+        $objPHPExcel->getActiveSheet()->mergeCells('I10:K10');
         $objPHPExcel->getActiveSheet()->mergeCells('L10:M10');
         $objPHPExcel->getActiveSheet()->mergeCells('N10:O10');
         $objPHPExcel->getActiveSheet()->mergeCells('P10:Q10');

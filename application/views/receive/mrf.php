@@ -241,10 +241,12 @@
                             </tr>
                             <?php
                              $x =1; 
+                             $total_cost=array();
                                 foreach($items AS $it){ 
                                     switch($it){
                                         case($det['rdid'] == $it['rdid']):
                                             if($it['recqty']!=0){
+                                                $total_cost[]=$it['total'];
                             ?>
                             <tr>
                                 <td class="main-tab" align="center"><?php echo $x; ?></td>
@@ -266,8 +268,11 @@
                                 break;
                                 default: 
                                 }  }  
-
-                            ?> 
+                            ?>  
+                            <tr>
+                                <td colspan='10' align='right'><b>Total: </b></td>
+                                <td colspan='1' align='center'><b><?php echo number_format(array_sum($total_cost),2); ?></b></td>
+                            </tr>
                         </table>
                     </td>
                 </tr>
@@ -344,20 +349,23 @@
                 </tr>
                 <tr>
                     <td><!-- <input class="select animated headShake" type="" name="" placeholder="Type Designation Here.." > -->
-                        <select class="select animated headShake" type="text">
+                        <select class="select animated headShake" type="text"  style="white-space: break-spaces;">
                             <option value = "">Select Your Designation Here..</option>
-                            <option value = "">Accounting Staff</option>
+                            <?php foreach($designation AS $d){ ?>
+                            <option value = ""><?php echo $d->position; ?></option>
+                            <?php } ?>
+                            <!-- <option value = "">Accounting Staff</option>
                             <option value = "">Asset and Warehouse Manager</option>
                             <option value = "">Parts Inventory Assistant</option>
                             <option value = "">Projects and Asset Management Assistant</option>
                             <option value = "">Warehouse Assistant</option>
-                            <option value = "">Warehouse Supervisor</option>
+                            <option value = "">Warehouse Supervisor</option> -->
                         </select>
                     </td>  
                     <td></td>
-                    <td><center>Supplier/Driver</center></td>
+                    <td style='vertical-align:top'><center>Supplier/Driver</center></td>
                     <td></td>
-                    <td>
+                    <td style='vertical-align:top'>
                         <center><div id='alt' style="font-weight:bold"></div></center>
                         <input id="position" class="select" style="pointer-events:none" value="<?php echo $us['positionrec'];?>">
                     </td>

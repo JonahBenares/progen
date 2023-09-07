@@ -252,6 +252,18 @@
 							</tr>
 							<tr><td ><br></td></tr>
 							<tr>
+								<td width="5%"><label>Group:</label></td>
+								<td width="80%" colspan="5">
+									<select name="group_name" class="form-control" id="group_name">
+										<option value="" selected="">-Select Group-</option>
+										<?php foreach($group AS $g){ ?>
+											<option value="<?php echo $g->group_id; ?>"><?php echo $g->group_name; ?></option>
+										<?php } ?>
+									</select>
+								</td>
+							</tr> 
+							<tr><td ><br></td></tr>
+							<tr>
 								<td width="5%"><label>Category:</label></td>
 								<td width="80%" colspan="5">
 									<select name="category_exp" class="form-control" id="category_exp" onChange="chooseCategory();">
