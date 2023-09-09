@@ -354,14 +354,17 @@
                             <!-- <?php foreach($designation AS $d){ ?>
                             <option value = ""><?php echo $d->position; ?></option>
                             <?php } ?> -->
-                            <option value = "">Accounting Staff</option>
+                            <option value = "">Asset and Warehouse Manager</option>
+                            <option value = "">Commercial Asst. & Parts Analyst</option>
+                            <option value = "">Warehouse Assistant</option>
+                            <!-- <option value = "">Accounting Staff</option>
                             <option value = "">Asset and Warehouse Manager</option>
                             <option value = "">Commercial Asst. & Parts Analyst</option>
                             <option value = "">Material Receiving - Asset and Warehouse Manager</option>
                             <option value = "">Parts Inventory Assistant</option>
                             <option value = "">Projects and Asset Management Assistant</option>
                             <option value = "">Warehouse Assistant</option>
-                            <option value = "">Warehouse Supervisor</option>
+                            <option value = "">Warehouse Supervisor</option> -->
                             <!-- <option value = "">Accounting Staff</option>
                             <option value = "">Asset and Warehouse Manager</option>
                             <option value = "">Parts Inventory Assistant</option>
