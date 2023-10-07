@@ -169,7 +169,7 @@
                     $noted= $det->noted_by;
             }?>
             <?php foreach($req as $r){ ?>
-            <table width="100%">
+            <table width="100%" class="main-tab">
                  <tr>
                     <td width="10%"><strong><h6 class="nomarg">PR / JO #</h6></strong></td>
                     <td width="40%" style="border-bottom: 1px solid #999"> <label class="nomarg">: <?php echo $r['prno'];?></label></td>
@@ -204,7 +204,7 @@
             
         </div>
         <div class="col-lg-12">
-            <table width="100%" class="table-bordered">
+            <table width="100%" class="table-bordered main-tab">
                 <tr>
                     <td width="1%" align="center"><strong>#</strong></td>
                     <td width="5%" align="center"><strong>Qty</strong></td>
@@ -238,7 +238,7 @@
                 </tr>
             </table>
             <br>
-            <table width="100%">
+            <table width="100%" class="main-tab">
                 <tr>
                     <td width="10%">Remarks:</td>
                     <td style="border-bottom: 1px solid #999">
@@ -249,7 +249,7 @@
             <?php }?>
             <br>
             <form method='POST' id='mreqfsign'>
-            <table width="100%">
+            <table width="100%" class="main-tab">
                 <tr>
                     <td width="30%">Requested by:</td>
                     <td width="5%"></td>                    
@@ -295,15 +295,16 @@
                     <td></td>
                     <td><center></center></td>
                     <td></td>
-                    <td>
+                    <td align="center" style="word-wrap: break-word">
                         <center><div id='alts' style="font-weight:bold"></div></center>
-                        <input id="positionrev" class="select" style="pointer-events:none" value="<?php echo $us['positionrev'];?>">
+                        <!-- <input id="positionrev" class="select" style="pointer-events:none;" value="<?php echo $us['positionrev'];?>"> -->
+                        <?php echo $us['positionrev'];?>
                     </td>
                     <!-- <td><center>Department Supervisor</center></td> -->
                 </tr>
             </table>
             <br>
-            <table width="100%">
+            <table width="100%" class="main-tab">
                 <tr>
                     <td width="30%"></td>
                     <td width="5%"></td>                    
