@@ -107,10 +107,10 @@
                 padding: 1px;
             }
         }
-        .main-tab, table.main-tab tr td{
+        /*.main-tab, table.main-tab tr td{
             font-size: 11px;
             padding: 1px;
-        }
+        }*/
         .shadow{
             box-shadow: 0px 2px 1px 1px #dadada;
         }
