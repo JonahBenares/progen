@@ -1155,8 +1155,7 @@ class Items extends CI_Controller {
             )
           )
         );
-        //echo "SELECT i.*, ri.local_mnl FROM items i INNER JOIN receive_items ri ON i.item_id = ri.item_id WHERE " .$q." ORDER BY i.item_name ASC";
-        /*foreach($this->super_model->custom_query("SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id " .$q." GROUP BY i.item_id ORDER BY i.item_name ASC") AS $items){*/
+     
         if(!empty($sql) || !empty($sql1)){
             
             //$q=" WHERE i.item_id NOT IN(SELECT item_id FROM supplier_items WHERE catalog_no='begbal') AND " .$sql . " " . $query2;
@@ -1167,12 +1166,6 @@ class Items extends CI_Controller {
                 $q=" WHERE " .$sql . " " . $query2;
                 $sql_query = "SELECT i.*, ri.local_mnl FROM items i LEFT JOIN receive_items ri ON i.item_id = ri.item_id LEFT JOIN receive_head rh ON ri.receive_id = rh.receive_id LEFT JOIN restock_details rd ON rd.item_id = i.item_id LEFT JOIN restock_head r ON rd.rhead_id = r.rhead_id LEFT JOIN supplier_items si ON i.item_id=si.item_id " .$q." GROUP BY i.item_id ORDER BY i.original_pn ASC";
             }
-
-             /*$sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details)";
-
-             $sql_notransact = "SELECT * FROM items WHERE item_id NOT IN (SELECT item_id FROM receive_items) AND item_id NOT IN (SELECT item_id FROM restock_details) AND item_id NOT IN (SELECT item_id FROM supplier_items)";
-
-             $sql_notransact_wsi = "SELECT * FROM items i INNER JOIN supplier_items si ON i.item_id = si.item_id WHERE i.item_id NOT IN (SELECT item_id FROM receive_items) AND i.item_id NOT IN (SELECT item_id FROM restock_details) AND si.catalog_no !='begbal' GROUP BY si.item_id";*/
 
             //  if(!empty($sql1)){
             //     //  $sql_begbal = "SELECT i.* FROM supplier_items si INNER JOIN items i ON i.item_id = si.item_id WHERE si.catalog_no = 'begbal' AND si.item_id NOT IN (SELECT item_id FROM receive_items) AND si.item_id NOT IN (SELECT item_id FROM restock_details) AND si.item_id NOT IN (SELECT item_id FROM items) AND ".$sql1;
@@ -1208,6 +1201,8 @@ class Items extends CI_Controller {
             // $sql_notransact_wsi = "SELECT * FROM items i INNER JOIN supplier_items si ON i.item_id = si.item_id WHERE i.item_id NOT IN (SELECT item_id FROM receive_items) AND i.item_id NOT IN (SELECT item_id FROM restock_details) AND si.catalog_no !='begbal' GROUP BY si.item_id";
         }
         $item_id = array();
+
+        //echo $sql_query . "<br>";
         foreach($this->super_model->custom_query($sql_query) AS $items){
             $item_id[] = $items->item_id;
             $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $items->unit_id);
@@ -1226,7 +1221,7 @@ class Items extends CI_Controller {
             } else {
                 $sup='';
             }
-            //$totalqty=$this->inventory_balance($items->item_id);
+           
             $totalqty=$this->inventory_balance_date($items->item_id,$date);
             if($totalqty!=0 && $qtyselect==1){
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
@@ -1292,8 +1287,8 @@ class Items extends CI_Controller {
                 $x++;
             }
         }
-        // $beg_item_id=array();
-        // $imp_itemid=implode(',',$item_id);
+        //$beg_item_id=array();
+
         // foreach($this->super_model->custom_query($sql_begbal) AS $begbal){
         //     $beg_item_id[]=$begbal->item_id;
         //     $unit =$this->super_model->select_column_where("uom","unit_name", "unit_id", $begbal->unit_id);
@@ -1417,35 +1412,37 @@ class Items extends CI_Controller {
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
-                    $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
-                    $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
-                    $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":K".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
-                    $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
-                    $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-                    $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                    //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-                    $num++;
-                    $x++;
-                }else if($qtyselect==0){
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $not->original_pn);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $not->item_name);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
+        //             $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
+        //             $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
+        //             $objPHPExcel->getActiveSheet()->mergeCells('B'.$num.":D".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('E'.$num.":F".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('G'.$num.":H".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('I'.$num.":K".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('L'.$num.":M".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('N'.$num.":O".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('P'.$num.":Q".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('S'.$num.":T".$num);
+        //             $objPHPExcel->getActiveSheet()->mergeCells('U'.$num.":V".$num);
+        //             $objPHPExcel->getActiveSheet()->getStyle('A'.$num.":X".$num)->applyFromArray($styleArray);
+        //             $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":R".$num)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        //             $objPHPExcel->getActiveSheet()->getStyle('L'.$num.":P".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        //             //$objPHPExcel->getActiveSheet()->getStyle('X'.$num.":Y".$num)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+        //             $num++;
+        //             $x++;
+        //         }else if($qtyselect==0){
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$num, $x);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$num, $sup);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$num, $begbal->original_pn);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$num, $groupname);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$num, $begbal->item_name);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$num, $totalqty);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$num, $nominal);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$num, $unit_price);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$num, $unit);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$num, $location);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('U'.$num, $wh);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('W'.$num, $rack);
+        //             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('X'.$num, $bin);
                 
                     $objPHPExcel->getActiveSheet()->getProtection()->setSheet(true);
                     $objPHPExcel->getActiveSheet()->protectCells('A'.$num.":X".$num,'admin');
