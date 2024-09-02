@@ -1971,11 +1971,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.nkk_no = '$nkk' AND";
             $sql4.= " dd.nkk_no = '$nkk' AND";
         }else {
-            $sql.= "";
-            $sql1.= "";
-            $sql2.= "";
-            $sql3.= "";
-            $sql4.= "";
+           $sql.= " supplier_items.nkk_no = '' AND";
+            $sql1.= " ri.nkk_no = '' AND";
+            $sql2.= " id.nkk_no = '' AND";
+            $sql3.= " rd.nkk_no = '' AND";
+            $sql4.= " dd.nkk_no = '' AND";
         }
 
         if($semt!='null'){
@@ -1985,11 +1985,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.semt_no = '$semt' AND";
             $sql4.= " dd.semt_no = '$semt' AND";
         }else {
-            $sql.= "";
-            $sql1.= "";
-            $sql2.= "";
-            $sql3.= "";
-            $sql4.= "";
+            $sql.= " supplier_items.semt_no = '' AND";
+            $sql1.= " ri.semt_no = '' AND";
+            $sql2.= " id.semt_no = '' AND";
+            $sql3.= " rd.semt_no = '' AND";
+            $sql4.= " dd.semt_no = '' AND";
         }
 
         if($brand!='null'){
