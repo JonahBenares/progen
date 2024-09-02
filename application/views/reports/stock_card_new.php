@@ -4,19 +4,24 @@ if(!empty($stockcard)){
 	    $date[$key]  = $row['date'];
 	    $series[$key] = $row['series'];
 	    $cdate[$key] = $row['create_date'];
+	      $riid[$key] = $row['ri_id'];
+	   
 	}
 
 
-array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $stockcard);
+array_multisort($date, SORT_ASC,  $cdate, SORT_ASC, $riid, SORT_ASC, $stockcard);
 }
 if(!empty($stockcard)){
 	foreach ($balance as $key => $row) {
 	    $date[$key]  = $row['date'];
 	    $series[$key] = $row['series'];
 	     $cdate[$key] = $row['create_date'];
+	     $riid[$key] = $row['ri_id'];
+	     
+
 	}
 
-	array_multisort($date, SORT_ASC, $cdate, SORT_ASC, $balance);
+	array_multisort($date, SORT_ASC, $cdate, SORT_ASC, $riid, SORT_ASC, $balance);
 
 	$total_bal=0;
 	foreach($balance AS $sc){
@@ -137,12 +142,14 @@ if(!empty($stockcard)){
 								$run_bal=0;
 
 									foreach($balance AS $s){
+
+
 											if($s['method'] == 'Beginning Balance' || $s['method'] == 'Receive' || $s['method'] == 'Restock'){ 
 														$run_bal += $s['quantity'];
 												} else if($s['method'] == 'Issuance' || $s['method'] == 'Delivered') {
 														$run_bal -= $s['quantity'];
 												} 
-
+								//echo $s['method'] . " = " . $s['quantity'] . " - " .$run_bal.  "<br>";
 										$bal[] = $run_bal;
 									}
 								}
@@ -165,11 +172,15 @@ if(!empty($stockcard)){
 									</thead>
 									<tbody>
 										<?php 
+
+										//print_r($stockcard);
 										if(!empty($stockcard)){
 										$count = count($stockcard)-1;
 										//echo "count".$count;
 										$run_bal=0;
 											for($x=$count; $x>=0;$x--){ 
+
+												//for($x=0; $x<=$count;$x++){ 
 										
 											/*if($stockcard[$x]['method']== 'Beginning Balance' || $stockcard[$x]['method'] == 'Receive' || $stockcard[$x]['method'] == 'Restock'){ 
 															$run_bal += $stockcard[$x]['quantity'];
