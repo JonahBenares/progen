@@ -1943,11 +1943,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.supplier_id = '$sup' AND";
             $sql4.= " dd.supplier_id = '$sup' AND";
         }else {
-            $sql.= " supplier_items.supplier_id = '' AND";
-            $sql1.= " ri.supplier_id = '' AND";
-            $sql2.= " id.supplier_id = '' AND";
-            $sql3.= " rd.supplier_id = '' AND";
-            $sql4.= " dd.supplier_id = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($cat!='null'){
@@ -1971,11 +1971,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.nkk_no = '$nkk' AND";
             $sql4.= " dd.nkk_no = '$nkk' AND";
         }else {
-             $sql.= " supplier_items.nkk_no = '' AND";
-            $sql1.= " ri.nkk_no = '' AND";
-            $sql2.= " id.nkk_no = '' AND";
-            $sql3.= " rd.nkk_no = '' AND";
-            $sql4.= " dd.nkk_no = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($semt!='null'){
@@ -1985,11 +1985,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.semt_no = '$semt' AND";
             $sql4.= " dd.semt_no = '$semt' AND";
         }else {
-            $sql.= " supplier_items.semt_no = '' AND";
-            $sql1.= " ri.semt_no = '' AND";
-            $sql2.= " id.semt_no = '' AND";
-            $sql3.= " rd.semt_no = '' AND";
-            $sql4.= " dd.semt_no = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
         if($brand!='null'){
@@ -1999,11 +1999,11 @@ class Reports extends CI_Controller {
             $sql3.= " rd.brand_id = '$brand' AND";
             $sql4.= " dd.brand_id = '$brand' AND";
         }else {
-            $sql.= " supplier_items.brand_id = '' AND";
-            $sql1.= " ri.brand_id = '' AND";
-            $sql2.= " id.brand_id = '' AND";
-            $sql3.= " rd.brand_id = '' AND";
-            $sql4.= " dd.brand_id = '' AND";
+            $sql.= "";
+            $sql1.= "";
+            $sql2.= "";
+            $sql3.= "";
+            $sql4.= "";
         }
 
 
