@@ -2032,6 +2032,7 @@ class Reports extends CI_Controller {
              //$total_cost=$begbal->quantity * $begbal->item_cost;
              $total_cost=$begbal->item_cost;
             $data['stockcard'][] = array(
+                'ri_id'=>0,
                 'supplier'=>$supplier,
                 'catalog_no'=>'begbal',
                 'brand'=>$brand,
@@ -2049,6 +2050,7 @@ class Reports extends CI_Controller {
             );
 
             $data['balance'][] = array(
+                'ri_id'=>0,
                 'series'=>'1',
                 'method'=>'Beginning Balance',
                 'quantity'=>$begbal->quantity,
