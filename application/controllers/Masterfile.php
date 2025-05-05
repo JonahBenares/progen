@@ -1935,6 +1935,8 @@ class Masterfile extends CI_Controller {
             die('Error loading file"'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
         }
 
+        $userid=$_SESSION['user_id'];
+        $begbal_date=date('Y-m-d H:i:s');
         $highestRow = $objPHPExcel->getActiveSheet()->getHighestRow(); 
         for($x=2;$x<=$highestRow;$x++){
             $itemid = trim($objPHPExcel->getActiveSheet()->getCell('A'.$x)->getValue());
@@ -1947,7 +1949,9 @@ class Masterfile extends CI_Controller {
             $data_items = array(
                 'item_id'=>$itemid,
                 'catalog_no'=>$catalog,
-                'quantity'=>$qty
+                'quantity'=>$qty,
+                'begbal_uploader'=>$userid,
+                'begbal_date'=>$begbal_date
             );
             $this->super_model->insert_into("supplier_items", $data_items);
         }
