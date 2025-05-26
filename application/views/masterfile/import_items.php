@@ -69,7 +69,7 @@
 									</div>
 								</div>
 							</form>
-							<form method='POST' action='upload_excel_begbal' enctype="multipart/form-data">
+							<!-- <form method='POST' action='upload_excel_begbal' enctype="multipart/form-data">
 								<div class="row" style="padding: 0px 0px 10px 0px">
 									<div class="col-lg-3">
 										Beginning Balance
@@ -96,7 +96,7 @@
 									    </div>
 									</div>
 								</div>
-							</form>
+							</form> -->
 							<form method='POST' action='upload_excel_current' enctype="multipart/form-data">
 								<div class="row" style="padding: 0px 0px 10px 0px">
 									<div class="col-lg-3">
